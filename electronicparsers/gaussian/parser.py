@@ -903,7 +903,7 @@ class GaussianParser:
 
         self._basis_set_pattern = re.compile(
             r'(6\-311G)|(6\-31G)|(LANL2)|(LANL1)|(CBSB7)|(UGBS)|AUG\-(.*)|(D95)'
-        )
+        )  # match additional specifications
 
         self._energy_methods = {
             'mp': (
@@ -1307,11 +1307,14 @@ class GaussianParser:
             return prefix, name
 
         def resolve_basis_set(parameter: str) -> tuple[str, str]:
-            """Standardize basis set names (`parameter`) to the format used in the metainfo."""
+            """This function has 2 responsibilities:
+            1. discern `parameter` from other input settings.
+            2. verify that `parameter` is a valid basis set name."""
             basis_set = self._basis_set_map.get(parameter, None)
             if basis_set is not None:
                 return (parameter, parameter)
 
+            # handle modular extensions
             res = self._basis_set_pattern.match(parameter)
             if res is not None:
                 basis_keys = [key for key in res.groups() if key is not None]
@@ -1320,9 +1323,6 @@ class GaussianParser:
                         'Cannot resolve basis set', data=dict(key=parameter)
                     )
                 return (basis_keys[0], parameter)
-
-            # fall back onto default basis set
-            return ('STO-3G', 'STO-3G')
 
         def resolve_xc_functional(parameter):
             xc_functional = self._xc_functional_map.get(parameter, None)
@@ -1406,10 +1406,8 @@ class GaussianParser:
                 type='gaussians',
                 scope=['full-electron'],
             )
-            for _ in self._basis_set_map.get(basis_set[0], []):
-                # TODO need to adjust basis_set atom centered to take multiple entries
-                # old parser writes the full name of basis set here not the name on map
-                bs.atom_centered.append(BasisSetAtomCentered(name=basis_set[1]))
+            basis_set_name = basis_set[1] if basis_set else 'STO-3G'
+            bs.atom_centered.append(BasisSetAtomCentered(name=basis_set_name))
         sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
