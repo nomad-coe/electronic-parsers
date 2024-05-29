@@ -1321,9 +1321,6 @@ class GaussianParser:
                     )
                 return (basis_keys[0], parameter)
 
-            # fall back onto default basis set
-            return ('STO-3G', 'STO-3G')
-
         def resolve_xc_functional(parameter):
             xc_functional = self._xc_functional_map.get(parameter, None)
             if xc_functional is not None:
@@ -1379,7 +1376,12 @@ class GaussianParser:
             basis_set_parameter = parameter[0] if not parameter[1:] else parameter[1]
             # ! invert logic
             basis_set = resolve_basis_set(basis_set_parameter.strip())
-            basis_sets.add(basis_set)
+            if basis_set is not None:
+                basis_sets.add(basis_set)
+
+            if not basis_sets:
+                # fall back onto default basis set
+                basis_sets.add(('STO-3G', 'STO-3G'))
 
         sec_dft = DFT()
         sec_method.dft = sec_dft
