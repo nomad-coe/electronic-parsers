@@ -1379,7 +1379,10 @@ class GaussianParser:
             basis_set_parameter = parameter[0] if not parameter[1:] else parameter[1]
             # ! invert logic
             basis_set = resolve_basis_set(basis_set_parameter.strip())
-            basis_sets.add(basis_set)
+            if basis_set is not None:
+                basis_sets.add(basis_set)
+        if len(basis_sets) == 0:
+            basis_sets.add(resolve_basis_set('STO-3G'))
 
         sec_dft = DFT()
         sec_method.dft = sec_dft
@@ -1406,8 +1409,8 @@ class GaussianParser:
                 type='gaussians',
                 scope=['full-electron'],
             )
-            basis_set_name = basis_set[1] if basis_set else 'STO-3G'
-            bs.atom_centered.append(BasisSetAtomCentered(name=basis_set_name))
+            bs.atom_centered.append(BasisSetAtomCentered(name=basis_set[1]))
+            # ? what does it mean to have multiple basis sets
         sec_method.electrons_representation = [
             BasisSetContainer(
                 type='atom-centered orbitals',
