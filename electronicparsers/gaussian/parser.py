@@ -2,6 +2,7 @@ import re
 import numpy as np
 import logging
 import ase
+from typing import Optional
 
 from .metainfo import m_env
 
@@ -1306,7 +1307,7 @@ class GaussianParser:
                     name = res[2]
             return prefix, name
 
-        def resolve_basis_set(parameter: str) -> tuple[str, str]:
+        def resolve_basis_set(parameter: str) -> Optional[tuple[str, str]]:
             """Standardize basis set names (`parameter`) to the format used in the metainfo."""
             basis_set = self._basis_set_map.get(parameter, None)
             if basis_set is not None:
@@ -1320,6 +1321,8 @@ class GaussianParser:
                         'Cannot resolve basis set', data=dict(key=parameter)
                     )
                 return (basis_keys[0], parameter)
+
+            return None
 
         def resolve_xc_functional(parameter):
             xc_functional = self._xc_functional_map.get(parameter, None)
