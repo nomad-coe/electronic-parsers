@@ -2,6 +2,7 @@ import re
 import numpy as np
 import logging
 import ase
+from typing import Optional
 
 from .metainfo import m_env
 
@@ -1306,7 +1307,7 @@ class GaussianParser:
                     name = res[2]
             return prefix, name
 
-        def resolve_basis_set(parameter: str) -> tuple[str, str]:
+        def resolve_basis_set(parameter: str) -> Optional[tuple[str, str]]:
             """This function has 2 responsibilities:
             1. discern `parameter` from other input settings.
             2. verify that `parameter` is a valid basis set name."""
@@ -1323,6 +1324,9 @@ class GaussianParser:
                         'Cannot resolve basis set', data=dict(key=parameter)
                     )
                 return (basis_keys[0], parameter)
+
+            # in case the setting was not recognized
+            return None
 
         def resolve_xc_functional(parameter):
             xc_functional = self._xc_functional_map.get(parameter, None)
@@ -1379,7 +1383,7 @@ class GaussianParser:
             basis_set_parameter = parameter[0] if not parameter[1:] else parameter[1]
             # ! invert logic
             basis_set = resolve_basis_set(basis_set_parameter.strip())
-            if basis_set is not None:
+            if basis_set:
                 basis_sets.add(basis_set)
         if len(basis_sets) == 0:
             basis_sets.add(resolve_basis_set('STO-3G'))
