@@ -1667,7 +1667,9 @@ class VASPParser:
         source = self.parser.incar
         # setup `AtomsGroup` parameters
         elem_id = source.get('CLNT', 1) - 1
-        elem_ids = [int(x) for x in self.parser.atom_info['atomtypes']['atomspertype']]
+        elem_ids = [
+            int(x) for x in self.parser.atom_info['atomtypes'].get('atomspertype', [])
+        ]
         lower_range = elem_ids[elem_id - 1] if elem_id > 1 else 0
         atom_ids = list(range(lower_range, elem_ids[elem_id]))
         return (
@@ -1869,7 +1871,7 @@ class VASPParser:
         for param, n_atoms in dict(
             zip(
                 sec_method.atom_parameters,
-                self.parser.atom_info['atomtypes']['atomspertype'],
+                self.parser.atom_info['atomtypes'].get('atomspertype', []),
             )
         ).items():
             # correct based on core-holes
