@@ -2,7 +2,6 @@ import re
 import numpy as np
 import logging
 import ase
-from typing import Optional
 
 from .metainfo import m_env
 
@@ -836,6 +835,8 @@ class GaussianParser:
             'W1RO': [{'name': 'W1RO'}],
         }
 
+        user = 'User-defined'
+        checkpoint = 'See previous calculation'
         self._basis_set_map = {
             'STO-3G': [{'name': 'STO-3G'}],
             '3-21G': [{'name': '3-21G'}],
@@ -884,8 +885,8 @@ class GaussianParser:
             'SDD': [{'name': 'SDD'}],
             'OLDSDD': [{'name': 'OldSDD'}],
             'SDDALL': [{'name': 'SDDAll'}],
-            'GEN': [{'name': 'General'}],
-            'GENECP': [{'name': 'General ECP'}],
+            'GEN': [{'name': user}],
+            'GENECP': [{'name': user + ' ' + 'ECP'}],
             'CHKBAS': [{'name': 'CHKBAS'}],
             'EXTRABASIS': [{'name': 'ExtraBasis'}],
             'DGA1': [{'name': 'DGA1'}],
@@ -896,6 +897,12 @@ class GaussianParser:
             'CHF': [{'name': 'CHF'}],
             'FIT': [{'name': 'FIT'}],
             'AUTO': [{'name': 'AUTO'}],
+            'READ': [{'name': checkpoint}],
+            'READBASIS': [{'name': checkpoint}],
+            'RDBASIS': [{'name': checkpoint}],
+            'CHCKBASIS': [{'name': checkpoint}],
+            'CHECKBASIS': [{'name': checkpoint}],
+            'CHECKPOINTBASIS': [{'name': checkpoint}],
         }
 
         self._xc_functional_pattern = re.compile(
@@ -1307,13 +1314,13 @@ class GaussianParser:
                     name = res[2]
             return prefix, name
 
-        def resolve_basis_set(parameter: str) -> Optional[tuple[str, str]]:
+        def resolve_basis_set(parameter: str) -> tuple[str, str]:
             """This function has 2 responsibilities:
             1. discern `parameter` from other input settings.
             2. verify that `parameter` is a valid basis set name."""
-            basis_set = self._basis_set_map.get(parameter, None)
+            basis_set = self._basis_set_map.get(parameter.upper(), None)
             if basis_set is not None:
-                return (parameter, parameter)
+                return (parameter, basis_set[0]['name'])
 
             # handle modular extensions
             res = self._basis_set_pattern.match(parameter)
@@ -1324,9 +1331,10 @@ class GaussianParser:
                         'Cannot resolve basis set', data=dict(key=parameter)
                     )
                 return (basis_keys[0], parameter)
+                # TODO: make this piggy-bank off basis_set_map
 
             # in case the setting was not recognized
-            return None
+            return ('', '')
 
         def resolve_xc_functional(parameter):
             xc_functional = self._xc_functional_map.get(parameter, None)
@@ -1383,7 +1391,7 @@ class GaussianParser:
             basis_set_parameter = parameter[0] if not parameter[1:] else parameter[1]
             # ! invert logic
             basis_set = resolve_basis_set(basis_set_parameter.strip())
-            if basis_set:
+            if basis_set[1]:  # only index 1 is later on used
                 basis_sets.add(basis_set)
         if len(basis_sets) == 0:
             basis_sets.add(resolve_basis_set('STO-3G'))
