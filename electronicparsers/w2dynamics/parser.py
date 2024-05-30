@@ -43,7 +43,7 @@ from .metainfo.w2dynamics import (
     x_w2dynamics_config_parameters,
     x_w2dynamics_config_atoms_parameters,
 )
-from ..wannier90.parser import WOutParser, HrParser
+from .patch_wannier90 import WOutParser, HrParser
 
 # For automatic workflows
 from ..utils import get_files, BeyondDFTWorkflowsParser
