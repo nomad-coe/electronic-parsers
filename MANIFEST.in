@@ -2,3 +2,5 @@
 include LICENSE
 # Include the separate requirements file
 include requirements.txt
+# include all plugin yaml files
+recursive-include * nomad_plugin.yaml
