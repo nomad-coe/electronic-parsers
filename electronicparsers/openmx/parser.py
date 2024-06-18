@@ -24,7 +24,7 @@ import numpy as np
 from datetime import datetime
 import re
 import io
-from os import path
+from os import path, listdir
 
 from nomad.datamodel import EntryArchive
 from nomad.units import ureg as units
@@ -37,6 +37,8 @@ from runschema.calculation import (
     BandEnergies,
     Forces,
     ForcesEntry,
+    Stress,
+    StressEntry,
 )
 from runschema.system import AtomsGroup, System, Atoms
 from runschema.method import (
@@ -69,6 +71,20 @@ This is parser for OpenMX DFT code.
 """
 
 # A = (1 * units.angstrom).to_base_units().magnitude
+
+
+def find_stdout(mainfile):
+    mainfile_dir = path.dirname(mainfile)
+    for file in listdir(mainfile_dir):
+        stdout_path = path.join(mainfile_dir, file)
+        if path.isfile(stdout_path):
+            with open(stdout_path) as input_file:
+                for index, line in enumerate(input_file):
+                    if r'Welcome to OpenMX' in line:
+                        return stdout_path
+                    if index == 500:
+                        break
+    return None
 
 
 def _j_mapping() -> dict[tuple[int, int], tuple[float, float]]:
@@ -213,6 +229,7 @@ mainfile_parser = TextParser(
         Quantity(
             'scf.SpinPolarization', r'scf.SpinPolarization\s+(\S+)', repeats=False
         ),
+        Quantity('scf.stress.tensor', r'scf.stress.tensor\s+(.*)', repeats=False),
         Quantity(
             'Atoms.SpeciesAndCoordinates.Unit',
             r'(?i)Atoms.SpeciesAndCoordinates.Unit\s+([a-z]{2,4})',
@@ -252,6 +269,29 @@ mainfile_parser = TextParser(
             r'Eigenvalues \(Hartree\) \S+ SCF KS-eq\.\s+\*{59}\s*\*{59}([^*]+)',
             sub_parser=eigenvalues_parser,
             repeats=False,
+        ),
+        Quantity(
+            'elapsed.time',
+            r'Total Computational Time.*[0-9.]+\s+[0-9.]+\s+[0-9.]+\s+([0-9.]+)',
+        ),
+    ]
+)
+
+stdout_parser = TextParser(
+    quantities=[
+        Quantity(
+            'scf.stress.tensor',
+            r'Stress tensor \(Hartree/bohr\^3\)\s+\*{55}([^*]+)',
+            repeats=True,
+        ),
+        Quantity(
+            'Uele',
+            r'\*{19} MD=\s*\d+\s+SCF=\s*1\s+\*{19}(?:.|\n)*?Uele\s+=\s+(-?\d+\.\d+)',
+            repeats=True,
+        ),
+        Quantity(
+            'elapsed.time',
+            r'Total Computational Time.*[0-9.]+\s+[0-9.]+\s+[0-9.]+\s+([0-9.]+)',
         ),
     ]
 )
@@ -713,6 +753,8 @@ class OpenmxParser:
         # Use the previously defined parsers on the given mainfile
         mainfile_parser.mainfile = mainfile
         mainfile_parser.parse()
+        elapsed_time_mainfile = mainfile_parser.get('elapsed.time')
+
         del mainfile_parser._file_handler
 
         # Get system from the MD file
@@ -767,6 +809,35 @@ class OpenmxParser:
             ignore_md_file = True
             self.logger.warning('.md file does not contain enough MD steps')
 
+        # Stress tensor values are not written to outfile but only to stdout.
+        # That means we have to check if the stdout is actually present and
+        # look for the stress values there.
+        stress_tensor_enabled = mainfile_parser.get('scf.stress.tensor')
+        stdout_uele_list = []
+        stress_tensors = None
+        if stress_tensor_enabled == 'on':
+            # find_stdout returns path to correct stdout if it exists
+            # or None otherwise
+            stdout_path = find_stdout(mainfile)
+
+            if mainfile_md_steps is not None and stdout_path is not None:
+                mainfile_uele = mainfile_md_steps[0].get('SCF')[0].get('Uele')
+                stdout_parser.mainfile = stdout_path
+                stdout_parser.parse()
+                stdout_uele_list = stdout_parser.get('Uele')
+                stdout_uele = stdout_uele_list[0]
+                elapsed_time_stdout = stdout_parser.get('elapsed.time')
+
+                # It is possible there are multiple calculation in the same directory
+                # and thus multiple stdout files as well. We need to find the correct
+                # stdout to look for the stress values. A simple test is to check the
+                # total runtime and later also the uele consistency.
+                if (
+                    elapsed_time_mainfile == elapsed_time_stdout
+                    and abs(stdout_uele - mainfile_uele) < 1e-8
+                ):
+                    stress_tensors = stdout_parser.get('scf.stress.tensor')
+
         if mainfile_md_steps is not None:
             for i, md_step in enumerate(mainfile_md_steps):
                 system = System()
@@ -787,10 +858,19 @@ class OpenmxParser:
                         scf = ScfIteration()
                         sec_calc.scf_iteration.append(scf)
                         u_ele = scf_step.get('Uele')
+
                         if u_ele is not None:
                             scf.energy = Energy(
                                 sum_eigenvalues=EnergyEntry(value=u_ele * units.hartree)
                             )
+
+                if stress_tensors is not None:
+                    stress_matrix = np.array(stress_tensors[i]).reshape(3, 3)
+                    stress_matrix = stress_matrix * units.hartree / units.bohr**3
+                    sec_calc.stress = Stress()
+                    sec_calc.stress.total = StressEntry()
+                    sec_calc.stress.total.value = stress_matrix
+
                 u_tot = md_step.get('Utot')
                 if u_tot is not None:
                     sec_calc.energy = Energy(

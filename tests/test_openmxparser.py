@@ -68,6 +68,7 @@ def test_HfO2(parser):
     assert len(scc) == 1
     assert scc[0].energy.total.value.magnitude == approx(Ha_to_J(-346.328738171942))
     scf = scc[0].scf_iteration
+    assert scc[0].stress is None
     assert len(scf) == 24
     scf[3].energy.sum_eigenvalues.value.magnitude == approx(-3.916702417016777e-16)
 
@@ -315,3 +316,46 @@ def test_graphite(parser):
     assert method.electronic.van_der_waals_method == 'G10'
     assert method.scf.n_max_iteration == 100
     assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-8))
+
+    calculation_first = run.calculation[0]
+    stress_tensor_first = calculation_first.stress.total.value
+    stress_tensor_expected_first = (
+        np.array(
+            [
+                [-0.00001778, -0.00000244, -0.00000000],
+                [-0.00000244, -0.00001879, 0.00000000],
+                [-0.00000000, 0.00000000, -0.00002298],
+            ]
+        )
+        * units.hartree
+        / units.bohr**3
+    )
+    assert np.allclose(stress_tensor_first, stress_tensor_expected_first, 0.0)
+
+    calculation_last = run.calculation[-1]
+    stress_tensor_last = calculation_last.stress.total.value
+    stress_tensor_expected_last = (
+        np.array(
+            [
+                [-0.00000003, -0.00000001, 0.00000000],
+                [-0.00000001, -0.00000004, -0.00000000],
+                [0.00000000, -0.00000000, -0.00001568],
+            ]
+        )
+        * units.hartree
+        / units.bohr**3
+    )
+    assert np.allclose(stress_tensor_last, stress_tensor_expected_last, 0.0)
+
+
+def test_graphite_no_stdout(parser):
+    archive = EntryArchive()
+    parser.parse(
+        'tests/data/openmx/graphite_cell_optimization_outonly/graphite.out',
+        archive,
+        logging,
+    )
+    run = archive.run[0]
+    calculation = run.calculation[0]
+    calc_stress = calculation.stress
+    assert calc_stress is None
