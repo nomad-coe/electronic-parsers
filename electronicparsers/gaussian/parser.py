@@ -391,7 +391,7 @@ class GaussianOutParser(TextParser):
                 unit='debye * angstrom**3',
             ),
             Quantity(
-                'frequencies', r'\n *Frequencies \-\-\s*(.+)', dtype=float, repeats=True
+                'frequencies', r'\n *Frequencies \-+\s*(.+)', dtype=float, repeats=True
             ),
             Quantity(
                 'reduced_masses',
