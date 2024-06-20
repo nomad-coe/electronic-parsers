@@ -395,13 +395,13 @@ class GaussianOutParser(TextParser):
                 r'\n *Frequencies [\-]{2}\s+(.+)',
                 dtype=float,
                 repeats=True,
-            ),
+            ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
             Quantity(
                 'reduced_masses',
                 r'\n *Red\. masses [\-]{2}\s+(.+)',
                 str_operation=lambda x: [float(v) for v in x.split()],
                 repeats=True,
-            ),
+            ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
             Quantity(
                 'normal_modes',
                 r'Atom\s*AN.*\s*([\-\d\s\.]+)',
