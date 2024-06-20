@@ -100,6 +100,25 @@ class GaussianOutParser(TextParser):
             fc = fc + fc.T - np.diag(fc.diagonal())
             return fc
 
+        def str_to_units(unit: str):
+            """Map native Gaussian units to pint units.
+            Assumes lower case string input."""  # TODO handle compound units recursively
+            unit = unit.lower()
+            if unit == 'cm**-1':
+                return ureg.cm_1
+            elif unit == 'ghz':
+                return ureg.gigahertz
+            elif unit == 'kcal/mol':
+                return ureg.kilocalorie / ureg.mole
+            elif unit == 'kj/mol':
+                return ureg.kilojoule / ureg.mole
+            elif unit == 'j':
+                return ureg.joule
+            elif unit == 'amu':
+                return ureg.amu
+            else:
+                raise ValueError(f'Unknown unit {unit}')
+
         orientation_quantities = [
             Quantity(
                 'standard_orientation',
@@ -389,6 +408,16 @@ class GaussianOutParser(TextParser):
                 ),
                 dtype=float,
                 unit='debye * angstrom**3',
+            ),
+            Quantity(
+                'frequency_unit',
+                r'[Hh]armonic frequencies \((\S+)\)',
+                str_operation=str_to_units,
+            ),
+            Quantity(
+                'reduced_mass_unit',
+                r'reduced masses \((\S+)\)',
+                str_operation=str_to_units,
             ),
             Quantity(
                 'frequencies',
@@ -1109,18 +1138,19 @@ class GaussianParser:
         # vibrational frequencies
         frequencies = section.get('frequencies')
         if frequencies is not None:
-            # frequencies in old parsers are in J, not consistent with metainfo
             sec_frequencies = x_gaussian_section_frequencies()
             sec_run.x_gaussian_section_frequencies.append(sec_frequencies)
-            sec_frequencies.x_gaussian_frequencies = np.hstack(frequencies)
+
+            sec_frequencies.x_gaussian_frequencies = np.hstack(
+                frequencies
+            ) * section.get('frequency_unit', ureg.cm_1)
+
             reduced_masses = section.get('reduced_masses')
             if reduced_masses is not None:
-                reduced_masses = (
-                    np.array(np.hstack(reduced_masses), dtype=np.float64) * ureg.amu
-                )
-                sec_frequencies.x_gaussian_red_masses = reduced_masses.to(
-                    'kg'
-                ).magnitude
+                sec_frequencies.x_gaussian_red_masses = np.hstack(
+                    reduced_masses
+                ) * section.get('reduced_mass_unit', ureg.amu)
+
             normal_modes = section.get('normal_modes')
             if normal_modes is not None:
                 normal_modes = np.hstack(normal_modes)
