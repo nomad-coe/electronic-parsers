@@ -629,6 +629,22 @@ class x_gaussian_section_frequencies(MSection):
         """,
     )
 
+    x_gaussian_ir_intensities = Quantity(
+        type=np.float64,
+        shape=['number_of_frequencies'],
+        description="""
+        infra-red intensities
+        """,
+    )
+
+    x_gaussian_harmonic_force_constants = Quantity(
+        type=np.float64,
+        shape=['number_of_atoms', 'number_of_atoms', 'number_of_frequencies'],
+        description="""
+        values of harmonic force constants
+        """,
+    )
+
 
 class x_gaussian_section_thermochem(MSection):
     """
