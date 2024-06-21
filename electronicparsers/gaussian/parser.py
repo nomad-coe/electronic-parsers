@@ -100,23 +100,21 @@ class GaussianOutParser(TextParser):
             fc = fc + fc.T - np.diag(fc.diagonal())
             return fc
 
-        def str_to_units(unit: str):
+        def str_to_units(unit: str) -> ureg.Unit:
             """Map native Gaussian units to pint units.
             Assumes lower case string input."""  # TODO handle compound units recursively
+            unit_map: dict[str, ureg.Unit] = {
+                'cm**-1': ureg.cm_1,
+                'ghz': ureg.gigahertz,
+                'kcal/mol': ureg.kilocalorie / ureg.mole,
+                'kj/mol': ureg.kilojoule / ureg.mole,
+                'j': ureg.joule,
+                'amu': ureg.amu,
+            }
             unit = unit.lower()
-            if unit == 'cm**-1':
-                return ureg.cm_1
-            elif unit == 'ghz':
-                return ureg.gigahertz
-            elif unit == 'kcal/mol':
-                return ureg.kilocalorie / ureg.mole
-            elif unit == 'kj/mol':
-                return ureg.kilojoule / ureg.mole
-            elif unit == 'j':
-                return ureg.joule
-            elif unit == 'amu':
-                return ureg.amu
-            else:
+            try:
+                return unit_map[unit]
+            except KeyError:
                 raise ValueError(f'Unknown unit {unit}')
 
         orientation_quantities = [
