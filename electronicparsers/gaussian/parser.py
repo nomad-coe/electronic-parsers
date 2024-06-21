@@ -110,6 +110,8 @@ class GaussianOutParser(TextParser):
                 'kj/mol': ureg.kilojoule / ureg.mole,
                 'j': ureg.joule,
                 'amu': ureg.amu,
+                'km/mol': ureg.kilometer / ureg.mole,
+                'mDyne/A': ureg.millidyne / ureg.angstrom,
             }
             unit = unit.lower()
             try:
@@ -418,15 +420,37 @@ class GaussianOutParser(TextParser):
                 str_operation=str_to_units,
             ),
             Quantity(
+                'harmonic_force_constant_unit',
+                r'force constants \((\S+)\)',
+                str_operation=str_to_units,
+            ),
+            Quantity(
+                'ir_intensity_unit',
+                r'IR intensities \((\S+)\)',
+                str_operation=str_to_units,
+            ),
+            Quantity(
                 'frequencies',
-                r'\n *Frequencies [\-]{2}\s+(.+)',
-                dtype=float,
+                r'Frequencies\s[\-]{2}\s+(.+)',
+                dtype=np.float64,
                 repeats=True,
             ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
             Quantity(
                 'reduced_masses',
-                r'\n *Red\. masses [\-]{2}\s+(.+)',
-                str_operation=lambda x: [float(v) for v in x.split()],
+                r'Red\. masses\s[\-]{2}\s+(.+)',
+                dtype=np.float64,
+                repeats=True,
+            ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
+            Quantity(
+                'harmonic_force_constants',
+                r'Frc consts[\s]{2}[\-]{2}\s+(.+)',
+                dtype=np.float64,
+                repeats=True,
+            ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
+            Quantity(
+                'ir_intensities',
+                r'IR Inten[\s]{4}[\-]{2}\s+(.+)',
+                dtype=np.float64,
                 repeats=True,
             ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
             Quantity(
@@ -1148,6 +1172,18 @@ class GaussianParser:
                 sec_frequencies.x_gaussian_red_masses = np.hstack(
                     reduced_masses
                 ) * section.get('reduced_mass_unit', ureg.amu)
+
+            intensities = section.get('ir_intensities')
+            if intensities is not None:
+                sec_frequencies.x_gaussian_ir_intensities = np.hstack(
+                    intensities
+                ) * section.get('intensity_unit', ureg.kilometer / ureg.mole)
+
+            force_constants = section.get('harmonic_force_constants')
+            if force_constants is not None:
+                sec_frequencies.x_gaussian_harmonic_force_constants = np.hstack(
+                    force_constants
+                ) * section.get('force_constant_unit', ureg.mdyne / ureg.angstrom)
 
             normal_modes = section.get('normal_modes')
             if normal_modes is not None:

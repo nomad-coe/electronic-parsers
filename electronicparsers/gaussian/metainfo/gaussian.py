@@ -629,19 +629,21 @@ class x_gaussian_section_frequencies(MSection):
         """,
     )
 
-    x_gaussian_ir_intensities = Quantity(
+    x_gaussian_harmonic_force_constants = Quantity(
         type=np.float64,
+        unit='newton/meter',
         shape=['number_of_frequencies'],
         description="""
-        infra-red intensities
+        values of harmonic force constants
         """,
     )
 
-    x_gaussian_harmonic_force_constants = Quantity(
+    x_gaussian_ir_intensities = Quantity(
         type=np.float64,
-        shape=['number_of_atoms', 'number_of_atoms', 'number_of_frequencies'],
+        unit='meter/mol',
+        shape=['number_of_frequencies'],
         description="""
-        values of harmonic force constants
+        infra-red intensities, integrated over their path length
         """,
     )
 
