@@ -106,12 +106,12 @@ class GaussianOutParser(TextParser):
             unit_map: dict[str, ureg.Unit] = {
                 'cm**-1': ureg.cm_1,
                 'ghz': ureg.gigahertz,
-                'kcal/mol': ureg.kilocalorie / ureg.mole,
-                'kj/mol': ureg.kilojoule / ureg.mole,
+                'kcal/mole': ureg.kilocalorie / ureg.mole,
+                'kj/mole': ureg.kilojoule / ureg.mole,
                 'j': ureg.joule,
                 'amu': ureg.amu,
-                'km/mol': ureg.kilometer / ureg.mole,
-                'mDyne/A': ureg.millidyne / ureg.angstrom,
+                'km/mole': ureg.kilometer / ureg.mole,
+                'mdyne/a': ureg.millidyne / ureg.angstrom,
             }
             unit = unit.lower()
             try:
@@ -431,25 +431,25 @@ class GaussianOutParser(TextParser):
             ),
             Quantity(
                 'frequencies',
-                r'Frequencies\s[\-]{2}\s+(.+)',
+                r'Frequencies\s[\-]{2}([\s\d\.]+)\n',
                 dtype=np.float64,
                 repeats=True,
             ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
             Quantity(
                 'reduced_masses',
-                r'Red\. masses\s[\-]{2}\s+(.+)',
+                r'Red\. masses\s[\-]{2}([\s\d\.]+)\n',
                 dtype=np.float64,
                 repeats=True,
             ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
             Quantity(
                 'harmonic_force_constants',
-                r'Frc consts[\s]{2}[\-]{2}\s+(.+)',
+                r'Frc consts[\s]{2}[\-]{2}([\s\d\.]+)\n',
                 dtype=np.float64,
                 repeats=True,
             ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
             Quantity(
                 'ir_intensities',
-                r'IR Inten[\s]{4}[\-]{2}\s+(.+)',
+                r'IR Inten[\s]{4}[\-]{2}([\s\d\.]+)\n',
                 dtype=np.float64,
                 repeats=True,
             ),  # note the mandatory space after the '--'. Use nested strategy if space is optional
