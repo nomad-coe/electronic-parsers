@@ -625,7 +625,7 @@ class x_gaussian_section_frequencies(MSection):
         type=np.float64,
         shape=['number_of_frequencies', 'number_of_atoms', 3],
         description="""
-        normal mode vectors
+        normal mode vectors expressed in fractional displacements of the atoms
         """,
     )
 
