@@ -102,22 +102,16 @@ class GaussianOutParser(TextParser):
 
         def str_to_units(unit: str) -> ureg.Unit:
             """Map native Gaussian units to pint units.
-            Assumes lower case string input."""  # TODO handle compound units recursively
-            unit_map: dict[str, ureg.Unit] = {
-                'cm**-1': ureg.cm_1,
-                'ghz': ureg.gigahertz,
-                'kcal/mole': ureg.kilocalorie / ureg.mole,
-                'kj/mole': ureg.kilojoule / ureg.mole,
-                'j': ureg.joule,
-                'amu': ureg.amu,
-                'km/mole': ureg.kilometer / ureg.mole,
-                'mdyne/a': ureg.millidyne / ureg.angstrom,
-            }
-            unit = unit.lower()
-            try:
-                return unit_map[unit]
-            except KeyError:
-                raise ValueError(f'Unknown unit {unit}')
+            Assumes lower case string input."""
+            conv = (
+                (r'AMU', 'amu'),
+                (r'Dyne', 'dyne'),
+                (r'KM', 'km'),
+                (r'Mole', 'mole'),
+            )
+            for u_gauss, u_pint in conv:
+                unit = re.sub(u_gauss, u_pint, unit)
+            return ureg(unit)
 
         orientation_quantities = [
             Quantity(
