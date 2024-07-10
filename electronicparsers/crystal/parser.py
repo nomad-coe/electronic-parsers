@@ -1676,12 +1676,12 @@ def to_libxc(exchange, correlation, exchange_correlation):
     return functionals
 
 
-def to_libxc_out(xc, hybridization):
+def to_libxc_out(xc_output, hybridization):
     """Transforms the Crystal-specific XC naming in the output into a list of
     section_XC_functionals.
     """
     xc_list = []
-    exchange, correlation = xc[1:-1].split(')[')
+    exchange, correlation = xc_output[1:-1].split(')[')
 
     # Handle the exchange part
     if exchange:

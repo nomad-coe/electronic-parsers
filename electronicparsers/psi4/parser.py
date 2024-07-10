@@ -1101,7 +1101,7 @@ class Psi4Parser:
                 calc.multipoles.append(multipoles) if len(
                     calc.multipoles
                 ) <= n else calc.multipoles[n]
-                multipoles.kind = multipole_kinds[n]
+                multipoles.kind = multipole
                 parse_multipole(data, multipoles)
 
             multipole_moments = source.get('multipole_moments', {})

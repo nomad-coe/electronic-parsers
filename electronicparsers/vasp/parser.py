@@ -1223,9 +1223,9 @@ class RunContentParser(ContentParser):
                 name = name if name else base_name
                 dtype = self._dtypes.get(dtype, str)
                 value = value.split()
-                if dtype == bool:
+                if dtype is bool:
                     value = [v == 'T' for v in value]
-                if dtype == float:
+                if dtype is float:
                     # prevent nan printouts
                     value = parse_float_str_vector(value)
                 # using numpy array does not work

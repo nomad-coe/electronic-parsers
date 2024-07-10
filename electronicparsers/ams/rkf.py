@@ -501,7 +501,7 @@ class KFFile:
         valtype = type(val[0])
         t, step, f = KFFile._types[valtype]
         nl = len(val)
-        if valtype == str and isinstance(val, list):
+        if valtype is str and isinstance(val, list):
             # udmpkf reads 160 characters per variable, split over max. 80 per line, to make a string array
             nl = nl * 160
             step = 1

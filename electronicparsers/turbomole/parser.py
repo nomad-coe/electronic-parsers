@@ -236,7 +236,7 @@ class OutParser(TextParser):
                 values_str = re.findall(pattern, val_in)
                 values = []
                 for value in values_str:
-                    if dtype == float:
+                    if dtype is float:
                         values.extend(re_value.findall(value))
                     else:
                         values.extend(value.split())

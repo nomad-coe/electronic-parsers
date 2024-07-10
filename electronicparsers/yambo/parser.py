@@ -501,8 +501,10 @@ class NetCDFParser(FileParser):
             return
 
         self._keys = list(self.netcdf_file.variables.keys())
-        for key in self._keys:
-            self._results[key] = self.netcdf_file.variables[key][:].data
+        for netcdf_variable in self._keys:
+            self._results[netcdf_variable] = self.netcdf_file.variables[
+                netcdf_variable
+            ][:].data
 
 
 class InputParser(TextParser):
