@@ -37,6 +37,10 @@ def RyB_to_N(value):
     return (value * ureg.rydberg / ureg.bohr).to_base_units().magnitude
 
 
+def Ry_to_J(value):
+    return (value * ureg.rydberg).to_base_units().magnitude
+
+
 def test_scf(parser):
     archive = EntryArchive()
     parser.parse('tests/data/quantumespresso/HO_scf/benchmark2.out', archive, None)
@@ -73,6 +77,7 @@ def test_scf(parser):
     assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert sec_method.electronic.n_electrons == 8
     assert sec_method.electronic.n_spin_channels == 1
+    assert sec_method.scf.threshold_energy_change.magnitude == approx(Ry_to_J(1e-6))
     sec_atoms = sec_method.atom_parameters
     assert len(sec_atoms) == 2
     assert sec_atoms[1].label == 'H'
@@ -157,6 +162,7 @@ def test_multirun(parser):
     assert sec_runs[2].calculation[0].scf_iteration[
         11
     ].time_physical.magnitude == approx(1189.6)
+    assert sec_method.scf.threshold_energy_change.magnitude == approx(Ry_to_J(1e-5))
 
 
 def test_md(parser):
@@ -168,6 +174,7 @@ def test_md(parser):
     sec_method = sec_run.method[0]
     assert len(sec_method.k_mesh.points) == 1
     assert sec_method.electronic.n_spin_channels == 1
+    assert sec_method.scf.threshold_energy_change.magnitude == approx(Ry_to_J(1e-8))
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 50
     assert archive.run[0].system[6].atoms.positions[1][2].magnitude == approx(
@@ -217,6 +224,7 @@ def test_vcrelax(parser):
     assert sec_method.electronic.smearing.kind == 'tetrahedra'
     assert sec_method.electronic.smearing.width is None
     assert sec_method.electronic.n_spin_channels == 1
+    assert sec_method.scf.threshold_energy_change.magnitude == approx(Ry_to_J(1e-8))
 
 
 def test_noncolmag(parser):
@@ -243,3 +251,4 @@ def test_noncolmag(parser):
         == (0.01 * ureg.rydberg).to_base_units().magnitude
     )
     assert sec_method.electronic.n_spin_channels is None
+    assert sec_method.scf.threshold_energy_change.magnitude == approx(Ry_to_J(1e-8))
