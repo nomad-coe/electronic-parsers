@@ -1994,7 +1994,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 energy_parameter=[source['trialEnergy']] * ureg.hartree
                 if 'trialEnergy' in source
                 else None,
-                update=bool(source['searchE']),
+                update=bool(source['searchE']) if 'searchE' in source else None,
             )
 
         type_order_mapping = {'   ': 0, 'apw': 1, 'lap': 2}
