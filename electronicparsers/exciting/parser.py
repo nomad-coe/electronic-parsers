@@ -1991,7 +1991,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 l_quantum_number=l_quantum_number,
                 type=type,
                 order=order,
-                energy_parameter=[source['trialEnergy']] * ureg.hartree,
+                energy_parameter=[source['trialEnergy']] * ureg.hartree
+                if 'trialEnergy' in source
+                else None,
                 update=bool(source['searchE']),
             )
 
