@@ -1994,8 +1994,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 energy_parameter=[source['trialEnergy']] * ureg.hartree
                 if 'trialEnergy' in source
                 else None,
+                energy_parameter_n=[source['n']] if 'n' in source else None,
                 update=bool(source['searchE']) if 'searchE' in source else None,
-            )
+            )  # TODO: verify with Hanna what happend is trialEnergy and n can coexist
 
         type_order_mapping = {'   ': 0, 'apw': 1, 'lap': 2}
         self.species_parser.parse()
@@ -2779,7 +2780,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             )
 
         # Atom parameters
-        species_files = self.file_exists(r'[A-Z][a-z]?\.xml', fuzzy=True)
+        species_files = self.file_exists(
+            r'[A-Z][a-z]?\.xml', fuzzy=True
+        )  # try species_scf.xml is present?
         for species_file in species_files:
             self.parse_file(species_file, sec_method)
 
