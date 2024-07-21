@@ -1904,7 +1904,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             md_info = section.get('md_calculation_info', {})
             sec_scc.x_fhi_aims_calculation_md = {
                 key: str(val.magnitude) + ' ' + str(val.units)
-                if type(val) == ureg.Quantity
+                if type(val) is ureg.Quantity
                 else str(val)
                 for key, val in md_info.items()
             }
