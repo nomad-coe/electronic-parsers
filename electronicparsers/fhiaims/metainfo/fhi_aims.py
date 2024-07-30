@@ -1076,24 +1076,6 @@ class Method(runschema.method.Method):
         categories=[x_fhi_aims_controlIn_method],
     )
 
-    x_fhi_aims_controlIn_occupation_type = Quantity(
-        type=str,
-        shape=[],
-        description="""
-        -
-        """,
-        categories=[x_fhi_aims_controlIn_method],
-    )
-
-    x_fhi_aims_controlIn_occupation_width = Quantity(
-        type=np.float64,
-        shape=[],
-        description="""
-        -
-        """,
-        categories=[x_fhi_aims_controlIn_method],
-    )
-
     x_fhi_aims_controlIn_override_relativity = Quantity(
         type=str,
         shape=[],

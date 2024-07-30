@@ -44,6 +44,7 @@ from runschema.method import (
     FrequencyMesh,
     BasisSetContainer,
     Scf,
+    Smearing,
 )
 from runschema.system import System, Atoms
 from runschema.calculation import (
@@ -2201,10 +2202,24 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                         'Error setting controlIn metainfo.', data=dict(key=key)
                     )
             elif key == 'occupation_type':
-                sec_method.x_fhi_aims_controlIn_occupation_type = val[0]
-                sec_method.x_fhi_aims_controlIn_occupation_width = val[1]
-                if len(val) > 2:
-                    sec_method.x_fhi_aims_controlIn_occupation_order = int(val[2])
+                try:
+                    if val is not None and len(val) >= 2:
+                        # integer and cubic smearing don't match well the upstream metainfo definitions
+                        occupation_types_dict = {
+                            'gaussian': 'gaussian',
+                            'methfessel-paxton': 'methfessel-paxton',
+                            'fermi': 'fermi',
+                            'integer': None,
+                            'cubic': None,
+                            'cold': 'marzari-vanderbilt',
+                        }
+                        kind = occupation_types_dict.get(val[0])
+                        width = (float(val[1]) * ureg.eV).to_base_units().magnitude
+                        sec_electronic.smearing = Smearing(kind=kind, width=width)
+                    if len(val) > 2:
+                        sec_method.x_fhi_aims_controlIn_occupation_order = int(val[2])
+                except Exception as e:
+                    logger.warning(f"Failed to parse smearing info from val={val}: {e}")
             elif key == 'relativistic':
                 if isinstance(val, str):
                     val = [val]
