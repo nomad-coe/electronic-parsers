@@ -79,6 +79,11 @@ def test_HfO2(parser):
     assert method.electronic.smearing.width == approx(K_to_J(300))
     assert method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
     assert method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
+    assert (method.k_mesh.grid == [10, 10, 10]).all()
+    assert np.allclose(method.k_mesh.points[0], np.array([-0.45000, -0.45000, -0.45000]).astype(complex), rtol=0.0)
+    assert np.allclose(method.k_mesh.points[499], np.array([-0.05000, 0.45000, 0.45000]).astype(complex), rtol=0.0)
+    assert method.k_mesh.multiplicities[0] == approx(2.0)
+    assert method.k_mesh.multiplicities[0] == approx(2.0)
 
     system = run.system[0]
     assert system.atoms.periodic == [True, True, True]
@@ -89,6 +94,9 @@ def test_HfO2(parser):
     assert system.atoms.positions[11][2].magnitude == approx(A_to_m(2.6762159))
     assert len(system.atoms.labels) == 12
     assert system.atoms.labels[9] == 'O'
+
+    scc = run.calculation
+    assert scc[-1].eigenvalues[0].kpoints_multiplicities[0] == approx(2.0)
 
 
 def test_AlN(parser):
@@ -121,6 +129,9 @@ def test_AlN(parser):
     scf = scc[3].scf_iteration
     assert len(scf) == 6
     scf[5].energy.sum_eigenvalues.value.magnitude == approx(-3.4038520917173614e-17)
+    assert len(scc[-1].eigenvalues[0].kpoints_multiplicities) == 74
+    assert scc[-1].eigenvalues[0].kpoints_multiplicities[-1] == approx(1.0)
+    assert scc[-1].eigenvalues[0].kpoints_multiplicities[0] == approx(2.0)
 
     method = run.method[0]
     assert method.electronic.n_spin_channels == 1
@@ -131,6 +142,11 @@ def test_AlN(parser):
     assert method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert method.scf.n_max_iteration == 100
     assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-7))
+    assert (method.k_mesh.grid == [7, 7, 3]).all()
+    assert np.allclose(method.k_mesh.points[0], np.array([ -0.42857, -0.42857, -0.33333]).astype(complex), rtol=0.0)
+    assert np.allclose(method.k_mesh.points[73], np.array([0.00000, -0.00000, 0.00000]).astype(complex), rtol=0.0)
+    assert np.allclose(method.k_mesh.multiplicities[0], np.array([2, 2, 2]).astype(complex), rtol=0.0)
+    assert method.k_mesh.multiplicities[73] == [1]
 
     workflow = archive.workflow2
     assert workflow.method.method == 'steepest_descent'
@@ -209,6 +225,7 @@ def test_C2H2(parser):
     assert np.shape(scc[0].forces.total.value) == (4, 3)
     assert scc[0].forces.total.value[0][0].magnitude == approx(HaB_to_N(0.10002))
     assert scc[99].forces.total.value[2][2].magnitude == approx(HaB_to_N(-0.00989))
+    assert scc[-1].eigenvalues[0].kpoints_multiplicities == approx(1.0)
 
     assert len(run.system) == 100
 
@@ -218,6 +235,8 @@ def test_C2H2(parser):
     assert method.electronic.smearing.width == approx(K_to_J(500))
     assert method.dft.xc_functional.exchange[0].name == 'LDA_X'
     assert method.dft.xc_functional.correlation[0].name == 'LDA_C_PZ'
+    assert (method.k_mesh.grid == [1, 1, 1]).all()
+    assert method.k_mesh.multiplicities[0] == approx(1.0)
 
     workflow = archive.workflow2
     assert workflow.method.thermodynamic_ensemble == 'NVT'
@@ -284,6 +303,7 @@ def test_CrO2(parser):
     assert method.dft.xc_functional.correlation[0].name == 'LDA_C_PW'
     assert method.scf.n_max_iteration == 40
     assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-7))
+    assert (method.k_mesh.grid == [5, 5, 8]).all()
 
     eigenvalues = run.calculation[-1].eigenvalues[0]
     assert eigenvalues.n_kpoints == 100
@@ -316,6 +336,7 @@ def test_graphite(parser):
     assert method.electronic.van_der_waals_method == 'G10'
     assert method.scf.n_max_iteration == 100
     assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-8))
+    assert (method.k_mesh.grid == [12, 12, 4]).all()
 
     calculation_first = run.calculation[0]
     stress_tensor_first = calculation_first.stress.total.value
