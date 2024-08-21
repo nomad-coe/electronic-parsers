@@ -63,6 +63,7 @@ def test_scf_spinpol(parser):
     assert sec_method.electronic.n_spin_channels == 2
     assert sec_method.electronic.relativity_method == 'scalar_relativistic_atomic_ZORA'
     assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PW'
+    assert sec_method.scf.threshold_energy_change.magnitude == approx(1.602176634e-24)
     sec_basis_func = sec_method.x_fhi_aims_section_controlIn_basis_set[
         0
     ].x_fhi_aims_section_controlIn_basis_func
@@ -104,6 +105,7 @@ def test_geomopt(parser):
     sec_methods = archive.run[0].method
     assert len(sec_methods) == 1
     assert list(sec_methods[0].k_mesh.grid) == [8] * 3
+    assert sec_methods[0].scf.threshold_energy_change.magnitude == approx(1.602176634e-25)
 
     sec_sccs = archive.run[0].calculation
     assert len(sec_sccs) == 6
@@ -218,6 +220,7 @@ def test_dos(parser):
 
     sec_method = archive.run[0].method[0]
     assert list(sec_method.k_mesh.grid) == [10] * 3
+    assert sec_method.scf.threshold_energy_change.magnitude == approx(1.602176634e-25)
 
     sec_scc = archive.run[0].calculation[0]
     sec_dos = sec_scc.dos_electronic

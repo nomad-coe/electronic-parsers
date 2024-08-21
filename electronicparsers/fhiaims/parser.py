@@ -43,6 +43,7 @@ from runschema.method import (
     KMesh,
     FrequencyMesh,
     BasisSetContainer,
+    Scf,
 )
 from runschema.system import System, Atoms
 from runschema.calculation import (
@@ -84,7 +85,7 @@ from .metainfo.fhi_aims import (
 from ..utils import BeyondDFTWorkflowsParser
 
 
-re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
+re_float = r'[-+]?\d+\.?\d*(?:[Ee][-+]\d+)?'
 re_n = r'[\n\r]'
 
 
@@ -177,9 +178,10 @@ class FHIAimsControlParser(TextParser):
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_fhi_aims_controlIn_sc_accuracy_etot,
+                'threshold_energy_change',
                 rf'{re_n} *sc_accuracy_etot\s*({re_float})',
                 repeats=False,
+                unit='eV',
             ),
             Quantity(
                 xsection_method.x_fhi_aims_controlIn_sc_accuracy_forces,
@@ -2227,6 +2229,10 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                 if hybrid_coeff is not None:
                     # is it necessary to check if xc is a hybrid type aside from hybrid_coeff
                     sec_method.x_fhi_aims_controlIn_hybrid_xc_coeff = hybrid_coeff
+            elif key == 'threshold_energy_change':
+                sec_scf = Scf()
+                sec_method.scf = sec_scf
+                sec_scf.threshold_energy_change = val
 
         inout_exclude = [
             'x_fhi_aims_controlInOut_relativistic',

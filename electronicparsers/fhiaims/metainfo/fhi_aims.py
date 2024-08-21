@@ -1127,15 +1127,6 @@ class Method(runschema.method.Method):
         categories=[x_fhi_aims_controlIn_method],
     )
 
-    x_fhi_aims_controlIn_sc_accuracy_etot = Quantity(
-        type=np.float64,
-        shape=[],
-        description="""
-        -
-        """,
-        categories=[x_fhi_aims_controlIn_method],
-    )
-
     x_fhi_aims_controlIn_sc_accuracy_forces = Quantity(
         type=np.float64,
         shape=[],
