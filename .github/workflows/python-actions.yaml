@@ -16,7 +16,7 @@ jobs:
         pip install coverage coveralls
         pip install types-PyYAML
         # we need the latest nomad version for testing
-        pip install nomad-lab[infrastructure]@git+https://github.com/nomad-coe/nomad.git@develop
+        # pip install nomad-lab[infrastructure]@git+https://github.com/nomad-coe/nomad.git@develop
     - name: mypy
       run: |
         python -m mypy --ignore-missing-imports --follow-imports=silent --no-strict-optional *parsers tests
