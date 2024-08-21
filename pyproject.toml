@@ -78,12 +78,53 @@ line-ending = "auto"
 [tool.setuptools.packages.find]
 include = ["electronicparsers*"]
 
-[tool.setuptools.package-data]
-electronicparsers = ['*/metadata.yaml', '*/README.md']
-
 [tool.mypy]
 strict = false
 ignore_missing_imports = true
 follow_imports = "silent"
 no_strict_optional = true
 disable_error_code = "import, annotation-unchecked"
+
+[project.entry-points.'nomad.plugin']
+abacusparser = "electronicparsers:abacus_parser_entry_point"
+abinitparser = "electronicparsers:abinit_parser_entry_point"
+amsparser = "electronicparsers:ams_parser_entry_point"
+atkparser = "electronicparsers:atk_parser_entry_point"
+bigdftparser = "electronicparsers:bigdft_parser_entry_point"
+castepparser = "electronicparsers:castep_parser_entry_point"
+charmmparser = "electronicparsers:charmm_parser_entry_point"
+cp2kparser = "electronicparsers:cp2k_parser_entry_point"
+cpmdparser = "electronicparsers:cpmd_parser_entry_point"
+crystalparser = "electronicparsers:crystal_parser_entry_point"
+dmol3parser = "electronicparsers:dmol3_parser_entry_point"
+edmftparser = "electronicparsers:edmft_parser_entry_point"
+elkparser = "electronicparsers:elk_parser_entry_point"
+excitingparser = "electronicparsers:exciting_parser_entry_point"
+fhiaimsparser = "electronicparsers:fhiaims_parser_entry_point"
+fleurparser = "electronicparsers:fleur_parser_entry_point"
+fploparser = "electronicparsers:fplo_parser_entry_point"
+gamessparser = "electronicparsers:gamess_parser_entry_point"
+gaussianparser = "electronicparsers:gaussian_parser_entry_point"
+gpawparser = "electronicparsers:gpaw_parser_entry_point"
+magresparser = "electronicparsers:magres_parser_entry_point"
+molcasparser = "electronicparsers:molcas_parser_entry_point"
+mopacparser = "electronicparsers:mopac_parser_entry_point"
+nwchemparser = "electronicparsers:nwchem_parser_entry_point"
+oceanparser = "electronicparsers:ocean_parser_entry_point"
+octopusparser = "electronicparsers:octopus_parser_entry_point"
+onetepparser = "electronicparsers:onetep_parser_entry_point"
+openmxparser = "electronicparsers:openmx_parser_entry_point"
+orcaparser = "electronicparsers:orca_parser_entry_point"
+psi4parser = "electronicparsers:psi4_parser_entry_point"
+qballparser = "electronicparsers:qball_parser_entry_point"
+qboxparser = "electronicparsers:qbox_parser_entry_point"
+quantumespressoparser = "electronicparsers:quantumespresso_parser_entry_point"
+siestaparser = "electronicparsers:siesta_parser_entry_point"
+soliddmftparser = "electronicparsers:soliddmft_parser_entry_point"
+tbstudioparser = "electronicparsers:tbstudio_parser_entry_point"
+turbomoleparser = "electronicparsers:turbomole_parser_entry_point"
+vaspparser = "electronicparsers:vasp_parser_entry_point"
+w2dynamicsparser = "electronicparsers:w2dynamics_parser_entry_point"
+wannier90parser = "electronicparsers:wannier90_parser_entry_point"
+wien2kparser = "electronicparsers:wien2k_parser_entry_point"
+yamboparser = "electronicparsers:yambo_parser_entry_point"
