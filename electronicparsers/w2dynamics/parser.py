@@ -45,9 +45,7 @@ from .metainfo.w2dynamics import (
 )
 from ..wannier90.parser import WOutParser, HrParser
 
-# For automatic workflows
 from ..utils import get_files, BeyondDFTWorkflowsParser
-from nomad.search import search
 from nomad.app.v1.models import MetadataRequired
 
 
@@ -638,6 +636,9 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             wannier90_path = wannier90_files[-1].split('raw/')[-1]
             filepath_stripped = self.filepath.split('raw/')[-1]
             try:
+                # For automatic workflows
+                from nomad.search import search
+
                 upload_id = self.archive.metadata.upload_id
                 search_ids = search(
                     owner='visible',
