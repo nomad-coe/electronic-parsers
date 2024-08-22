@@ -37,6 +37,7 @@ dev = [
 infrastructure = [
     "mongoengine>=0.20",
     "pyjwt[crypto]==2.6.0",
+    "structlog",
 ]
 
 [tool.ruff]
