@@ -38,6 +38,7 @@ infrastructure = [
     "mongoengine>=0.20",
     "pyjwt[crypto]==2.6.0",
     "structlog",
+    "python-logstash==0.4.6",
 ]
 
 [tool.ruff]
