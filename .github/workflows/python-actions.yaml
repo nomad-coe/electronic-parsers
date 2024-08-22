@@ -12,7 +12,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install '.[dev,nomad_infrastructure]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
+        pip install '.[dev,infrastructure]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
         pip install coverage coveralls
         pip install types-PyYAML
         # we need the latest nomad version for testing

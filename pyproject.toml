@@ -34,7 +34,7 @@ dev = [
     'ruff==0.1.8'
 ]
 # these are extra deps for nomad infra as a result of using nomad.search
-nomad_infrastructure = [
+infrastructure = [
     "mongoengine>=0.20'",
 ]
 
