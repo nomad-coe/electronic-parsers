@@ -46,7 +46,6 @@ from .metainfo.w2dynamics import (
 from ..wannier90.parser import WOutParser, HrParser
 
 from ..utils import get_files, BeyondDFTWorkflowsParser
-from nomad.app.v1.models import MetadataRequired
 
 
 re_n = r'[\n\r]'
@@ -638,6 +637,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             try:
                 # For automatic workflows
                 from nomad.search import search
+                from nomad.app.v1.models import MetadataRequired
 
                 upload_id = self.archive.metadata.upload_id
                 search_ids = search(
