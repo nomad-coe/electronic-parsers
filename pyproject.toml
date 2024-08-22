@@ -35,7 +35,7 @@ dev = [
 ]
 # these are extra deps for nomad infra as a result of using nomad.search
 infrastructure = [
-    "mongoengine>=0.20'",
+    "mongoengine>=0.20",
 ]
 
 [tool.ruff]
