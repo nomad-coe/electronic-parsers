@@ -24,7 +24,7 @@ import numpy as np
 from collections import namedtuple
 from datetime import datetime
 
-from .metainfo import m_env
+from .metainfo import abacus
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from runschema.run import Run, Program, TimeRun
@@ -1286,7 +1286,6 @@ class ABACUSParser:
         # super().__init__(name='parsers/abacus', code_name='ABACUS',
         #                  code_homepage='http://abacus.ustc.edu.cn/',
         #                  mainfile_contents_re=(r'\s*\n\s*WELCOME TO ABACUS'))
-        self._metainfo_env = m_env
         self.out_parser = ABACUSOutParser()
         self.input_parser = ABACUSInputParser()
         self.tdos_parser = DataTextParser()
