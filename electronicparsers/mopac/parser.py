@@ -39,7 +39,7 @@ from runschema.calculation import (
     Charges,
     ChargesValue,
 )
-from .metainfo import m_env  # pylint: disable=unused-import
+from .metainfo import mopac  # pylint: disable=unused-import
 
 
 re_f = r'[-+]?\d*\.\d*(?:[Ee][-+]\d+)?'

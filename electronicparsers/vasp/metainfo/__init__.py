@@ -16,13 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from nomad.metainfo import Environment
-
 from . import vasp, vasp_incars, vasp_incarsOut, vasp_incarsUnknown
-
-
-m_env = Environment()
-m_env.m_add_sub_section(Environment.packages, vasp.m_package)
-m_env.m_add_sub_section(Environment.packages, vasp_incars.m_package)
-m_env.m_add_sub_section(Environment.packages, vasp_incarsOut.m_package)
-m_env.m_add_sub_section(Environment.packages, vasp_incarsUnknown.m_package)

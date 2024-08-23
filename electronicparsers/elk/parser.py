@@ -44,7 +44,7 @@ from runschema.calculation import (
     Dos,
     DosValues,
 )
-from .metainfo import m_env  # pylint: disable=unused-import
+from .metainfo import elk  # pylint: disable=unused-import
 
 
 re_f = r'[-+]?\d*\.\d*(?:[Ee][-+]\d+)?'

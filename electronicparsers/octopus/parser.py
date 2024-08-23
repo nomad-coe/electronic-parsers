@@ -5,7 +5,7 @@ import re
 from ase.io import read
 from ase import units as ase_units
 
-from .metainfo import m_env
+from .metainfo import octopus  # noqa
 from nomad.units import ureg
 from nomad.utils import get_logger
 from nomad.parsing.file_parser import TextParser, Quantity

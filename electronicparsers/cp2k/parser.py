@@ -26,8 +26,9 @@ from ase import io as aseio
 from scipy.stats import norm
 import MDAnalysis
 
-from .metainfo import m_env
 from nomad.units import ureg
+from nomad.metainfo import Definition
+from .metainfo import cp2k, cp2k_general
 from nomad.parsing.file_parser import TextParser, Quantity, FileParser, DataTextParser
 from runschema.run import Run, Program
 from runschema.method import (
@@ -1509,10 +1510,13 @@ class CP2KParser:
         if input_filename is None and project_name is None:
             return
 
-        definitions = dict(m_env.all_definitions_by_name)
-
-        def resolve_definition(name):
-            return definitions.get(name, [None])[0]
+        # TODO is there a convenience function similar to Environment.all_defintions_by_name?
+        definitions = {}
+        for package in [cp2k.m_package, cp2k_general.m_package]:
+            for content in package.m_all_contents():
+                if isinstance(content, Definition):
+                    values = definitions.setdefault(content.name, [])
+                    values.append(content)
 
         def override_keyword(name):
             # override keys to be compatible with metainfo name
@@ -1525,7 +1529,7 @@ class CP2KParser:
 
         def parse(name, data, section):
             if isinstance(data, InpValue):
-                sec_def = resolve_definition(name)
+                sec_def = definitions.get(name, [None])[0]
                 if sec_def is not None:
                     sub_section = sec_def.section_cls()
                     sub_section_def = section.m_def.all_sub_sections_by_section.get(
@@ -1543,7 +1547,7 @@ class CP2KParser:
             else:
                 name = name.replace('_section', '')
                 name = override_keyword(name)
-                quantity_def = resolve_definition(name)
+                quantity_def = definitions.get(name, [None])[0]
                 if quantity_def is not None:
                     section.m_set(
                         section.m_get_quantity_definition(name),

@@ -3,8 +3,6 @@ import numpy as np
 import logging
 import ase
 
-from .metainfo import m_env
-
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity
 from runschema.run import Run, Program
@@ -657,7 +655,6 @@ class GaussianOutParser(TextParser):
 
 class GaussianParser:
     def __init__(self):
-        self._metainfo_env = m_env
         self.out_parser = GaussianOutParser()
 
         self._xc_functional_map = {

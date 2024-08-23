@@ -55,7 +55,7 @@ from simulationworkflowschema import (
     GeometryOptimizationMethod,
 )
 from .metainfo.psi4 import x_psi4_root_information
-from .metainfo import m_env
+from .metainfo import psi4  # noqa
 
 
 class OutParser(TextParser):
@@ -914,7 +914,6 @@ class OutParser(TextParser):
 
 class Psi4Parser:
     def __init__(self):
-        self.m_env = m_env
         self.out_parser = OutParser()
         self._xc_map = {
             'HF': 'LDA_X',

@@ -62,7 +62,7 @@ from simulationworkflowschema import (
     GeometryOptimizationMethod,
     MolecularDynamics,
 )
-from .metainfo import m_env  # pylint: disable=unused-import
+from .metainfo import ams as ams_metainfo  # pylint: disable=unused-import
 from electronicparsers.utils import get_files
 from .rkf import rkf_to_dict
 

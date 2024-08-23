@@ -86,7 +86,7 @@ from simulationworkflowschema import (
     GeometryOptimizationMethod,
     MolecularDynamics,
 )
-from .metainfo import m_env  # pylint: disable=unused-import
+from .metainfo import vasp  # pylint: disable=unused-import
 
 
 re_n = r'[\n\r]'
