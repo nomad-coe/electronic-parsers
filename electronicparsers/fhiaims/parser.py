@@ -471,9 +471,8 @@ class FHIAimsOutParser(TextParser):
             return data
 
         def str_to_frequency(val_in):
-            val = [v.split() for v in val_in.split('\n')]
-            val = np.transpose(np.array([v for v in val if len(v) == 2], float))
-            return [int(val[0]), val[1]]
+            val = val_in.strip().split()
+            return [int(val[0]), float(val[1])]
 
         def str_to_gw_eigs(val_in):
             val = [v.split() for v in val_in.splitlines()]
@@ -1421,11 +1420,13 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             self.out_parser.get('anacon_type', 1)
         ]
         # FrequencyMesh
-        frequency_data = self.out_parser.get('frequency_data', [])
-        if len(frequency_data) > 0:
-            freq_points = np.array(frequency_data)[:, 1] * ureg.hartree
-        else:
-            freq_points = None
+        frequency_data = self.out_parser.get('frequency_data')
+        freq_points = None
+        if frequency_data:
+            try:
+                freq_points = np.array(frequency_data)[:, 1] * ureg.hartree
+            except Exception:
+                pass
         freq_grid_type = self.out_parser.get('freq_grid_type', 'Gauss-Legendre')
         if isinstance(freq_grid_type, list):
             freq_grid_type = freq_grid_type[-1]
@@ -1437,7 +1438,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             n_points=self.out_parser.get('n_freq', 100),
             points=np.reshape(freq_points, (len(freq_points), 1))
             if freq_points is not None
-            else freq_points,
+            else None,
         )
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
 

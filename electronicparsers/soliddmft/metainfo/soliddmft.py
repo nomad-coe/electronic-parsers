@@ -166,6 +166,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_G0_freq = Quantity(
         type=HDF5Reference,
+        shape=['*'],
         description="""
         Imaginary or real frequency Weiss field.
             dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
@@ -174,6 +175,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_Gimp_freq = Quantity(
         type=HDF5Reference,
+        shape=['*'],
         description="""
         Imaginary or real frequency impurity green function.
             dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
@@ -182,6 +184,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_Gimp_time = Quantity(
         type=HDF5Reference,
+        shape=['*'],
         description="""
         Imaginary time representation of the impurity green function.
             dim n_inequiv_shells x corr_shells.dim x n_tau x 2 (real+imag)
@@ -190,6 +193,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_Sigma_freq = Quantity(
         type=HDF5Reference,
+        shape=['*'],
         description="""
         Imaginary frequency self-energy obtained from the Dyson equation.
             dim n_inequiv_shells x corr_shells.dim x 2*n_iw x 2 (real+imag)
@@ -198,6 +202,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_imp_gb2 = Quantity(
         type=HDF5Reference,
+        shape=['*'],
         description="""
         Site G(beta/2), proxy for total density of states at the Fermi level. Low values
         correlate with the presence of a gap.
@@ -206,6 +211,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_imp_occ = Quantity(
         type=HDF5Reference,
+        shape=['*'],
         description="""
         Total mean site occupation.
         """,
@@ -213,6 +219,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_orb_Z = Quantity(
         type=HDF5Reference,
+        shape=['*'],
         description="""
         Orbital resolved quasiparticle weight (eff_mass / renormalized_mass). As obtained
         by linearizing the self-energy around w=0:
@@ -222,6 +229,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_orb_gb2 = Quantity(
         type=HDF5Reference,
+        shape=['*'],
         description="""
         Orbital resolved G(beta/2), proxy for projected density of states at the Fermi
         level. Low value of orb_gb2 correlated with the presence of a gap.
@@ -230,6 +238,7 @@ class x_soliddmft_observables_parameters(MSection):
 
     x_soliddmft_orb_occ = Quantity(
         type=HDF5Reference,
+        shape=['*'],
         description="""
         Orbital mean site occupation.
         """,

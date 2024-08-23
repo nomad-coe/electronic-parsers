@@ -397,9 +397,11 @@ def test_gw_eigs(parser):
     assert sec_eigs_gw.value_ks_xc[-1][0][0].to('eV').magnitude == approx(-63.1682)
 
 
-def test_gw_bands(parser):
+def test_gw_bands():
     """Tests for GW calculations in a solid, Si2"""
     archive = EntryArchive()
+    parser = FHIAimsParser()
+    parser._calculation_type = 'gw'
     parser.parse('tests/data/fhiaims/Si_pbe_vs_gw_bands/aims.out', archive, None)
 
     sec_run = archive.run[-1]

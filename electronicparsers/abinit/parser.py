@@ -19,10 +19,10 @@
 import os
 import re
 import numpy as np
-import logging
 from datetime import datetime
 from ase.data import chemical_symbols
 
+from nomad.utils import get_logger
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
 from runschema.run import Run, Program, TimeRun
@@ -1753,8 +1753,9 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                         sec_epsiloninv = x_abinit_epsilon_inv_params()
                         sec_gw_abinit.x_abinit_epsilon_inv.append(sec_epsiloninv)
                         for subkeys in value.keys():
-                            val = dict(value[subkeys])
-                            setattr(sec_epsiloninv, f'x_abinit_{subkeys}', val)
+                            val = value.get('subkeys')
+                            if val:
+                                setattr(sec_epsiloninv, f'x_abinit_{subkeys}', dict(val))
                     else:
                         parse_meshes(sec_gw_abinit, keys, value)
 
@@ -1828,7 +1829,7 @@ class AbinitParser(BeyondDFTWorkflowsParser):
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
-        self.logger = logger if logger is not None else logging
+        self.logger = logger if logger is not None else get_logger(__name__)
 
         self.init_parser()
 
