@@ -335,7 +335,7 @@ crystal_parser_entry_point = EntryPoint(
 )
 
 dmol3_parser_entry_point = EntryPoint(
-    name='parsers/dmol3',
+    name='parsers/dmol',
     description='NOMAD parser for DMOL3.',
     python_package='electronicparsers.dmol3',
     mainfile_contents_re=r'Materials Studio DMol\^3',
