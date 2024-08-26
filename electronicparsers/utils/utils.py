@@ -114,6 +114,7 @@ class BeyondDFTWorkflowsParser:
         logger,
     ):
         self.archive = archive
+        self.logger = logger
         self._child_archives = _child_archives
         self._xs_spectra_types = _xs_spectra_types
 

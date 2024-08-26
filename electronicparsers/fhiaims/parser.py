@@ -1060,6 +1060,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.control_parser = FHIAimsControlParser()
         self.dos_parser = DataTextParser()
         self.bandstructure_parser = DataTextParser()
+        self.logger = get_logger(__name__)
         self._calculation_type = 'dft'
         self._child_archives = {}
 
@@ -2504,7 +2505,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.filepath = filepath
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
-        self.logger = logger if logger is not None else get_logger(__name__)
+        self.logger = logger if logger is not None else self.logger
 
         self.init_parser()
 
