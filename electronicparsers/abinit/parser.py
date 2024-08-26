@@ -1755,7 +1755,9 @@ class AbinitParser(BeyondDFTWorkflowsParser):
                         for subkeys in value.keys():
                             val = value.get('subkeys')
                             if val:
-                                setattr(sec_epsiloninv, f'x_abinit_{subkeys}', dict(val))
+                                setattr(
+                                    sec_epsiloninv, f'x_abinit_{subkeys}', dict(val)
+                                )
                     else:
                         parse_meshes(sec_gw_abinit, keys, value)
 
