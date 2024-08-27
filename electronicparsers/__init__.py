@@ -85,7 +85,7 @@ class EntryPoint(ParserEntryPoint):
             utils,
         )
 
-        return MatchingParserInterface(**self.dict())
+        return MatchingParserInterface(self.parser_class_name, **self.dict())
 
 
 abacus_parser_entry_point = EntryPoint(
