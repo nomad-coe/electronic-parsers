@@ -1283,6 +1283,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             with open(_native_tier_reference_data_filepath) as f:
                 self._native_tier_references = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
+            self._native_tier_references = {}
             self.logger.warning(
                 """Native tier references could not be loaded,
                 hence `native_tier` cannot be assigned."""
