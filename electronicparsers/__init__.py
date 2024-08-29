@@ -45,6 +45,7 @@ class EntryPoint(ParserEntryPoint):
 
 abacus_parser_entry_point = EntryPoint(
     name='parsers/abacus',
+    aliases=['parsers/abacus'],
     description='NOMAD parser for ABACUS.',
     mainfile_contents_re=r'\s*\n\s*WELCOME TO ABACUS',
     python_package='electronicparsers.abacus',
@@ -69,6 +70,7 @@ abacus_parser_entry_point = EntryPoint(
 
 abinit_parser_entry_point = EntryPoint(
     name='parsers/abinit',
+    aliases=['parsers/abinit'],
     description='NOMAD parser for ABINIT.',
     mainfile_contents_re=r'^\n*\.Version\s*[0-9.]*\s*of ABINIT\s*',
     python_package='electronicparsers.abinit',
@@ -93,6 +95,7 @@ abinit_parser_entry_point = EntryPoint(
 
 ams_parser_entry_point = EntryPoint(
     name='parsers/ams',
+    aliases=['parsers/ams'],
     description='NOMAD parser for AMS.',
     python_package='electronicparsers.ams',
     mainfile_contents_re=r'\* +\| +A M S +\| +\*',
@@ -117,6 +120,7 @@ ams_parser_entry_point = EntryPoint(
 
 atk_parser_entry_point = EntryPoint(
     name='parsers/atk',
+    aliases=['parsers/atk'],
     description='NOMAD parser for ATK.',
     python_package='electronicparsers.atk',
     mainfile_mime_re='application/octet-stream',
@@ -142,6 +146,7 @@ atk_parser_entry_point = EntryPoint(
 
 bigdft_parser_entry_point = EntryPoint(
     name='parsers/bigdft',
+    aliases=['parsers/bigdft'],
     description='NOMAD parser for BIGDFT.',
     python_package='electronicparsers.bigdft',
     mainfile_contents_re=r'\|_____\|__:__\|__:__\|_____\|_____\|___ BBBBB          i     g         g\s*',
@@ -166,6 +171,7 @@ bigdft_parser_entry_point = EntryPoint(
 
 castep_parser_entry_point = EntryPoint(
     name='parsers/castep',
+    aliases=['parsers/castep'],
     description='NOMAD parser for CASTEP.',
     python_package='electronicparsers.castep',
     mainfile_contents_re=r'\s\|\s*CCC\s*AA\s*SSS\s*TTTTT\s*EEEEE\s*PPPP\s*\|\s*',
@@ -190,6 +196,7 @@ castep_parser_entry_point = EntryPoint(
 
 charmm_parser_entry_point = EntryPoint(
     name='parsers/charmm',
+    aliases=['parsers/charmm'],
     description='NOMAD parser for CHARMM.',
     python_package='electronicparsers.charmm',
     mainfile_contents_re=r'\s*Chemistry\s*at\s*HARvard\s*Macromolecular\s*Mechanics\s*',
@@ -214,6 +221,7 @@ charmm_parser_entry_point = EntryPoint(
 
 cp2k_parser_entry_point = EntryPoint(
     name='parsers/cp2k',
+    aliases=['parsers/cp2k'],
     description='NOMAD parser for CP2K.',
     python_package='electronicparsers.cp2k',
     mainfile_contents_re=(
@@ -243,6 +251,7 @@ cp2k_parser_entry_point = EntryPoint(
 
 cpmd_parser_entry_point = EntryPoint(
     name='parsers/cpmd',
+    aliases=['parsers/cpmd'],
     description='NOMAD parser for CPMD.',
     python_package='electronicparsers.cpmd',
     mainfile_contents_re=r'\*\*\*       \*\*   \*\*\*  \*\* \*\*\*\* \*\*  \*\*   \*\*\*',
@@ -267,6 +276,7 @@ cpmd_parser_entry_point = EntryPoint(
 
 crystal_parser_entry_point = EntryPoint(
     name='parsers/crystal',
+    aliases=['parsers/crystal'],
     description='NOMAD parser for CRYSTAL.',
     python_package='electronicparsers.crystal',
     mainfile_contents_re=r'(\r?\n \*\s+CRYSTAL[\d]+\s+\*\r?\n \*\s*[a-zA-Z]+ : \d+[\.\d+]*)',
@@ -291,6 +301,7 @@ crystal_parser_entry_point = EntryPoint(
 
 dmol3_parser_entry_point = EntryPoint(
     name='parsers/dmol',
+    aliases=['parsers/dmol'],
     description='NOMAD parser for DMOL3.',
     python_package='electronicparsers.dmol3',
     mainfile_contents_re=r'Materials Studio DMol\^3',
@@ -316,6 +327,7 @@ dmol3_parser_entry_point = EntryPoint(
 
 edmft_parser_entry_point = EntryPoint(
     name='parsers/edmft',
+    aliases=['parsers/edmft'],
     description='NOMAD parser for EDMFT.',
     python_package='electronicparsers.edmft',
     mainfile_contents_re=r'\-\-\-\s*Preparing GF calculation\s*\-\-\-',
@@ -341,6 +353,7 @@ edmft_parser_entry_point = EntryPoint(
 
 elk_parser_entry_point = EntryPoint(
     name='parsers/elk',
+    aliases=['parsers/elk'],
     description='NOMAD parser for ELK.',
     python_package='electronicparsers.elk',
     mainfile_contents_re=r'\| Elk version [0-9.a-zA-Z]+ started \|',
@@ -365,6 +378,7 @@ elk_parser_entry_point = EntryPoint(
 
 exciting_parser_entry_point = EntryPoint(
     name='parsers/exciting',
+    aliases=['parsers/exciting'],
     description='NOMAD parser for EXCITING.',
     python_package='electronicparsers.exciting',
     mainfile_contents_re=r'EXCITING.*started[\s\S]+?All units are atomic ',
@@ -390,6 +404,7 @@ exciting_parser_entry_point = EntryPoint(
 
 fhiaims_parser_entry_point = EntryPoint(
     name='parsers/fhi-aims',
+    aliases=['parsers/fhi-aims'],
     description='NOMAD parser for FHIAIMS.',
     python_package='electronicparsers.fhiaims',
     mainfile_contents_re=r'^(.*\n)*?\s*Invoking FHI-aims \.\.\.',
@@ -415,6 +430,7 @@ fhiaims_parser_entry_point = EntryPoint(
 
 fleur_parser_entry_point = EntryPoint(
     name='parsers/fleur',
+    aliases=['parsers/fleur'],
     description='NOMAD parser for FLEUR.',
     python_package='electronicparsers.fleur',
     mainfile_alternative=True,
@@ -442,6 +458,7 @@ fleur_parser_entry_point = EntryPoint(
 
 fplo_parser_entry_point = EntryPoint(
     name='parsers/fplo',
+    aliases=['parsers/fplo'],
     description='NOMAD parser for FPLO.',
     python_package='electronicparsers.fplo',
     mainfile_contents_re=(
@@ -470,6 +487,7 @@ fplo_parser_entry_point = EntryPoint(
 
 gamess_parser_entry_point = EntryPoint(
     name='parsers/gamess',
+    aliases=['parsers/gamess'],
     description='NOMAD parser for GAMESS.',
     python_package='electronicparsers.gamess',
     mainfile_contents_re=(
@@ -497,6 +515,7 @@ gamess_parser_entry_point = EntryPoint(
 
 gaussian_parser_entry_point = EntryPoint(
     name='parsers/gaussian',
+    aliases=['parsers/gaussian'],
     description='NOMAD parser for GAUSSIAN.',
     python_package='electronicparsers.gaussian',
     mainfile_contents_re=r'\s*Cite this work as:\s*Gaussian [0-9]+, Revision [A-Za-z0-9\.]*,',
@@ -521,6 +540,7 @@ gaussian_parser_entry_point = EntryPoint(
 
 gpaw_parser_entry_point = EntryPoint(
     name='parsers/gpaw',
+    aliases=['parsers/gpaw'],
     description='NOMAD parser for GPAW.',
     python_package='electronicparsers.gpaw',
     mainfile_mime_re='application/(x-tar|octet-stream)',
@@ -546,6 +566,7 @@ gpaw_parser_entry_point = EntryPoint(
 
 magres_parser_entry_point = EntryPoint(
     name='parsers/magres',
+    aliases=['parsers/magres'],
     description='NOMAD parser for MAGRES.',
     python_package='electronicparsers.magres',
     mainfile_contents_re=r'\$magres-abinitio-v(\d\.)+',
@@ -570,6 +591,7 @@ magres_parser_entry_point = EntryPoint(
 
 molcas_parser_entry_point = EntryPoint(
     name='parsers/molcas',
+    aliases=['parsers/molcas'],
     description='NOMAD parser for MOLCAS.',
     python_package='electronicparsers.molcas',
     mainfile_contents_re=r'M O L C A S',
@@ -594,6 +616,7 @@ molcas_parser_entry_point = EntryPoint(
 
 mopac_parser_entry_point = EntryPoint(
     name='parsers/mopac',
+    aliases=['parsers/mopac'],
     description='NOMAD parser for MOPAC.',
     python_package='electronicparsers.mopac',
     mainfile_contents_re=r'\s*\*\*\s*MOPAC\s*([0-9a-zA-Z\.]*)\s*\*\*\s*',
@@ -619,6 +642,7 @@ mopac_parser_entry_point = EntryPoint(
 
 nwchem_parser_entry_point = EntryPoint(
     name='parsers/nwchem',
+    aliases=['parsers/nwchem'],
     description='NOMAD parser for NWCHEM.',
     python_package='electronicparsers.nwchem',
     mainfile_contents_re=r'Northwest Computational Chemistry Package \(NWChem\) (\d+\.)+\d+',
@@ -643,6 +667,7 @@ nwchem_parser_entry_point = EntryPoint(
 
 ocean_parser_entry_point = EntryPoint(
     name='parsers/ocean',
+    aliases=['parsers/ocean'],
     description='NOMAD parser for OCEAN.',
     python_package='electronicparsers.ocean',
     mainfile_contents_dict={'__has_all_keys': ['bse', 'structure', 'screen', 'calc']},
@@ -668,6 +693,7 @@ ocean_parser_entry_point = EntryPoint(
 
 octopus_parser_entry_point = EntryPoint(
     name='parsers/octopus',
+    aliases=['parsers/octopus'],
     description='NOMAD parser for OCTOPUS.',
     python_package='electronicparsers.octopus',
     mainfile_contents_re=r'\|0\) ~ \(0\) \|',
@@ -692,6 +718,7 @@ octopus_parser_entry_point = EntryPoint(
 
 onetep_parser_entry_point = EntryPoint(
     name='parsers/onetep',
+    aliases=['parsers/onetep'],
     description='NOMAD parser for ONETEP.',
     python_package='electronicparsers.onetep',
     mainfile_contents_re=r'####### #     # ####### ####### ####### ######',
@@ -716,6 +743,7 @@ onetep_parser_entry_point = EntryPoint(
 
 openmx_parser_entry_point = EntryPoint(
     name='parsers/openmx',
+    aliases=['parsers/openmx'],
     description='NOMAD parser for OPENMX.',
     python_package='electronicparsers.openmx',
     mainfile_contents_re=r'^\*{59}\s+\*{59}\s+This calculation was performed by OpenMX',
@@ -742,6 +770,7 @@ openmx_parser_entry_point = EntryPoint(
 
 orca_parser_entry_point = EntryPoint(
     name='parsers/orca',
+    aliases=['parsers/orca'],
     description='NOMAD parser for ORCA.',
     python_package='electronicparsers.orca',
     mainfile_contents_re=(
@@ -769,6 +798,7 @@ orca_parser_entry_point = EntryPoint(
 
 psi4_parser_entry_point = EntryPoint(
     name='parsers/psi4',
+    aliases=['parsers/psi4'],
     description='NOMAD parser for PSI4.',
     python_package='electronicparsers.psi4',
     mainfile_contents_re=r'Psi4: An Open-Source Ab Initio Electronic Structure Package',
@@ -793,6 +823,7 @@ psi4_parser_entry_point = EntryPoint(
 
 qball_parser_entry_point = EntryPoint(
     name='parsers/qball',
+    aliases=['parsers/qball'],
     description='NOMAD parser for QBALL.',
     python_package='electronicparsers.qball',
     mainfile_contents_re=r'qball',
@@ -818,6 +849,7 @@ qball_parser_entry_point = EntryPoint(
 
 qbox_parser_entry_point = EntryPoint(
     name='parsers/qbox',
+    aliases=['parsers/qbox'],
     description='NOMAD parser for QBOX.',
     python_package='electronicparsers.qbox',
     mainfile_contents_re=r'http://qboxcode.org',
@@ -843,6 +875,7 @@ qbox_parser_entry_point = EntryPoint(
 
 quantumespresso_parser_entry_point = EntryPoint(
     name='parsers/quantumespresso',
+    aliases=['parsers/quantumespresso'],
     description='NOMAD parser for QUANTUMESPRESSO.',
     python_package='electronicparsers.quantumespresso',
     mainfile_contents_re=(
@@ -870,6 +903,7 @@ quantumespresso_parser_entry_point = EntryPoint(
 
 siesta_parser_entry_point = EntryPoint(
     name='parsers/siesta',
+    aliases=['parsers/siesta'],
     description='NOMAD parser for SIESTA.',
     python_package='electronicparsers.siesta',
     mainfile_contents_re=(
@@ -897,6 +931,7 @@ siesta_parser_entry_point = EntryPoint(
 
 soliddmft_parser_entry_point = EntryPoint(
     name='parsers/soliddmft',
+    aliases=['parsers/soliddmft'],
     description='NOMAD parser for SOLIDDMFT.',
     python_package='electronicparsers.soliddmft',
     mainfile_binary_header_re=b'^\\x89HDF',
@@ -927,6 +962,7 @@ soliddmft_parser_entry_point = EntryPoint(
 
 tbstudio_parser_entry_point = EntryPoint(
     name='parsers/tbstudio',
+    aliases=['parsers/tbstudio'],
     description='NOMAD parser for TBSTUDIO.',
     python_package='electronicparsers.tbstudio',
     mainfile_contents_re=r'"ApplicationFullName": "Tight Binding Studio"',
@@ -953,6 +989,7 @@ tbstudio_parser_entry_point = EntryPoint(
 
 turbomole_parser_entry_point = EntryPoint(
     name='parsers/turbomole',
+    aliases=['parsers/turbomole'],
     description='NOMAD parser for TURBOMOLE.',
     python_package='electronicparsers.turbomole',
     mainfile_contents_re=r'Copyright \(C\) [0-9]+ TURBOMOLE GmbH, Karlsruhe',
@@ -976,6 +1013,7 @@ turbomole_parser_entry_point = EntryPoint(
 
 vasp_parser_entry_point = EntryPoint(
     name='parsers/vasp',
+    aliases=['parsers/vasp'],
     description='NOMAD parser for VASP.',
     python_package='electronicparsers.vasp',
     mainfile_contents_re=(
@@ -1008,6 +1046,7 @@ vasp_parser_entry_point = EntryPoint(
 
 w2dynamics_parser_entry_point = EntryPoint(
     name='parsers/w2dynamics',
+    aliases=['parsers/w2dynamics'],
     description='NOMAD parser for W2DYNAMICS.',
     python_package='electronicparsers.w2dynamics',
     mainfile_binary_header_re=b'^\\x89HDF',
@@ -1036,6 +1075,7 @@ w2dynamics_parser_entry_point = EntryPoint(
 
 wannier90_parser_entry_point = EntryPoint(
     name='parsers/wannier90',
+    aliases=['parsers/wannier90'],
     description='NOMAD parser for WANNIER90.',
     python_package='electronicparsers.wannier90',
     mainfile_contents_re=r'\|\s*WANNIER90\s*\|',
@@ -1061,6 +1101,7 @@ wannier90_parser_entry_point = EntryPoint(
 
 wien2k_parser_entry_point = EntryPoint(
     name='parsers/wien2k',
+    aliases=['parsers/wien2k'],
     description='NOMAD parser for WIEN2K.',
     python_package='electronicparsers.wien2k',
     mainfile_contents_re=r'\s*---------\s*:ITE[0-9]+:\s*[0-9]+\.\s*ITERATION\s*---------',
@@ -1086,6 +1127,7 @@ wien2k_parser_entry_point = EntryPoint(
 
 yambo_parser_entry_point = EntryPoint(
     name='parsers/yambo',
+    aliases=['parsers/yambo'],
     description='NOMAD parser for YAMBO.',
     python_package='electronicparsers.yambo',
     mainfile_contents_re=r'Build.+\s+http://www\.yambo-code\.org',
