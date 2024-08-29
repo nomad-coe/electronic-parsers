@@ -380,39 +380,40 @@ class InpParser(FileParser):
             self._variables = dict()
             line = True
             sections = [InpValue('tree')]
-            while line:
-                line = self.mainfile_obj.readline()
-                # comments
-                strip = line.strip()
-                if not strip or strip[0] in ('#', '!'):
-                    continue
-                variable = self._re_variable.search(line)
-                if variable:
-                    self._variables['${%s}' % variable.group(1)] = variable.group(
-                        2
-                    ).strip()
-                    continue
-                close_section = self._re_close.search(line)
-                if close_section:
-                    sections.pop(-1)
-                    continue
-                open_section = self._re_open.search(line)
-                if open_section:
-                    section = InpValue(open_section.group(1))
-                    sections[-1].add(open_section.group(1), section)
-                    sections.append(section)
-                    if open_section.group(2):
-                        sections[-1].add('VALUE', open_section.group(2))
-                    continue
-                key_value = self._re_key_value.search(line)
-                if key_value:
-                    key, val = key_value.group(1), key_value.group(2)
-                    val = val.strip()
-                    if val in self._variables:
-                        val = self._variables[val]
-                    key, val = override(sections[-1].name, [key, val])
-                    sections[-1].add(key, val)
-                    continue
+            with self.mainfile_obj as mainfile_obj:
+                while line:
+                    line = mainfile_obj.readline()
+                    # comments
+                    strip = line.strip()
+                    if not strip or strip[0] in ('#', '!'):
+                        continue
+                    variable = self._re_variable.search(line)
+                    if variable:
+                        self._variables['${%s}' % variable.group(1)] = variable.group(
+                            2
+                        ).strip()
+                        continue
+                    close_section = self._re_close.search(line)
+                    if close_section:
+                        sections.pop(-1)
+                        continue
+                    open_section = self._re_open.search(line)
+                    if open_section:
+                        section = InpValue(open_section.group(1))
+                        sections[-1].add(open_section.group(1), section)
+                        sections.append(section)
+                        if open_section.group(2):
+                            sections[-1].add('VALUE', open_section.group(2))
+                        continue
+                    key_value = self._re_key_value.search(line)
+                    if key_value:
+                        key, val = key_value.group(1), key_value.group(2)
+                        val = val.strip()
+                        if val in self._variables:
+                            val = self._variables[val]
+                        key, val = override(sections[-1].name, [key, val])
+                        sections[-1].add(key, val)
+                        continue
             self._file_handler = sections[0]
         return self._file_handler
 

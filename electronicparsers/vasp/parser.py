@@ -1127,7 +1127,8 @@ class RunFileParser(FileParser):
         content_handler = RunXmlContentHandler()
         parser.setContentHandler(content_handler)
         try:
-            parser.parse(self.mainfile_obj)
+            with self.mainfile_obj as f:
+                parser.parse(f)
         except Exception as e:
             # support broken XML structure
             if self.logger:
