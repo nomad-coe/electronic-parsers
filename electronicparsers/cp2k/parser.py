@@ -2009,7 +2009,7 @@ class CP2KParser:
         bs_gauss = BasisSet(
             scope=['kinetic energy', 'electron-core interaction'],
             type='gaussians',
-        )
+        )  # TODO: review partition in new parser
         atoms = (
             self.out_parser.get(self._calculation_type, {})
             .get('atomic_kind_information', {})
@@ -2022,22 +2022,21 @@ class CP2KParser:
                 ac.atom_number = self.get_atomic_number(atom.kind_label)
                 ac.name = basis_set
                 bs_gauss.atom_centered.append(ac)
+
+        basis_sets: list[BasisSet] = []
         if bs_gauss.atom_centered:
-            bs_pw = BasisSet(
-                scope=['Hartree energy', 'electron-electron interaction'],
-                type='plane waves',
-                cutoff=self.settings.get('qs', {}).get('planewave_cutoff', None)
-                * ureg.hartree,
-            )
-            basis_sets = [bs_pw, bs_gauss]
+            basis_sets.append(bs_gauss)
+            pw_scope = ['Hartree energy', 'electron-electron interaction']
         else:
-            bs_pw = BasisSet(
-                scope=['valence'],
-                type='plane waves',
-                cutoff=self.settings.get('qs', {}).get('planewave_cutoff', None)
-                * ureg.hartree,
-            )
-            basis_sets = [bs_pw]
+            pw_scope = ['valence']
+
+        bs_pw = BasisSet(
+            scope=pw_scope,
+            type='plane waves',
+        )
+        if (cutoff := self.settings.get('qs', {}).get('planewave_cutoff')) is not None:
+            bs_pw.cutoff = cutoff * ureg.hartree
+        basis_sets.append(bs_pw)
         return basis_sets
 
     def parse_method_quickstep(self):
