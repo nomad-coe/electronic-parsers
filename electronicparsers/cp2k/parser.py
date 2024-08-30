@@ -1481,9 +1481,17 @@ class CP2KParser:
             sec_run.x_cp2k_section_end_information.append(sec_endinformation)
             section = sec_startinformation
             for key, val in program_settings.items():
-                if key == 'id' and isinstance(val, list):
-                    sec_endinformation.x_cp2k_end_id = val[1]
-                    key, val = 'start_id', val[0]
+                if key == 'id':
+                    if isinstance(val, list):
+                        sec_startinformation.x_cp2k_start_id = val[0]
+                        sec_endinformation.x_cp2k_end_id = val[1]
+                    elif isinstance(val, int):
+                        # logger.warning('Calculation may not have properly terminated: did not encounter end "PROCESS ID".')
+                        sec_startinformation.x_cp2k_start_id = val
+                    else:
+                        # logger.warning('Encountered "PROCESS ID" of unexpected format.')
+                        pass
+                    continue
                 section = (
                     sec_endinformation
                     if key.startswith('end')
