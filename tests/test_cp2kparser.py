@@ -88,8 +88,8 @@ def test_single_point(parser):
 
     sec_method = sec_run.method[0]
     sec_basis_sets = sec_method.electrons_representation[0].basis_set
-    assert sec_basis_sets[0].cutoff.magnitude == approx(6.53961708e-16)
-    assert sec_basis_sets[1].atom_centered[0].name == 'DZVP-GTH-PADE'
+    assert sec_basis_sets[0].atom_centered[0].name == 'DZVP-GTH-PADE'
+    assert sec_basis_sets[1].cutoff.magnitude == approx(6.53961708e-16)
     assert sec_method.scf.threshold_energy_change.magnitude == approx(
         4.35974472220717e-25
     )
