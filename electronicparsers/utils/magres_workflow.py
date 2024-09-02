@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 from nomad.metainfo import SubSection, Quantity, Reference
-from nomad.datamodel.metainfo.simulation.method import Method
+from runschema.method import Method
 from simulationworkflowschema import (
     SimulationWorkflowResults,
     SimulationWorkflowMethod,

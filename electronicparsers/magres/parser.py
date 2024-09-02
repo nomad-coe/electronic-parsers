@@ -470,22 +470,24 @@ class MagresParser(BeyondDFTWorkflowsParser):
         filepath_stripped = self.filepath.split('raw/')[-1]
         metadata = []
         try:
-            # For the automatic workflow NMR
-            from nomad.search import search
+            from nomad.app.v1.routers.uploads import get_upload_with_read_access
+            from nomad.datamodel import User
 
             upload_id = self.archive.metadata.upload_id
-            search_ids = search(
-                owner='visible',
-                user_id=self.archive.metadata.main_author.user_id,
-                query={'upload_id': upload_id},
-                required=MetadataRequired(include=['entry_id', 'mainfile']),
-            ).data
-            metadata = [[sid['entry_id'], sid['mainfile']] for sid in search_ids]
+            upload = get_upload_with_read_access(
+                upload_id=upload_id,
+                user=User.get(user_id=self.archive.metadata.main_author.user_id),
+            )
+            with upload.entries_metadata() as entries_metadata:
+                metadata.extend(
+                    [[meta.entry_id, meta.mainfile] for meta in entries_metadata]
+                )
         except Exception:
             self.logger.warning(
                 'Could not resolve the entry_id and mainfile of other entries in the upload.'
             )
             return
+
         for entry_id, mainfile in metadata:
             if mainfile == filepath_stripped:  # we skip the current parsed mainfile
                 continue
