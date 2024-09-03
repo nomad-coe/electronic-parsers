@@ -2271,10 +2271,10 @@ class VASPParser:
                     charge_density.extend([float(v) for v in line.strip().split()])
                 if charge_density and len(charge_density) == n_points:
                     sec_density = Density()
+                    sec_scc.density_charge.append(sec_density)
                     sec_density.value_hdf5 = np.reshape(
                         np.array(charge_density, np.float64), grid
                     )
-                    sec_scc.density_charge.append(sec_density)
                     grid = []
                     n_points = 0
                     charge_density = []
