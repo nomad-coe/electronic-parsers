@@ -380,7 +380,7 @@ class InpParser(FileParser):
             self._variables = dict()
             line = True
             sections = [InpValue('tree')]
-            with self.mainfile_obj as mainfile_obj:
+            with self.open_mainfile_obj() as mainfile_obj:
                 while line:
                     line = mainfile_obj.readline()
                     # comments
@@ -2318,3 +2318,7 @@ class CP2KParser:
             self.parse_configurations_quickstep()
 
         self.parse_workflow()
+
+        self.inp_parser.close()
+        self.traj_parser.close()
+        self.velocities_parser.close()

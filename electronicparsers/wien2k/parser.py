@@ -76,7 +76,7 @@ class In1Parser(FileParser):
     def parse(self):
         self._results = {'species': []}
         num_orbitals = 0
-        with self.mainfile_obj as f:
+        with self.open_mainfile_obj() as f:
             for line_id, line in enumerate(f):
                 if line_id == 0:
                     line = line.strip().split()

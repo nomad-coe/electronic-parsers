@@ -1418,6 +1418,7 @@ class RKFParser(FileParser):
                 )
         # TODO parse Themodynamics, Vibrations, phonons
 
+        self.close()
         return self
 
     def keys(self):

@@ -18,6 +18,7 @@
 
 import pytest
 import numpy as np
+import os
 
 from nomad.units import ureg
 from nomad.datamodel import EntryArchive
@@ -430,10 +431,10 @@ def test_dftu_static(parser, dir, slice, uref, jref):
     # test the values in vasprun.xml and INCAR (selected in place of OUTCAR)
     prefix = 'tests/data/vasp/dftu/'
     for mainfile in ['vasprun.xml', 'OUTCAR']:
-        try:
-            parser.parse(f'{prefix}/{dir}/{mainfile}', archive, None)
-        except (TypeError, FileNotFoundError):
-            return
+        filename = os.path.join(prefix, dir, mainfile)
+        if not os.path.isfile(filename):
+            continue
+        parser.parse(filename, archive, None)
         param = archive.run[-1].method[-1].atom_parameters[slice]
         if hubb := param.hubbard_kanamori_model:
             assert hubb.double_counting_correction == 'Dudarev'

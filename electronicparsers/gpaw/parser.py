@@ -127,6 +127,9 @@ class GPWParser(TarParser):
             self._info['bytesswap'] = (
                 xml_parser.root.attrib['endianness'] == 'little'
             ) != np.little_endian
+
+            xml_parser.close()
+
         return self._info
 
     def get_parameter(self, key, unit=None):
@@ -664,3 +667,5 @@ class GPAWParser:
         self.parse_system()
 
         self.parse_scc()
+
+        self.parser.close()

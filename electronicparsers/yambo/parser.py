@@ -892,3 +892,5 @@ class YamboParser:
 
         for module in self.mainfile_parser.get('module', []):
             parse_module(module)
+
+        self.netcdf_parser.close()

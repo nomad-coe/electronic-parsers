@@ -384,3 +384,5 @@ class ATKParser:
         sec_run.program = Program(name='ATK', version=version)
 
         self.parse_configurations()
+
+        self.nc_parser.close()

@@ -222,7 +222,7 @@ mainfile_parser = TextParser(
         ),
         Quantity(
             'input_lattice_vectors',
-            r'(?i)<Atoms.UnitVectors\s+((?:-?\d+\.\d+\s+)+)Atoms.UnitVectors>',
+            r'(?i:<Atoms.UnitVectors\s+((?:-?\d+\.\d+\s+)+)Atoms.UnitVectors>)',
             repeats=False,
         ),
         Quantity('scf.XcType', r'scf.XcType\s+(\S+)', repeats=False),
@@ -232,20 +232,20 @@ mainfile_parser = TextParser(
         Quantity('scf.stress.tensor', r'scf.stress.tensor\s+(.*)', repeats=False),
         Quantity(
             'Atoms.SpeciesAndCoordinates.Unit',
-            r'(?i)Atoms.SpeciesAndCoordinates.Unit\s+([a-z]{2,4})',
+            r'(?i:Atoms.SpeciesAndCoordinates.Unit\s+([a-z]{2,4}))',
             repeats=False,
         ),
         Quantity(
             'Atoms.UnitVectors.Unit',
-            r'(?i)Atoms.UnitVectors.Unit\s+([a-z]{2,3})',
+            r'(?i:Atoms.UnitVectors.Unit\s+([a-z]{2,3}))',
             repeats=False,
         ),
-        Quantity('scf.Hubbard.U', r'(?i)scf.Hubbard.U\s+(on|off)', repeats=False),
+        Quantity('scf.Hubbard.U', r'(?i:scf.Hubbard.U\s+(on|off))', repeats=False),
         Quantity('MD.maxIter', r'MD\.maxIter\s+(\d+)', repeats=False),
-        Quantity('MD.Type', r'(?i)MD\.Type\s+([a-z_\d]{3,6})', repeats=False),
+        Quantity('MD.Type', r'(?i:MD\.Type\s+([a-z_\d]{3,6}))', repeats=False),
         Quantity('MD.TimeStep', r'MD\.TimeStep\s+([\d\.e-]+)', repeats=False),
         Quantity(
-            'MD.Opt.criterion', r'(?i)MD\.Opt\.criterion\s+([\d\.e-]+)', repeats=False
+            'MD.Opt.criterion', r'(?i:MD\.Opt\.criterion\s+([\d\.e-]+))', repeats=False
         ),
         Quantity(
             'MD.TempControl', r'<MD.TempControl([\s\S]+)MD.TempControl>', repeats=False
