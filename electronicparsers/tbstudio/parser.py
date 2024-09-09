@@ -41,7 +41,6 @@ from ase.data import chemical_symbols
 
 
 class TBStudioParser(BeyondDFTWorkflowsParser):
-
     def __init__(self):
         self._calculation_type = 'tight binding'
 

@@ -180,7 +180,6 @@ class HrParser(TextParser):
 
 
 class Wannier90Parser:
-
     def __init__(self):
         self.wout_parser = WOutParser()
         self.win_parser = WInParser()

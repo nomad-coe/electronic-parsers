@@ -30,9 +30,10 @@ class EntryPoint(ParserEntryPoint):
     """
     )
     level: int = Field(
-        0, description='''
+        0,
+        description="""
         Order of execution of parser with respect to other parsers.
-    '''
+    """,
     )
     code_name: Optional[str]
     code_homepage: Optional[str]

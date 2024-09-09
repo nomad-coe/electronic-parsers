@@ -1486,10 +1486,14 @@ class CP2KParser:
                         sec_startinformation.x_cp2k_start_id = val[0]
                         sec_endinformation.x_cp2k_end_id = val[1]
                     elif isinstance(val, int):
-                        self.logger.warning('Calculation may not have properly terminated: did not encounter end "PROCESS ID".')
+                        self.logger.warning(
+                            'Calculation may not have properly terminated: did not encounter end "PROCESS ID".'
+                        )
                         sec_startinformation.x_cp2k_start_id = val
                     else:
-                        self.logger.warning('Encountered "PROCESS ID" of unexpected format.')
+                        self.logger.warning(
+                            'Encountered "PROCESS ID" of unexpected format.'
+                        )
                         pass
                     continue
                 section = (

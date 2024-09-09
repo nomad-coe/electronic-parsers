@@ -136,7 +136,9 @@ def test_single_point(parser):
 def test_unterminated_section(parser):
     """Test the proper extraction of process ID"""
     archive = EntryArchive()
-    parser.parse('tests/data/cp2k/single_point/si_bulk8_unterminated.out', archive, None)
+    parser.parse(
+        'tests/data/cp2k/single_point/si_bulk8_unterminated.out', archive, None
+    )
     assert archive.run[0].x_cp2k_section_startinformation[0].x_cp2k_start_id == 8212
 
 

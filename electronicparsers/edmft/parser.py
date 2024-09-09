@@ -487,25 +487,25 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                 # Energies
                 sec_energy = Energy()
                 sec_scf_iteration.energy = sec_energy
-                sec_energy.chemical_potential = data_scf[i_dmft][3] * ureg.eV
+                sec_energy.chemical_potential = data[3] * ureg.eV
                 sec_energy.double_counting = EnergyEntry(
-                    value=data_scf[i_dmft][4] * ureg.eV
+                    value=data[4] * ureg.eV
                 )
-                sec_energy.total = EnergyEntry(value=data_scf[i_dmft][5] * ureg.rydberg)
-                sec_energy.free = EnergyEntry(value=data_scf[i_dmft][7] * ureg.rydberg)
+                sec_energy.total = EnergyEntry(value=data[5] * ureg.rydberg)
+                sec_energy.free = EnergyEntry(value=data[7] * ureg.rydberg)
                 # Lattice and impurity occupations
                 sec_charges_latt = Charges()
                 sec_scf_iteration.charges.append(sec_charges_latt)
                 sec_charges_latt.kind = 'lattice'
                 sec_charges_latt.n_atoms = sec_scc.method_ref.dmft.n_impurities
                 sec_charges_latt.n_orbitals = n_orbitals
-                sec_charges_latt.n_electrons = [data_scf[i_dmft][8]]
+                sec_charges_latt.n_electrons = [data[8]]
                 sec_charges_imp = Charges()
                 sec_scf_iteration.charges.append(sec_charges_imp)
                 sec_charges_imp.kind = 'impurity'
                 sec_charges_imp.n_atoms = sec_scc.method_ref.dmft.n_impurities
                 sec_charges_imp.n_orbitals = n_orbitals
-                sec_charges_imp.n_electrons = [data_scf[i_dmft][9]]
+                sec_charges_imp.n_electrons = [data[9]]
 
         # Impurity Green's function, self-energy, hybridization function parsing for each calculation step
         for imp_path in self._gf_files_map.keys():
