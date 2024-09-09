@@ -29,6 +29,11 @@ class EntryPoint(ParserEntryPoint):
         This class must have a function `def parse(self, mainfile, archive, logger)`.
     """
     )
+    level: int = Field(
+        0, description='''
+        Order of execution of parser with respect to other parsers.
+    '''
+    )
     code_name: Optional[str]
     code_homepage: Optional[str]
     code_category: Optional[str]
@@ -333,6 +338,7 @@ edmft_parser_entry_point = EntryPoint(
     mainfile_contents_re=r'\-\-\-\s*Preparing GF calculation\s*\-\-\-',
     mainfile_name_re=r'^.*\.(out)$',
     parser_class_name='electronicparsers.edmft.EDMFTParser',
+    level=2,
     code_name='eDMFT',
     code_homepage='http://hauleweb.rutgers.edu/tutorials/',
     code_category='Atomistic code',
@@ -572,6 +578,7 @@ magres_parser_entry_point = EntryPoint(
     mainfile_contents_re=r'\$magres-abinitio-v(\d\.)+',
     mainfile_name_re=r'^.*\.magres',
     parser_class_name='electronicparsers.magres.MagresParser',
+    level=1,
     code_name='magres',
     code_homepage='https://www.ccpnc.ac.uk/docs/magres',
     code_category='Atomistic code',
@@ -969,6 +976,7 @@ tbstudio_parser_entry_point = EntryPoint(
     mainfile_mime_re='(application/json)|(text/.*)',
     mainfile_name_re=r'.*\.tbm',
     parser_class_name='electronicparsers.tbstudio.TBStudioParser',
+    level=1,
     code_name='TBStudio',
     code_homepage='https://tight-binding.com/',
     code_category='Atomistic code',
@@ -1054,6 +1062,7 @@ w2dynamics_parser_entry_point = EntryPoint(
     mainfile_mime_re='(application/x-hdf)',
     mainfile_name_re=r'^.*\.(h5|hdf5)$',
     parser_class_name='electronicparsers.w2dynamics.W2DynamicsParser',
+    level=2,
     code_name='w2dynamics',
     code_homepage='https://github.com/w2dynamics/w2dynamics',
     code_category='Atomistic code',
@@ -1080,6 +1089,7 @@ wannier90_parser_entry_point = EntryPoint(
     python_package='electronicparsers.wannier90',
     mainfile_contents_re=r'\|\s*WANNIER90\s*\|',
     parser_class_name='electronicparsers.wannier90.Wannier90Parser',
+    level=1,
     code_name='Wannier90',
     code_homepage='http://www.wannier.org/',
     code_category='Atomistic code',

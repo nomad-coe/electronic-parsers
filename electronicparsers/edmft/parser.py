@@ -219,8 +219,6 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         workflow archive.
     """
 
-    level = 2
-
     def __init__(self):
         self._re_namesafe = re.compile(r'[^\w]')
         self._calculation_type = 'dmft'

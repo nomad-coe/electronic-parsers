@@ -181,7 +181,6 @@ class MagresFileParser(TextParser):
 
 
 class MagresParser(BeyondDFTWorkflowsParser):
-    level = 1
 
     def __init__(self):
         self.magres_file_parser = MagresFileParser()
