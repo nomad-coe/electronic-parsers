@@ -1083,33 +1083,6 @@ w2dynamics_parser_entry_point = EntryPoint(
     },
 )
 
-wannier90_parser_entry_point = EntryPoint(
-    name='parsers/wannier90',
-    aliases=['parsers/wannier90'],
-    description='NOMAD parser for WANNIER90.',
-    python_package='electronicparsers.wannier90',
-    mainfile_contents_re=r'\|\s*WANNIER90\s*\|',
-    parser_class_name='electronicparsers.wannier90.Wannier90Parser',
-    level=1,
-    code_name='Wannier90',
-    code_homepage='http://www.wannier.org/',
-    code_category='Atomistic code',
-    metadata={
-        'codeCategory': 'Atomistic code',
-        'codeLabel': 'Wannier90',
-        'codeLabelStyle': 'First letter in capitals, rest in lower case',
-        'codeName': 'wannier90',
-        'codeUrl': 'http://www.wannier.org/',
-        'codeVersions': '3.1.0',
-        'parserDirName': 'dependencies/electronic/electronicparsers/wannier90/',
-        'parserGitUrl': 'https://github.com/nomad-coe/electronic-parsers.git',
-        'parserSpecific': '',
-        'preamble': '',
-        'status': 'production',
-        'tableOfFiles': '| Input Filename | Description |\n| --- | --- |\n| `*.wout` | **Mainfile**: output text file w/ arbitrary name |\n| `*.win` | input text file |\n| `*band.dat` | band structure output file |\n| `*dos.dat` | dos output file |\n| `*hr.dat` | hopping matrices (written if write_hr *.win is true) |\n',
-    },
-)
-
 wien2k_parser_entry_point = EntryPoint(
     name='parsers/wien2k',
     aliases=['parsers/wien2k'],
