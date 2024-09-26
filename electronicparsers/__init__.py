@@ -1020,39 +1020,6 @@ turbomole_parser_entry_point = EntryPoint(
     },
 )
 
-vasp_parser_entry_point = EntryPoint(
-    name='parsers/vasp',
-    aliases=['parsers/vasp'],
-    description='NOMAD parser for VASP.',
-    python_package='electronicparsers.vasp',
-    mainfile_contents_re=(
-        r'^\s*<\?xml version="1\.0" encoding="ISO-8859-1"\?>\s*?\s*<modeling>?\s*<generator>?\s*<i '
-        r'name="program" type="string">\s*vasp\s*</i>?|^\svasp[\.\d]+.+?(?:\(build|complex)[\s\S]+?executed '
-        r'on'
-    ),
-    mainfile_mime_re='(application/.*)|(text/.*)',
-    mainfile_name_re='.*[^/]*xml[^/]*',
-    mainfile_alternative=True,
-    supported_compressions=['gz', 'bz2', 'xz'],
-    parser_class_name='electronicparsers.vasp.VASPParser',
-    code_name='VASP',
-    code_homepage='https://www.vasp.at/',
-    code_category='Atomistic code',
-    metadata={
-        'codeCategory': 'Atomistic code',
-        'codeLabel': 'VASP',
-        'codeLabelStyle': 'All in capitals',
-        'codeName': 'vasp',
-        'codeUrl': 'https://www.vasp.at/',
-        'parserDirName': 'dependencies/electronic/electronicparsers/vasp/',
-        'parserGitUrl': 'https://github.com/nomad-coe/electronic-parsers.git',
-        'parserSpecific': '',
-        'preamble': '',
-        'status': 'production',
-        'tableOfFiles': "|Input Filename| Description|\n|--- | --- |\n|`vasprun.xml` | **Mainfile** in plain-text (structured) XML format |\n|`OUTCAR` | plain-text (semi-structured) file, VAPS's detailed output. Read by NOMAD only as fallback to parse `outcar` data |\n",
-    },
-)
-
 w2dynamics_parser_entry_point = EntryPoint(
     name='parsers/w2dynamics',
     aliases=['parsers/w2dynamics'],
