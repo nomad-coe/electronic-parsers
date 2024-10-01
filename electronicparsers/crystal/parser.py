@@ -1546,7 +1546,7 @@ def to_float(value):
 def to_array(cols, rows, values):
     """Transforms the Crystal-specific f25 array syntax into a numpy array."""
     values = values.replace('\n', '').replace('\r', '')
-    values = [values[n: n + 12] for n in range(0, len(values), 12)]
+    values = [values[n : n + 12] for n in range(0, len(values), 12)]
     # does not seem to work
     # values = textwrap.wrap(values, 12)
     values = np.array(values, dtype=np.float64)

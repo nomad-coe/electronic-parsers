@@ -488,9 +488,7 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
                 sec_energy = Energy()
                 sec_scf_iteration.energy = sec_energy
                 sec_energy.chemical_potential = data[3] * ureg.eV
-                sec_energy.double_counting = EnergyEntry(
-                    value=data[4] * ureg.eV
-                )
+                sec_energy.double_counting = EnergyEntry(value=data[4] * ureg.eV)
                 sec_energy.total = EnergyEntry(value=data[5] * ureg.rydberg)
                 sec_energy.free = EnergyEntry(value=data[7] * ureg.rydberg)
                 # Lattice and impurity occupations
