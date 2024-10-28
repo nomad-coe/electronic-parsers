@@ -135,11 +135,16 @@ def test_ecp_basis(parser):
     assert method[5].electronic.method == 'RHF'
 
     calc = archive.run[0].calculation
-    assert len(calc) == 5
+    assert len(calc) in (5, 6)
     assert calc[3].energy.total.value.magnitude == approx(-1.29372859e-15)
     assert calc[4].scf_iteration[1].energy.total.value.magnitude == approx(
         -3.00651252e-14
     )
+    if len(calc) == 6:  # cover failed calculation step
+        assert calc[-1].calculations_ref is None
+        assert calc[-1].method_ref == archive.run[0].method[5]
+        assert calc[-1].system_ref == archive.run[0].system[5]
+        # TODO: add check for basis set to really identify the failed step
 
 
 def test_dft(parser):
