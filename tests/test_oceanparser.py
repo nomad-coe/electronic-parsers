@@ -18,7 +18,6 @@
 
 import pytest
 import numpy as np
-import re
 
 from nomad.datamodel import EntryArchive
 from electronicparsers.ocean import OceanParser
@@ -65,9 +64,8 @@ def test_tio2(parser):
     assert sec_bse.core_hole.broadening.to('eV').magnitude == approx(0.89)
 
     sec_ocean_screen = sec_method[-1].x_ocean_screen
-    for screen_param in vars(x_ocean_screen_parameters).keys():
-        if re.match('x_ocean_', screen_param):
-            assert getattr(sec_ocean_screen, screen_param) is not None
+    for screen_param in x_ocean_screen_parameters.m_def.quantities:
+        assert sec_ocean_screen.m_is_set(screen_param)
     assert sec_ocean_screen.x_ocean_dft_energy_range == approx(150.0)
 
     # Calculation
