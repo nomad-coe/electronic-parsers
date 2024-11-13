@@ -37,15 +37,8 @@ dev = [
 # these are extra deps for nomad infra as a result of using nomad.search
 # TODO remove usage in magres and w2dynamics
 infrastructure = [
-    "elasticsearch==7.17.1",
-    "elasticsearch-dsl==7.4.0",
-    "fastapi<0.100",
     "mongoengine>=0.20",
-    "pyjwt[crypto]==2.6.0",
-    "python-logstash==0.4.6",
-    "pydantic>=1.10.8,<2.0.0",
-    "structlog",
-    "zipstream-new==1.1.5",
+    "nomad-lab[infrastructure]>=1.3.10",
 ]
 
 [tool.ruff]
