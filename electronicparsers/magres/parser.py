@@ -40,9 +40,6 @@ from runschema.calculation import (
     ElectricFieldGradient,
     SpinSpinCoupling,
 )
-from .metainfo.magres import m_package
-
-from nomad.app.v1.models import MetadataRequired
 from ..utils import BeyondDFTWorkflowsParser
 
 
