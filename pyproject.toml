@@ -37,7 +37,6 @@ dev = [
 # these are extra deps for nomad infra as a result of using nomad.search
 # TODO remove usage in magres and w2dynamics
 infrastructure = [
-    "mongoengine>=0.20",
     "nomad-lab[infrastructure]>=1.3.10",
 ]
 
