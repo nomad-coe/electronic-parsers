@@ -485,3 +485,6 @@ class System(runschema.system.System):
         The lattice omega value.
         """,
     )
+
+
+m_package.__init_metainfo__()

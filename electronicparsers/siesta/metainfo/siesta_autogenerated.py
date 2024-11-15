@@ -3363,3 +3363,6 @@ class Method(runschema.method.Method):
     x_siesta_section_input = SubSection(
         sub_section=SectionProxy('x_siesta_section_input'), repeats=True
     )
+
+
+m_package.__init_metainfo__()

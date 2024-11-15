@@ -25,3 +25,5 @@ from nomad.metainfo import Package
 
 
 m_package = Package()
+
+m_package.__init_metainfo__()

@@ -149,3 +149,6 @@ class Calculation(runschema.calculation.Calculation):
     x_molcas_section_frequency = SubSection(
         sub_section=SectionProxy('x_molcas_section_frequency'), repeats=True
     )
+
+
+m_package.__init_metainfo__()

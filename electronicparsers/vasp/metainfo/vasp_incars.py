@@ -3426,3 +3426,6 @@ class Method(runschema.method.Method):
         """,
         categories=[x_vasp_incar_param],
     )
+
+
+m_package.__init_metainfo__()

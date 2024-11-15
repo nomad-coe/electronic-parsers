@@ -767,3 +767,6 @@ class KMesh(runschema.method.KMesh):
         description="""
         """,
     )
+
+
+m_package.__init_metainfo__()

@@ -272,3 +272,6 @@ class ScfIteration(runschema.calculation.ScfIteration):
     x_soliddmft_observables = SubSection(
         sub_section=x_soliddmft_observables_parameters.m_def, repeats=True
     )
+
+
+m_package.__init_metainfo__()

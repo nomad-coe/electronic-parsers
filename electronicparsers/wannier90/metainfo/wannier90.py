@@ -54,3 +54,6 @@ class Run(runschema.run.Run):
         Bohr, respectively. The default value is Ang.
         """,
     )
+
+
+m_package.__init_metainfo__()

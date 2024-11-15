@@ -2940,3 +2940,6 @@ class Run(runschema.run.Run):
         sub_section=SectionProxy('x_exciting_section_geometry_optimization'),
         repeats=True,
     )
+
+
+m_package.__init_metainfo__()

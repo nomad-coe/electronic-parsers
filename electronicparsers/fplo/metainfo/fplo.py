@@ -186,3 +186,5 @@ class Method(runschema.method.Method):
 #         description='''
 #         FPLO: Atom/Orbital dependent DFT+U property: value F6
 #         ''')
+
+m_package.__init_metainfo__()

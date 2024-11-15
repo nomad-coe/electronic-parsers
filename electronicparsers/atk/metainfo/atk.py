@@ -69,3 +69,6 @@ class Method(method.Method):
         Monkhorstpack grid sampling
         """,
     )
+
+
+m_package.__init_metainfo__()

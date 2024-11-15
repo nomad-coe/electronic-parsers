@@ -167,3 +167,6 @@ class GW(runschema.method.GW):
         Input parameters used in the "response functions".
         """,
     )
+
+
+m_package.__init_metainfo__()

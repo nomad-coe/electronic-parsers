@@ -10731,3 +10731,6 @@ class Run(runschema.run.Run):
     x_cpmd_section_input = SubSection(
         sub_section=SectionProxy('x_cpmd_section_input'), repeats=True
     )
+
+
+m_package.__init_metainfo__()

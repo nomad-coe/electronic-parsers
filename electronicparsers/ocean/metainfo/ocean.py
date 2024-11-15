@@ -408,3 +408,6 @@ class Program(runschema.run.Program):
         DFT code (QuantumESPRESSO or ABINIT) used in the initial step.
         """,
     )
+
+
+m_package.__init_metainfo__()

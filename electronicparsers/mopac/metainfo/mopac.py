@@ -77,3 +77,6 @@ class Method(runschema.method.Method):
         description="""
         """,
     )
+
+
+m_package.__init_metainfo__()

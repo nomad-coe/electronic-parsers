@@ -773,3 +773,6 @@ class Calculation(runschema.calculation.Calculation):
         Estimated fundamental indirect gap final
         """,
     )
+
+
+m_package.__init_metainfo__()

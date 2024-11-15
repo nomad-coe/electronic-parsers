@@ -69,3 +69,6 @@ class Run(runschema.run.Run):
         octopus svn revision
         """,
     )
+
+
+m_package.__init_metainfo__()

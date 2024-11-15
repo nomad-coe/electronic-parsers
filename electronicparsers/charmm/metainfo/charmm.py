@@ -1929,3 +1929,6 @@ class Calculation(runschema.calculation.Calculation):
         sub_section=SectionProxy('x_charmm_section_single_configuration_calculation'),
         repeats=True,
     )
+
+
+m_package.__init_metainfo__()

@@ -575,3 +575,6 @@ class Method(runschema.method.Method):
     x_yambo_dipoles = SubSection(sub_section=x_yambo_dipoles.m_def, repeats=True)
 
     x_yambo_dyson = SubSection(sub_section=x_yambo_dyson.m_def, repeats=True)
+
+
+m_package.__init_metainfo__()

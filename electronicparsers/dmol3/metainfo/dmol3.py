@@ -662,3 +662,6 @@ class VibrationalFrequencies(runschema.calculation.VibrationalFrequencies):
         description="""
         """,
     )
+
+
+m_package.__init_metainfo__()

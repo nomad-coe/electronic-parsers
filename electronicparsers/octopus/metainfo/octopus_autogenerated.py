@@ -11645,3 +11645,6 @@ class Run(runschema.run.Run):
         """,
         categories=[x_octopus_parserlog],
     )
+
+
+m_package.__init_metainfo__()

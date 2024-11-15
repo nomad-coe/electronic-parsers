@@ -725,3 +725,6 @@ class System(runschema.system.System):
         Multipole precision parameter for PCEEM embedding
         """,
     )
+
+
+m_package.__init_metainfo__()

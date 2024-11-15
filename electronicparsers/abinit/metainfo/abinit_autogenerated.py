@@ -6792,3 +6792,6 @@ class Run(runschema.run.Run):
     x_abinit_section_dataset = SubSection(
         sub_section=x_abinit_section_dataset.m_def, repeats=True
     )
+
+
+m_package.__init_metainfo__()

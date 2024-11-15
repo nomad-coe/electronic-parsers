@@ -3441,3 +3441,6 @@ class AtomParameters(runschema.method.AtomParameters):
         Temporary storing atom name
         """,
     )
+
+
+m_package.__init_metainfo__()

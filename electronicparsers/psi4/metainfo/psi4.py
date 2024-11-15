@@ -370,3 +370,6 @@ class Calculation(runschema.calculation.Calculation):
     x_psi4_root_information = SubSection(
         sub_section=x_psi4_root_information.m_def, repeats=True
     )
+
+
+m_package.__init_metainfo__()

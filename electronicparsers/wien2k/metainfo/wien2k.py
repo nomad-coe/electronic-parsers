@@ -781,3 +781,6 @@ class Method(runschema.method.Method):
     x_wien2k_section_XC = SubSection(
         sub_section=SectionProxy('x_wien2k_section_XC'), repeats=True
     )
+
+
+m_package.__init_metainfo__()

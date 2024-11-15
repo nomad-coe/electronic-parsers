@@ -84,3 +84,6 @@ class Method(runschema.method.Method):
         """,
         categories=[vasp_incarsOut.x_vasp_incarOut_param],
     )
+
+
+m_package.__init_metainfo__()

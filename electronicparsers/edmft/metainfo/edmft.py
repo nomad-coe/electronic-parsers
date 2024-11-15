@@ -94,3 +94,6 @@ class GreensFunctions(runschema.calculation.GreensFunctions):
         where s_oo is the parsed function.
         """,
     )
+
+
+m_package.__init_metainfo__()

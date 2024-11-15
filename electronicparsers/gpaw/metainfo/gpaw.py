@@ -212,3 +212,6 @@ class Method(runschema.method.Method):
     x_gpaw_section_paw_method = SubSection(
         sub_section=SectionProxy('x_gpaw_section_paw_method'), repeats=True
     )
+
+
+m_package.__init_metainfo__()

@@ -1446,3 +1446,6 @@ class Run(runschema.run.Run):
         description="""
         """,
     )
+
+
+m_package.__init_metainfo__()

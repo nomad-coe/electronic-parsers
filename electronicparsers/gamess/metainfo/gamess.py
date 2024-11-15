@@ -835,3 +835,6 @@ class Energy(runschema.calculation.Energy):
         description="""
         """,
     )
+
+
+m_package.__init_metainfo__()

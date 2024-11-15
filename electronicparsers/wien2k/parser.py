@@ -1127,18 +1127,20 @@ class Wien2kParser:
                         atom_obj = AtomParameters()
                         atom_obj.atom_index = atom_index
                         atom_obj.core_hole = CoreHole(
-                            j_quantum_number = j_quantum_number,
-                            l_quantum_number = l_quantum_number,
-                            n_quantum_number = n_quantum_number,
-                            n_electrons_excited = electrons_excited,
-                            occupation = occupancy,
-                            dscf_state = 'final',
+                            j_quantum_number=j_quantum_number,
+                            l_quantum_number=l_quantum_number,
+                            n_quantum_number=n_quantum_number,
+                            n_electrons_excited=electrons_excited,
+                            occupation=occupancy,
+                            dscf_state='final',
                         )
                         atom_par.append(atom_obj)
                         break
         else:
-            self.logger.warning("inc file is missing, no corehole information "
-                                "will be parsed if corehole present.")
+            self.logger.warning(
+                'inc file is missing, no corehole information '
+                'will be parsed if corehole present.'
+            )
         # basis
         if self.in1_parser.mainfile:
             self.in1_parser.parse()

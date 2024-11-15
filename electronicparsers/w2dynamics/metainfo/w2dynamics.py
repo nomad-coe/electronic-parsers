@@ -1268,3 +1268,6 @@ class Run(runschema.run.Run):
     x_w2dynamics_axes = SubSection(sub_section=x_w2dynamics_axes.m_def, repeats=False)
 
     # TODO add config, environment variables
+
+
+m_package.__init_metainfo__()

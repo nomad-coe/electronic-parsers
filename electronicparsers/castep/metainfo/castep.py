@@ -2479,3 +2479,6 @@ class BandStructure(runschema.calculation.BandStructure):
     x_castep_section_k_points = SubSection(
         sub_section=SectionProxy('x_castep_section_k_points'), repeats=True
     )
+
+
+m_package.__init_metainfo__()

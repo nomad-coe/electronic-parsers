@@ -488,3 +488,6 @@ class Energy(runschema.calculation.Energy):
     x_qbox_efield = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 
     x_qbox_enthalpy = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
+
+
+m_package.__init_metainfo__()

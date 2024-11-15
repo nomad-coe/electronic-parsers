@@ -2742,3 +2742,6 @@ class Method(runschema.method.Method):
     m_def = Section(validate=False)
 
     x_fplo_in = SubSection(sub_section=SectionProxy('x_fplo_in'), repeats=True)
+
+
+m_package.__init_metainfo__()

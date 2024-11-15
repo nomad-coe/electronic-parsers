@@ -59183,3 +59183,6 @@ class Run(runschema.run.Run):
     x_cp2k_section_input = SubSection(
         sub_section=SectionProxy('x_cp2k_section_input'), repeats=True
     )
+
+
+m_package.__init_metainfo__()

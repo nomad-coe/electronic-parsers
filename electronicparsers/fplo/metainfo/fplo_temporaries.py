@@ -317,3 +317,6 @@ class ScfIteration(runschema.calculation.ScfIteration):
         Temporary storage for FPLO Fermi energy in iteration
         """,
     )
+
+
+m_package.__init_metainfo__()

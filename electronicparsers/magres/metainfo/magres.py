@@ -108,3 +108,6 @@ class SpinSpinCoupling(BaseSpinSpinCoupling):
         on the list `System.atoms.labels`.
         """,
     )
+
+
+m_package.__init_metainfo__()

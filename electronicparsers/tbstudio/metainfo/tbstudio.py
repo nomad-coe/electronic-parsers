@@ -32,3 +32,5 @@ from nomad.metainfo import (  # pylint: disable=unused-import
 
 
 m_package = Package()
+
+m_package.__init_metainfo__()
