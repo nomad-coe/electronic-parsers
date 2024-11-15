@@ -301,7 +301,7 @@ class Method(runschema.run.Method):
     approximations (convergence, thresholds, etc.) behind the calculation.
     """
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ocean_bse = SubSection(sub_section=x_ocean_bse_parameters.m_def, repeats=False)
 
@@ -381,7 +381,7 @@ class Calculation(runschema.run.Calculation):
     can be accessed in section workflow.
     """
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ocean_lanczos = SubSection(
         sub_section=x_ocean_lanczos_results.m_def, repeats=True
@@ -393,7 +393,7 @@ class Program(runschema.run.Program):
     Contains the specifications of the program.
     """
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ocean_commit_hash = Quantity(
         type=str,

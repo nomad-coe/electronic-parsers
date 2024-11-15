@@ -39,7 +39,7 @@ m_package = Package()
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fplo_program_version_sub = Quantity(
         type=str,
@@ -59,7 +59,7 @@ class Run(runschema.run.Run):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fplo_reciprocal_cell = Quantity(
         type=np.float64,
@@ -106,7 +106,7 @@ class System(runschema.system.System):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fplo_xc_functional_number = Quantity(
         type=np.int32,
@@ -143,7 +143,7 @@ class Method(runschema.method.Method):
 
 # class HubbardModel(runschema.method.HubbardModel):
 
-#     m_def = Section(validate=False, extends_base_section=True)
+#     m_def = Section(validate=False)
 
 #     x_fplo_dft_plus_u_orbital_element = Quantity(
 #         type=str,

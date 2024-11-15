@@ -497,7 +497,7 @@ class x_qe_t_section_input_occupations(MSection):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qe_extra_SCF = Quantity(
         type=bool,
@@ -1442,7 +1442,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qe_program_name = Quantity(
         type=str,
@@ -1614,7 +1614,7 @@ class Run(runschema.run.Run):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qe_t_species_dispersion_correction_label = Quantity(
         type=str,
@@ -2368,7 +2368,7 @@ class Method(runschema.method.Method):
 
 
 class AtomParameters(runschema.method.AtomParameters):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qe_dispersion_correction_vdw_radius = Quantity(
         type=np.float64,
@@ -2564,7 +2564,7 @@ class AtomParameters(runschema.method.AtomParameters):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qe_ibrav = Quantity(
         type=np.int32,
@@ -3073,7 +3073,7 @@ class System(runschema.system.System):
 
 
 class Functional(runschema.method.Functional):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qe_xc_name = Quantity(
         type=str,
@@ -3109,7 +3109,7 @@ class Functional(runschema.method.Functional):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qe_t_iter_mpersite_idx = Quantity(
         type=np.int32,
@@ -3285,7 +3285,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class BandEnergies(runschema.calculation.BandEnergies):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qe_eigenvalues_number_of_planewaves = Quantity(
         type=np.int32,

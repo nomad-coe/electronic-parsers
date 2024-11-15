@@ -39,7 +39,7 @@ m_package = Package()
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_psi4_git_rev = Quantity(
         type=str,
@@ -86,7 +86,7 @@ class Run(runschema.run.Run):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_psi4_molecular_point_group = Quantity(
         type=str,
@@ -161,7 +161,7 @@ class System(runschema.system.System):
 
 
 class Scf(runschema.method.Scf):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_psi4_diis = Quantity(
         type=bool,
@@ -200,7 +200,7 @@ class Scf(runschema.method.Scf):
 
 
 class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_psi4_blend = Quantity(
         type=str,
@@ -255,7 +255,7 @@ class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_psi4_scf_algorithm_type = Quantity(
         type=str,
@@ -315,7 +315,7 @@ class Method(runschema.method.Method):
 
 
 class DFT(runschema.method.DFT):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_psi4_molecular_quadrature = Quantity(
         type=typing.Any,
@@ -337,7 +337,7 @@ class x_psi4_root_information(MSection):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_psi4_s2_expected = Quantity(
         type=np.float64,

@@ -10726,7 +10726,7 @@ class x_cpmd_section_input(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cpmd_section_input = SubSection(
         sub_section=SectionProxy('x_cpmd_section_input'), repeats=True

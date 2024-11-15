@@ -405,7 +405,7 @@ class x_gamess_section_tddft(MSection):
 
 
 class BandEnergies(runschema.calculation.BandEnergies):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_gamess_alpha_eigenvalues_values = Quantity(
         type=str,
@@ -425,7 +425,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_gamess_atom_positions_initial = Quantity(
         type=np.float64,
@@ -508,7 +508,7 @@ class System(runschema.system.System):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_gamess_basis_set_diffsp = Quantity(
         type=str,
@@ -720,7 +720,7 @@ class Method(runschema.method.Method):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_gamess_program_execution_date = Quantity(
         type=str,
@@ -745,7 +745,7 @@ class Run(runschema.run.Run):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_gamess_energy_scf = Quantity(
         type=np.float64,
@@ -769,7 +769,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_gamess_section_atom_forces = SubSection(
         sub_section=SectionProxy('x_gamess_section_atom_forces'), repeats=True
@@ -809,7 +809,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Energy(runschema.calculation.Energy):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_gamess_virial_ratio = Quantity(
         type=np.float64,

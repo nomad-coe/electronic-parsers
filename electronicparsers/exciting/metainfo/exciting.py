@@ -792,7 +792,7 @@ class x_exciting_scrcoul_parameters(MSection):
 
 
 class GW(runschema.method.GW):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_exciting_coreflag = Quantity(
         type=str,
@@ -1153,7 +1153,7 @@ class x_exciting_loss_calculation(MSection):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_exciting_atom_forces = Quantity(
         type=np.float64,
@@ -1714,7 +1714,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_exciting_brillouin_zone_volume = Quantity(
         type=np.float64,
@@ -2146,7 +2146,7 @@ class x_exciting_section_MT_moment_atom(MSection):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_exciting_charge_convergence = Quantity(
         type=np.float64,
@@ -2419,7 +2419,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_exciting_dummy = Quantity(
         type=np.int32,
@@ -2926,7 +2926,7 @@ class Method(runschema.method.Method):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_exciting_dummy2 = Quantity(
         type=str,

@@ -1404,7 +1404,7 @@ class x_charmm_section_single_configuration_calculation(MSection):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_charmm_atom_positions_image_index = Quantity(
         type=np.int32,
@@ -1515,7 +1515,7 @@ class System(runschema.system.System):
 
 
 class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_charmm_barostat_target_pressure = Quantity(
         type=np.float64,
@@ -1621,7 +1621,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
 
 
 class AtomParameters(runschema.method.AtomParameters):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_charmm_atom_name = Quantity(
         type=str,
@@ -1673,7 +1673,7 @@ class AtomParameters(runschema.method.AtomParameters):
 
 
 class Interaction(runschema.method.Interaction):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_charmm_interaction_atom_to_atom_type_ref = Quantity(
         type=runschema.method.AtomParameters,
@@ -1747,7 +1747,7 @@ class Interaction(runschema.method.Interaction):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_charmm_program_version_date = Quantity(
         type=str,
@@ -1923,7 +1923,7 @@ class Run(runschema.run.Run):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_charmm_section_single_configuration_calculation = SubSection(
         sub_section=SectionProxy('x_charmm_section_single_configuration_calculation'),

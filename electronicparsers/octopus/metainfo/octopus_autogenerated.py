@@ -55,7 +55,7 @@ class x_octopus_parserlog(MCategory):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_octopus_input_ABCapHeight = Quantity(
         type=np.float64,

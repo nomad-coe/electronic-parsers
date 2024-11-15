@@ -187,7 +187,7 @@ class BasisSet(runschema.method.BasisSet):
     section for numerical atomic orbitals of ABACUS
     """
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abacus_basis_sets_delta_k = Quantity(
         type=np.float64,
@@ -232,7 +232,7 @@ class BasisSet(runschema.method.BasisSet):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abacus_init_velocities = Quantity(
         type=bool,
@@ -321,7 +321,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abacus_input_filename = Quantity(
         type=str,
@@ -396,7 +396,7 @@ class Run(runschema.run.Run):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abacus_initial_magnetization_total = Quantity(
         type=np.float64,
@@ -613,7 +613,7 @@ class Method(runschema.method.Method):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abacus_alat = Quantity(
         type=np.float64,
@@ -693,7 +693,7 @@ class System(runschema.system.System):
 
 
 class Symmetry(runschema.system.Symmetry):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abacus_ibrav = Quantity(
         type=np.int32,
@@ -737,7 +737,7 @@ class Symmetry(runschema.system.Symmetry):
 
 
 class AtomParameters(runschema.method.AtomParameters):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abacus_pp_type = Quantity(
         type=str,
@@ -781,7 +781,7 @@ class AtomParameters(runschema.method.AtomParameters):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abacus_density_change_scf_iteration = Quantity(
         type=np.float64,
@@ -822,7 +822,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class BandEnergies(runschema.calculation.BandEnergies):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abacus_eigenvalues_number_of_planewaves = Quantity(
         type=np.int32,

@@ -1186,7 +1186,7 @@ class Method(runschema.method.Method):
     approximations (convergence, thresholds, etc.) behind the calculation.
     """
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_w2dynamics_config = SubSection(
         sub_section=x_w2dynamics_config_parameters.m_def, repeats=False
@@ -1199,7 +1199,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     and gives detailed information on the SCF procedure of the specified quantities.
     """
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_w2dynamics_dc_latt = Quantity(
         type=HDF5Reference,
@@ -1263,7 +1263,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_w2dynamics_axes = SubSection(sub_section=x_w2dynamics_axes.m_def, repeats=False)
 

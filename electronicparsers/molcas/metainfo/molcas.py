@@ -104,7 +104,7 @@ class x_molcas_section_basis(MSection):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_molcas_method_name = Quantity(
         type=str,
@@ -128,7 +128,7 @@ class Method(runschema.method.Method):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_molcas_slapaf_grad_norm = Quantity(
         type=np.float64,

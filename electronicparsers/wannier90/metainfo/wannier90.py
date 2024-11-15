@@ -35,7 +35,7 @@ m_package = Package()
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_wannier90_n_atoms_proj = Quantity(
         type=np.int32,

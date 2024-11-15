@@ -71,7 +71,7 @@ class x_dmol3_section_mulliken_population(MSection):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_dmol3_aux_density = Quantity(
         type=str,
@@ -387,7 +387,7 @@ class Method(runschema.method.Method):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_dmol3_binding_energy_scf_iteration = Quantity(
         type=np.float64,
@@ -424,7 +424,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class BandEnergies(runschema.calculation.BandEnergies):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_dmol3_eigenvalue_eigenvalue = Quantity(
         type=np.float64,
@@ -445,7 +445,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_dmol3_geometry_atom_labels = Quantity(
         type=str,
@@ -484,7 +484,7 @@ class System(runschema.system.System):
 
 
 class Program(runschema.run.Program):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_dmol3_compilation_date = Quantity(
         type=str,
@@ -496,7 +496,7 @@ class Program(runschema.run.Program):
 
 
 class Energy(runschema.calculation.Energy):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_dmol3_binding = SubSection(
         sub_section=runschema.calculation.EnergyEntry.m_def,
@@ -507,7 +507,7 @@ class Energy(runschema.calculation.Energy):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_dmol3_h_trans = Quantity(
         type=np.float64,
@@ -647,7 +647,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class VibrationalFrequencies(runschema.calculation.VibrationalFrequencies):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     n_atoms = Quantity(
         type=np.int32,

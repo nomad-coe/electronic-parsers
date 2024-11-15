@@ -192,7 +192,7 @@ class x_elk_section_xc(MSection):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_elk_brillouin_zone_volume = Quantity(
         type=np.float64,
@@ -464,7 +464,7 @@ class Method(runschema.method.Method):
 
 
 class Energy(runschema.calculation.Energy):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_elk_fermi_energy = Quantity(
         type=np.float64,
@@ -594,7 +594,7 @@ class Energy(runschema.calculation.Energy):
 
 
 class Charges(runschema.calculation.Charges):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_elk_core_charge = Quantity(
         type=np.float64,
@@ -622,7 +622,7 @@ class Charges(runschema.calculation.Charges):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_elk_core_charge_final = Quantity(
         type=np.float64,

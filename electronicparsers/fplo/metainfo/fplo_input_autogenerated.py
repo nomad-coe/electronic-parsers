@@ -2739,6 +2739,6 @@ class x_fplo_in_Advanced_output_optics_energy(MSection):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fplo_in = SubSection(sub_section=SectionProxy('x_fplo_in'), repeats=True)

@@ -41,7 +41,7 @@ class Method(runschema.run.Method):
     Contains the specifications of the method.
     """
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_soliddmft_dft_input = Quantity(
         type=JSON,
@@ -101,7 +101,7 @@ class Program(runschema.run.Program):
     Contains the specifications of the program.
     """
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_soliddmft_hash = Quantity(
         type=str,
@@ -251,7 +251,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
     and gives detailed information on the SCF procedure of the specified quantities.
     """
 
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_soliddmft_convergence_obs = Quantity(
         type=JSON,

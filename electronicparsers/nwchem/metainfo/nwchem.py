@@ -308,7 +308,7 @@ class x_nwchem_section_qmd_step(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_nwchem_section_start_information = SubSection(
         sub_section=SectionProxy('x_nwchem_section_start_information'), repeats=True
@@ -328,7 +328,7 @@ class Run(runschema.run.Run):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_nwchem_xc_functional_shortcut = Quantity(
         type=str,
@@ -352,7 +352,7 @@ class Method(runschema.method.Method):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_nwchem_energy_one_electron = Quantity(
         type=np.float64,
@@ -384,7 +384,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_nwchem_qmd_number_of_nuclear_steps = Quantity(
         type=np.int32,
@@ -452,7 +452,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_nwchem_reciprocal_simulation_cell = Quantity(
         type=np.float64,

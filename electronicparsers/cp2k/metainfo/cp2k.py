@@ -59178,7 +59178,7 @@ class x_cp2k_section_input(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cp2k_section_input = SubSection(
         sub_section=SectionProxy('x_cp2k_section_input'), repeats=True

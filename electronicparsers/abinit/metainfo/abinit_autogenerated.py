@@ -6787,7 +6787,7 @@ class x_abinit_section_dataset(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_abinit_section_dataset = SubSection(
         sub_section=x_abinit_section_dataset.m_def, repeats=True

@@ -39,7 +39,7 @@ m_package = Package()
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_crystal_family = Quantity(
         type=str,
@@ -83,7 +83,7 @@ class System(runschema.system.System):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_crystal_scf_ee = Quantity(
         type=np.float64,
@@ -123,7 +123,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_crystal_run_title = Quantity(
         type=str,
@@ -215,7 +215,7 @@ class Run(runschema.run.Run):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_crystal_convergence_deltap = Quantity(
         type=np.float64,
@@ -577,7 +577,7 @@ class Method(runschema.method.Method):
 
 
 class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_crystal_section_shell = SubSection(
         sub_section=SectionProxy('x_crystal_section_shell'), repeats=True

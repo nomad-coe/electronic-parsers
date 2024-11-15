@@ -230,7 +230,7 @@ class x_qbox_section_xml_file(MSection):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qbox_atom_force_x = Quantity(
         type=np.float64,
@@ -323,7 +323,7 @@ class System(runschema.system.System):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qbox_atoms_dyn = Quantity(
         type=str,
@@ -435,7 +435,7 @@ class Method(runschema.method.Method):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qbox_nodename = Quantity(
         type=str,
@@ -455,7 +455,7 @@ class Run(runschema.run.Run):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qbox_section_stress_tensor = SubSection(
         sub_section=SectionProxy('x_qbox_section_stress_tensor'), repeats=True
@@ -467,7 +467,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Energy(runschema.calculation.Energy):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_qbox_conf = SubSection(sub_section=runschema.calculation.EnergyEntry.m_def)
 

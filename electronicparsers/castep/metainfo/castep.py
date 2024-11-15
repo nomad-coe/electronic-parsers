@@ -1754,7 +1754,7 @@ class x_castep_section_van_der_Waals_parameters(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_castep_atom_forces = Quantity(
         type=np.float64,
@@ -2017,7 +2017,7 @@ class Run(runschema.run.Run):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_castep_net_charge = Quantity(
         type=np.float64,
@@ -2165,7 +2165,7 @@ class System(runschema.system.System):
 
 
 class BasisSet(runschema.method.BasisSet):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_castep_size_std_grid = Quantity(
         type=np.float64,
@@ -2185,7 +2185,7 @@ class BasisSet(runschema.method.BasisSet):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_castep_enthalpy = Quantity(
         type=np.float64,
@@ -2299,7 +2299,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_castep_functional_and_weight = Quantity(
         type=str,
@@ -2323,7 +2323,7 @@ class Method(runschema.method.Method):
 
 
 class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_castep_thermostat_target_temperature = Quantity(
         type=np.float64,
@@ -2413,7 +2413,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
 
 
 class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMethod):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_castep_geometry_stress_com_tolerance = Quantity(
         type=np.float64,
@@ -2434,7 +2434,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
 
 
 class BandStructure(runschema.calculation.BandStructure):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_castep_k_path = Quantity(
         type=np.float64,

@@ -40,7 +40,7 @@ m_package = Package()
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_mopac_fhof = Quantity(
         type=np.float64,
@@ -53,7 +53,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_mopac_keyword_line = Quantity(
         type=str,

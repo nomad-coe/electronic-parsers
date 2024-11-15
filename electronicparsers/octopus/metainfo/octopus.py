@@ -39,7 +39,7 @@ m_package = Package()
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_octopus_info_energy_ion_ion = Quantity(
         type=np.dtype(np.float64),
@@ -52,7 +52,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_octopus_info_scf_converged_iterations = Quantity(
         type=np.dtype(np.int32),

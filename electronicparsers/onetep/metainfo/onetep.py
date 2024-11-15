@@ -2325,7 +2325,7 @@ class x_onetep_section_orbital_information(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_atom_forces = Quantity(
         type=np.float64,
@@ -2710,7 +2710,7 @@ class Run(runschema.run.Run):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_net_charge = Quantity(
         type=np.float64,
@@ -2878,7 +2878,7 @@ class System(runschema.system.System):
 
 
 class BasisSet(runschema.method.BasisSet):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_size_std_grid = Quantity(
         type=np.float64,
@@ -2898,7 +2898,7 @@ class BasisSet(runschema.method.BasisSet):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_enthalpy = Quantity(
         type=np.float64,
@@ -3184,7 +3184,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Energy(runschema.calculation.Energy):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_pseudopotential_local = SubSection(
         sub_section=runschema.calculation.EnergyEntry.m_def
@@ -3196,7 +3196,7 @@ class Energy(runschema.calculation.Energy):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_functional_and_weight = Quantity(
         type=str,
@@ -3227,7 +3227,7 @@ class Method(runschema.method.Method):
 
 
 class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     geometry_optimization_frequency_tol = Quantity(
         type=np.float64,
@@ -3256,7 +3256,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
 
 
 class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_thermostat_target_temperature = Quantity(
         type=np.float64,
@@ -3340,7 +3340,7 @@ class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
 
 
 class BandStructure(runschema.calculation.BandStructure):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_k_path = Quantity(
         type=np.float64,
@@ -3380,7 +3380,7 @@ class BandStructure(runschema.calculation.BandStructure):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_scf_rms_gradient = Quantity(
         type=np.float64,
@@ -3392,7 +3392,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class AtomParameters(runschema.method.AtomParameters):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_onetep_store_atom_mass = Quantity(
         type=str,

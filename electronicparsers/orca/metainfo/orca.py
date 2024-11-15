@@ -126,7 +126,7 @@ class x_orca_section_functionals(MSection):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_orca_1_elect_energy_change = Quantity(
         type=np.float64,
@@ -582,7 +582,7 @@ class Method(runschema.method.Method):
 
 
 class Scf(runschema.method.Scf):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_orca_last_max_density_change = Quantity(
         type=np.float64,
@@ -593,7 +593,7 @@ class Scf(runschema.method.Scf):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_orca_angular_grid_final = Quantity(
         type=str,
@@ -709,7 +709,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_orca_atom_positions = SubSection(
         sub_section=SectionProxy('x_orca_atom_positions'), repeats=True
@@ -717,7 +717,7 @@ class System(runschema.system.System):
 
 
 class BasisSet(runschema.method.BasisSet):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_orca_auxiliary_basis_set_contracted = Quantity(
         type=str,
@@ -854,7 +854,7 @@ class BasisSet(runschema.method.BasisSet):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_orca_basis_fn_evaluation = Quantity(
         type=np.float64,
@@ -1257,7 +1257,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_orca_coords_choice_name = Quantity(
         type=str,
@@ -1377,7 +1377,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
 
 
 class Spectra(runschema.calculation.Spectra):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_orca_excitation_energy = Quantity(
         type=np.float64,
@@ -1416,7 +1416,7 @@ class Spectra(runschema.calculation.Spectra):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_orca_program_compilation_date = Quantity(
         type=str,
