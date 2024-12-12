@@ -3207,11 +3207,11 @@ class QuantumEspressoParser:
             'damped_dynamics': 'geometry_optimization',
             'vcs_wentzcovitch_damped_minimization': 'geometry_optimization',
         }
-        for method in methods:
-            sampling = run.get(method)
+        for key, val in methods.items():
+            sampling = run.get(key)
             if sampling is not None:
-                self.sampling_method = methods[method]
-                if method.startswith('vcs') and sampling.get('dynamics') is not None:
+                self.sampling_method = val
+                if key.startswith('vcs') and sampling.get('dynamics') is not None:
                     self.sampling_method = 'molecular_dynamics'
                 for calculation in sampling.get('self_consistent', []):
                     parse_configuration(calculation)
