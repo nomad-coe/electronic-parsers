@@ -36,6 +36,8 @@ from datetime import datetime
 import ase
 import re
 from xml.sax import ContentHandler, make_parser  # type: ignore
+import h5py
+from io import StringIO, BytesIO
 
 from nomad.utils import get_logger
 from nomad.units import ureg
@@ -135,7 +137,7 @@ def convert(val, dtype):
             return val
 
 
-class PotParser(TextParser):
+class POTCARParser(TextParser):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -261,9 +263,6 @@ class ContentParser:
         self._n_bands = None
         self._n_dos = None
 
-    def reuse_parser(self, parser):
-        self.parser.quantities = parser.parser.quantities
-
     def _fix_incar(self, incar):
         # fix for LORBIT, list is read
         lorbit = incar.get('LORBIT', None)
@@ -276,10 +275,16 @@ class ContentParser:
                 incar[key] = [val]
 
     def get_incar(self):
-        pass
+        if self._incar is not None and self._incar.get('incar'):
+            return self._incar['incar']
+
+        return self._incar.setdefault('incar', {})
 
     def get_incar_out(self):
-        pass
+        if self._incar is not None and self._incar.get('incar'):
+            return self._incar['incar']
+
+        return self._incar.setdefault('incar_out', {})
 
     # why make a distinction between incar_in and incar_out?
     @property
@@ -312,31 +317,37 @@ class ContentParser:
         return False
 
     def get_pseudopotential(
-        self, filepath
+        self, *args
     ):  # TODO: combine with its vasprun.xml counterpart
         """Extract the pseudo-potential headers from an input file,
         and return them as a list of keyword mappings.
         Each element of the list corresponds to a pseudo-potential."""
 
-        def _to_dict(key_val: list[list[str]], transform=lambda x: x) -> dict[str, Any]:
-            """Convert a list of string pairs to a dictionary.
-            Key: first of the pairs
-            Value: second of the pairs, with the `transform` function applied
-            """
-            return {x[0]: transform(x[1]) for x in key_val}
+        potcar_parser = POTCARParser()
+        f = args[0]
+        if isinstance(f, str):
+            potcar_parser.mainfile = f
+        else:
+            potcar_parser._file_handler = f.read()
 
-        bool_mapping = {'T': True, 'F': False}
-        pps = PotParser(filepath).parse().get('pseudopotential', [])
-        pps_out = []
-        for pp in pps:
-            pps_out.append({'title': pp['title']})
-            pps_out[-1]['flag'] = _to_dict(
-                pp['flag'], transform=lambda x: bool_mapping[x]
+        pps = []
+        for source in potcar_parser.parse().pseudopotential or []:
+            pps.append(
+                dict(
+                    title=source.title,
+                    flag={
+                        key: val.startswith('T')
+                        for key, val in source.flag or []
+                        if val
+                    },
+                    number={key: float(val) for key, val in source.number or [] if val},
+                )
             )
-            pps_out[-1]['number'] = _to_dict(pp['number'], transform=lambda x: float(x))
-        return pps_out
+        return pps
 
-    def _get_tier(self, raw_data: Union[str, None], type='native') -> Union[str, None]:
+    def get_tier(
+        self, raw_data: Union[str, None] = None, type='native'
+    ) -> Union[str, None]:
         """Extract the tier from a string, and return it in a standardized format.
         - `raw_data`: the string to extract the tier from
         - `type`: the standardized output format, either `native` to VASP,
@@ -349,6 +360,34 @@ class ContentParser:
                     if tier.startswith(tier_name.lower()):
                         return tier
         return None
+
+    def get_basis_parameters(self):
+        basis = {}
+        for tag in ['ENMAX', 'ENAUG']:
+            cutoff = self.incar.get(tag)
+            if cutoff:
+                basis[tag] = cutoff
+        basis['ICORELEVEL'] = self.incar.get('ICORELEVEL', 0)
+        return basis
+
+    def get_n_ions_poscar(self, f):
+        for _ in range(7):
+            line = f.readline()
+            try:
+                return [int(n) for n in line.split()]
+            except Exception:
+                pass
+        return []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self._close()
+
+    def _close(self):
+        if self.parser:
+            self.parser.close()
 
 
 class OutcarTextParser(TextParser):
@@ -749,12 +788,8 @@ class OutcarContentParser(ContentParser):
                 )
                 if os.path.isfile(path):
                     with open(path) as f:
-                        for _ in range(7):
-                            line = f.readline()
-                            try:
-                                ions = [int(n) for n in line.split()]
-                            except Exception:
-                                pass
+                        ions = self.get_n_ions_poscar(f)
+
             ions = [i for i in ions if not isinstance(i, str)]
             if len(ions) != len(species):
                 self.parser.logger.error('Inconsistent number of ions and species.')
@@ -825,29 +860,18 @@ class OutcarContentParser(ContentParser):
 
         return dict(cell=cell, positions=positions, selective=selective, nose=nose)
 
-    def get_basis_set(self) -> list[BasisSet]:
-        sec_bases: list[BasisSet] = []
-        for tag in ('ENCUT', 'ENAUG'):
-            cutoff_value = self.parser.get('parameters', {}).get(tag)
-            sec_basis = BasisSet(
-                type='plane waves',
-                frozen_core=False
-                if self.parser.results.get('parameters', {}).get('ICORELEVEL', 0) == 1
-                else True,
-            )  # TODO: write the core eigenvalues to calculation + display them?
-            if cutoff_value:
-                sec_basis.cutoff = cutoff_value * ureg.eV  # based on examples
-            if tag == 'ENCUT':
-                sec_basis.scope = ['valence']
-            elif tag == 'ENAUG':
-                sec_basis.scope = ['augmentation']
-            # TODO: add grid spacing (NGX, NGY, NGZ)?
-            sec_bases.append(sec_basis)
-        return sec_bases
+    def get_basis_parameters(self):
+        basis = {}
+        parameters = self.parser.get('parameters', {})
+        for tag in ['ENCUT', 'ENAUG']:
+            if parameters.get(tag):
+                basis['ENMAX' if tag == 'ENCUT' else tag] = parameters[tag]
+        basis['ICORELEVEL'] = parameters.get('ICORELEVEL', 0)
+        return basis
 
-    def get_tier(self, type='native') -> Union[str, None]:
-        return super()._get_tier(
-            self.parser.get('parameters', {}).get('PREC'), type=type
+    def get_tier(self, type='native', **kwargs) -> Union[str, None]:
+        return super().get_tier(
+            raw_data=self.parser.get('parameters', {}).get('PREC'), type=type
         )
 
     def get_energies(self, n_calc, n_scf):
@@ -1423,36 +1447,18 @@ class RunContentParser(ContentParser):
         potcar_file = os.path.join(self.parser.maindir, 'POTCAR.stripped')
         return super().get_pseudopotential(potcar_file)
 
-    def get_basis_set(self) -> list[BasisSet]:
+    def get_basis_parameters(self):
+        basis = super().get_basis_parameters()
         path = '/modeling[0]/parameters/separator[@name="electronic"]'
-        sec_bases: list[BasisSet] = []
-        for tag in ('ENMAX', 'ENAUG'):
-            cutoff_path = f'{path}/i[@name="{tag}"]'
-            cutoff_value = self._get_key_values(cutoff_path).get(tag)
-            if cutoff_value is not None:
-                sec_basis = BasisSet(
-                    type='plane waves',
-                    cutoff=(
-                        cutoff_value[-1]
-                        if isinstance(cutoff_value, (np.ndarray, list))
-                        else cutoff_value
-                    )
-                    * ureg.eV,  # based on examples
-                    frozen_core=False
-                    if self.get_incar_out().get('ICORELEVEL', 0) == 1
-                    else True,
-                )  # TODO: write the core eigenvalues to calculation + display them?
-                if tag == 'ENMAX':
-                    sec_basis.scope = ['valence']
-                elif tag == 'ENAUG':
-                    sec_basis.scope = ['augmentation']
-                # TODO: add grid spacing (NGX, NGY, NGZ)?
-                sec_bases.append(sec_basis)
-        return sec_bases
+        for tag in ['ENMAX', 'ENAUG']:
+            cutoff = self._get_key_values(f'{path}/i[@name="{tag}"]').get(tag)
+            if cutoff:
+                basis[tag] = cutoff
+        return basis
 
-    def get_tier(self, type='native') -> Union[str, None]:
-        return super()._get_tier(
-            self._get_key_values(
+    def get_tier(self, type='native', **kwargs) -> Union[str, None]:
+        return super().get_tier(
+            raw_data=self._get_key_values(
                 '/modeling[0]/parameters/separator[@name="electronic"]/i[@name="PREC"]'
             )['PREC'][0],
             type=type,
@@ -1619,10 +1625,169 @@ class RunContentParser(ContentParser):
         return self._get_key_values(root)
 
 
+class HDF5FileParser(FileParser):
+    @property
+    def h5file(self):
+        if self._file_handler is None:
+            self._file_handler = h5py.File(self.mainfile)
+        return self._file_handler
+
+    def parse(self, quantity_key=None, **kwargs):
+        # we directly map the contents in the writer
+        return super().parse(quantity_key, **kwargs)
+
+
+class HDF5ContentParser(ContentParser):
+    def __init__(self):
+        super().__init__()
+        self.parser = HDF5FileParser()
+
+    def init_parser(self, filepath, logger):
+        super().init_parser(filepath, logger)
+
+    def get(self, path, default=None):
+        value = self.parser.h5file.get(path)
+        if value:
+            return value[()] if isinstance(value, h5py.Dataset) else value
+        return default
+
+    def get_incar(self):
+        if self._incar is None:
+            self._incar = {}
+        content = self.get('original/incar/content', b'')
+        incar = get_key_values(content.decode())
+        return self._incar.setdefault('incar', incar)
+
+    def get_incar_out(self):
+        if self._incar is None:
+            self._incar = {}
+        incar = {
+            key: val[()] for key, val in self.get('input/incar', {}).items() if val
+        }
+        return self._incar.setdefault('incar_out', incar)
+
+    def get_tier(self, raw_data=None, type='native'):
+        return super().get_tier(raw_data=raw_data, type=type)
+
+    @property
+    def header(self):
+        if self._header is None:
+            self._header = {'program': 'vasp'}
+        return self._header
+
+    @property
+    def n_calculations(self):
+        # TODO determine how vasp outputs calc frames
+        return 1
+
+    @property
+    def kpoints_info(self):
+        if self._kpoints_info is None:
+            self._kpoints_info = {}
+            kpoints = self.get('input/kpoints', {})
+            if kpoints.get('nkpx'):
+                grid = [kpoints.get(f'nkp{k}') for k in ['x', 'y', 'z']]
+                self._kpoints_info['grid'] = [n[()] for n in grid if n]
+
+        return self._kpoints_info
+
+    @property
+    def n_bands(self):
+        return self.get('results/electron_eigenvalues/nb_tot', 0)
+
+    @property
+    def atom_info(self):
+        if self._atom_info is None:
+            ion_ns = self.get('input/poscar/number_ion_types', [])
+            self._atom_info = dict(
+                n_atoms=len(self.get('input/poscar/position_ions', [])),
+                n_types=len(ion_ns),
+            )
+            ion_types = [t.decode() for t in self.get('input/poscar/ion_types', [])]
+            if not len(ion_ns):
+                # read from poscar
+                poscar = self.get('original/poscar/content', 'b').decode()
+                if poscar:
+                    f = StringIO(poscar)
+                    ion_ns = self.get_n_ions_poscar(f)
+            if len(ion_types) == len(ion_ns):
+                element, atom_type = [], []
+                for index, ion_type in enumerate(ion_types):
+                    element.extend([ion_type] * ion_ns[index])
+                    atom_type.extend([index + 1] * ion_ns[index])
+                self._atom_info['atoms'] = dict(element=element, atomtype=atom_type)
+                self._atom_info['atomtypes'] = dict(
+                    atomspertype=ion_ns, element=ion_types
+                )
+
+        return self._atom_info
+
+    def get_pseudopotential(self):
+        potcar = self.get('input/potcar/content', b'')
+        return super().get_pseudopotential(BytesIO(potcar))
+
+    def get_time_calc(self, n_calc):
+        # TODO parse
+        return None
+
+    def get_time_scf(self, n_calc):
+        # TODO parse
+        return []
+
+    def get_n_scf(self, n_calc):
+        # TODO parse
+        return 0
+
+    def get_structure(self, n_calc):
+        # TODO parse
+        if n_calc != 0:
+            return {}
+
+        cell = self.get('input/poscar/lattice_vectors')
+        positions = self.get('input/poscar/position_ions')
+        selective = self.get('input/poscar/selective_dynamics')
+        if selective == 0:
+            selective = []
+        nose = None
+        return dict(cell=cell, positions=positions, selective=selective, nose=nose)
+
+    def get_energies(self, n_calc, n_scf):
+        energies = {}
+        return energies
+
+    def get_forces_stress(self, n_calc):
+        forces = None
+        stress = None
+        return forces, stress
+
+    def get_eigenvalues(self, n_calc):
+        eigs = self.get('results/electron_eigenvalues/eigenvalues')
+
+    def get_total_dos(self, n_calc):
+        dos_energies = dos_values = dos_integrated = e_fermi = None
+        dos_energies = self.get('results/electron_dos/energies')
+        dos_values = self.get('results/electron_dos/dos')
+        dos_integrated = self.get('results/electron_dos/dosi')
+        e_fermi = self.get('results/electron_dos/efermi')
+        return dos_energies, dos_values, dos_integrated, e_fermi
+
+    def get_partial_dos(self, n_calc):
+        dos = fields = None
+        return dos, fields
+
+    def get_response_functions(self):
+        parameters_dict = {}
+        return parameters_dict
+
+    def is_converged(self, n_calc):
+        return False
+
+
 class VASPParser:
     def __init__(self):
         self._vasprun_parser = RunContentParser()
         self._outcar_parser = OutcarContentParser()
+        self._hdf5_parser = HDF5ContentParser()
         self._calculation_type = 'dft'
         self.hubbard_dc_corrections = {
             1: 'Liechtenstein',
@@ -1642,9 +1807,13 @@ class VASPParser:
         }
 
     def init_parser(self, filepath, logger):
-        self.parser = (
-            self._vasprun_parser if '.xml' in filepath else self._outcar_parser
-        )
+        self.parser = None
+        if '.xml' in filepath:
+            self.parser = self._vasprun_parser
+        elif filepath.endswith('.h5'):
+            self.parser = self._hdf5_parser
+        else:
+            self.parser = self._outcar_parser
         self.parser.init_parser(filepath, logger)
         self.maindir = os.path.dirname(os.path.abspath(filepath))
 
@@ -1805,14 +1974,29 @@ class VASPParser:
                     sec_hubb.x_vasp_projection_type = 'on-site'
             atom_counts[element[i]] += 1
 
-        sec_method.electrons_representation = [
-            BasisSetContainer(
+        sec_electrons_rep = BasisSetContainer(
+            type='plane waves',
+            scope=['wavefunction'],
+            native_tier=self.parser.get_tier(type='native'),
+        )
+
+        sec_method.electrons_representation.append(sec_electrons_rep)
+        basis_parameters = self.parser.get_basis_parameters()
+        for tag in ('ENMAX', 'ENAUG'):
+            cutoff = basis_parameters.get(tag)
+            if not cutoff:
+                continue
+            basis_set = BasisSet(
                 type='plane waves',
-                scope=['wavefunction'],
-                native_tier=self.parser.get_tier(type='native'),
-                basis_set=self.parser.get_basis_set(),
-            )
-        ]
+                cutoff=(
+                    cutoff[-1] if isinstance(cutoff, (np.ndarray, list)) else cutoff
+                )
+                * ureg.eV,  # based on examples
+                frozen_core=basis_parameters.get('ICORELEVEL', 0) != 1,
+            )  # TODO: write the core eigenvalues to calculation + display them?
+            basis_set.scope = ['valence'] if tag == 'ENMAX' else ['augmentation']
+            # TODO: add grid spacing (NGX, NGY, NGZ)?
+            sec_electrons_rep.basis_set.append(basis_set)
 
         sec_xc_functional = XCFunctional()
         sec_dft.xc_functional = sec_xc_functional
