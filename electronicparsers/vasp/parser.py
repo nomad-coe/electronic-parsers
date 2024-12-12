@@ -345,9 +345,7 @@ class ContentParser:
             )
         return pps
 
-    def get_tier(
-        self, raw_data: Union[str, None] = None, type='native'
-    ) -> Union[str, None]:
+    def get_tier(self, type: str = None, raw_data: str = None) -> Union[str, None]:
         """Extract the tier from a string, and return it in a standardized format.
         - `raw_data`: the string to extract the tier from
         - `type`: the standardized output format, either `native` to VASP,
@@ -869,9 +867,10 @@ class OutcarContentParser(ContentParser):
         basis['ICORELEVEL'] = parameters.get('ICORELEVEL', 0)
         return basis
 
-    def get_tier(self, type='native', **kwargs) -> Union[str, None]:
+    def get_tier(self, type='native', raw_data=None) -> Union[str, None]:
         return super().get_tier(
-            raw_data=self.parser.get('parameters', {}).get('PREC'), type=type
+            raw_data=raw_data or self.parser.get('parameters', {}).get('PREC'),
+            type=type,
         )
 
     def get_energies(self, n_calc, n_scf):
@@ -1456,9 +1455,10 @@ class RunContentParser(ContentParser):
                 basis[tag] = cutoff
         return basis
 
-    def get_tier(self, type='native', **kwargs) -> Union[str, None]:
+    def get_tier(self, type='native', raw_data=None) -> Union[str, None]:
         return super().get_tier(
-            raw_data=self._get_key_values(
+            raw_data=raw_data
+            or self._get_key_values(
                 '/modeling[0]/parameters/separator[@name="electronic"]/i[@name="PREC"]'
             )['PREC'][0],
             type=type,
@@ -1666,8 +1666,10 @@ class HDF5ContentParser(ContentParser):
         }
         return self._incar.setdefault('incar_out', incar)
 
-    def get_tier(self, raw_data=None, type='native'):
-        return super().get_tier(raw_data=raw_data, type=type)
+    def get_tier(self, type='native', raw_data=None):
+        return super().get_tier(
+            raw_data=raw_data or self.incar.get('PREC', 'b').decode(), type=type
+        )
 
     @property
     def header(self):
