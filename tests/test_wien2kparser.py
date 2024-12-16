@@ -26,6 +26,7 @@ from runschema.method import (
     CoreHole,
 )
 
+
 def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
@@ -124,6 +125,7 @@ def test_dos(parser, caplog):
     assert sec_dos_up.species_projected[1].value[926].magnitude == approx(
         2.7395685667470246e17
     )
+
 
 def test_core_hole(parser, caplog):
     archive = EntryArchive()
