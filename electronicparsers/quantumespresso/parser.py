@@ -3207,7 +3207,7 @@ class QuantumEspressoParser:
             'damped_dynamics': 'geometry_optimization',
             'vcs_wentzcovitch_damped_minimization': 'geometry_optimization',
         }
-        for method in methods:
+        for method in methods.values():
             sampling = run.get(method)
             if sampling is not None:
                 self.sampling_method = methods[method]
