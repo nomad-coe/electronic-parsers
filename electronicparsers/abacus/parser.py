@@ -24,7 +24,8 @@ import numpy as np
 from collections import namedtuple
 from datetime import datetime
 
-from .metainfo import abacus
+# the fileparser import has to come after metainfo to overload the Quantity class
+from .metainfo.abacus import *
 from nomad.units import ureg
 from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
 from runschema.run import Run, Program, TimeRun
@@ -63,11 +64,6 @@ from simulationworkflowschema import (
     GeometryOptimizationMethod,
     SinglePoint,
     SinglePointMethod,
-)
-from .metainfo.abacus import (
-    Method as xsection_method,
-    x_abacus_section_parallel,
-    x_abacus_section_specie_basis_set,
 )
 
 
@@ -132,86 +128,86 @@ class ABACUSInputParser(TextParser):
             ),
             Quantity('dft_plus_u', r'\n *dft_plus_u\s*(\d)', repeats=False, dtype=bool),
             Quantity(
-                xsection_method.x_abacus_mixing_method,
+                'x_abacus_mixing_method',
                 rf'\n *mixing_type\s*(\S+)',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_mixing_beta,
+                'x_abacus_mixing_beta',
                 rf'\n *mixing_beta\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_diagonalization_algorithm,
+                'x_abacus_diagonalization_algorithm',
                 rf'\n *ks_solver\s*(\w+)',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_dispersion_correction_method,
+                'x_abacus_dispersion_correction_method',
                 r'\n *vdw_method\s*(\S+)',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_gamma_algorithms,
+                'x_abacus_gamma_algorithms',
                 rf'\n *gamma_only\s*(\d)',
                 repeats=False,
                 dtype=bool,
             ),
             Quantity(
-                xsection_method.x_abacus_scf_threshold_density,
+                'x_abacus_scf_threshold_density',
                 rf'\n *scf_thr\s*({re_float})',
                 repeats=False,
                 dtype=float,
             ),
             Quantity(
-                xsection_method.x_abacus_initial_magnetization_total,
+                'x_abacus_initial_magnetization_total',
                 rf'\n *tot_magnetization\s*({re_float})',
                 repeats=False,
                 dtype=float,
             ),
             Quantity(
-                xsection_method.x_abacus_hse_omega,
+                'x_abacus_hse_omega',
                 rf'\n *exx_hse_omega\s*({re_float})',
                 repeats=False,
                 unit='1/bohr',
             ),
             Quantity(
-                xsection_method.x_abacus_hybrid_xc_coeff,
+                'x_abacus_hybrid_xc_coeff',
                 rf'\n *exx_hybrid_alpha\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_exx_ccp_rmesh_times,
+                'x_abacus_exx_ccp_rmesh_times',
                 rf'\n *exx_ccp_rmesh_times\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_exx_dm_threshold,
+                'x_abacus_exx_dm_threshold',
                 rf'\n *exx_dm_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_exx_cauchy_threshold,
+                'x_abacus_exx_cauchy_threshold',
                 rf'\n *exx_cauchy_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_exx_schwarz_threshold,
+                'x_abacus_exx_schwarz_threshold',
                 rf'\n *exx_schwarz_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_exx_c_threshold,
+                'x_abacus_exx_c_threshold',
                 rf'\n *exx_c_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_exx_v_threshold,
+                'x_abacus_exx_v_threshold',
                 rf'\n *exx_v_threshold\s*({re_float})',
                 repeats=False,
             ),
             Quantity(
-                xsection_method.x_abacus_exx_pca_threshold,
+                'x_abacus_exx_pca_threshold',
                 rf'\n *exx_pca_threshold\s*({re_float})',
                 repeats=False,
             ),
@@ -627,7 +623,7 @@ class ABACUSOutParser(TextParser):
                 repeats=True,
             ),
             Quantity(
-                xsection_method.x_abacus_pao_radial_cutoff,
+                'x_abacus_pao_radial_cutoff',
                 rf'PAO radial cut off \(Bohr\)\s*=\s*({re_float})',
                 unit='bohr',
                 dtype=float,
@@ -1771,7 +1767,7 @@ class ABACUSParser:
                     orbital_settings.get('orbital_information', [])
                 ):
                     sec_specie_basis_set = x_abacus_section_specie_basis_set()
-                    bs.x_abacus_section_specie_basis_set.append(sec_specie_basis_set)
+                    bs.x_abacus_section_specie_basis_set = [sec_specie_basis_set]
                     sec_specie_basis_set.x_abacus_specie_basis_set_filename = (
                         os.path.basename(header.get('orbital_files')[i])
                     )
@@ -1904,7 +1900,7 @@ class ABACUSParser:
 
         # parallel
         sec_parallel = x_abacus_section_parallel()
-        sec_run.x_abacus_section_parallel.append(sec_parallel)
+        sec_run.x_abacus_section_parallel = [sec_parallel]
         sec_parallel.x_abacus_nproc = self.out_parser.get('nproc')
         for key in ['kpar', 'bndpar', 'diago_proc']:
             val = self.input_parser.get(key)

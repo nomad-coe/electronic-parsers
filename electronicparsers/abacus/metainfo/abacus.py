@@ -166,7 +166,7 @@ class x_abacus_section_specie_basis_set(MSection):
 
     x_abacus_specie_basis_set_rcutoff = Quantity(
         type=np.float64,
-        unit='bohr',
+        unit='m',
         shape=[],
         description="""
         -
@@ -191,7 +191,7 @@ class BasisSet(runschema.method.BasisSet):
 
     x_abacus_basis_sets_delta_k = Quantity(
         type=np.float64,
-        unit='1/bohr',
+        unit='1/m',
         shape=[],
         description="""
         -
@@ -200,7 +200,7 @@ class BasisSet(runschema.method.BasisSet):
 
     x_abacus_basis_sets_delta_r = Quantity(
         type=np.float64,
-        unit='bohr',
+        unit='m',
         shape=[],
         description="""
         -
@@ -209,7 +209,7 @@ class BasisSet(runschema.method.BasisSet):
 
     x_abacus_basis_sets_dr_uniform = Quantity(
         type=np.float64,
-        unit='bohr',
+        unit='m',
         shape=[],
         description="""
         -
@@ -218,7 +218,7 @@ class BasisSet(runschema.method.BasisSet):
 
     x_abacus_basis_sets_rmax = Quantity(
         type=np.float64,
-        unit='bohr',
+        unit='m',
         shape=[],
         description="""
         -
@@ -245,7 +245,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abacus_longest_orb_rcut = Quantity(
         type=np.float64,
-        unit='bohr',
+        unit='m',
         shape=[],
         description="""
         -
@@ -254,7 +254,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abacus_longest_nonlocal_projector_rcut = Quantity(
         type=np.float64,
-        unit='bohr',
+        unit='m',
         shape=[],
         description="""
         -
@@ -263,7 +263,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abacus_searching_radius = Quantity(
         type=np.float64,
-        unit='bohr',
+        unit='m',
         shape=[],
         description="""
         -
@@ -272,7 +272,7 @@ class Calculation(runschema.calculation.Calculation):
 
     x_abacus_searching_radius_unit = Quantity(
         type=np.float64,
-        unit='bohr',
+        unit='m',
         shape=[],
         description="""
         -
@@ -396,7 +396,7 @@ class Run(runschema.run.Run):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False)
+    # m_def = Section(validate=False)
 
     x_abacus_initial_magnetization_total = Quantity(
         type=np.float64,
@@ -617,7 +617,7 @@ class System(runschema.system.System):
 
     x_abacus_alat = Quantity(
         type=np.float64,
-        unit='bohr',
+        unit='m',
         shape=[],
         description="""
         Lattice Parameter 'a', constant during a run and used as unit in other quantities
@@ -627,7 +627,7 @@ class System(runschema.system.System):
     x_abacus_reciprocal_vectors = Quantity(
         type=np.float64,
         shape=[3, 3],
-        unit='1 / meter',
+        unit='1 / m',
         description="""
         The reciprocal cell
         """,
@@ -675,7 +675,7 @@ class System(runschema.system.System):
 
     x_abacus_cell_volume = Quantity(
         type=np.float64,
-        unit='bohr**3',
+        unit='m**3',
         shape=[],
         description="""
         Volume of unit cell
