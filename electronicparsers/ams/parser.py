@@ -1116,7 +1116,7 @@ class RKFParser(FileParser):
         nspin = general.get('nspin', 1)
         xc_functional = {}
         if (ldapot := general.get('ldapot')) is not None:
-            xc_functional['LDA'] = self._ldapot.get(ldapot)
+            xc_functional['LDA'] = self._ldapot.get(ldapot, '')
         if ggapot := general.get('ggapot', '').strip():
             xc_functional['GGA'] = ggapot
         if mgga := general.get('MetaGGAConfig', {}).get('metagga', '').strip():

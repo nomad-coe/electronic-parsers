@@ -290,9 +290,9 @@ class OutParser(TextParser):
                 elif line and last_parameter:
                     last_parameter[1].append(add_unit(line.strip()))
 
-            for key in title.keys():
-                for sub_key, val in title[key].items():
-                    title[key][sub_key] = val[0] if len(val) == 1 else val
+            for key, tval in title.items():
+                for sub_key, val in tval.items():
+                    tval[sub_key] = val[0] if len(val) == 1 else val
 
             return title
 
