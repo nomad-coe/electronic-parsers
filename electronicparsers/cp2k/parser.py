@@ -1571,23 +1571,22 @@ class CP2KParser:
             input_filename, self.filepath, self.mainfile, deep=False
         )
         if not input_files:  # ? what is the purpose of this recovery logic
-            self.logger.warning('Input *.inp file not found.')
-
+            self.logger.warning('Input (*.inp) file not found.')
             if project_name:
-                self.logger.warning(
-                    f' We will attempt finding the restart file from {project_name}-1.restart'
-                )
                 project_filename = f'{project_name}-1.restart'
+                self.logger.warning(
+                    f'Will attempt from restart file ({project_filename})'
+                )
                 input_files = get_files(
                     project_filename, self.filepath, self.mainfile, deep=False
                 )
-            elif len(input_files) > 1:
-                self.logger.warning(
-                    f'Multiple input files found. We will parse the first file retrieved.'
-                )  # ! TODO: employ better heuristic OR parse all
-                self.inp_parser.mainfile = input_files[0]
-            else:
-                return
+                if len(input_files) > 1:
+                    self.logger.warning(
+                        f'Multiple input files found. Will parse the first file retrieved.'
+                    )  # ! TODO: employ better heuristic OR parse all
+                    self.inp_parser.mainfile = input_files[0]
+                else:
+                    return
 
         parse('x_cp2k_section_input', self.inp_parser.tree, self.archive.run[-1])
 
