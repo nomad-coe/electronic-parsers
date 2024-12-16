@@ -1580,13 +1580,14 @@ class CP2KParser:
                 input_files = get_files(
                     project_filename, self.filepath, self.mainfile, deep=False
                 )
-                if len(input_files) > 1:
-                    self.logger.warning(
-                        f'Multiple input files found. Will parse the first file retrieved.'
-                    )  # ! TODO: employ better heuristic OR parse all
-                    self.inp_parser.mainfile = input_files[0]
-                else:
-                    return
+        if len(input_files) == 0:
+            return
+        elif len(input_files) > 1:
+            self.logger.warning(
+                f'Multiple input files found. Will parse the first file retrieved.'
+            )  # ! TODO: employ better heuristic OR parse all
+        # cover single or multiple `input_files`
+        self.inp_parser.mainfile = input_files[0]
 
         parse('x_cp2k_section_input', self.inp_parser.tree, self.archive.run[-1])
 
