@@ -285,7 +285,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
         Parse the Method section by extracting information about the NMR method:basis set,
         exchange-correlation functional, cutoff energy, and K mesh.
 
-        Note: only CASTEP-like method parameters are currently being supported.
+        Note: only CASTEP-like method parameters are currently being supported. WIP QEGIPAV-like.
 
         Args:
             calculation_params (TextParser): the parsed [calculation][/calculation] block parameters.
@@ -294,37 +294,39 @@ class MagresParser(BeyondDFTWorkflowsParser):
         sec_method = Method(label='NMR')
 
         # XC functional parsing
-        sec_dft = DFT()
-        xc_functional = calculation_params.get('xcfunctional', 'LDA')
-        xc_functional_labels = self._xc_functional_map.get(xc_functional)
-        if xc_functional_labels:
-            sec_xc_functional = XCFunctional()
-            for functional in xc_functional_labels:
-                sec_functional = Functional(name=functional)
-                if '_X_' in functional or functional.endswith('_X'):
-                    sec_xc_functional.exchange.append(sec_functional)
-                elif '_C_' in functional or functional.endswith('_C'):
-                    sec_xc_functional.correlation.append(sec_functional)
-                elif 'HYB' in functional:
-                    sec_xc_functional.hybrid.append(sec_functional)
-                else:
-                    sec_xc_functional.contributions.append(sec_functional)
-            sec_dft.xc_functional = sec_xc_functional
-            sec_method.dft = sec_dft
+        if calculation_params.get('xcfunctional','LDA'):
+            sec_dft = DFT()
+            xc_functional = calculation_params.get('xcfunctional', 'LDA')
+            xc_functional_labels = self._xc_functional_map.get(xc_functional)
+            if xc_functional_labels:
+                sec_xc_functional = XCFunctional()
+                for functional in xc_functional_labels:
+                    sec_functional = Functional(name=functional)
+                    if '_X_' in functional or functional.endswith('_X'):
+                        sec_xc_functional.exchange.append(sec_functional)
+                    elif '_C_' in functional or functional.endswith('_C'):
+                        sec_xc_functional.correlation.append(sec_functional)
+                    elif 'HYB' in functional:
+                        sec_xc_functional.hybrid.append(sec_functional)
+                    else:
+                        sec_xc_functional.contributions.append(sec_functional)
+                sec_dft.xc_functional = sec_xc_functional
+                sec_method.dft = sec_dft
 
         # Basis set parsing (adding cutoff energies units check)
-        cutoff = calculation_params.get('cutoffenergy')
-        if cutoff.dimensionless:
-            cutoff_units = self.magres_file_parser.get('cutoffenergy_units', 'eV')
-            if cutoff_units == 'Hartree':
-                cutoff_units = 'hartree'
-            cutoff = cutoff.magnitude * ureg(cutoff_units)
-        sec_basis_set = BasisSetContainer(
-            type='plane waves',
-            scope=['wavefunction'],
-            basis_set=[BasisSet(scope=['valence'], type='plane waves', cutoff=cutoff)],
-        )
-        sec_method.electrons_representation.append(sec_basis_set)
+        if calculation_params.get('cutoffenergy'):
+            cutoff = calculation_params.get('cutoffenergy')
+            if cutoff.dimensionless:
+                cutoff_units = self.magres_file_parser.get('cutoffenergy_units', 'eV')
+                if cutoff_units == 'Hartree':
+                    cutoff_units = 'hartree'
+                cutoff = cutoff.magnitude * ureg(cutoff_units)
+            sec_basis_set = BasisSetContainer(
+                type='plane waves',
+                scope=['wavefunction'],
+                basis_set=[BasisSet(scope=['valence'], type='plane waves', cutoff=cutoff)],
+            )
+            sec_method.electrons_representation.append(sec_basis_set)
 
         # KMesh parsing
         sec_k_mesh = KMesh(
@@ -441,10 +443,10 @@ class MagresParser(BeyondDFTWorkflowsParser):
         sec_run = Run()
         calculation_params = self.magres_file_parser.get('calculation', {})
         program_name = calculation_params.get('code', '')
-        if program_name != 'CASTEP':
+        if program_name not in ['CASTEP','QE']:
             self.logger.error(
-                'Only CASTEP-based NMR simulations are supported by the '
-                'magres parser.'
+                'Only CASTEP-based and QEGIPAV-based NMR simulations are supported '
+                'by the magres parser.'
             )
             return
         sec_run.program = Program(
