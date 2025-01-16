@@ -3492,20 +3492,13 @@ class QuantumEspressoParser:
         n_electrons = run.get_header('number_of_electrons', [])
         if len(n_electrons) == 3:
             sec_method.electronic.n_electrons = n_electrons[0]
-        elif len(n_electrons) == 2:
-            self.logger.warning('Corrupted extraction `n_electrons`. Cannot set value.')
-        elif len(n_electrons) == 1:
-            self.logger.warning(
-                'Corrupted extraction `n_electrons`. Will set a tentative value.'
-            )  # ? Maybe it shouldn't set anything
-            sec_method.electronic.n_electrons = n_electrons[0]
         elif len(n_electrons) == 0:
             pass
         else:
             self.logger.warning(
                 'Corrupted extraction `n_electrons`. Cannot set value.',
                 n_electrons=n_electrons,
-            )
+            )  # this error could be better managed if we retianed the og keys
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
