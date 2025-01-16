@@ -71,7 +71,7 @@ def test_scf(parser):
     assert len(sec_method.dft.xc_functional.exchange) == 1
     assert sec_method.x_qe_xc_igcc_name == 'pbc'
     assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
-    assert sec_method.electronic.n_electrons[0] == 8
+    assert sec_method.electronic.n_electrons == 8
     assert sec_method.electronic.n_spin_channels == 1
     sec_atoms = sec_method.atom_parameters
     assert len(sec_atoms) == 2
