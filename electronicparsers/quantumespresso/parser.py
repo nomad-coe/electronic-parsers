@@ -2037,7 +2037,12 @@ class QuantumEspressoOutParser(TextParser):
             ),
             Quantity(
                 'number_of_electrons',
-                rf'number of electrons\s*=\s*({re_float})\s*(?:\(up:\s*({re_float})\s*,\s*down:\s*({re_float}))?',
+                rf'number of electrons\s*=\s*({re_float})',
+                dtype=float,
+            ),
+            Quantity(
+                'number_of_spin_electrons',
+                rf'number of electrons\s*=[\s\S]*up:\s*({re_float})\s*,\s*down:\s*({re_float})',
                 dtype=float,
             ),
             Quantity(
@@ -3489,16 +3494,10 @@ class QuantumEspressoParser:
                 if atom_sp[i] is not None:
                     setattr(sec_method_atom_kind, atom_species_names[i], atom_sp[i])
 
-        n_electrons = run.get_header('number_of_electrons', [])
-        if len(n_electrons) == 3:
-            sec_method.electronic.n_electrons = n_electrons[0]
-        elif len(n_electrons) == 0:
-            pass
-        else:
-            self.logger.warning(
-                'Corrupted extraction `n_electrons`. Cannot set value.',
-                n_electrons=n_electrons,
-            )  # this error could be better managed if we retianed the og keys
+        if (n_electrons := run.get_header('number_of_electrons')) is not None:
+            sec_method.electronic.n_electrons = n_electrons
+        elif len(n_spin_electrons := list(run.get_header('number_of_spin_electrons', []))) == 2:
+            sec_method.electronic.n_electrons = sum(n_spin_electrons)
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
