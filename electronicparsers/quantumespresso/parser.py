@@ -3496,7 +3496,12 @@ class QuantumEspressoParser:
 
         if (n_electrons := run.get_header('number_of_electrons')) is not None:
             sec_method.electronic.n_electrons = n_electrons
-        elif len(n_spin_electrons := list(run.get_header('number_of_spin_electrons', []))) == 2:
+        elif (
+            len(
+                n_spin_electrons := list(run.get_header('number_of_spin_electrons', []))
+            )
+            == 2
+        ):
             sec_method.electronic.n_electrons = sum(n_spin_electrons)
 
     def init_parser(self):
