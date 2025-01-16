@@ -3489,18 +3489,18 @@ class QuantumEspressoParser:
                 if atom_sp[i] is not None:
                     setattr(sec_method_atom_kind, atom_species_names[i], atom_sp[i])
 
-        number_of_electrons = run.get_header('number_of_electrons', [])
-        if len(number_of_electrons) == 3:
-            sec_method.electronic.n_electrons = number_of_electrons[0]
-        elif len(number_of_electrons) == 2:
-            self.logger.warning('Number of electrons is not defined. Cannot set `n_electrons`.')
-        elif len(number_of_electrons) == 1:
-            self.logger.warning('Number of electrons is not defined')
-            sec_method.electronic.n_electrons = number_of_electrons[0]
-        elif len(number_of_electrons) == 0:
+        n_electrons = run.get_header('number_of_electrons', [])
+        if len(n_electrons) == 3:
+            sec_method.electronic.n_electrons = n_electrons[0]
+        elif len(n_electrons) == 2:
+            self.logger.warning('Corrupted extraction `n_electrons`. Cannot set value.')
+        elif len(n_electrons) == 1:
+            self.logger.warning('Corrupted extraction `n_electrons`. Will set a tentative value.')  # ? Maybe it shouldn't set anything
+            sec_method.electronic.n_electrons = n_electrons[0]
+        elif len(n_electrons) == 0:
             pass
         else:
-            self.logger.error('Number of electrons format is corrputed', number_of_electrons)
+            self.logger.warning('Corrupted extraction `n_electrons`. Cannot set value.', n_electrons=n_electrons)
 
 
     def init_parser(self):
