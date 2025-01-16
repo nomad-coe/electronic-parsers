@@ -40,7 +40,6 @@ from runschema.calculation import (
     ElectricFieldGradient,
     SpinSpinCoupling,
 )
-from .metainfo.magres import m_package
 from ..utils import BeyondDFTWorkflowsParser
 
 
