@@ -2909,8 +2909,8 @@ class QuantumEspressoParser:
             if np.array(fermi_energy).dtype == float:
                 sec_energy.fermi = fermi_energy * ureg.eV
 
-        n_electrons = run.get_header('number_of_electrons')
-        if homo is None and fermi_energy is None and n_electrons is None:
+        n_electrons = run.get_header('number_of_electrons', [])
+        if homo is None and fermi_energy is None and len(n_electrons)==0:
             self.logger.error('Reference energy is not defined')
 
         for key in ['magnetization_total', 'magnetization_absolute']:
@@ -3489,14 +3489,19 @@ class QuantumEspressoParser:
                 if atom_sp[i] is not None:
                     setattr(sec_method_atom_kind, atom_species_names[i], atom_sp[i])
 
-        number_of_electrons = run.get_header('number_of_electrons')
-        if number_of_electrons is not None:
-            number_of_electrons = (
-                [number_of_electrons]
-                if isinstance(number_of_electrons, float)
-                else number_of_electrons
-            )
-            sec_method.electronic.n_electrons = number_of_electrons
+        number_of_electrons = run.get_header('number_of_electrons', [])
+        if len(number_of_electrons) == 3:
+            sec_method.electronic.n_electrons = number_of_electrons[0]
+        elif len(number_of_electrons) == 2:
+            self.logger.warning('Number of electrons is not defined. Cannot set `n_electrons`.')
+        elif len(number_of_electrons) == 1:
+            self.logger.warning('Number of electrons is not defined')
+            sec_method.electronic.n_electrons = number_of_electrons[0]
+        elif len(number_of_electrons) == 0:
+            pass
+        else:
+            self.logger.error('Number of electrons format is corrputed', number_of_electrons)
+
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
