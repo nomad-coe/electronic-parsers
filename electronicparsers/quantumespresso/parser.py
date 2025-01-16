@@ -2910,7 +2910,7 @@ class QuantumEspressoParser:
                 sec_energy.fermi = fermi_energy * ureg.eV
 
         n_electrons = run.get_header('number_of_electrons', [])
-        if homo is None and fermi_energy is None and len(n_electrons)==0:
+        if homo is None and fermi_energy is None and len(n_electrons) == 0:
             self.logger.error('Reference energy is not defined')
 
         for key in ['magnetization_total', 'magnetization_absolute']:
@@ -3495,13 +3495,17 @@ class QuantumEspressoParser:
         elif len(n_electrons) == 2:
             self.logger.warning('Corrupted extraction `n_electrons`. Cannot set value.')
         elif len(n_electrons) == 1:
-            self.logger.warning('Corrupted extraction `n_electrons`. Will set a tentative value.')  # ? Maybe it shouldn't set anything
+            self.logger.warning(
+                'Corrupted extraction `n_electrons`. Will set a tentative value.'
+            )  # ? Maybe it shouldn't set anything
             sec_method.electronic.n_electrons = n_electrons[0]
         elif len(n_electrons) == 0:
             pass
         else:
-            self.logger.warning('Corrupted extraction `n_electrons`. Cannot set value.', n_electrons=n_electrons)
-
+            self.logger.warning(
+                'Corrupted extraction `n_electrons`. Cannot set value.',
+                n_electrons=n_electrons,
+            )
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
