@@ -21,6 +21,7 @@ import numpy as np
 import re
 from datetime import datetime
 import os
+from typing import Optional
 
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
@@ -2800,7 +2801,7 @@ class QuantumEspressoParser:
         }
         self._re_label = re.compile(r'([A-Z][a-z]?)')
 
-    def get_n_electrons_safe(self) -> float:
+    def get_n_electrons_safe(self) -> Optional[float]:
         n_electrons = self.out_parser.get('run', [])
         if n_electrons:
             n_electrons = n_electrons[0].get_header('number_of_electrons', {})
@@ -2811,6 +2812,7 @@ class QuantumEspressoParser:
                     'Number of electrons not found. Using spin up + down.'
                 )
                 return up + down
+        return None
 
     def parse_scc(self, run, calculation):
         sec_run = self.archive.run[-1]
