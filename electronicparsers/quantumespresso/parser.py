@@ -2040,7 +2040,11 @@ class QuantumEspressoOutParser(TextParser):
                 rf'(number of electrons\s*=[^\n]*)',
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity('total', rf'number of electrons\s*=\s*({re_float})', dtype=float),
+                        Quantity(
+                            'total',
+                            rf'number of electrons\s*=\s*({re_float})',
+                            dtype=float,
+                        ),
                         Quantity('up', rf'up:\s*({re_float})', dtype=float),
                         Quantity('down', rf'down:\s*({re_float})', dtype=float),
                     ],
@@ -2803,7 +2807,9 @@ class QuantumEspressoParser:
             if total_n_electrons := n_electrons.get('total'):
                 return total_n_electrons
             elif (up := n_electrons.get('up')) and (down := n_electrons.get('down')):
-                self.logger.warning('Number of electrons not found. Using spin up + down.')
+                self.logger.warning(
+                    'Number of electrons not found. Using spin up + down.'
+                )
                 return up + down
 
     def parse_scc(self, run, calculation):
@@ -2925,7 +2931,11 @@ class QuantumEspressoParser:
             if np.array(fermi_energy).dtype == float:
                 sec_energy.fermi = fermi_energy * ureg.eV
 
-        if homo is None and fermi_energy is None and len(self.get_n_electrons_safe()) == 0:
+        if (
+            homo is None
+            and fermi_energy is None
+            and len(self.get_n_electrons_safe()) == 0
+        ):
             self.logger.error('Reference energy is not defined')
 
         for key in ['magnetization_total', 'magnetization_absolute']:
