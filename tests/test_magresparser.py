@@ -18,10 +18,13 @@
 
 import pytest
 import numpy as np
+from pathlib import Path
 
 from nomad.datamodel import EntryArchive
 from electronicparsers.magres import MagresParser
 from devtools import debug
+
+TEST_FILE_PATH = Path(__file__).parent.parent.parent.parent / ".dati_fm/qe-gipaw"
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -83,14 +86,14 @@ def test_single_point_ethanol(parser):
 
 
 def test_qe_gpaw(parser):
-    filename='tests/data/examples/benzene-USPP/benzene.nmr.magres' # 'QE'
-    # filename = 'tests/data/examples/benzene-NCPP/benzene.nmr.magres'
-    # filename = 'tests/data/examples/H2O_environ/h2o.nmr.magres' # 'QE' + verifica errore
-    # filename = 'tests/data/examples/quartz/quartz.nmr.magres' # 'QE' + verifica errore
-    # filename = 'tests/data/examples/quartz/quartz.efg.magres' # 'QE' come sopra
-    # filename = 'tests/data/examples/quartz-ncpp/quartz.efg.magres' # 'QE' come sopra
-    # filename = 'tests/data/examples/quartz-ncpp/quartz.nmr.magres' # 'QE' come sopra
-    # filename = 'tests/data/examples/urea/urea.nmr.magres' # 'QE' come sopra
+    filename = TEST_FILE_PATH / "benzene-USPP/benzene.nmr.magres" # 'QE'
+    # filename = 'benzene-NCPP/benzene.nmr.magres'
+    # filename = 'H2O_environ/h2o.nmr.magres' # 'QE' + verifica errore
+    # filename = 'quartz/quartz.nmr.magres' # 'QE' + verifica errore
+    # filename = 'quartz/quartz.efg.magres' # 'QE' come sopra
+    # filename = 'quartz-ncpp/quartz.efg.magres' # 'QE' come sopra
+    # filename = 'quartz-ncpp/quartz.nmr.magres' # 'QE' come sopra
+    # filename = 'urea/urea.nmr.magres' # 'QE' come sopra
     archive = EntryArchive()
     parser.parse(filename, archive, None)
     sec_run = archive.run[-1]
@@ -143,3 +146,7 @@ def test_qe_gpaw(parser):
     # debug(sec_efg.contribution)
     # debug(sec_efg.value.shape)
     # debug(sec_efg.value[4][2][1].magnitude)
+
+
+def test_filepath():
+    debug(TEST_FILE_PATH)
