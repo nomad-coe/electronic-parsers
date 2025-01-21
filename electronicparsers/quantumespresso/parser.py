@@ -21,6 +21,7 @@ import numpy as np
 import re
 from datetime import datetime
 import os
+from typing import Optional
 
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
@@ -2037,8 +2038,18 @@ class QuantumEspressoOutParser(TextParser):
             ),
             Quantity(
                 'number_of_electrons',
-                rf'number of electrons\s*=\s*({re_float})\s*(?:\(up:\s*({re_float})\s*,\s*down:\s*({re_float}))?',
-                dtype=float,
+                rf'(number of electrons\s*=[^\n]*)',
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            'total',
+                            rf'number of electrons\s*=\s*({re_float})',
+                            dtype=float,
+                        ),
+                        Quantity('up', rf'up:\s*({re_float})', dtype=float),
+                        Quantity('down', rf'down:\s*({re_float})', dtype=float),
+                    ],
+                ),
             ),
             Quantity(
                 'x_qe_number_of_states',
@@ -2790,6 +2801,19 @@ class QuantumEspressoParser:
         }
         self._re_label = re.compile(r'([A-Z][a-z]?)')
 
+    def get_n_electrons_safe(self) -> Optional[float]:
+        n_electrons = self.out_parser.get('run', [])
+        if n_electrons:
+            n_electrons = n_electrons[0].get_header('number_of_electrons', {})
+            if total_n_electrons := n_electrons.get('total'):
+                return total_n_electrons
+            elif (up := n_electrons.get('up')) and (down := n_electrons.get('down')):
+                self.logger.warning(
+                    'Number of electrons not found. Using spin up + down.'
+                )
+                return up + down
+        return None
+
     def parse_scc(self, run, calculation):
         sec_run = self.archive.run[-1]
         initial_time = (
@@ -2909,8 +2933,11 @@ class QuantumEspressoParser:
             if np.array(fermi_energy).dtype == float:
                 sec_energy.fermi = fermi_energy * ureg.eV
 
-        n_electrons = run.get_header('number_of_electrons')
-        if homo is None and fermi_energy is None and n_electrons is None:
+        if (
+            homo is None
+            and fermi_energy is None
+            and len(self.get_n_electrons_safe()) == 0
+        ):
             self.logger.error('Reference energy is not defined')
 
         for key in ['magnetization_total', 'magnetization_absolute']:
@@ -3489,14 +3516,7 @@ class QuantumEspressoParser:
                 if atom_sp[i] is not None:
                     setattr(sec_method_atom_kind, atom_species_names[i], atom_sp[i])
 
-        number_of_electrons = run.get_header('number_of_electrons')
-        if number_of_electrons is not None:
-            number_of_electrons = (
-                [number_of_electrons]
-                if isinstance(number_of_electrons, float)
-                else number_of_electrons
-            )
-            sec_method.electronic.n_electrons = number_of_electrons
+        sec_method.electronic.n_electrons = self.get_n_electrons_safe()
 
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
