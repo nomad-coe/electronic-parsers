@@ -35,10 +35,11 @@ class EntryPoint(ParserEntryPoint):
         Order of execution of parser with respect to other parsers.
     """,
     )
-    code_name: Optional[str]
-    code_homepage: Optional[str]
-    code_category: Optional[str]
+    code_name: Optional[str] = None
+    code_homepage: Optional[str] = None
+    code_category: Optional[str] = None
     metadata: Optional[dict] = Field(
+        None,
         description="""
         Metadata passed to the UI. Deprecated. """
     )
