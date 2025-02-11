@@ -447,13 +447,9 @@ class Wannier90Parser:
         try:
             sec_scc_energy = Energy()
             sec_scc.energy = sec_scc_energy
-            # Setting Fermi level to the first orbital onsite energy
-            n_wigner_seitz_points_half = int(
-                0.5 * sec_hopping_matrix.n_wigner_seitz_points
-            )
-            energy_fermi = (
-                sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
-            )
+            # Setting Fermi level to the value in the win file
+            energy_fermi = self.win_parser.get('energy_fermi') * ureg.eV # If win is parsed before hopping and energy_fermi is found
+
             sec_scc_energy.fermi = energy_fermi
             sec_scc_energy.highest_occupied = energy_fermi
         except Exception:
