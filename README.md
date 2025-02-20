@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/461046670.svg)](https://doi.org/10.5281/zenodo.13880705)
+[![DOI](https://zenodo.org/badge/461046670.svg)](https://zenodo.org/badge/latestdoi/461046670)
 
 This is a collection of the NOMAD parsers for the following electronic codes:
 
