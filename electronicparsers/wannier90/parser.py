@@ -19,6 +19,7 @@
 import os
 import logging
 import numpy as np
+from numpy.linalg import eigvals
 
 from nomad.units import ureg
 
@@ -144,7 +145,7 @@ class WOutParser(TextParser):
             ),
         ]
 
-
+import re
 class WInParser(TextParser):
     def __init__(self):
         super().__init__(None)
@@ -152,7 +153,24 @@ class WInParser(TextParser):
     def init_quantities(self):
         def str_proj_to_list(val_in):
             # To avoid inconsistent regex that can contain or not spaces
+            l_to_orbital = {
+                "0": "s",
+                "1": "p",
+                "2": "d",
+                "3": "f",
+            }         
             val_n = [x for x in val_in.split('\n') if x]
+            for proj in val_n:
+                if '!' in proj:
+                    element_match = re.search(r'[!#]\s+\d+\s+([A-Za-z]+)', proj)
+                    l_values_match = re.findall(r'l=(\d+)', proj)
+                    if element_match and l_values_match:
+                        element = element_match.group(1)
+                        orbitals = [l_to_orbital[l] for l in l_values_match if l in l_to_orbital]
+                        # print(element, orbitals)
+                        cleaned_proj = f"{element}:{', '.join(orbitals)}"
+                        # replace the original line with the cleaned one
+                        val_n[val_n.index(proj)] = cleaned_proj
             return [v.strip('[]').replace(' ', '').split(':') for v in val_n]
 
         self._quantities = [
@@ -447,13 +465,128 @@ class Wannier90Parser:
         try:
             sec_scc_energy = Energy()
             sec_scc.energy = sec_scc_energy
-            # Setting Fermi level to the value in the win file
-            energy_fermi = self.win_parser.get('energy_fermi') * ureg.eV # If win is parsed before hopping and energy_fermi is found
 
-            sec_scc_energy.fermi = energy_fermi
-            sec_scc_energy.highest_occupied = energy_fermi
+            if self.win_parser.get('energy_fermi') is not None:
+                # Setting Fermi level to the value in the win file
+                energy_fermi = self.win_parser.get('energy_fermi') * ureg.eV # If win is parsed before hopping and energy_fermi is found
+                sec_scc_energy.fermi = energy_fermi
+                sec_scc_energy.highest_occupied = energy_fermi
+            else:
+                # Setting Fermi level to the first orbital onsite energy (This may be inaccurate)
+                n_wigner_seitz_points_half = int(
+                    0.5 * sec_hopping_matrix.n_wigner_seitz_points
+                )
+                energy_fermi = (
+                    0.5 * sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
+                )
+                sec_scc_energy.fermi = energy_fermi
+                sec_scc_energy.highest_occupied = energy_fermi
+                self.logger.warning(
+                    'User should verify the Fermi level. It is set to the half of first orbital onsite energy. This may be inaccurate.'
+                )
         except Exception:
             return
+        return energy_fermi
+    
+    def parse_tb_bands(self):
+        hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
+        if not hr_files:
+            return
+        
+        hoppings = self.hr_parser.get('hoppings')
+        if isinstance(hoppings, (list, np.ndarray)) and len(hoppings) >= 7:
+            real_e = hoppings[5::7] 
+            imag_e = hoppings[6::7] 
+        num_wann = self.hr_parser.get('degeneracy_factors')[0]
+        n_w_s_p = self.hr_parser.get('degeneracy_factors')[1]
+        degen_factors = self.hr_parser.get('degeneracy_factors')[2:]
+        (n_kpoints, band_segments_points, kpoints) = self.get_k_points()
+        kpoints_ = np.vstack(kpoints)
+
+        hmnr = np.zeros((n_w_s_p, num_wann, num_wann), dtype=complex)
+        real_vec = np.zeros((n_w_s_p, 3), dtype=int)
+        rows = len(hoppings) // 7
+        hoppings_reshaped = hoppings[:rows * 7].reshape((rows, 7))
+        real_vec = hoppings_reshaped[::num_wann*num_wann, :3]
+
+        for i in range(n_w_s_p):
+            for j in range(num_wann):
+                for k in range(num_wann):
+                    index = i * num_wann * num_wann + j * num_wann + k
+                    hmnr[i, j, k] = (
+                        real_e[index] + 1j * imag_e[index]
+                    ) / degen_factors[i]            
+        
+        def hamiltonian_tb(k):
+            htb = np.zeros((num_wann, num_wann), dtype=complex)
+            for i in range(n_w_s_p):
+                phase_factor = np.exp(2.0 * np.pi * 1j * np.dot(k, real_vec[i]))
+                htb += hmnr[i, :, :] * phase_factor
+            return htb    
+
+        # Compute the band structure
+        bands = []
+        for i in kpoints_:
+            bands.append(np.sort(eigvals(hamiltonian_tb(i)).real))
+        bands = np.array(bands)
+        # bands = (np.transpose(bands)) 
+        
+        # parse the tb band structure
+        sec_scc = self.archive.run[-1].calculation[-1]
+
+        try:
+            energy_fermi = sec_scc.energy.fermi
+        except Exception:
+            self.logger.warning(
+                'Error setting the Fermi level: not found from hoppings. Setting it to 0 eV'
+            )
+            energy_fermi = 0.0 * ureg.eV
+        energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
+
+        sec_k_band = BandStructure()
+        sec_scc.band_structure_electronic.append(sec_k_band)
+        sec_k_band.energy_fermi = energy_fermi
+
+        try:
+            sec_k_band.reciprocal_cell = (
+                self.archive.run[-1].system[0].atoms.lattice_vectors_reciprocal
+            )
+        except Exception:
+            self.logger.warning(
+                'Reciprocal cell in band_structure_electronic not set up.'
+            )
+
+        n_segments = len(band_segments_points)
+        n_bands = num_wann
+        n_spin = 1
+        bkp_init = 0
+
+        for n in range(n_segments):
+            sec_k_band_segment = BandEnergies()
+            sec_k_band.segment.append(sec_k_band_segment)
+            sec_k_band_segment.n_kpoints = band_segments_points[n]
+            sec_k_band_segment.kpoints = kpoints[n]
+
+            bkp_last = bkp_init + band_segments_points[n]
+            energies = np.reshape(
+                bands[bkp_init:bkp_last, :], (n_spin, band_segments_points[n], n_bands)
+            )
+            #self.logger.warning(energies)
+            # print(energies)
+            occs = np.reshape(
+                np.array(
+                    [
+                        2.0 if energies[i, j, k] < energy_fermi_eV else 0.0
+                        for i in range(n_spin)
+                        for j in range(band_segments_points[n])
+                        for k in range(n_bands)
+                    ]
+                ),
+                (n_spin, band_segments_points[n], n_bands),
+            )
+            bkp_init = bkp_last
+            sec_k_band_segment.energies = energies * ureg.eV
+            sec_k_band_segment.occupations = occs
 
     def get_k_points(self):
         if self.wout_parser.get('reciprocal_lattice_vectors') is None:
@@ -624,6 +757,9 @@ class Wannier90Parser:
 
         # Wannier90 hoppings section
         self.parse_hoppings()
+
+        # TB band structure
+        self.parse_tb_bands()
 
         # Wannier band structure
         self.parse_bandstructure()
