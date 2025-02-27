@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import glob
 import logging
 import numpy as np
 import re
@@ -23,6 +24,7 @@ from datetime import datetime
 import os
 from typing import Optional
 
+from nomad.datamodel.metainfo.simulation.calculation import BandStructure
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
 from runschema.run import Run, Program, TimeRun
@@ -2780,10 +2782,85 @@ class QuantumEspressoOutParser(TextParser):
         ]
 
 
+class QuantumEspressoBandParser:
+    def init_quantities(self):
+        self._quantities = [
+            Quantity(
+                'kpoint',
+                rf'xk=\(\s*{RE_FLOAT},\s*{RE_FLOAT},\s*{RE_FLOAT}\)',
+                repeats=True,
+                dtype=float,
+            ),  # ? nested arrays
+            Quantity(
+                'symmetry',
+                r'point group (\w+) \((\w+)\)',
+                repeats=True,
+                dtype=str,
+            ),
+            Quantity(
+                'band_energies',
+                r'Band symmetry,\s*\w+\s*\(\w+\)\s*point group:',
+                repeats=True,
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            'energy_value',
+                            rf'e\(\s*\d+\s*-\s*\d+\) =\s*{RE_FLOAT}  eV\s*d+\s*-->',
+                            repeats=True,
+                            dtype=float,
+                            unit='eV',
+                        ),
+                    ],
+                ),
+            ),
+        ]
+
+    @staticmethod
+    def scan_out_files(directory: str) -> list[str]:
+        return glob.glob(os.path.join(directory, '*.out'))
+
+    @staticmethod
+    def read_header(filepath: str) -> str:
+        with open(filepath, 'r') as file:
+            next(file)
+        return next(file)
+
+    @staticmethod
+    def match_header(line: str) -> bool:
+        pattern = re.compile(r'Program BANDS v\.\d+\.\d+ starts on \d+\w+\d+ at \d+:\d+: \d+')
+        if pattern.match(line):
+            return True
+        return False
+
+    def points_to_segments(self, points, symmetry_groups):
+        """Split the kpoints by segment based on differing symmetry group."""
+        high_symmetry: Optional[str] = None
+        point_counter: int = 0
+
+        segments: list[list[list[float]]] = [[]]
+        for point, symmetry in zip(points, symmetry_groups):
+            if high_symmetry is None:
+                segments[-1].append(point)
+                high_symmetry = symmetry
+                point_counter += 1
+            elif symmetry != high_symmetry:
+                if point_counter > 0:
+                    segments[-1].append(point)
+                    high_symmetry = symmetry  # not really needed
+                    point_counter = 0
+                else:
+                    segments.append([point])
+                    point_counter += 1
+            else:
+                segments[-1].append(point)
+                point_counter += 1
+        return segments
+
 class QuantumEspressoParser:
     def __init__(self):
         self.out_parser = QuantumEspressoOutParser()
         self.dos_parser = DataTextParser()
+        self.band_parser = QuantumEspressoBandParser()
         self.smearing_map = {
             '-99': 'fermi',
             '-1': 'marzari-vanderbilt',
@@ -3262,6 +3339,28 @@ class QuantumEspressoParser:
                     sec_dos.total.append(sec_dos_total)
                     sec_dos_total.value = dos[spin] / ureg.eV
                     sec_dos_total.value_integrated = integrated[spin]
+
+        # bands
+        out_files = self.band_parser.scan_out_files(os.path.dirname(self.out_parser.mainfile))  # ! move to a separate class
+        out_headers = [self.band_parser.read_header(f) for f in out_files]
+
+        if (band_file := self.band_parser.match_header(out_headers)) is not None:
+            self.band_parser.mainfile = band_file
+            self.band_parser.parse()
+            if self.band_parser.data is not None:
+                kpoints, symmetries, band_energies = (
+                    self.band_parser.get('kpoint'),
+                    self.band_parser.get('symmetry'),
+                    self.band_parser.get('band_energies')
+                )
+                if kpoints is not None and symmetries is not None and band_energies is not None:
+                    segments = self.band_parser.points_to_segments(kpoints, symmetries)
+                    bands = [
+                        BandEnergies(kpoints = segment, energies = band_energy)
+                        for segment, band_energy in zip(segments, band_energies)
+                    ]
+                    sec_run.calculation[-1].band_structure_electronic = BandStructure(segment=bands)
+
 
     def parse_method(self, run):
         sec_method = Method()
