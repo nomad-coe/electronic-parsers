@@ -129,7 +129,10 @@ class SolidDMFTParser:
                 if not isinstance(value, h5py.Dataset) or value.shape or not value:
                     continue
                 val = value[()].decode() if isinstance(value[()], bytes) else value[()]
-                params[key] = numpy_type_to_json_serializable(val)
+                if isinstance(val, (np.bool_, np.int32, np.int64, np.float64)):
+                    params[key] = numpy_type_to_json_serializable(val)
+                else:
+                    params[key] = val  # ? is this appropriate
             return params
         else:
             return default
