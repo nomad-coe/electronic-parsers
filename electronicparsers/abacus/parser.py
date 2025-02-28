@@ -315,7 +315,7 @@ class ABACUSOutParser(TextParser):
                 data = []
                 for i in range(nks):
                     kx, ky, kz, npws = re.search(
-                        rf'{i+1}/{nks} kpoint \(Cartesian\)\s*=\s*({re_float})\s*({re_float})\s*({re_float})\s*\((\d+)\s*pws\)',
+                        rf'{i + 1}/{nks} kpoint \(Cartesian\)\s*=\s*({re_float})\s*({re_float})\s*({re_float})\s*\((\d+)\s*pws\)',
                         val_in,
                     ).groups()
                     # TODO pylinit error, unbalanced-tuple-unpacking
@@ -324,7 +324,7 @@ class ABACUSOutParser(TextParser):
                             map(
                                 lambda x: x.strip().split(),
                                 re.search(
-                                    rf'{i+1}/{nks} kpoint \(Cartesian\)\s*=.*\n([\s\S]+?)\n\n',
+                                    rf'{i + 1}/{nks} kpoint \(Cartesian\)\s*=.*\n([\s\S]+?)\n\n',
                                     val_in,
                                 )
                                 .group(1)
@@ -368,7 +368,7 @@ class ABACUSOutParser(TextParser):
                 data = []
                 for i in range(nks):
                     kx, ky, kz = re.search(
-                        rf'k\-points{i+1}\(\d+\):\s*({re_float})\s*({re_float})\s*({re_float})',
+                        rf'k\-points{i + 1}\(\d+\):\s*({re_float})\s*({re_float})\s*({re_float})',
                         val_in,
                     ).groups()
                     res = np.array(
@@ -376,7 +376,8 @@ class ABACUSOutParser(TextParser):
                             map(
                                 lambda x: x.strip().split(),
                                 re.search(
-                                    rf'k\-points{i+1}\(\d+\):.*\n([\s\S]+?)\n\n', val_in
+                                    rf'k\-points{i + 1}\(\d+\):.*\n([\s\S]+?)\n\n',
+                                    val_in,
                                 )
                                 .group(1)
                                 .split('\n'),
