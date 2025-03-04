@@ -2822,15 +2822,14 @@ class QuantumEspressoBandParser:
     @staticmethod
     def read_header(filepath: str) -> str:
         with open(filepath, 'r') as file:
-            next(file)
-        return next(file)
+            file.readline()
+            return_value = file.readline()
+        return return_value
 
     @staticmethod
     def match_header(line: str) -> bool:
         pattern = re.compile(r'Program BANDS v\.\d+\.\d+ starts on \d+\w+\d+ at \d+:\d+: \d+')
-        if pattern.match(line):
-            return True
-        return False
+        return True if pattern.match(line) else False
 
     def points_to_segments(self, points, symmetry_groups):
         """Split the kpoints by segment based on differing symmetry group."""
@@ -3010,7 +3009,7 @@ class QuantumEspressoParser:
         if (
             homo is None
             and fermi_energy is None
-            and len(self.get_n_electrons_safe()) == 0
+            and self.get_n_electrons_safe() is None
         ):
             self.logger.error('Reference energy is not defined')
 
@@ -3344,22 +3343,23 @@ class QuantumEspressoParser:
         out_files = self.band_parser.scan_out_files(os.path.dirname(self.out_parser.mainfile))  # ! move to a separate class
         out_headers = [self.band_parser.read_header(f) for f in out_files]
 
-        if (band_file := self.band_parser.match_header(out_headers)) is not None:
-            self.band_parser.mainfile = band_file
-            self.band_parser.parse()
-            if self.band_parser.data is not None:
-                kpoints, symmetries, band_energies = (
-                    self.band_parser.get('kpoint'),
-                    self.band_parser.get('symmetry'),
-                    self.band_parser.get('band_energies')
-                )
-                if kpoints is not None and symmetries is not None and band_energies is not None:
-                    segments = self.band_parser.points_to_segments(kpoints, symmetries)
-                    bands = [
-                        BandEnergies(kpoints = segment, energies = band_energy)
-                        for segment, band_energy in zip(segments, band_energies)
-                    ]
-                    sec_run.calculation[-1].band_structure_electronic = BandStructure(segment=bands)
+        for out_header in out_headers:
+            if (band_file := self.band_parser.match_header(out_header)):
+                self.band_parser.mainfile = band_file
+                self.band_parser.parse()
+                if self.band_parser.data is not None:
+                    kpoints, symmetries, band_energies = (
+                        self.band_parser.get('kpoint'),
+                        self.band_parser.get('symmetry'),
+                        self.band_parser.get('band_energies')
+                    )
+                    if kpoints is not None and symmetries is not None and band_energies is not None:
+                        segments = self.band_parser.points_to_segments(kpoints, symmetries)
+                        bands = [
+                            BandEnergies(kpoints = segment, energies = band_energy)
+                            for segment, band_energy in zip(segments, band_energies)
+                        ]
+                        sec_run.calculation[-1].band_structure_electronic = BandStructure(segment=bands)
 
 
     def parse_method(self, run):
