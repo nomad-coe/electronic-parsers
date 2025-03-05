@@ -485,7 +485,8 @@ class Wannier90Parser:
                     'User should verify the Fermi level. It is set to the half of first orbital onsite energy. This may be inaccurate.'
                 )
         except Exception:
-            return
+            sec_scc_energy.fermi = 0.0
+            
         return energy_fermi
     
     def parse_tb_bands(self):
