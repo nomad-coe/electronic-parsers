@@ -494,6 +494,10 @@ class Wannier90Parser:
         if not hr_files:
             return
         
+        wband_files = get_files('*band.dat', self.filepath, self.mainfile)
+        if wband_files:
+            return
+
         hoppings = self.hr_parser.get('hoppings')
         if isinstance(hoppings, (list, np.ndarray)) and len(hoppings) >= 7:
             real_e = hoppings[5::7] 
@@ -501,10 +505,10 @@ class Wannier90Parser:
         num_wann = self.hr_parser.get('degeneracy_factors')[0]
         n_w_s_p = self.hr_parser.get('degeneracy_factors')[1]
         degen_factors = self.hr_parser.get('degeneracy_factors')[2:]
-        (n_kpoints, band_segments_points, kpoints) = self.get_k_points()
+        n_kpoints, band_segments_points, kpoints = self.get_k_points()
         kpoints_ = np.vstack(kpoints)
 
-        hmnr = np.zeros((n_w_s_p, num_wann, num_wann), dtype=complex)
+        hopping_matrix_real = np.zeros((n_w_s_p, num_wann, num_wann), dtype=complex)
         real_vec = np.zeros((n_w_s_p, 3), dtype=int)
         rows = len(hoppings) // 7
         hoppings_reshaped = hoppings[:rows * 7].reshape((rows, 7))
@@ -514,7 +518,7 @@ class Wannier90Parser:
             for j in range(num_wann):
                 for k in range(num_wann):
                     index = i * num_wann * num_wann + j * num_wann + k
-                    hmnr[i, j, k] = (
+                    hopping_matrix_real[i, j, k] = (
                         real_e[index] + 1j * imag_e[index]
                     ) / degen_factors[i]            
         
@@ -522,7 +526,7 @@ class Wannier90Parser:
             htb = np.zeros((num_wann, num_wann), dtype=complex)
             for i in range(n_w_s_p):
                 phase_factor = np.exp(2.0 * np.pi * 1j * np.dot(k, real_vec[i]))
-                htb += hmnr[i, :, :] * phase_factor
+                htb += hopping_matrix_real[i, :, :] * phase_factor
             return htb    
 
         # Compute the band structure
@@ -573,7 +577,7 @@ class Wannier90Parser:
                 bands[bkp_init:bkp_last, :], (n_spin, band_segments_points[n], n_bands)
             )
             #self.logger.warning(energies)
-            # print(energies)
+
             occs = np.reshape(
                 np.array(
                     [
