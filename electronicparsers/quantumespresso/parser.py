@@ -3228,7 +3228,7 @@ class QuantumEspressoParser:
             )
             reciprocal_cell *= 2 * np.pi / volume
         if reciprocal_cell is not None:
-            sec_system.x_qe_reciprocal_cell = reciprocal_cell
+            sec_system.x_qe_reciprocal_cell = reciprocal_cell  # TODO write to `run.system.atoms.lattice_vectors_reciprocal`
 
         starting_magnetization = calculation.get(
             'starting_magnetization', run.get_header('starting_magnetization')
@@ -3400,7 +3400,10 @@ class QuantumEspressoParser:
                                 )
                             )
                         sec_run.calculation[-1].band_structure_electronic.append(
-                            BandStructure(segment=bandstructure)
+                            BandStructure(
+                                segment=bandstructure,
+                                reciprocal_cell=sec_run.system[-1].x_qe_reciprocal_cell,
+                            )
                         )
 
     def parse_method(self, run):
