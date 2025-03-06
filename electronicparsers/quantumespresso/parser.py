@@ -2793,27 +2793,28 @@ class QuantumEspressoBandParser(TextParser):
             ),  # ? nested arrays
             Quantity(
                 'symmetry',
-                r'point group (\w+) \((\w+)\)',
+                r'Band symmetry, ([\w_]+) \([\w\-]+\)\s+point group:',
                 repeats=True,
                 dtype=str,
             ),
             Quantity(
-                'band_energies',
-                r'Band symmetry,[_\(\)\-\w\s]+point group:([\s\S]+?)\n\n',
+                'band',
+                r'point group:([\s\S]+?)\n\n',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            'energy_value',
-                            r'e\(\s*\d+ -\s*\d+\) =\s*([\-\d\.]+)  eV',
-                            dtype=float,
-                            unit='eV',
+                            'energy',
+                            r'e\(\s*\d+ -\s*\d+\) =\s*([\-\d\.]+)\s+eV',
+                            repeats=True,
+                            dtype=float,  # unit (eV) should be specified later
                         ),
                         Quantity(
-                            'multiplicity',
+                            'mult',
                             r'eV\s*(\d+)\s*-->',
+                            repeats=True,
                             dtype=int,
-                        )
+                        ),
                     ],
                 ),
             ),
@@ -2832,32 +2833,51 @@ class QuantumEspressoBandParser(TextParser):
 
     @staticmethod
     def match_header(line: str) -> bool:
-        pattern = re.compile(r'Program BANDS v\.\d+\.\d+ starts on \d+\w+\d+ at \d+:\d+: \d+')
+        pattern = re.compile(
+            r'Program BANDS v\.\d+\.\d+ starts on \d+\w+\d+ at \d+:\d+: \d+'
+        )
         return True if pattern.search(line) else False
 
-    def points_to_segments(self, points, symmetry_groups):
+    @staticmethod
+    def points_to_segments(kpoints: list, symmetries: list) -> list[list[list[float]]]:
         """Split the kpoints by segment based on differing symmetry group."""
-        high_symmetry: Optional[str] = None
-        point_counter: int = 0
+
+        def shift_window(window: tuple, elem) -> tuple:
+            return window[1:] + (elem,)
+
+        previous_point: Optional[list[float]] = None
+        symmetry_window: tuple[Optional[str]] = (None,) * 3
 
         segments: list[list[list[float]]] = [[]]
-        for point, symmetry in zip(points, symmetry_groups):
-            if high_symmetry is None:
-                segments[-1].append(point)
-                high_symmetry = symmetry
-                point_counter += 1
-            elif all(symmetry != high_symmetry):
-                if point_counter > 0:
-                    segments[-1].append(point)
-                    high_symmetry = symmetry  # not really needed
-                    point_counter = 0
-                else:
-                    segments.append([point])
-                    point_counter += 1
-            else:
-                segments[-1].append(point)
-                point_counter += 1
+        for point, symmetry in zip(kpoints, symmetries):
+            symmetry_window = shift_window(symmetry_window, symmetry)
+            # case enumeration for `symmetry_window`:
+            # 1. (None, None, None) -> not possible
+            # 2. (None, None, X) -> first step (add to initial bucket)
+            # 3. (X, None, None) -> not possible
+            # 4. (X, Y, None) -> end reached
+            # 5. (None, X, Y) -> add to initial bucket
+            # 6. (X, X, Y) -> add Y to latest bucket
+            # 7. (X, Y, Y) -> add Y to latest bucket
+            # 8. (X, Y, X) -> add Y and X a new, latest bucket
+            # 9. (X, Y, Z) -> add Y and Z a new, latest bucket
+            if (None not in symmetry_window) and all(
+                [symmetry_window[i] != symmetry_window[i + 1] for i in range(2)]
+            ):
+                segments.append([previous_point])
+            segments[-1].append(point)
+            previous_point = point
         return segments
+
+    @staticmethod
+    def apply_multiplicity(
+        energies: list[list[float]], multiplicity: list[int]
+    ) -> list[list[float]]:
+        return [
+            [e for e, m in zip(energy, mult) for _ in range(m)]
+            for energy, mult in zip(energies, multiplicity)
+        ]
+
 
 class QuantumEspressoParser:
     def __init__(self):
@@ -3344,7 +3364,9 @@ class QuantumEspressoParser:
                     sec_dos_total.value_integrated = integrated[spin]
 
         # band structure
-        out_files = self.band_parser.scan_out_files(os.path.dirname(self.out_parser.mainfile))  # ! move to a separate class
+        out_files = self.band_parser.scan_out_files(
+            os.path.dirname(self.out_parser.mainfile)
+        )  # ! move to a separate class
         out_headers = [self.band_parser.read_header(f) for f in out_files]
 
         for out_header, out_file in zip(out_headers, out_files):
@@ -3352,22 +3374,34 @@ class QuantumEspressoParser:
                 self.band_parser.mainfile = out_file
                 self.band_parser.parse()
                 if self.band_parser.results:
-                    kpoints, symmetries, band_energies = (
+                    kpoints, symmetries, bands = (
                         self.band_parser.get('kpoint', []),
                         self.band_parser.get('symmetry', []),
-                        self.band_parser.get('band_energies', []),
+                        self.band_parser.get('band', []),
                     )
-                    if len(kpoints) and len(symmetries) and len(band_energies):
-                        segments = self.band_parser.points_to_segments(kpoints, symmetries)
-                        energies = []
-
-                        bands = []
-                        for segment, band_energy in zip(segments, band_energies):
-                            if (val := band_energy.get('energy_value')) and (mult := band_energy.get('multiplicity')):
-                                for _ in range(mult):
-                                    bands.append(BandEnergies(kpoints=segment, energies=val))
-                        sec_run.calculation[-1].band_structure_electronic = BandStructure(segment=bands)
-
+                    if len(kpoints) and len(symmetries) and len(bands):
+                        sec_run.calculation[-1].band_structure_electronic = []
+                        bandstructure = []
+                        for kpath in self.band_parser.points_to_segments(
+                            kpoints, symmetries
+                        ):
+                            band_selection, bands = (
+                                bands[: len(kpath)],
+                                bands[len(kpath) :],
+                            )
+                            desymm_energies = self.band_parser.apply_multiplicity(
+                                [b.get('energy', []) for b in band_selection],
+                                [b.get('mult', []) for b in band_selection],
+                            )
+                            bandstructure.append(
+                                BandEnergies(
+                                    kpoints=kpath,
+                                    energies=[desymm_energies],
+                                )
+                            )
+                        sec_run.calculation[-1].band_structure_electronic.append(
+                            BandStructure(segment=bandstructure)
+                        )
 
     def parse_method(self, run):
         sec_method = Method()
