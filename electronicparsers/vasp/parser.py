@@ -982,15 +982,17 @@ class OutcarContentParser(ContentParser):
                     atom += 1
                     continue
                 if i > (n_dos + 6):
-                    dos.append([float(v) for v in line.split()])
-                if i >= ((n_dos + 1) * (n_atoms + 1) + 5):
-                    break
+                    value = line.split()
+                    if len(value) < 4:
+                        continue
+                    dos.append([float(v) for v in value])
+
         if len(dos) == 0:
             return None, None
 
-        dos = np.transpose(dos)[1:]
-        n_lm = len(dos) // self.ispin
         try:
+            dos = np.transpose(dos)[1:]
+            n_lm = len(dos) // self.ispin
             dos = np.reshape(dos, (n_lm, self.ispin, n_atoms, n_dos))
         except Exception:
             self.parser.logger.error('Error reading partial dos.')
