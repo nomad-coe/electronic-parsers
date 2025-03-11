@@ -259,7 +259,14 @@ class MainfileParser(TextParser):
                                         rf'\<\d+\|nlXC\|\d+\> *= *({re_f}) *{re_f} \<\d+\|lXC\|\d+\> *= *({re_f}) *{re_f}',
                                         repeats=True,
                                         dtype=np.dtype(np.float64),
-                                    )
+                                    ),
+                                    Quantity(
+                                        'band_sp',
+                                        rf'\<\d+\((?:up|dn)\)\|nlXC\|\d+\((?:up|dn)\)\> *= *({re_f}) *{re_f} '
+                                        rf'\<\d+\((?:up|dn)\)\|lXC\|\d+\((?:up|dn)\)\> *= *({re_f}) *{re_f}',
+                                        repeats=True,
+                                        dtype=np.dtype(np.float64),
+                                    ),
                                 ]
                             ),
                         ),
@@ -791,11 +798,16 @@ class YamboParser:
             if len(calc.x_yambo_local_xc_nonlocal_fock_bandenergies) == 0:
                 band_energy = x_yambo_local_xc_nonlocal_fock_bandenergies()
                 calc.x_yambo_local_xc_nonlocal_fock_bandenergies.append(band_energy)
-                sx, vxc = np.transpose([c.band for c in source.corrections])
-                band_energy.x_yambo_sx = np.reshape(sx, (1, *np.shape(sx.T))) * ureg.eV
-                band_energy.x_yambo_vxc = (
-                    np.reshape(vxc, (1, *np.shape(vxc.T))) * ureg.eV
+                nspin = 2 if source.corrections[0].band_sp else 1
+                band = np.array(
+                    [c.band_sp if nspin == 2 else c.band for c in source.corrections]
                 )
+                band_reshaped = np.zeros((len(band), nspin, len(band[0]) // nspin, 2))
+                for n in range(nspin):
+                    band_reshaped[:, n] = band[:, :] if nspin == 1 else band[:, n::2]
+                sx, vxc = band_reshaped.T
+                band_energy.x_yambo_sx = sx.transpose(1, 2, 0) * ureg.eV
+                band_energy.x_yambo_vxc = vxc.transpose(1, 2, 0) * ureg.eV
 
         if source.energy_xc is not None:
             calc.energy = Energy(xc=EnergyEntry(value=source.energy_xc))
