@@ -626,6 +626,11 @@ class YamboParser:
             'valence_conduction',
             [source.get('valence', 0.0), source.get('conduction', 0.0)],
         )
+      
+        calc.cell = 
+        
+        
+        
         calc.energy = Energy(
             fermi=source.get('fermi', 0.0),
             highest_occupied=valence_conduction[0],
