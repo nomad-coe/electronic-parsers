@@ -511,6 +511,16 @@ class MainfileParser(TextParser):
         ]
 
 
+####
+ Quantity(
+                'header',
+                r'(Version [\s\S]+?)(Unit cells [\s\S]+?)',
+                repeats=False,
+                sub_parser=TextParser(quantities=header_quantities),
+            ),
+###
+
+
 class NetCDFParser(FileParser):
     def __init__(self):
         super().__init__()
