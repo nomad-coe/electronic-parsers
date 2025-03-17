@@ -65,6 +65,8 @@ from .metainfo.quantum_espresso import (
     x_qe_section_parallel,
 )
 
+from devtools import debug
+
 
 RE_FLOAT = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
 
@@ -2783,10 +2785,55 @@ class QuantumEspressoOutParser(TextParser):
         ]
 
 
+class NMRParser(TextParser):
+    def __init__(self):
+        super().__init__(None)
+
+    def init_quantities(self):
+        def str_to_ms_tensor(val_in):
+            pattern = re.compile(r'Atom.*?(?:\n\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+))\n\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\n\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)', re.DOTALL)
+            tensors = []
+            for atom_match in pattern.findall(val_in):
+                tensor = np.array([
+                    [float(atom_match[0]), float(atom_match[1]), float(atom_match[2])],
+                    [float(atom_match[3]), float(atom_match[4]), float(atom_match[5])],
+                    [float(atom_match[6]), float(atom_match[7]), float(atom_match[8])]
+                ])
+                tensors.append(tensor)
+            
+            return np.array(tensors)
+        
+        self._quantities = [
+            Quantity(
+                'ms_tensor',
+                r'Total NMR chemical shifts in ppm:\s*((?:.*?\n)*?)\s*Initialization:',
+                str_operation=str_to_ms_tensor,
+                convert=False,
+            ),
+            Quantity(
+                'software_version',
+                r'Program (\S+) v.(\S+) starts on',
+            ),
+            Quantity(
+                'processors',
+                r'Parallel version \(MPI\), running on\s+(\d+) processors',
+            ),
+            Quantity(
+                'nodes',
+                r'MPI processes distributed on\s+(\d+) nodes',
+            ),
+            Quantity(
+                'xc_functional',
+                r'Exchange-correlation\s*=\s*(.*?)\n',
+            ),
+        ]
+
+
 class QuantumEspressoParser:
     def __init__(self):
         self.out_parser = QuantumEspressoOutParser()
         self.dos_parser = DataTextParser()
+        self.nmr_parser = NMRParser()
         self.smearing_map = {
             '-99': 'fermi',
             '-1': 'marzari-vanderbilt',
@@ -3518,6 +3565,15 @@ class QuantumEspressoParser:
 
         sec_method.electronic.n_electrons = self.get_n_electrons_safe()
 
+    def parse_nmr(self, run):
+        nmr_files = [
+            p for p in os.listdir(self.out_parser.maindir) if p.endswith('nmr.out')
+        ]
+        for nmr_file in nmr_files:
+            self.nmr_parser.mainfile = os.path.join(self.out_parser.maindir, nmr_file)
+            self.nmr_parser.logger = self.logger
+            debug(self.nmr_parser)
+    
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
         self.out_parser.logger = self.logger
@@ -3531,8 +3587,13 @@ class QuantumEspressoParser:
 
         self.init_parser()
 
+        debug(self.out_parser._results)
+
         # TODO include x_qe_warning
         for run in self.out_parser.get('run', []):
+            # debug(run.program_name_version)
+            # debug(run._results)
+            # assert False
             self.sampling_method = None
             sec_run = Run()
             self.archive.run.append(sec_run)
@@ -3579,6 +3640,10 @@ class QuantumEspressoParser:
                 val = run.get(key)
                 if val is not None:
                     setattr(sec_run, 'x_qe_%s' % key, val)
+
+            self.parse_nmr(run)
+
+            assert False
 
             self.parse_method(run)
 

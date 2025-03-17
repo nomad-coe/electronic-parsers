@@ -243,3 +243,8 @@ def test_noncolmag(parser):
         == (0.01 * ureg.rydberg).to_base_units().magnitude
     )
     assert sec_method.electronic.n_spin_channels is None
+
+
+def test_nmr(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/quantumespresso/quartz/quartz-scf.out', archive, None)
