@@ -21,6 +21,7 @@ import numpy as np
 import re
 from datetime import datetime
 import os
+from pathlib import Path
 from typing import Optional
 
 from nomad.units import ureg
@@ -64,6 +65,8 @@ from .metainfo.quantum_espresso import (
     x_qe_section_compile_options,
     x_qe_section_parallel,
 )
+
+from ..utils import BeyondDFTWorkflowsParser
 
 from devtools import debug
 
@@ -2785,7 +2788,7 @@ class QuantumEspressoOutParser(TextParser):
         ]
 
 
-class NMRParser(TextParser):
+class NMRFileParser(TextParser):
     def __init__(self):
         super().__init__(None)
 
@@ -2829,11 +2832,57 @@ class NMRParser(TextParser):
         ]
 
 
-class QuantumEspressoParser:
+class NMRParser:
+    def __init__(self):
+        self.nmr_parser = NMRFileParser()
+
+    def init_parser(self):
+        self.nmr_parser.mainfile = self.filepath
+        self.nmr_parser.logger = self.logger
+
+    def parse(self, filepath, archive, logger):
+        self.filepath = os.path.abspath(filepath)
+        self.archive = archive
+        self.logger = logger if logger is not None else logging
+
+        self.init_parser()
+
+        # logger.debug(self.nmr_parser.mainfile)
+        # logger.debug(self.nmr_parser._quantities)
+        # logger.debug(self.nmr_parser._results)
+
+        debug(self.nmr_parser.mainfile)
+        debug(self.nmr_parser._quantities)
+        debug(self.nmr_parser._results)
+
+
+        sec_run = Run()
+        self.archive.run.append(sec_run)
+        program_version  = self.nmr_parser.get('software_version', [])
+        sec_run.program = Program(name=program_version[0])
+        sec_run.program.version = program_version[1]
+        debug(sec_run.program.name, sec_run.program.version)
+        # logger.debug(program_version)
+
+        # system
+        sec_atoms = Atoms()
+        sec_atoms.labels = ["O","O"]
+        sec_system = System()
+        sec_system.atoms = sec_atoms
+        sec_run.system.append(sec_system)
+        debug(sec_run.system[0].atoms.labels)
+
+        # method
+        sec_dft = DFT()
+
+        debug(self.nmr_parser._results)
+
+
+
+class QuantumEspressoParser(BeyondDFTWorkflowsParser):
     def __init__(self):
         self.out_parser = QuantumEspressoOutParser()
         self.dos_parser = DataTextParser()
-        self.nmr_parser = NMRParser()
         self.smearing_map = {
             '-99': 'fermi',
             '-1': 'marzari-vanderbilt',
@@ -3564,21 +3613,19 @@ class QuantumEspressoParser:
                     setattr(sec_method_atom_kind, atom_species_names[i], atom_sp[i])
 
         sec_method.electronic.n_electrons = self.get_n_electrons_safe()
-
-    def parse_nmr(self, run):
-        nmr_files = [
-            p for p in os.listdir(self.out_parser.maindir) if p.endswith('nmr.out')
-        ]
-        for nmr_file in nmr_files:
-            self.nmr_parser.mainfile = os.path.join(self.out_parser.maindir, nmr_file)
-            self.nmr_parser.logger = self.logger
-            debug(self.nmr_parser)
     
     def init_parser(self):
         self.out_parser.mainfile = self.filepath
         self.out_parser.logger = self.logger
         self.dos_parser.mainfile = self.filepath
         self.dos_parser.logger = self.logger
+
+    def get_mainfile_keys(self, **kwargs):
+        filepath = Path(kwargs.get('filename'))
+        nmrfilepath = filepath.with_name(filepath.stem.replace("scf", "") + "nmr.out")
+        if nmrfilepath.exists():
+            return ['NMR', 'NMR_workflow']
+        return True
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
@@ -3587,7 +3634,11 @@ class QuantumEspressoParser:
 
         self.init_parser()
 
+        debug(self.out_parser.mainfile)
+        debug(self.out_parser._quantities)
         debug(self.out_parser._results)
+
+        # self.logger.debug(f"child archives: {self._child_archives}")
 
         # TODO include x_qe_warning
         for run in self.out_parser.get('run', []):
@@ -3641,9 +3692,22 @@ class QuantumEspressoParser:
                 if val is not None:
                     setattr(sec_run, 'x_qe_%s' % key, val)
 
-            self.parse_nmr(run)
+            # NMR archives
+            nmr_archive = self._child_archives.get('NMR')
+            if nmr_archive is not None:
+                # parse NMR
+                filepath = Path(self.filepath)
+                nmrfilepath = filepath.with_name(filepath.stem.replace("scf", "") + "nmr.out")
+                p = NMRParser()
+                p.parse(nmrfilepath, nmr_archive, logger)
 
-            assert False
+                # parse NMR workflow
+                nmr_workflow_archive = self._child_archives.get('NMR_workflow')
+                try:
+                    self.parse_nmr_qe_workflow(nmr_archive, nmr_workflow_archive)
+                except Exception:
+                    self.logger.error('Error parsing the automatic NMR workflow')
+            
 
             self.parse_method(run)
 

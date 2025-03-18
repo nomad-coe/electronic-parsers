@@ -48,6 +48,11 @@ from .magres_workflow import (
     NMRMagResMethod,
     NMRMagResResults,
 )
+from .nmr_qe_workflow import (
+    NMRQE,
+    NMRQEMethod,
+    NMRQEResults,
+)
 
 
 def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
@@ -634,3 +639,66 @@ class BeyondDFTWorkflowsParser:
             workflow.m_add_sub_section(NMRMagRes.tasks, task)
 
         self.archive.workflow2 = workflow
+
+
+    def parse_nmr_qe_workflow(
+        self, nmr_archive: EntryArchive, nmr_workflow_archive: EntryArchive
+    ):
+        """Automatically parses the NMR workflow. Here, `self.archive` is the QE archive.
+
+        Args:
+            nmr_archive (EntryArchive): the NMR archive
+            nmr_workflow_archive (EntryArchive): the NMR workflow archive
+        """
+        self.run_workflow_archive(nmr_workflow_archive)
+        nmr_workflow_archive.run[-1].m_add_sub_section(
+            Run.system, self.archive.run[-1].system[-1]
+        )
+
+        workflow = NMRQE(method=NMRQEMethod(), results=NMRQEResults())
+
+        # Method
+        # method_gw = extract_section(nmr_archive, ['run', 'method', 'gw'])
+        # method_xcfunctional = extract_section(
+        #     self.archive, ['run', 'method', 'dft', 'xc_functional']
+        # )
+        # method_basisset = extract_section(
+        #     self.archive, ['run', 'method', 'electrons_representation']
+        # )
+        # workflow.method.gw_method_ref = method_gw
+        # workflow.method.starting_point = method_xcfunctional
+        # workflow.method.electrons_representation = method_basisset
+
+        # Inputs and Outputs
+        input_structure = extract_section(self.archive, ['run', 'system'])
+        dft_calculation = extract_section(self.archive, ['run', 'calculation'])
+        if input_structure:
+            workflow.m_add_sub_section(
+                NMRQE.inputs, Link(name='Input structure', section=input_structure)
+            )
+
+
+        # DFT task
+        if self.archive.workflow2:
+            task = TaskReference(task=self.archive.workflow2)
+            task.name = 'DFT'
+            # TODO check why this re-writting is necessary to not repeat sections inside tasks
+            if input_structure:
+                task.inputs = [Link(name='Input structure', section=input_structure)]
+            if dft_calculation:
+                task.outputs = [
+                    Link(name='Output DFT calculation', section=dft_calculation)
+                ]
+            workflow.m_add_sub_section(NMRQE.tasks, task)
+
+        # NMR task
+        if nmr_archive.workflow2:
+            task = TaskReference(task=nmr_archive.workflow2)
+            task.name = 'NMR'
+            if dft_calculation:
+                task.inputs = [
+                    Link(name='Output DFT calculation', section=dft_calculation)
+                ]
+            workflow.m_add_sub_section(NMRQE.tasks, task)
+
+        nmr_workflow_archive.workflow2 = workflow
