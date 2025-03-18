@@ -66,6 +66,22 @@ class x_yambo_io(MSection):
 class x_yambo_parameters(MSection):
     m_def = Section(validate=False)
 
+   x_yambo_simulation_cell = Quantity(
+        type=np.int32,
+        shape=[],
+        description="""
+        direct lattice vectors
+        """,
+    )
+
+   x_yambo_alat_factors = Quantity(
+        type=np.int32,
+        shape=[],
+        description="""
+        Alat factors
+        """,
+    )
+    
     x_yambo_bands = Quantity(
         type=np.int32,
         shape=[],
