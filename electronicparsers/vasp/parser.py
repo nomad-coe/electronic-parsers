@@ -1989,6 +1989,20 @@ class VASPParser:
 
             sec_atoms.periodic = [True] * 3
             sec_atoms.labels = self.parser.atom_info.get('atoms', {}).get('element', [])
+            # create a set of allowed species for faster lookup. The ase data starts with a vacancy labelled 'X', so start with the second entry.
+            allowed_species = set(ase.data.chemical_symbols[1:])
+            unidentified_labels = [(idx, label) for idx, label in enumerate(sec_atoms.labels) if label not in allowed_species]
+            if len(unidentified_labels) > 0:
+                self.logger.warning(f'Unidentified atom labels: {unidentified_labels}')
+                for idx, _label in unidentified_labels:
+                    try:
+                        # get the atom index of wrong species
+                        atom_index = self.parser.atom_info.get('atomtypes', {}).get('element', []).index(_label)
+                        # get the label from the PP info
+                        # the second entry appears to be the chemical element; there may be a more sustainable way to get this info
+                        sec_atoms.labels[idx] = self.parser.atom_info.get('atomtypes', {}).get('pseudopotential')[atom_index][1]
+                    except Exception:
+                        self.logger.error(f'Unable to recover atom label {_label}.')
 
             positions = structure.get('positions', None)
             if positions is not None:
