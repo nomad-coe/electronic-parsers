@@ -473,7 +473,7 @@ class Wannier90Parser:
             k_segments = np.split(self.wout_parser.get('band_segments_points')[ns], 2)
             [
                 k_symm_points_cart.append(
-                    np.dot(k_segments[i], reciprocal_lattice_vectors)
+                    np.dot(k_segments[i], reciprocal_lattice_vectors.magnitude)
                 )
                 for i in range(2)
             ]

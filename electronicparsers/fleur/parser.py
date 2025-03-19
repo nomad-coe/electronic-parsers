@@ -318,7 +318,9 @@ class XMLParser(TextParser):
         cell = input.cell
         atoms = input.get('atom', [])
         labels = [atom.species for atom in atoms]
-        positions = np.dot([atom.position for atom in atoms], cell)
+        positions = np.dot(
+            [atom.position for atom in atoms], cell.magnitude
+        ) * cell.units
         return labels, positions, cell
 
     def get_basis_sets(self) -> list[BasisSet]:

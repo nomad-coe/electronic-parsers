@@ -3081,7 +3081,10 @@ class QuantumEspressoParser:
                 if cell is None:
                     cell = _convert('simulation_cell', run.get('header', {}))
                 if cell is not None:
-                    value = np.dot(value, cell)
+                    value = np.dot(
+                        value.magnitude if hasattr(value, 'magnitude') else value,
+                        cell.magnitude if hasattr(cell, 'magnitude') else cell
+                    ) * cell.units if hasattr(cell, 'units') else 1.0
             return value
 
         sec_run = self.archive.run[-1]

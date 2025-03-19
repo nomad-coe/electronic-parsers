@@ -394,7 +394,9 @@ class ElkParser:
         )
         sec_system.atoms = Atoms(
             labels=labels,
-            positions=np.dot(positions, lattice_vectors),
+            positions=np.dot(
+                positions, lattice_vectors.magnitude
+            ) * lattice_vectors.units,
             lattice_vectors=lattice_vectors,
         )
 
