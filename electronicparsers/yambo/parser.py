@@ -53,7 +53,32 @@ class MainfileParser(TextParser):
 
 
 ## EM, Hajar B: added this part for parsing cell parameters from Yambo outputs:
-        header_quantities = [
+#        header_quantities = [
+#            Quantity(
+#                'alat_factors',
+#                rf'(Alat factors \: \s*({re_f})\s*({re_f})\s*({re_f}))',
+#                unit=ureg.atomic_unit_of_length,
+#                dtype=np.float64,
+#            ),
+#            Quantity(
+#                'simulation_cell',
+#                r'A\[1\] \: \(([\-\d\. ]+)\)\s*A\[2\] \: \(([\-\d\. ]+)\)\s*A\[3\] \: \(([\-\d\. ]+)\)\s*',
+#                dtype=np.float64,
+#                shape=(3, 3),
+#            ),
+#        ]
+#
+#
+#        def rescaled_simulation_cell(self, simulation_cell, alat_factors):
+#            rescaled_simulation_cell = np.zeros((3,3))
+#            for i in range(0, 3):
+#                for j in range(0, 3):
+#                    rescaled_simulation_cell[i][j] = simulation_cell[i][j] * alat_factors[i]
+#            return rescaled_simulation_cell
+
+        
+        io_quantities = [
+###
             Quantity(
                 'alat_factors',
                 rf'(Alat factors \: \s*({re_f})\s*({re_f})\s*({re_f}))',
@@ -66,18 +91,7 @@ class MainfileParser(TextParser):
                 dtype=np.float64,
                 shape=(3, 3),
             ),
-        ]
-
-
-        def rescaled_simulation_cell(self, simulation_cell, alat_factors):
-            rescaled_simulation_cell = np.zeros((3,3))
-            for i in range(0, 3):
-                for j in range(0, 3):
-                    rescaled_simulation_cell[i][j] = simulation_cell[i][j] * alat_factors[i]
-            return rescaled_simulation_cell
-
-        
-        io_quantities = [
+###
             Quantity(
                 'key_value',
                 r'([A-Z\d].+?)(?:\(.+\)|\[.+\]| |)(:.+?)(?:\[|\n)',
@@ -185,6 +199,16 @@ class MainfileParser(TextParser):
             ),
         ]
 
+        
+###
+        def rescaled_simulation_cell(self, simulation_cell, alat_factors):
+            rescaled_simulation_cell = np.zeros((3,3))
+            for i in range(0, 3):
+                for j in range(0, 3):
+                    rescaled_simulation_cell[i][j] = simulation_cell[i][j] * alat_factors[i]
+            return rescaled_simulation_cell
+###
+        
         qp_properties_quantity = Quantity(
             'qp_properties',
             r'QP properties and I/O([\s\S]+? S/N \d+.+)',
@@ -508,16 +532,22 @@ class MainfileParser(TextParser):
                 repeats=True,
                 sub_parser=TextParser(quantities=module_quantities),
             ),
+            Quantity(
+                'io',
+                r'(Version [\s\S]+?)(Unit cells [\s\S]+?)',
+                repeats=False,
+                sub_parser=TextParser(quantities=io_quantities),
+            ),
         ]
 
 
 ####
- Quantity(
-                'header',
-                r'(Version [\s\S]+?)(Unit cells [\s\S]+?)',
-                repeats=False,
-                sub_parser=TextParser(quantities=header_quantities),
-            ),
+# Quantity(
+#                'io',
+#                r'(Version [\s\S]+?)(Unit cells [\s\S]+?)',
+#                repeats=False,
+#                sub_parser=TextParser(quantities=io_quantities),
+#            ),
 ###
 
 
