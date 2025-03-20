@@ -357,7 +357,7 @@ class x_yambo_bare_xc_bandenergies(runschema.calculation.BandEnergies):
         """,
     )
 
-
+####
 class System(runschema.system.System):
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -376,7 +376,7 @@ class System(runschema.system.System):
             simulation cell
         """,
     ),
-
+###
 
 
 class Calculation(runschema.calculation.Calculation):
