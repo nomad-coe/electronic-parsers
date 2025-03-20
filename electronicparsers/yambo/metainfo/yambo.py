@@ -358,6 +358,27 @@ class x_yambo_bare_xc_bandenergies(runschema.calculation.BandEnergies):
     )
 
 
+class System(runschema.system.System):
+    m_def = Section(validate=False, extends_base_section=True)
+
+    x_yambo_alat_factors =  Quantity(
+            type=np.float64,
+            shape = [],
+            description="""
+            alat factors
+        """, 
+    ),
+    
+    x_yambo_simulation_cell = Quantity(
+            type=np.float64,
+            shape = [],
+            description="""
+            simulation cell
+        """,
+    ),
+
+
+
 class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
