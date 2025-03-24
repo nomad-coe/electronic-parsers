@@ -955,6 +955,33 @@ class YamboParser:
                 val = val == 'yes' if val in ['yes', 'no'] else val
                 setattr(run, 'x_yambo_%s' % key, val)
 
+#####
+     if self.mainfile_parser.mainfile is not None:
+            system = System()
+            run.system.append(system)
+#####
+            cell = 
+#####
+            positions = self.mainfile_parser.get('ATOM_POS', [])
+            n_atoms = self.mainfile_parser.N_ATOMS
+            atom_numbers = np.hstack(
+                [
+                    [self.mainfile_parser.atomic_numbers[int(n)]] * int(n_atoms[int(n)])
+                    for n in range(len(n_atoms))
+                ]
+            )
+            system.atoms = Atoms(
+                positions=np.reshape(positions, (np.size(positions) // 3, 3))
+                * ureg.bohr,
+                labels=[chemical_symbols[int(n)] for n in atom_numbers],
+            )
+            if self.mainfile_parser.LATTICE_VECTORS is not None:
+                system.atoms.lattice_vectors = (
+                    self.mainfile_parser.LATTICE_VECTORS * ureg.bohr
+                )
+#####
+
+        
         def parse_module(module):
             self.parse_dipoles(module)
             self.parse_dynamic_dielectric_matrix(module)
