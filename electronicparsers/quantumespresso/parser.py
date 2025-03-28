@@ -24,7 +24,6 @@ from datetime import datetime
 import os
 from typing import Optional
 
-from nomad.datamodel.metainfo.simulation.calculation import BandStructure
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
 from runschema.run import Run, Program, TimeRun
@@ -50,10 +49,12 @@ from runschema.calculation import (
     Stress,
     StressEntry,
     Thermodynamics,
-    BandEnergies,
     ScfIteration,
     Dos,
     DosValues,
+    BandEnergies,
+    BandGapDeprecated,
+    BandStructure,
 )
 from simulationworkflowschema import (
     SinglePoint,
@@ -2440,7 +2441,7 @@ class QuantumEspressoOutParser(TextParser):
             ),
             Quantity(
                 'fermi_energy',
-                rf'(?:the Fermi energy is|the spin up/dw Fermi energies are)\s*([\-\d\. ]+)',
+                r'(?:the Fermi energy is|the spin up\/dw Fermi energies are)\s*([\-\d\. ]+)',
                 dtype=float,
             ),
             Quantity(
@@ -3393,17 +3394,19 @@ class QuantumEspressoParser:
                                 [b.get('energy', []) for b in band_selection],
                                 [b.get('mult', []) for b in band_selection],
                             )
-                            bandstructure.append(
-                                BandEnergies(
-                                    kpoints=kpath,
-                                    energies=[desymm_energies],
-                                )
+                            band_energy = BandEnergies(
+                                kpoints=kpath,
+                                energies=[desymm_energies],
                             )
+                            if energy_highest_occupied := self.out_parser.get('run', [{}])[0].get('bandstructure', {}).get('fermi_energy'):
+                                band_energy.band_gap = [BandGapDeprecated(energy_highest_occupied)]  # TODO: for-loop over spin channels
+                            bandstructure.append(band_energy)
+
                         sec_run.calculation[-1].band_structure_electronic.append(
                             BandStructure(
                                 segment=bandstructure,
                                 reciprocal_cell=sec_run.system[-1].x_qe_reciprocal_cell,
-                            )
+                            )  # TODO add safety checks
                         )
 
     def parse_method(self, run):
