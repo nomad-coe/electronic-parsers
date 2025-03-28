@@ -2794,7 +2794,7 @@ class QuantumEspressoBandParser(TextParser):
             ),  # ? nested arrays
             Quantity(
                 'symmetry',
-                r'Band symmetry, ([\w_]+) \([\w\-]+\)\s+point group:',
+                r'Band symmetry, ([\w_]+)\s*\(.*\)\s+point group:',
                 repeats=True,
                 dtype=str,
             ),
@@ -2849,7 +2849,7 @@ class QuantumEspressoBandParser(TextParser):
         previous_point: Optional[list[float]] = None
         symmetry_window: tuple[Optional[str]] = (None,) * 3
 
-        segments: list[list[list[float]]] = [[]]
+        segments: list[list[np.ndarray[float]]] = [[]]
         for point, symmetry in zip(kpoints, symmetries):
             symmetry_window = shift_window(symmetry_window, symmetry)
             # case enumeration for `symmetry_window`:
