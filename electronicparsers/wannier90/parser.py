@@ -20,6 +20,7 @@ import os
 import logging
 import numpy as np
 from numpy.linalg import eigvals
+import re
 
 from nomad.units import ureg
 
@@ -144,39 +145,46 @@ class WOutParser(TextParser):
                 repeats=True,
             ),
         ]
-
-import re
+        
 class WInParser(TextParser):
     def __init__(self):
         super().__init__(None)
 
     def init_quantities(self):
         def str_proj_to_list(val_in):
-            # To avoid inconsistent regex that can contain or not spaces
-            l_to_orbital = {
-                "0": "s",
-                "1": "p",
-                "2": "d",
-                "3": "f",
-            }         
-            val_n = [x for x in val_in.split('\n') if x]
-            projections = []
-            for proj in val_n:
-                if '!' in proj:
-                    element_match = re.search(r'[!#]\s+\d+\s+([A-Za-z]+)', proj)
-                    l_values_match = re.findall(r'l=(\d+)', proj)
-                    if element_match and l_values_match:
-                        element = element_match.group(1)
-                        orbitals = [l_to_orbital[l] for l in l_values_match if l in l_to_orbital]
-                        cleaned_proj = f"{element}:{', '.join(orbitals)}"
-                        # replace the original line with the cleaned one
-                        val_n[val_n.index(proj)] = cleaned_proj
+            """
+            Process a matched projection block from a wannier90.win file.
+            """
+            l_to_orbital = {'0': 's', '1': 'p', '2': 'd', '3': 'f', '-3': 'sp3'}
+            pattern = re.compile(r'(?P<element>[A-Z][a-z]?)|l=(?P<l_value>-?\d+)')
+            lines = val_in.strip().split("\n")  # Split into lines
+            projs = []
+            for line in lines:
+                element_match = pattern.findall(line)
+                elements = []
+                l_values = []
+                for element, l_value in element_match:
+                    if element:  # If an element is found
+                        elements.append(element)
+                    if l_value:  # If an l_value is found
+                        l_values.append(l_value)
+            
+                # Handle projection written in the form -> Pb:s, p, d
+                orbital_match = re.match(r'(?P<element_orbs>[A-Z][a-z]?):\s*([\w, ]+)', line)
+                if orbital_match:
+                    element = orbital_match.group('element_orbs')
+                    orbitals = orbital_match.group(2).replace(" ", "").split(',')
+                    projs.append([element, ",".join(orbitals)])
+                    continue
 
-            # Cleanup projections and add to list
-            for v in val_n:
-                v = v.strip('[]').replace(' ', '') 
-                projections.append(v.split(':')) 
-            return projections
+                # Map the l values to orbitals
+                orbitals = [l_to_orbital[l] for l in l_values if l in l_to_orbital]
+
+                # Append formatted results if valid
+                if elements and orbitals:
+                    projs.append([elements[0], ",".join(orbitals)])
+
+            return projs
 
         self._quantities = [
             Quantity(
@@ -470,22 +478,33 @@ class Wannier90Parser:
         try:
             sec_scc_energy = Energy()
             sec_scc.energy = sec_scc_energy
-            energy_fermi = self.win_parser.get('energy_fermi') * ureg.eV # If win is parsed before hopping and energy_fermi is found
+            energy_fermi_value = self.win_parser.get('energy_fermi')
+            if energy_fermi_value is None:
+                raise ValueError('Fermi energy not found in wannier90.win file')
+            
+            energy_fermi = energy_fermi_value * ureg.eV
             sec_scc_energy.fermi = energy_fermi
             sec_scc_energy.highest_occupied = energy_fermi
-        except Exception:
-            self.logger.warning(
-                'Could not find the Fermi energy in the wannier90.win file. Setting it to zero.'
-            )
+        
+        except AttributeError as e:
+            self.logger.error(f'Attribute error: {e}. Check if sec_scc is initialized.')
+
+        except ValueError as e:
+            self.logger.warning(f'{e}. Setting Fermi energy to zero.')
             energy_fermi = 0.0 * ureg.eV
             sec_scc_energy.fermi = energy_fermi
             sec_scc_energy.highest_occupied = energy_fermi
+
         return energy_fermi
     
     def parse_tb_bands(self):
         hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
         if not hr_files:
             return
+        if len(hr_files) > 1:
+            self.logger.warning('Multiple hopping data files found.')
+        # Parsing only first *_band.dat file
+        self.band_dat_parser.mainfile = hr_files[0]
         
         wband_files = get_files('*band.dat', self.filepath, self.mainfile)
         if wband_files:
@@ -737,14 +756,20 @@ class Wannier90Parser:
         sec_scc.method_ref = sec_run.method[-1]
         sec_scc.system_ref = sec_run.system[-1]
 
+        # Define bandstructure files
+        hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
+        wband_files = get_files('*band.dat', self.filepath, self.mainfile)
+
         # Wannier90 hoppings section
         self.parse_hoppings()
 
         # TB band structure
-        self.parse_tb_bands()
+        if hr_files and not wband_files:
+            self.parse_tb_bands()
 
         # Wannier band structure
-        self.parse_bandstructure()
+        if wband_files and not hr_files:
+            self.parse_bandstructure()
 
         # Wannier DOS
         self.parse_dos()
