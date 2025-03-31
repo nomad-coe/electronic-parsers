@@ -491,7 +491,7 @@ class Wannier90Parser:
 
         except ValueError as e:
             self.logger.warning(f'{e}. Setting Fermi energy to zero.')
-            energy_fermi = 0.0 * ureg.eV
+            energy_fermi = 0.0
             sec_scc_energy.fermi = energy_fermi
             sec_scc_energy.highest_occupied = energy_fermi
 
@@ -547,11 +547,13 @@ class Wannier90Parser:
 
         try:
             energy_fermi = sec_scc.energy.fermi
-        except Exception:
+            if energy_fermi is None:
+                raise AttributeError('Fermi level not found in the calculation section.')
+        except AttributeError:
             self.logger.warning(
-                'Error setting the Fermi level: Setting it to 0 eV'
+                'Error setting the Fermi level: not found from hoppings. Setting it to 0 eV.'
             )
-            energy_fermi = 0.0 * ureg.eV
+            energy_fermi = 0.0
         energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
 
         sec_k_band = BandStructure()
@@ -647,11 +649,13 @@ class Wannier90Parser:
 
         try:
             energy_fermi = sec_scc.energy.fermi
-        except Exception:
+            if energy_fermi is None:
+                raise AttributeError('Fermi level not found in the calculation section.')
+        except AttributeError:
             self.logger.warning(
-                'Error setting the Fermi level: not found from hoppings. Setting it to 0 eV'
+                'Error setting the Fermi level: not found from hoppings. Setting it to 0 eV.'
             )
-            energy_fermi = 0.0 * ureg.eV
+            energy_fermi = 0.0
         energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
 
         band_files = get_files('*band.dat', self.filepath, self.mainfile)
@@ -722,11 +726,13 @@ class Wannier90Parser:
 
         try:
             energy_fermi = sec_scc.energy.fermi
-        except Exception:
+            if energy_fermi is None:
+                raise AttributeError('Fermi level not found in the calculation section.')
+        except AttributeError:
             self.logger.warning(
-                'Error setting the Fermi level: not found from hoppings. Setting it to 0 eV'
+                'Error setting the Fermi level: not found from hoppings. Setting it to 0 eV.'
             )
-            energy_fermi = 0.0 * ureg.eV
+            energy_fermi = 0.0
 
         dos_files = get_files('*dos.dat', self.filepath, self.mainfile)
         if not dos_files:
