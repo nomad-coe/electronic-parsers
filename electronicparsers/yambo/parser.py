@@ -786,7 +786,9 @@ class YamboParser:
             system = System()
             run.system.append(system)
             positions = self.netcdf_parser.get('ATOM_POS', [])
-            n_atoms = self.netcdf_parser.N_ATOMS
+            n_atoms = self.netcdf_parser.get('N_ATOMS',[])
+            max_n_atoms = self.netcdf_parser.get('MAX_ATOMS')
+#            n_atoms = self.netcdf_parser.N_ATOMS
             atom_numbers = np.hstack(
                 [
                     [self.netcdf_parser.atomic_numbers[int(n)]] * int(n_atoms[int(n)])
@@ -799,14 +801,58 @@ class YamboParser:
 #                labels=[chemical_symbols[int(n)] for n in atom_numbers],
 #            )
 #######################
-            positions=np.reshape(positions, (np.size(positions) // 3, 3))
-            
-            def select_positions(positions,n_atoms):
-                select_positions = []
-                for current_block, coordinate in enumerate(n_atoms):   #   current_block: 1 block for each chemical species
-                    select_positions.append(positions[current_block][:value])
-                positions = select_positions    
+    def split_into_blocks(positions, max_n_atoms): 
 
+        positions = np.array(positions)
+    
+        if len(positions.shape) == 1:   # if position is a list, reshape to a 3x(total n atoms) matrix
+            positions = positions.reshape(-1, 3)
+    
+        n_coord_lines = positions.shape[0] 
+        n_blocks = n_coord_lines // max_n_atoms  # here n_coord_lines is the total number of coord lines, i.e. with max_n_atoms blocks for each species
+    
+        blocks = []
+    
+        for i in range(n_blocks):
+            start_idx = i * max_n_atoms
+            end_idx = (i + 1) * max_n_atoms
+        
+            block = positions[start_idx:end_idx]
+            blocks.append(block)
+    
+        return blocks
+
+    def select_from_blocks(blocks, n_atoms):
+    
+        selected = []
+    
+        for i, block in enumerate(blocks):
+            n_to_select = n_atoms[i]
+        
+            selected_from_block = block[:n_to_select]
+            selected.append(selected_from_block)
+    
+        return np.vstack(selected)
+
+    def process_and_select(positions,  max_n_atoms, n_atoms):
+    
+        blocks = split_into_blocks(positions, max_n_atoms)
+        positions = select_from_blocks(blocks, n_atoms)
+    
+        return positions
+
+            
+            
+            
+            
+ #           positions=np.reshape(positions, (np.size(positions) // 3, 3))
+ #           
+ #           def select_positions(positions,n_atoms):
+ #               select_positions = []
+ #               for current_block, coordinate in enumerate(n_atoms):   #   current_block: 1 block for each chemical species
+ #                   select_positions.append(positions[current_block][:coordinate])
+ #               positions = select_positions    
+ #
             system.atoms = Atoms(
                 positions = positions * ureg.bohr,
                 labels=[chemical_symbols[int(n)] for n in atom_numbers],
