@@ -2834,9 +2834,12 @@ class NMRFileParser(TextParser):
 
 
 class NMRParser:
-    def __init__(self):
+    _system: System
+
+    def __init__(self, system: System):
         self.nmr_parser = NMRFileParser()
         self._xc_functional_map = XC_FUNCTIONAL_MAP
+        self._system = system
 
     def init_parser(self):
         self.nmr_parser.mainfile = self.filepath
@@ -2851,17 +2854,14 @@ class NMRParser:
         sec_xc_functional = XCFunctional()
         for xc in xc_functional_labels:
             sec_functional = Functional()
+            sec_functional.name = xc
             if "_X_" in xc:
-                sec_functional.name = "exchange"
                 sec_xc_functional.exchange.append(sec_functional)
             elif "_C_" in xc:
-                sec_functional.name = "correlation"
                 sec_xc_functional.correlation.append(sec_functional)
             elif "HYB" in xc:
-                sec_functional.name = "hybrid"
                 sec_xc_functional.hybrid.append(sec_functional)
             else:
-                sec_functional.name = "contribution"
                 sec_xc_functional.contributions.append(sec_functional)
         return sec_xc_functional
 
@@ -2891,8 +2891,7 @@ class NMRParser:
         debug(sec_run.program.name, sec_run.program.version)
 
         # system
-        sec_system = System()
-        sec_run.system.append(sec_system)
+        sec_run.system.append(self._system)
         # ereditarlo da QuantumEspressoParser
 
         debug(self.nmr_parser._results)
@@ -3669,7 +3668,9 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         debug(self.out_parser.mainfile)
         debug(self.out_parser._quantities)
         debug(self.out_parser._results)
-        debug(self._child_archives)
+        # debug(self._child_archives)
+
+        # logger.debug(f"child_archives: {self._child_archives}")
 
         # TODO include x_qe_warning
         for run in self.out_parser.get('run', []):
@@ -3723,13 +3724,19 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                 if val is not None:
                     setattr(sec_run, 'x_qe_%s' % key, val)
 
+            self.parse_method(run)
+
+            self.parse_configurations(run)
+
+            debug(sec_run.system[-1])
+
             # NMR archives
             nmr_archive = self._child_archives.get('NMR')
             if nmr_archive is not None:
                 # parse NMR
                 filepath = Path(self.filepath)
                 nmrfilepath = filepath.with_name(filepath.stem.replace("scf", "") + "nmr.out")
-                p = NMRParser()
+                p = NMRParser(system=sec_run.system[-1])
                 p.parse(nmrfilepath, nmr_archive, logger)
 
                 # parse NMR workflow
@@ -3738,11 +3745,7 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                     self.parse_nmr_qe_workflow(nmr_archive, nmr_workflow_archive)
                 except Exception:
                     self.logger.error('Error parsing the automatic NMR workflow')
-            
-
-            self.parse_method(run)
-
-            self.parse_configurations(run)
+        
 
             self.archive.workflow2 = SinglePoint()
             if self.sampling_method is not None:
