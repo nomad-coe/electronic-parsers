@@ -23,6 +23,8 @@ from nomad.datamodel import EntryArchive
 from nomad.units import ureg
 from electronicparsers.quantumespresso import QuantumEspressoParser, NMRParser
 
+from devtools import debug
+
 
 def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
@@ -247,7 +249,10 @@ def test_noncolmag(parser):
 
 def test_nmr(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/quantumespresso/quartz/quartz-scf.out', archive, None)
+    filepath = 'tests/data/quantumespresso/quartz/quartz-scf.out'
+    mainfile_keys = parser.get_mainfile_keys(filename=filepath)
+    debug(mainfile_keys)
+    parser.parse(filepath, archive, None)
 
 
 def test_nmr_standalone(parser):

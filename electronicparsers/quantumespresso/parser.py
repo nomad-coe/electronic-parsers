@@ -2891,17 +2891,21 @@ class NMRParser:
         debug(sec_run.program.name, sec_run.program.version)
 
         # system
+        sec_system = System()
+        sec_run.system.append(sec_system)
         # ereditarlo da QuantumEspressoParser
 
         debug(self.nmr_parser._results)
 
         # method
-        sec_method = Method()
+        sec_method = Method(label='NMR')
         self.archive.run[-1].method.append(sec_method)
         sec_dft = DFT()
         sec_method.dft = sec_dft
         sec_xc_functional = self.parse_xc_functional()
         sec_dft.xc_functional = sec_xc_functional
+
+        debug(self.archive.run[-1])
 
         
 
@@ -3665,8 +3669,7 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         debug(self.out_parser.mainfile)
         debug(self.out_parser._quantities)
         debug(self.out_parser._results)
-
-        # self.logger.debug(f"child archives: {self._child_archives}")
+        debug(self._child_archives)
 
         # TODO include x_qe_warning
         for run in self.out_parser.get('run', []):
