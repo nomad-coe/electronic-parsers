@@ -25,6 +25,7 @@ import os
 from pathlib import Path
 from typing import Optional
 
+from electronicparsers.utils.utils import BeyondDFTWorkflowsParser
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
 from runschema.run import Run, Program, TimeRun
@@ -43,6 +44,9 @@ from runschema.method import (
 from runschema.system import System, Atoms
 from runschema.calculation import (
     Calculation,
+    MagneticSusceptibility,
+    MagneticShielding,
+    ElectricFieldGradient,
     Energy,
     EnergyEntry,
     Forces,
@@ -66,8 +70,6 @@ from .metainfo.quantum_espresso import (
     x_qe_section_compile_options,
     x_qe_section_parallel,
 )
-
-from ..utils import BeyondDFTWorkflowsParser
 
 from devtools import debug
 
@@ -2864,7 +2866,7 @@ class NMRParser:
             else:
                 sec_xc_functional.contributions.append(sec_functional)
         return sec_xc_functional
-
+    
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
         self.archive = archive
@@ -2892,7 +2894,6 @@ class NMRParser:
 
         # system
         sec_run.system.append(self._system)
-        # ereditarlo da QuantumEspressoParser
 
         debug(self.nmr_parser._results)
 
@@ -2903,6 +2904,25 @@ class NMRParser:
         sec_method.dft = sec_dft
         sec_xc_functional = self.parse_xc_functional()
         sec_dft.xc_functional = sec_xc_functional
+
+        # calculation
+        # Creating Calculation and adding System and Method refs
+        sec_scc = Calculation()
+        sec_scc.system_ref = sec_run.system[-1]
+        sec_scc.method_ref = sec_run.method[-1]
+        atom_labels = sec_scc.system_ref.atoms.labels
+        if not atom_labels:
+            self.logger.warning('Could not find the parsed atomic cell information.')
+            return
+        n_atoms = len(atom_labels)
+
+        # Magnetic Shielding Tensor (ms) parsing
+        data = self.nmr_parser.get('ms_tensor', [])
+
+
+
+
+
 
         debug(self.archive.run[-1])
 
@@ -2927,6 +2947,7 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             'tetrahedron': 'tetrahedra',
         }
         self._re_label = re.compile(r'([A-Z][a-z]?)')
+        self._child_archives = {}
 
     def get_n_electrons_safe(self) -> Optional[float]:
         n_electrons = self.out_parser.get('run', [])
