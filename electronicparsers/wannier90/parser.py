@@ -155,36 +155,27 @@ class WInParser(TextParser):
             """
             Process a matched projection block from a wannier90.win file.
             """
-            l_to_orbital = {'0': 's', '1': 'p', '2': 'd', '3': 'f', '-3': 'sp3'}
-            pattern = re.compile(r'(?P<element>[A-Z][a-z]?)|l=(?P<l_value>-?\d+)')
-            lines = val_in.strip().split("\n")  # Split into lines
-            projs = []
+            pattern = re.compile(r'(?P<element>[A-Z][a-z]?)|:(?P<l_orb>(?:[spdf,\s]+)|(?:l=-?\d+(?:;l=-?\d+)*))')
+            lines = val_in.strip().split("\n")
+            elements = []
+            l_orbs = []
             for line in lines:
                 element_match = pattern.findall(line)
-                elements = []
-                l_values = []
-                for element, l_value in element_match:
-                    if element:  # If an element is found
+                
+                # Extract element and l_orb from the match
+                for element, l_orb in element_match:
+                    if element: 
                         elements.append(element)
-                    if l_value:  # If an l_value is found
-                        l_values.append(l_value)
+                    if l_orb:
+                        l_orbs.append(l_orb)
+
+            # Remove duplicates while preserving order
+            unique_elements_orbs = {}
+            for element, l_orb in zip(elements, l_orbs):
+                if element not in unique_elements_orbs:
+                    unique_elements_orbs[element] = l_orb.replace(" ", "")
             
-                # Handle projection written in the form -> Pb:s, p, d
-                orbital_match = re.match(r'(?P<element_orbs>[A-Z][a-z]?):\s*([\w, ]+)', line)
-                if orbital_match:
-                    element = orbital_match.group('element_orbs')
-                    orbitals = orbital_match.group(2).replace(" ", "").split(',')
-                    projs.append([element, ",".join(orbitals)])
-                    continue
-
-                # Map the l values to orbitals
-                orbitals = [l_to_orbital[l] for l in l_values if l in l_to_orbital]
-
-                # Append formatted results if valid
-                if elements and orbitals:
-                    projs.append([elements[0], ",".join(orbitals)])
-
-            return projs
+            return [[el, unique_elements_orbs[el]] for el in unique_elements_orbs]
 
         self._quantities = [
             Quantity(
