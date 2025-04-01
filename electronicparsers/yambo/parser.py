@@ -788,33 +788,33 @@ class YamboParser:
             )
 
 #     we define the process_and_select function within the parse_input function
-        def process_and_select(positions, max_n_atoms, n_atoms): 
+            def process_and_select(positions, max_n_atoms, n_atoms): 
 
-            positions = np.array(positions)
-            blocks = []
-            selected = []
+                positions = np.array(positions)
+                blocks = []
+                selected = []
 
-            if len(positions.shape) == 1:
-                positions = positions.reshape(-1, 3)
+                if len(positions.shape) == 1:
+                    positions = positions.reshape(-1, 3)
     
-            n_points = positions.shape[0] 
-            n_blocks = n_points // max_n_atoms
+                n_points = positions.shape[0] 
+                n_blocks = n_points // max_n_atoms
 
-            for i in range(n_blocks):
-                start_idx = i * max_n_atoms
-                end_idx = (i + 1) * max_n_atoms
-                block = positions[start_idx:end_idx]
-                blocks.append(block)
+                for i in range(n_blocks):
+                    start_idx = i * max_n_atoms
+                    end_idx = (i + 1) * max_n_atoms
+                    block = positions[start_idx:end_idx]
+                    blocks.append(block)
     
     
-            for i, block in enumerate(blocks):
-                n_to_select = n_atoms[i]
-                selected_from_block = block[:n_to_select]
-                selected.append(selected_from_block)
+                for i, block in enumerate(blocks):
+                    n_to_select = n_atoms[i]
+                    selected_from_block = block[:n_to_select]
+                    selected.append(selected_from_block)
     
-            positions=np.vstack(selected)
+                positions=np.vstack(selected)
     
-            return positions        
+                return positions        
 
             positions = process_and_select(positions, max_n_atoms, n_atoms)
             
