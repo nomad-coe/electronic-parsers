@@ -814,8 +814,10 @@ class YamboParser:
     
             positions=np.vstack(selected)
     
+            return positions        
+
+            positions = process_and_select(positions, max_n_atoms, n_atoms)
             
-        
             system.atoms = Atoms(
                 positions = positions * ureg.bohr,
                 labels=[chemical_symbols[int(n)] for n in atom_numbers],
