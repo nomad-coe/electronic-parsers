@@ -541,15 +541,6 @@ class MainfileParser(TextParser):
         ]
 
 
-####
-# Quantity(
-#                'io',
-#                r'(Version [\s\S]+?)(Unit cells [\s\S]+?)',
-#                repeats=False,
-#                sub_parser=TextParser(quantities=io_quantities),
-#            ),
-###
-
 
 class NetCDFParser(FileParser):
     def __init__(self):
@@ -795,59 +786,42 @@ class YamboParser:
                     for n in range(len(n_atoms))
                 ]
             )
-#            system.atoms = Atoms(
-#                positions=np.reshape(positions, (np.size(positions) // 3, 3))
-#                * ureg.bohr,
-#                labels=[chemical_symbols[int(n)] for n in atom_numbers],
-#            )
-#######################
-    def process_and_select(positions, max_n_atoms, n_atoms): 
 
-        positions = np.array(positions)
-        blocks = []
-        selected = []
+#     we define the process_and_select function within the parse_input function
+        def process_and_select(positions, max_n_atoms, n_atoms): 
 
-        if len(positions.shape) == 1:
-            positions = positions.reshape(-1, 3)
+            positions = np.array(positions)
+            blocks = []
+            selected = []
+
+            if len(positions.shape) == 1:
+                positions = positions.reshape(-1, 3)
     
-        n_points = positions.shape[0] 
-        n_blocks = n_points // max_n_atoms
+            n_points = positions.shape[0] 
+            n_blocks = n_points // max_n_atoms
 
-        for i in range(n_blocks):
-            start_idx = i * max_n_atoms
-            end_idx = (i + 1) * max_n_atoms
+            for i in range(n_blocks):
+                start_idx = i * max_n_atoms
+                end_idx = (i + 1) * max_n_atoms
+                block = positions[start_idx:end_idx]
+                blocks.append(block)
+    
+    
+            for i, block in enumerate(blocks):
+                n_to_select = n_atoms[i]
+                selected_from_block = block[:n_to_select]
+                selected.append(selected_from_block)
+    
+            positions=np.vstack(selected)
+    
+            
         
-            block = positions[start_idx:end_idx]
-            blocks.append(block)
-    
-    
-        for i, block in enumerate(blocks):
-            n_to_select = n_atoms[i]
-        
-            selected_from_block = block[:n_to_select]
-            selected.append(selected_from_block)
-    
-        positions=np.vstack(selected)
-    
-        return positions
-
-            
-            
-            
-            
- #           positions=np.reshape(positions, (np.size(positions) // 3, 3))
- #           
- #           def select_positions(positions,n_atoms):
- #               select_positions = []
- #               for current_block, coordinate in enumerate(n_atoms):   #   current_block: 1 block for each chemical species
- #                   select_positions.append(positions[current_block][:coordinate])
- #               positions = select_positions    
- #
             system.atoms = Atoms(
                 positions = positions * ureg.bohr,
                 labels=[chemical_symbols[int(n)] for n in atom_numbers],
             )
 ##########################            
+
             if self.netcdf_parser.LATTICE_VECTORS is not None:
                 system.atoms.lattice_vectors = (
                     self.netcdf_parser.LATTICE_VECTORS * ureg.bohr
