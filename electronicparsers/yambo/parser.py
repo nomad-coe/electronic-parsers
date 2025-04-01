@@ -801,18 +801,18 @@ class YamboParser:
 #                labels=[chemical_symbols[int(n)] for n in atom_numbers],
 #            )
 #######################
-    def split_into_blocks(positions, max_n_atoms): 
+    def process_and_select(positions, max_n_atoms, n_atoms): 
 
         positions = np.array(positions)
-    
-        if len(positions.shape) == 1:   # if position is a list, reshape to a 3x(total n atoms) matrix
+        blocks = []
+        selected = []
+
+        if len(positions.shape) == 1:
             positions = positions.reshape(-1, 3)
     
-        n_coord_lines = positions.shape[0] 
-        n_blocks = n_coord_lines // max_n_atoms  # here n_coord_lines is the total number of coord lines, i.e. with max_n_atoms blocks for each species
-    
-        blocks = []
-    
+        n_points = positions.shape[0] 
+        n_blocks = n_points // max_n_atoms
+
         for i in range(n_blocks):
             start_idx = i * max_n_atoms
             end_idx = (i + 1) * max_n_atoms
@@ -820,11 +820,6 @@ class YamboParser:
             block = positions[start_idx:end_idx]
             blocks.append(block)
     
-        return blocks
-
-    def select_from_blocks(blocks, n_atoms):
-    
-        selected = []
     
         for i, block in enumerate(blocks):
             n_to_select = n_atoms[i]
@@ -832,12 +827,7 @@ class YamboParser:
             selected_from_block = block[:n_to_select]
             selected.append(selected_from_block)
     
-        return np.vstack(selected)
-
-    def process_and_select(positions,  max_n_atoms, n_atoms):
-    
-        blocks = split_into_blocks(positions, max_n_atoms)
-        positions = select_from_blocks(blocks, n_atoms)
+        positions=np.vstack(selected)
     
         return positions
 
