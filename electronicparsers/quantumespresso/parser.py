@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 import logging
+from nomad_nmr_schema.schema_packages.schema_package import XC_FUNCTIONAL_MAP
 import numpy as np
 import re
 from datetime import datetime
@@ -2835,10 +2836,34 @@ class NMRFileParser(TextParser):
 class NMRParser:
     def __init__(self):
         self.nmr_parser = NMRFileParser()
+        self._xc_functional_map = XC_FUNCTIONAL_MAP
 
     def init_parser(self):
         self.nmr_parser.mainfile = self.filepath
         self.nmr_parser.logger = self.logger
+
+    def parse_xc_functional(self) -> list[XCFunctional]:
+        """
+        Parse the exchange-correlation functional.
+        """
+        xc_functional = self.nmr_parser.get("xc_functional", [])[0]
+        xc_functional_labels = self._xc_functional_map.get(xc_functional, [])
+        sec_xc_functional = XCFunctional()
+        for xc in xc_functional_labels:
+            sec_functional = Functional()
+            if "_X_" in xc:
+                sec_functional.name = "exchange"
+                sec_xc_functional.exchange.append(sec_functional)
+            elif "_C_" in xc:
+                sec_functional.name = "correlation"
+                sec_xc_functional.correlation.append(sec_functional)
+            elif "HYB" in xc:
+                sec_functional.name = "hybrid"
+                sec_xc_functional.hybrid.append(sec_functional)
+            else:
+                sec_functional.name = "contribution"
+                sec_xc_functional.contributions.append(sec_functional)
+        return sec_xc_functional
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
@@ -2858,24 +2883,27 @@ class NMRParser:
 
         sec_run = Run()
         self.archive.run.append(sec_run)
+
+        # program
         program_version  = self.nmr_parser.get('software_version', [])
         sec_run.program = Program(name=program_version[0])
         sec_run.program.version = program_version[1]
         debug(sec_run.program.name, sec_run.program.version)
-        # logger.debug(program_version)
 
         # system
-        sec_atoms = Atoms()
-        sec_atoms.labels = ["O","O"]
-        sec_system = System()
-        sec_system.atoms = sec_atoms
-        sec_run.system.append(sec_system)
-        debug(sec_run.system[0].atoms.labels)
-
-        # method
-        sec_dft = DFT()
+        # ereditarlo da QuantumEspressoParser
 
         debug(self.nmr_parser._results)
+
+        # method
+        sec_method = Method()
+        self.archive.run[-1].method.append(sec_method)
+        sec_dft = DFT()
+        sec_method.dft = sec_dft
+        sec_xc_functional = self.parse_xc_functional()
+        sec_dft.xc_functional = sec_xc_functional
+
+        
 
 
 
