@@ -810,12 +810,14 @@ class YamboParser:
                 for i, block in enumerate(blocks):
                     n_to_select = int(n_atoms[int(i)])
                     selected_from_block = block[:n_to_select]
-                    selected.append(selected_from_block)
+                    for point in selected_from_block:
+                        selected.append(point)
     
-                selected=np.array(selected,dtype=object)
-                selected=selected.reshape(-1, 3)
-                positions=selected
-    
+#               selected=np.array(selected,dtype=object)
+#                selected=selected.reshape(-1, 3)
+#                positions=selected
+                positions=np.array(selected)
+                
                 return positions        
 
             positions = process_and_select(positions, max_n_atoms, n_atoms)
