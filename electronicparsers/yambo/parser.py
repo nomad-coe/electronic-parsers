@@ -798,17 +798,17 @@ class YamboParser:
                     positions = positions.reshape(-1, 3)
     
                 n_points = positions.shape[0] 
-                n_blocks = n_points // max_n_atoms
+                n_blocks = int( int(n_points) // int(max_n_atoms) )
 
                 for i in range(n_blocks):
-                    start_idx = i * max_n_atoms
-                    end_idx = (i + 1) * max_n_atoms
+                    start_idx = int(i) * int(max_n_atoms)
+                    end_idx = (int(i) + 1) * int(max_n_atoms)
                     block = positions[start_idx:end_idx]
                     blocks.append(block)
     
     
                 for i, block in enumerate(blocks):
-                    n_to_select = n_atoms[i]
+                    n_to_select = int(n_atoms[int(i)])
                     selected_from_block = block[:n_to_select]
                     selected.append(selected_from_block)
     
