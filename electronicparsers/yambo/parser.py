@@ -794,8 +794,8 @@ class YamboParser:
                 blocks = []
                 selected = []
 
-                if len(positions.shape) == 1:
-                    positions = positions.reshape(-1, 3)
+#                if len(positions.shape) == 1:
+                positions = positions.reshape(-1, 3)
     
                 n_points = positions.shape[0] 
                 n_blocks = int( int(n_points) // int(max_n_atoms) )
@@ -812,7 +812,9 @@ class YamboParser:
                     selected_from_block = block[:n_to_select]
                     selected.append(selected_from_block)
     
-                positions=np.vstack(selected)
+                selected=np.array(selected,dtype=object)
+                selected=selected.reshape(-1, 3)
+                positions=selected
     
                 return positions        
 
