@@ -2958,12 +2958,11 @@ class NMRParser(MatchingParser):
 
         return atomic_cell
 
-
     def convert_system_to_model_system(self, system: System) -> ModelSystem:
         """
         Converte un oggetto `System` in `ModelSystem`.
         """
-        model_system = ModelSystem()
+        model_system = self.model_system_class()
         model_system.name = system.name
         model_system.type = system.type
         model_system.is_representative = system.is_representative
@@ -3019,21 +3018,21 @@ class NMRParser(MatchingParser):
         """
         Parse the exchange-correlation functional.
         """
-        xc_functional = self.nmr_parser.get("xc_functional", [])[0]
+        xc_functional = self.nmr_parser.get("xc_functional", [])
         xc_functional_labels = self._xc_functional_map.get(xc_functional, [])
-        sec_xc_functional = XCFunctional()
+        xc_sections = []
         for xc in xc_functional_labels:
-            sec_functional = Functional()
-            sec_functional.name = xc
+            functional = XCFunctional_simu(libxc_name=xc)
             if "_X_" in xc:
-                sec_xc_functional.exchange.append(sec_functional)
+                functional.name = "exchange"
             elif "_C_" in xc:
-                sec_xc_functional.correlation.append(sec_functional)
+                functional.name = "correlation"
             elif "HYB" in xc:
-                sec_xc_functional.hybrid.append(sec_functional)
+                functional.name = "hybrid"
             else:
-                sec_xc_functional.contributions.append(sec_functional)
-        return sec_xc_functional
+                functional.name = "contribution"
+            xc_sections.append(functional)
+        return xc_sections
     
     def parse_magnetic_shieldings(self):
         atom_labels = self._system.atoms.labels
@@ -3099,18 +3098,17 @@ class NMRParser(MatchingParser):
         # system
         debug(self._system)    
         model_system = self.convert_system_to_model_system(system = self._system)
-        if model_system is not None:
-            simulation.model_system.append(model_system)
-        debug(model_system)
+        simulation.model_system.append(model_system)
 
 
-        # # method
-        # sec_method = Method(label='NMR')
-        # self.archive.run[-1].method.append(sec_method)
-        # sec_dft = DFT()
-        # sec_method.dft = sec_dft
-        # sec_xc_functional = self.parse_xc_functional()
-        # sec_dft.xc_functional = sec_xc_functional
+        # method
+        model_method = DFT(name="NMR")
+        xc_functionals = self.parse_xc_functional()
+        debug(xc_functionals)
+        if len(xc_functionals) > 0:
+            model_method.xc_functionals = xc_functionals
+
+        simulation.model_method.append(model_method)
 
         # debug(self.archive.run[-1])
 
