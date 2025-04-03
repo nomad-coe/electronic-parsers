@@ -788,9 +788,6 @@ class YamboParser:
                     for point in selected_from_block:
                         selected.append(point)
     
-#               selected=np.array(selected,dtype=object)
-#                selected=selected.reshape(-1, 3)
-#                positions=selected
                 positions=np.array(selected)
                 
                 return positions        
