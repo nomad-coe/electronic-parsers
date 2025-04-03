@@ -53,20 +53,7 @@ class MainfileParser(TextParser):
 
         
         io_quantities = [
-###
-            Quantity(
-                'alat_factors',
-                rf'(Alat factors \: \s*({re_f})\s*({re_f})\s*({re_f}))',
-                unit=ureg.atomic_unit_of_length,
-                dtype=np.float64,
-            ),
-            Quantity(
-                'simulation_cell',
-                r'A\[1\] \: \(([\-\d\. ]+)\)\s*A\[2\] \: \(([\-\d\. ]+)\)\s*A\[3\] \: \(([\-\d\. ]+)\)\s*',
-                dtype=np.float64,
-                shape=(3, 3),
-            ),
-###
+
             Quantity(
                 'key_value',
                 r'([A-Z\d].+?)(?:\(.+\)|\[.+\]| |)(:.+?)(?:\[|\n)',
@@ -175,14 +162,6 @@ class MainfileParser(TextParser):
         ]
 
         
-###
-        def rescaled_simulation_cell(self, simulation_cell, alat_factors):
-            rescaled_simulation_cell = np.zeros((3,3))
-            for i in range(0, 3):
-                for j in range(0, 3):
-                    rescaled_simulation_cell[i][j] = simulation_cell[i][j] * alat_factors[i]
-            return rescaled_simulation_cell
-###
         
         qp_properties_quantity = Quantity(
             'qp_properties',
@@ -752,7 +731,6 @@ class YamboParser:
             system = System()
             run.system.append(system)
             positions = self.netcdf_parser.get('ATOM_POS', [])
-#            n_atoms = self.netcdf_parser.get('N_ATOMS',[])
             max_n_atoms = self.netcdf_parser.get('MAX_ATOMS')
             n_atoms = self.netcdf_parser.N_ATOMS
             atom_numbers = np.hstack(
@@ -769,7 +747,7 @@ class YamboParser:
                 blocks = []
                 selected = []
 
-#                if len(positions.shape) == 1:
+
                 positions = positions.reshape(-1, 3)
     
                 n_points = positions.shape[0] 
