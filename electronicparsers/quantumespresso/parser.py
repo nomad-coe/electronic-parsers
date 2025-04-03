@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 import logging
-from nomad_nmr_schema.schema_packages.schema_package import XC_FUNCTIONAL_MAP
 import numpy as np
 import re
 from datetime import datetime
@@ -70,6 +69,20 @@ from .metainfo.quantum_espresso import (
     x_qe_section_compile_options,
     x_qe_section_parallel,
 )
+
+from nomad_simulations.schema_packages.general import Simulation
+
+from nomad_nmr_schema.schema_packages.schema_package import (
+    XC_FUNCTIONAL_MAP,
+    ElectricFieldGradient,
+    ElectricFieldGradients,
+    MagneticShieldingTensor,
+    MagneticSusceptibility,
+    Outputs,
+    SpinSpinCoupling,
+)
+
+from nomad_simulations.schema_packages.atoms_state import AtomsState
 
 from devtools import debug
 
@@ -2809,11 +2822,34 @@ class NMRFileParser(TextParser):
             
             return np.array(tensors)
         
+        def str_to_data_list(val_in):
+            pattern = re.compile(
+                r'Atom\s+(\d+)\s+(\w+).*?\n'  # cattura numero atomo e simbolo
+                r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\n'  # riga 1 matrice
+                r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\n'  # riga 2
+                r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)',   # riga 3
+                re.DOTALL
+            )
+            
+            data = []
+            for match in pattern.findall(val_in):
+                atom_num = int(match[0])
+                atom_type = match[1]
+                values = [float(x) for x in match[2:]]
+                data.append([atom_type, atom_num] + values)
+            return data
+        
         self._quantities = [
             Quantity(
                 'ms_tensor',
                 r'Total NMR chemical shifts in ppm:\s*((?:.*?\n)*?)\s*Initialization:',
                 str_operation=str_to_ms_tensor,
+                convert=False,
+            ),
+            Quantity(
+                'ms_list',
+                r'Total NMR chemical shifts in ppm:\s*((?:.*?\n)*?)\s*Initialization:',
+                str_operation=str_to_data_list,
                 convert=False,
             ),
             Quantity(
@@ -2867,6 +2903,34 @@ class NMRParser:
                 sec_xc_functional.contributions.append(sec_functional)
         return sec_xc_functional
     
+    def parse_magnetic_shieldings(self):
+        atom_labels = self._system.atoms.labels
+        if not atom_labels:
+            self.logger.warning('Could not find the parsed atomic cell information.')
+            return
+        n_atoms = len(atom_labels)
+
+        # Magnetic Shielding Tensor (ms) parsing
+        data = self.nmr_parser.get('ms_list', [])
+        # Initial check on the size of the matched text
+        if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
+            self.logger.warning(
+                "The shape of the matched text from the magres file for the `ms` does not coincide with the number of atoms."
+            )
+            return []
+        magnetic_shieldings = []
+        for i, atom_data in enumerate(data):
+            debug(atom_data)
+            # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
+            values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
+            sec_ms = MagneticShieldingTensor(
+                entity_ref=AtomsState(chemical_symbol=atom_data[0])
+                )
+            sec_ms.value = values * 1e-6 * ureg("dimensionless")
+            magnetic_shieldings.append(sec_ms)
+        return magnetic_shieldings
+
+
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
         self.archive = archive
@@ -2874,15 +2938,7 @@ class NMRParser:
 
         self.init_parser()
 
-        # logger.debug(self.nmr_parser.mainfile)
-        # logger.debug(self.nmr_parser._quantities)
-        # logger.debug(self.nmr_parser._results)
-
-        debug(self.nmr_parser.mainfile)
-        debug(self.nmr_parser._quantities)
-        debug(self.nmr_parser._results)
-
-
+        # run
         sec_run = Run()
         self.archive.run.append(sec_run)
 
@@ -2891,11 +2947,10 @@ class NMRParser:
         sec_run.program = Program(name=program_version[0])
         sec_run.program.version = program_version[1]
         debug(sec_run.program.name, sec_run.program.version)
+        debug(self.nmr_parser._results)
 
         # system
-        sec_run.system.append(self._system)
-
-        debug(self.nmr_parser._results)
+        sec_run.system.append(self._system)       
 
         # method
         sec_method = Method(label='NMR')
@@ -2905,27 +2960,30 @@ class NMRParser:
         sec_xc_functional = self.parse_xc_functional()
         sec_dft.xc_functional = sec_xc_functional
 
-        # calculation
-        # Creating Calculation and adding System and Method refs
-        sec_scc = Calculation()
-        sec_scc.system_ref = sec_run.system[-1]
-        sec_scc.method_ref = sec_run.method[-1]
-        atom_labels = sec_scc.system_ref.atoms.labels
-        if not atom_labels:
-            self.logger.warning('Could not find the parsed atomic cell information.')
-            return
-        n_atoms = len(atom_labels)
-
-        # Magnetic Shielding Tensor (ms) parsing
-        data = self.nmr_parser.get('ms_tensor', [])
-
-
-
-
-
-
         debug(self.archive.run[-1])
 
+        # calculation viene sostituito da data/outputs
+        # Creating Calculation and adding System and Method refs
+        # sec_scc = Calculation()
+        # sec_scc.system_ref = sec_run.system[-1]
+        # sec_scc.method_ref = sec_run.method[-1]
+
+        # Adding self.simulation_class to data
+        simulation = Simulation()
+
+        outputs = Outputs()
+
+        # magnetic_shieldings
+        ms = self.parse_magnetic_shieldings()
+        if len(ms) > 0:
+            outputs.magnetic_shieldings = ms
+
+        if outputs is not None:
+            simulation.outputs.append(outputs) 
+
+        archive.data = simulation
+
+        debug(self.archive)
         
 
 

@@ -20,6 +20,7 @@ import pytest
 import numpy as np
 
 from nomad.datamodel import EntryArchive
+from runschema.system import System
 from nomad.units import ureg
 from electronicparsers.quantumespresso import QuantumEspressoParser, NMRParser
 
@@ -33,6 +34,13 @@ def approx(value, abs=0, rel=1e-6):
 @pytest.fixture(scope='module')
 def parser():
     return QuantumEspressoParser()
+
+
+@pytest.fixture(scope='module')
+def quartz_scf(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/quantumespresso/quartz/quartz-scf.out', archive, None)
+    return archive
 
 
 def RyB_to_N(value):
@@ -253,9 +261,12 @@ def test_nmr(parser):
     mainfile_keys = parser.get_mainfile_keys(filename=filepath)
     debug(mainfile_keys)
     parser.parse(filepath, archive, None)
+    sec_run = archive.run[0]
+    debug(sec_run.system[-1])
+    
 
 
-def test_nmr_standalone(parser):
+def test_nmr_standalone(parser, quartz_scf):
     archive = EntryArchive()
-    parser = NMRParser()
+    parser = NMRParser(system=quartz_scf.run[0].system[-1])
     parser.parse('tests/data/quantumespresso/quartz/quartz-nmr.out', archive, None)
