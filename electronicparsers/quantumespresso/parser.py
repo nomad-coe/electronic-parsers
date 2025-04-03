@@ -23,6 +23,13 @@ from datetime import datetime
 import os
 from pathlib import Path
 from typing import Optional
+from typing import TYPE_CHECKING
+
+from nomad.datamodel import EntryArchive
+
+if TYPE_CHECKING:
+    from nomad.datamodel.datamodel import EntryArchive
+    from structlog.stdlib import BoundLogger
 
 from electronicparsers.utils.utils import BeyondDFTWorkflowsParser
 from nomad.units import ureg
@@ -82,7 +89,18 @@ from nomad_nmr_schema.schema_packages.schema_package import (
     SpinSpinCoupling,
 )
 
+from nomad_simulations.schema_packages.model_method import (
+    DFT,
+    ModelMethod,
+    XCFunctional as XCFunctional_simu,
+)
+
 from nomad_simulations.schema_packages.atoms_state import AtomsState
+
+from nomad.parsing import MatchingParser
+
+from nomad_simulations.schema_packages.model_system import AtomicCell, Cell, ModelSystem, AtomsState, Symmetry, ChemicalFormula
+from nomad.atomutils import Formula
 
 from devtools import debug
 
@@ -2871,17 +2889,131 @@ class NMRFileParser(TextParser):
         ]
 
 
-class NMRParser:
+class NMRParser(MatchingParser):
     _system: System
 
-    def __init__(self, system: System):
+    # Data section classes:
+    simulation_class = Simulation
+    program_class = Program
+    cell_class = Cell
+    model_system_class = ModelSystem
+    model_method_class = ModelMethod
+    atom_state_class = AtomsState
+    magres_outputs_class = Outputs
+    spin_spin_couplings_class = SpinSpinCoupling
+    e_field_gradients_class = ElectricFieldGradients
+    e_field_gradient_class = ElectricFieldGradient
+    mag_susceptibility_class = MagneticSusceptibility
+    mag_shielding_tensor = MagneticShieldingTensor
+    # Workflow section classes:
+    # workflow_class = NMRMagRes
+    # workflow_method_class = NMRMagResMethod
+    # workflow_results_class = NMRMagResResults
+
+    def __init__(self, system: System, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.nmr_parser = NMRFileParser()
         self._xc_functional_map = XC_FUNCTIONAL_MAP
         self._system = system
 
     def init_parser(self):
-        self.nmr_parser.mainfile = self.filepath
+        self.nmr_parser.mainfile = self.mainfile
         self.nmr_parser.logger = self.logger
+
+    def create_atomic_cell_from_atoms(self, atoms_section) -> AtomicCell:
+        """
+        Converte il blocco System.atoms in un AtomicCell.
+        """
+        atomic_cell = AtomicCell()
+        atomic_cell.name = 'AtomicCell'
+        atomic_cell.type = 'original'
+
+        # Copia posizioni, velocità, lattice e periodicità
+        if atoms_section.positions is not None:
+            atomic_cell.positions = atoms_section.positions
+        if atoms_section.velocities is not None:
+            atomic_cell.velocities = atoms_section.velocities
+        if atoms_section.lattice_vectors is not None:
+            atomic_cell.lattice_vectors = atoms_section.lattice_vectors
+        if atoms_section.periodic is not None:
+            atomic_cell.periodic_boundary_conditions = atoms_section.periodic
+        if atoms_section.supercell_matrix is not None:
+            atomic_cell.supercell_matrix = atoms_section.supercell_matrix
+
+        # AtomsState
+        if atoms_section.labels is not None:
+            for label in atoms_section.labels:
+                atom_state = AtomsState(chemical_symbol=label)
+                atomic_cell.atoms_state.append(atom_state)
+        elif atoms_section.atomic_numbers is not None:
+            for atomic_number in atoms_section.atomic_numbers:
+                atom_state = AtomsState(atomic_number=atomic_number)
+                atomic_cell.atoms_state.append(atom_state)
+
+        # Opzionali
+        if atoms_section.equivalent_atoms is not None:
+            atomic_cell.equivalent_atoms = atoms_section.equivalent_atoms
+        if atoms_section.wyckoff_letters is not None:
+            atomic_cell.wyckoff_letters = atoms_section.wyckoff_letters
+
+        return atomic_cell
+
+
+    def convert_system_to_model_system(self, system: System) -> ModelSystem:
+        """
+        Converte un oggetto `System` in `ModelSystem`.
+        """
+        model_system = ModelSystem()
+        model_system.name = system.name
+        model_system.type = system.type
+        model_system.is_representative = system.is_representative
+
+        # AtomicCell
+        if system.atoms:
+            atomic_cell = self.create_atomic_cell_from_atoms(system.atoms)
+            model_system.cell.append(atomic_cell)
+
+        # ChemicalFormula
+        if system.chemical_composition_reduced or system.chemical_composition_hill:
+            chem_formula = ChemicalFormula()
+            if system.chemical_composition_reduced:
+                chem_formula.reduced = system.chemical_composition_reduced
+            if system.chemical_composition_hill:
+                chem_formula.hill = system.chemical_composition_hill
+            if system.chemical_composition_anonymous:
+                chem_formula.anonymous = system.chemical_composition_anonymous
+            model_system.chemical_formula = chem_formula
+        else:
+            # fallback: usa ASE per ricavare formula
+            try:
+                ase_atoms = system.atoms.to_ase()
+                f = Formula(ase_atoms.get_chemical_formula())
+                chem_formula = ChemicalFormula()
+                chem_formula.resolve_chemical_formulas(f)
+                model_system.chemical_formula = chem_formula
+            except Exception:
+                pass
+
+        # Symmetry
+        if system.symmetry:
+            for sym in system.symmetry:
+                sym_section = Symmetry()
+                for key in [
+                    'bravais_lattice', 'hall_symbol', 'point_group_symbol',
+                    'space_group_number', 'space_group_symbol', 'strukturbericht_designation',
+                    'prototype_formula', 'prototype_aflow_id', 'origin_shift', 'transformation_matrix'
+                ]:
+                    if hasattr(sym, key):
+                        setattr(sym_section, key, getattr(sym, key, None))
+                model_system.symmetry.append(sym_section)
+
+        # Bond list
+        if system.atoms and system.atoms.bond_list is not None:
+            model_system.bond_list = system.atoms.bond_list
+
+        return model_system
+
+
 
     def parse_xc_functional(self) -> list[XCFunctional]:
         """
@@ -2931,59 +3063,79 @@ class NMRParser:
         return magnetic_shieldings
 
 
-    def parse(self, filepath, archive, logger):
-        self.filepath = os.path.abspath(filepath)
+    def parse(
+        self,
+        filepath: str,
+        archive: "EntryArchive",
+        logger: "BoundLogger",
+    ) -> None:
+        self.mainfile = filepath
+        self.maindir = os.path.dirname(self.mainfile)
+        self.basename = os.path.basename(self.mainfile)
         self.archive = archive
         self.logger = logger if logger is not None else logging
 
         self.init_parser()
 
-        # run
-        sec_run = Run()
-        self.archive.run.append(sec_run)
+        # Adding self.simulation_class to data
+        simulation = self.simulation_class()
+
+        self.logger.debug(f"mainfile: {self.mainfile}")
+        self.logger.debug(f"mainfile_type: {type(self.mainfile)}")
 
         # program
-        program_version  = self.nmr_parser.get('software_version', [])
-        sec_run.program = Program(name=program_version[0])
-        sec_run.program.version = program_version[1]
-        debug(sec_run.program.name, sec_run.program.version)
-        debug(self.nmr_parser._results)
-
-        # system
-        sec_run.system.append(self._system)       
-
-        # method
-        sec_method = Method(label='NMR')
-        self.archive.run[-1].method.append(sec_method)
-        sec_dft = DFT()
-        sec_method.dft = sec_dft
-        sec_xc_functional = self.parse_xc_functional()
-        sec_dft.xc_functional = sec_xc_functional
-
-        debug(self.archive.run[-1])
-
-        # calculation viene sostituito da data/outputs
-        # Creating Calculation and adding System and Method refs
-        # sec_scc = Calculation()
-        # sec_scc.system_ref = sec_run.system[-1]
-        # sec_scc.method_ref = sec_run.method[-1]
-
-        # Adding self.simulation_class to data
-        simulation = Simulation()
-
-        outputs = Outputs()
-
-        # magnetic_shieldings
-        ms = self.parse_magnetic_shieldings()
-        if len(ms) > 0:
-            outputs.magnetic_shieldings = ms
-
-        if outputs is not None:
-            simulation.outputs.append(outputs) 
-
+        program_name_version  = self.nmr_parser.get('software_version', [])
+        simulation.program = self.program_class(
+            name=program_name_version[0],
+            version=program_name_version[1],
+        )
         archive.data = simulation
 
-        debug(self.archive)
+        debug(archive.data)
+        debug(archive.data.program)
+        debug(archive.data.program.name)
+        debug(archive.data.program.version)
+
+        # system
+        debug(self._system)    
+        model_system = self.convert_system_to_model_system(system = self._system)
+        if model_system is not None:
+            simulation.model_system.append(model_system)
+        debug(model_system)
+
+
+        # # method
+        # sec_method = Method(label='NMR')
+        # self.archive.run[-1].method.append(sec_method)
+        # sec_dft = DFT()
+        # sec_method.dft = sec_dft
+        # sec_xc_functional = self.parse_xc_functional()
+        # sec_dft.xc_functional = sec_xc_functional
+
+        # debug(self.archive.run[-1])
+
+        # # calculation viene sostituito da data/outputs
+        # # Creating Calculation and adding System and Method refs
+        # # sec_scc = Calculation()
+        # # sec_scc.system_ref = sec_run.system[-1]
+        # # sec_scc.method_ref = sec_run.method[-1]
+
+        # # Adding self.simulation_class to data
+        # simulation = Simulation()
+
+        # outputs = Outputs()
+
+        # # magnetic_shieldings
+        # ms = self.parse_magnetic_shieldings()
+        # if len(ms) > 0:
+        #     outputs.magnetic_shieldings = ms
+
+        # if outputs is not None:
+        #     simulation.outputs.append(outputs) 
+
+        # archive.data = simulation
+
+        # debug(self.archive)
         
 
 
@@ -3814,7 +3966,7 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             if nmr_archive is not None:
                 # parse NMR
                 filepath = Path(self.filepath)
-                nmrfilepath = filepath.with_name(filepath.stem.replace("scf", "") + "nmr.out")
+                nmrfilepath = str(filepath.with_name(filepath.stem.replace("scf", "") + "nmr.out"))
                 p = NMRParser(system=sec_run.system[-1])
                 p.parse(nmrfilepath, nmr_archive, logger)
 

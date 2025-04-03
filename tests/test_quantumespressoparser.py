@@ -269,4 +269,7 @@ def test_nmr(parser):
 def test_nmr_standalone(parser, quartz_scf):
     archive = EntryArchive()
     parser = NMRParser(system=quartz_scf.run[0].system[-1])
-    parser.parse('tests/data/quantumespresso/quartz/quartz-nmr.out', archive, None)
+    parser.parse(
+        filepath='tests/data/quantumespresso/quartz/quartz-nmr.out',
+        archive=archive,
+        logger=None)
