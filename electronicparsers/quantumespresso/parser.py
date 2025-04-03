@@ -3012,8 +3012,6 @@ class NMRParser(MatchingParser):
 
         return model_system
 
-
-
     def parse_xc_functional(self) -> list[XCFunctional]:
         """
         Parse the exchange-correlation functional.
@@ -3034,12 +3032,8 @@ class NMRParser(MatchingParser):
             xc_sections.append(functional)
         return xc_sections
     
-    def parse_magnetic_shieldings(self):
-        atom_labels = self._system.atoms.labels
-        if not atom_labels:
-            self.logger.warning('Could not find the parsed atomic cell information.')
-            return
-        n_atoms = len(atom_labels)
+    def parse_magnetic_shieldings(self, cell):
+        n_atoms = len(cell.atoms_state)
 
         # Magnetic Shielding Tensor (ms) parsing
         data = self.nmr_parser.get('ms_list', [])
@@ -3049,17 +3043,48 @@ class NMRParser(MatchingParser):
                 "The shape of the matched text from the magres file for the `ms` does not coincide with the number of atoms."
             )
             return []
+
+        # Parse magnetic shieldings and their refs to the specific `MagresParser.atom_state_class`
         magnetic_shieldings = []
+        from devtools import debug
         for i, atom_data in enumerate(data):
-            debug(atom_data)
+            debug(cell.atoms_state[i], atom_data)
             # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
             values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
-            sec_ms = MagneticShieldingTensor(
-                entity_ref=AtomsState(chemical_symbol=atom_data[0])
-                )
+            sec_ms = self.mag_shielding_tensor(entity_ref=cell.atoms_state[i])
             sec_ms.value = values * 1e-6 * ureg("dimensionless")
             magnetic_shieldings.append(sec_ms)
         return magnetic_shieldings
+
+    def parse_outputs(self, simulation):
+
+        if simulation.model_system is None:
+            self.logger.warning(
+                "Could not find the `MagresParser.model_system_class` that the outputs reference to."
+            )
+            return None
+        outputs = self.magres_outputs_class(
+            model_method_ref=simulation.model_method[-1],
+            model_system_ref=simulation.model_system[-1],
+        )
+        if (
+            not simulation.model_system[-1].cell
+            or not simulation.model_system[-1].cell[-1].atoms_state
+        ):
+            self.logger.warning(
+                "Could not find the `cell` sub-section or the `MagresParser.atom_state_class` list under it."
+            )
+            return None
+        cell = simulation.model_system[-1].cell[-1]
+
+        ms = self.parse_magnetic_shieldings(cell=cell)
+        if len(ms) > 0:
+            outputs.magnetic_shieldings = ms
+        
+        return outputs
+
+
+
 
 
     def parse(
@@ -3112,28 +3137,12 @@ class NMRParser(MatchingParser):
 
         # debug(self.archive.run[-1])
 
-        # # calculation viene sostituito da data/outputs
-        # # Creating Calculation and adding System and Method refs
-        # # sec_scc = Calculation()
-        # # sec_scc.system_ref = sec_run.system[-1]
-        # # sec_scc.method_ref = sec_run.method[-1]
+        # Outputs
 
-        # # Adding self.simulation_class to data
-        # simulation = Simulation()
+        outputs = self.parse_outputs(simulation=simulation)
+        if outputs is not None:
+            simulation.outputs.append(outputs)
 
-        # outputs = Outputs()
-
-        # # magnetic_shieldings
-        # ms = self.parse_magnetic_shieldings()
-        # if len(ms) > 0:
-        #     outputs.magnetic_shieldings = ms
-
-        # if outputs is not None:
-        #     simulation.outputs.append(outputs) 
-
-        # archive.data = simulation
-
-        # debug(self.archive)
         
 
 
