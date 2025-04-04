@@ -216,3 +216,22 @@ def test_4(parser):
     assert calc[2].eigenvalues[0].qp_linearization_prefactor[0][2][2] == approx(0.89)
     assert calc[2].eigenvalues[0].value_qp[0][5][1].magnitude == approx(-5.68772705e-19)
     assert calc[2].eigenvalues[0].value_ks[0][-1][3].magnitude == approx(2.36641489e-18)
+
+def test_5(parser):
+    archive = EntryArchive()
+    parser.parse(
+        'tests/data/yambo/CH4_db_minimal/r_setup', archive, None
+    )
+    system = archive.run[-1].system
+    assert (
+        system[1].atoms.positions
+        == './SAVE//ns.db1'
+    )
+    assert (
+        system[1].atoms.labels
+        == './SAVE//ns.db1'
+    )
+    assert (
+        system[1].atoms.lattice_vectors
+        == './SAVE//ns.db1'
+    )
