@@ -731,7 +731,7 @@ class YamboParser:
             system = System()
             run.system.append(system)
             positions = self.netcdf_parser.get('ATOM_POS', [])
-            max_n_atoms = self.netcdf_parser.get('MAX_ATOMS', [])
+            max_n_atoms = self.netcdf_parser.get('MAX_ATOMS', 0)
             n_atoms = self.netcdf_parser.N_ATOMS
             atom_numbers = np.hstack(
                 [
