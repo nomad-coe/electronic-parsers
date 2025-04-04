@@ -16,6 +16,7 @@
 # limitations under the License.
 #
 
+import os
 import pytest
 import numpy as np
 
@@ -255,15 +256,12 @@ def test_noncolmag(parser):
     assert sec_method.electronic.n_spin_channels is None
 
 
-def test_nmr(parser):
-    archive = EntryArchive()
+def test_nmr_mainfile_keys(parser):
     filepath = 'tests/data/quantumespresso/quartz/quartz-scf.out'
     mainfile_keys = parser.get_mainfile_keys(filename=filepath)
-    debug(mainfile_keys)
-    parser.parse(filepath, archive, None)
-    sec_run = archive.run[0]
-    debug(sec_run.system[-1])
-    
+    debug(mainfile_keys[1])
+    assert mainfile_keys[0] == 'NMR'
+    assert mainfile_keys[1] == 'NMR_workflow'
 
 
 def test_nmr_standalone(parser, quartz_scf):
@@ -273,3 +271,51 @@ def test_nmr_standalone(parser, quartz_scf):
         filepath='tests/data/quantumespresso/quartz/quartz-nmr.out',
         archive=archive,
         logger=None)
+    
+    simulation = archive.data
+
+    # Program
+    assert simulation.program.name == 'GIPAW'
+    assert simulation.program.version == '7.4.1'
+
+    # ModelSystem
+    assert len(simulation.model_system) == 1
+    model_system = simulation.model_system[0]
+    assert model_system.is_representative
+    #   Cell ???
+    assert len(model_system.cell) == 1
+    atomic_cell = model_system.cell[0]
+    #       AtomsState
+    assert len(atomic_cell.atoms_state) == 9
+    labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
+    for index, symbol in enumerate(labels):
+        assert atomic_cell.atoms_state[index].chemical_symbol == symbol
+
+    # ModelMethod
+    assert len(simulation.model_method) == 1
+    assert simulation.model_method[0].m_def.name == 'DFT'
+    assert simulation.model_method[0].name == 'NMR'
+    dft = simulation.model_method[0]
+    assert len(dft.xc_functionals) == 2
+    assert dft.xc_functionals[0].name == 'correlation'
+    assert dft.xc_functionals[0].libxc_name == 'GGA_C_PBE'
+    assert dft.xc_functionals[1].name == 'exchange'
+    assert dft.xc_functionals[1].libxc_name == 'GGA_X_PBE'
+
+
+    # Outputs
+    assert len(simulation.outputs) == 1
+    output = simulation.outputs[0]
+    assert output.model_system_ref == model_system
+    assert output.model_method_ref == dft
+    #   Properties
+    assert len(output.m_xpath('magnetic_shieldings', dict=False)) == 9  # per atom
+    for property_name in [
+        'electric_field_gradients',
+        'magnetic_shieldings',
+        'magnetic_susceptibilities'
+    ]:
+        assert output.m_xpath(property_name, dict=False) is not None
+    #       MagneticShieldingTensor
+    for i, ms in enumerate(output.magnetic_shieldings):
+        assert ms.entity_ref.chemical_symbol == labels[i]

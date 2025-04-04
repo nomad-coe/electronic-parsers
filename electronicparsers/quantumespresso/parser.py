@@ -3213,6 +3213,7 @@ class NMRParser(MatchingParser):
 
         # model system 
         model_system = self.convert_system_to_model_system(system = self._system)
+        model_system.is_representative = True
         simulation.model_system.append(model_system)
 
 
