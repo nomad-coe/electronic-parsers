@@ -2840,7 +2840,7 @@ class NMRFileParser(TextParser):
             
             return np.array(tensors)
         
-        def str_to_data_list(val_in):
+        def str_to_ms_data_list(val_in):
             pattern = re.compile(
                 r'Atom\s+(\d+)\s+(\w+).*?\n'  # cattura numero atomo e simbolo
                 r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\n'  # riga 1 matrice
@@ -2876,7 +2876,7 @@ class NMRFileParser(TextParser):
             Quantity(
                 'ms_list',
                 r'Total NMR chemical shifts in ppm:\s*((?:.*?\n)*?)\s*Initialization:',
-                str_operation=str_to_data_list,
+                str_operation=str_to_ms_data_list,
                 convert=False,
             ),
             Quantity(
@@ -2913,6 +2913,44 @@ class NMRFileParser(TextParser):
             ),
         ]
 
+class EFGFileParser(TextParser):
+    def __init__(self):
+        super().__init__(None)
+
+    def init_quantities(self):
+        def parse_tensor_block(val_in: str):
+            lines = [line.strip() for line in val_in.strip().splitlines() if line.strip()]
+            result = []
+            
+            # Processa ogni gruppo di 3 righe (una matrice)
+            for i in range(0, len(lines), 3):
+                block = lines[i:i+3]
+                if len(block) < 3:
+                    continue
+
+                values = []
+                atom_type = None
+                atom_index = None
+
+                for row in block:
+                    parts = row.split()
+                    if atom_type is None:
+                        atom_type = parts[0]
+                        atom_index = int(parts[1])
+                    values.extend([float(p) for p in parts[2:]])
+
+                result.append([atom_type, atom_index] + values)
+
+            return result
+        
+        self._quantities = [
+            Quantity(
+                'efg',
+                r'----- total EFG \(symmetrized\) -----\n((?:.*?\n)*?)\s+NQR/NMR SPECTROSCOPIC PARAMETERS:',
+                str_operation=parse_tensor_block,
+                convert=False,
+            )
+        ]
 
 class NMRParser(MatchingParser):
     _system: System
@@ -2938,6 +2976,7 @@ class NMRParser(MatchingParser):
     def __init__(self, system: System, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.nmr_parser = NMRFileParser()
+        self.efg_parser = EFGFileParser()
         self._xc_functional_map = {
             "LDA": ["LDA_C_PZ", "LDA_X_PZ"],
             "PW91": ["GGA_C_PW91", "GGA_X_PW91"],
@@ -2959,6 +2998,8 @@ class NMRParser(MatchingParser):
     def init_parser(self):
         self.nmr_parser.mainfile = self.mainfile
         self.nmr_parser.logger = self.logger
+        self.efg_parser.mainfile = self.mainfile.replace('-nmr.out', '-efg.out')
+        self.efg_parser.logger = self.logger
 
     def create_atomic_cell_from_atoms(self, atoms_section) -> AtomicCell:
         """
@@ -3110,6 +3151,32 @@ class NMRParser(MatchingParser):
         sec_sus.value = values * 1e-6 * ureg("dimensionless")
         return [sec_sus]
 
+    def parse_electric_field_gradients(self, cell):
+        electric_field_gradients = self.e_field_gradients_class()
+        if not Path(self.efg_parser.mainfile).exists():
+            return electric_field_gradients
+
+        n_atoms = len(cell.atoms_state)
+        data = self.efg_parser.get('efg', [])
+        # Initial check on the size of the matched text
+        if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
+            self.logger.warning(
+                "The shape of the matched text from the magres file for the `efg` does not coincide with the number of atoms."
+            )        
+        
+        # Parse electronic field gradients for each contribution and their refs to the specific `MagresParser.atom_state_class`
+        for i, atom_data in enumerate(data):
+            # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
+            values = np.reshape(atom_data[2:], (3, 3))  # no need to transpose
+            debug(values)
+            debug(cell.atoms_state[i])
+            sec_efg = self.e_field_gradient_class(
+                type="total", entity_ref=cell.atoms_state[i]
+            )
+            sec_efg.value = np.transpose(values) * 9.717362e21 * ureg("V/m^2")
+            electric_field_gradients.efg_total.append(sec_efg)
+        return electric_field_gradients
+
     def parse_outputs(self, simulation):
 
         if simulation.model_system is None:
@@ -3140,6 +3207,15 @@ class NMRParser(MatchingParser):
         mag_sus = self.parse_magnetic_susceptibilities()
         if len(mag_sus) > 0:
             outputs.magnetic_susceptibilities = mag_sus
+
+        # electric field gradients
+        efg = self.parse_electric_field_gradients(cell=cell)
+        if len(efg.efg_total) > 0:
+            efg.model_system_ref = simulation.model_system[-1]
+            efg.model_method_ref = simulation.model_method[-1]
+            outputs.electric_field_gradients.append(efg)
+        
+        debug(outputs)
         
         return outputs
 
