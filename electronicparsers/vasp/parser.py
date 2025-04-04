@@ -2000,6 +2000,8 @@ class VASPParser:
                         atom_index = self.parser.atom_info.get('atomtypes', {}).get('element', []).index(_label)
                         # get the label from the PP info. The second entry appears to be the chemical element.
                         recovered_label = self.parser.atom_info.get('atomtypes', {}).get('pseudopotential')[atom_index][1]
+                        # account for cases where PP names include underscores
+                        recovered_label = recovered_label.split('_')[0]
                         assert recovered_label in self.allowed_species, 'Recovered species label is also invalid'
                         sec_atoms.labels[idx] = recovered_label
                     except Exception as e:
