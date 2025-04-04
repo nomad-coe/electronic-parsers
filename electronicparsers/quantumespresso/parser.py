@@ -101,8 +101,6 @@ from nomad.parsing import MatchingParser
 from nomad_simulations.schema_packages.model_system import AtomicCell, Cell, ModelSystem, AtomsState, Symmetry, ChemicalFormula
 from nomad.atomutils import Formula
 
-from devtools import debug
-
 
 RE_FLOAT = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
 
@@ -4013,18 +4011,8 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
 
         self.init_parser()
 
-        # debug(self.out_parser.mainfile)
-        # debug(self.out_parser._quantities)
-        # debug(self.out_parser._results)
-        # debug(self._child_archives)
-
-        # logger.debug(f"child_archives: {self._child_archives}")
-
         # TODO include x_qe_warning
         for run in self.out_parser.get('run', []):
-            # debug(run.program_name_version)
-            # debug(run._results)
-            # assert False
             self.sampling_method = None
             sec_run = Run()
             self.archive.run.append(sec_run)
@@ -4076,25 +4064,6 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
 
             self.parse_configurations(run)
 
-            debug(sec_run.system[-1])
-
-            # NMR archives
-            nmr_archive = self._child_archives.get('NMR')
-            if nmr_archive is not None:
-                # parse NMR
-                filepath = Path(self.filepath)
-                nmrfilepath = str(filepath.with_name(filepath.stem.replace("scf", "") + "nmr.out"))
-                p = NMRParser(system=sec_run.system[-1])
-                p.parse(nmrfilepath, nmr_archive, logger)
-
-                # parse NMR workflow
-                nmr_workflow_archive = self._child_archives.get('NMR_workflow')
-                try:
-                    self.parse_nmr_qe_workflow(nmr_archive, nmr_workflow_archive)
-                except Exception:
-                    self.logger.error('Error parsing the automatic NMR workflow')
-        
-
             self.archive.workflow2 = SinglePoint()
             if self.sampling_method is not None:
                 if self.sampling_method == 'geometry_optimization':
@@ -4119,6 +4088,22 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                 sec_run.time_run.date_end = (
                     date_time - datetime(1970, 1, 1)
                 ).total_seconds()
+
+            # NMR archives
+            nmr_archive = self._child_archives.get('NMR')
+            if nmr_archive is not None:
+                # parse NMR
+                filepath = Path(self.filepath)
+                nmrfilepath = str(filepath.with_name(filepath.stem.replace("scf", "") + "nmr.out"))
+                p = NMRParser(system=sec_run.system[-1])
+                p.parse(nmrfilepath, nmr_archive, logger)
+
+                # parse NMR workflow
+                nmr_workflow_archive = self._child_archives.get('NMR_workflow')
+                try:
+                    self.parse_nmr_qe_workflow(nmr_archive, nmr_workflow_archive)
+                except Exception:
+                    self.logger.error('Error parsing the automatic NMR workflow')
 
             job_done = run.get('job_done')
             if job_done:
