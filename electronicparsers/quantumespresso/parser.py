@@ -2930,7 +2930,7 @@ class NMRParser(MatchingParser):
     simulation_class = Simulation
     program_class = Program
     model_system_class = ModelSystem
-    magres_outputs_class = Outputs
+    nmr_outputs_class = Outputs
     e_field_gradients_class = ElectricFieldGradients
     e_field_gradient_class = ElectricFieldGradient
     mag_susceptibility_class = MagneticSusceptibility
@@ -2958,7 +2958,7 @@ class NMRParser(MatchingParser):
         }
         self._system = system
 
-    def init_parser(self):
+    def init_parser(self) -> None:
         self.nmr_parser.mainfile = self.mainfile
         self.nmr_parser.logger = self.logger
         self.efg_parser.mainfile = self.mainfile.replace('-nmr.out', '-efg.out')
@@ -3056,7 +3056,7 @@ class NMRParser(MatchingParser):
 
         return model_system
 
-    def parse_xc_functional(self) -> list[XCFunctional]:
+    def parse_xc_functional(self) -> list[XCFunctional_simu]:
         """
         Parse the exchange-correlation functional.
         """
@@ -3076,17 +3076,10 @@ class NMRParser(MatchingParser):
             xc_sections.append(functional)
         return xc_sections
     
-    def parse_magnetic_shieldings(self, cell):
-        """
-        Parse the magnetic shieldings from the NMR file.
-
-        Args:
-            cell: The parsed `cell_class` section.
-            logger (BoundLogger): The logger to log messages.
-
-        Returns:
-            list[MagresParser.mag_shielding_tensor]: The list of parsed `MagresParser.mag_shielding_tensor` sections.
-        """
+    def parse_magnetic_shieldings(
+        self,
+        cell: Cell
+    ) -> list["NMRParser.mag_shielding_tensor"]:
         n_atoms = len(cell.atoms_state)
 
         # Magnetic Shielding Tensor (ms) parsing
@@ -3094,7 +3087,7 @@ class NMRParser(MatchingParser):
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
             self.logger.warning(
-                "The shape of the matched text from the magres file for the `ms` does not coincide with the number of atoms."
+                "The shape of the matched text for the `ms_list` does not coincide with the number of atoms."
             )
             return []
 
@@ -3108,7 +3101,7 @@ class NMRParser(MatchingParser):
             magnetic_shieldings.append(sec_ms)
         return magnetic_shieldings
 
-    def parse_magnetic_susceptibilities(self):
+    def parse_magnetic_susceptibilities(self) -> list["NMRParser.mag_susceptibility_class"]:
         chi_bare_pGv = self.nmr_parser.get("chi_bare_pGv", [])
         chi_bare_vGv = self.nmr_parser.get("chi_bare_vGv", [])
         if np.size(chi_bare_pGv) != 9 or np.size(chi_bare_vGv) != 9:
@@ -3122,8 +3115,12 @@ class NMRParser(MatchingParser):
         sec_sus.value = values * 1e-6 * ureg("dimensionless")
         return [sec_sus]
 
-    def parse_electric_field_gradients(self, cell):
+    def parse_electric_field_gradients(
+        self,
+        cell: Cell
+    ) -> "NMRParser.e_field_gradients_class":
         electric_field_gradients = self.e_field_gradients_class()
+        # ckeck if the `efg.out` file exists
         if not Path(self.efg_parser.mainfile).exists():
             return electric_field_gradients
 
@@ -3132,7 +3129,7 @@ class NMRParser(MatchingParser):
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
             self.logger.warning(
-                "The shape of the matched text from the magres file for the `efg` does not coincide with the number of atoms."
+                "The shape of the matched text for the `efg` does not coincide with the number of atoms."
             )        
         
         # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
@@ -3146,14 +3143,17 @@ class NMRParser(MatchingParser):
             electric_field_gradients.efg_total.append(sec_efg)
         return electric_field_gradients
 
-    def parse_outputs(self, simulation):
+    def parse_outputs(
+        self, 
+        simulation: "NMRParser.simulation_class"
+    ) -> Optional["NMRParser.nmr_outputs_class"]:
 
         if simulation.model_system is None:
             self.logger.warning(
                 "Could not find the `model_system_class` that the outputs reference to."
             )
             return None
-        outputs = self.magres_outputs_class(
+        outputs = self.nmr_outputs_class(
             model_method_ref=simulation.model_method[-1],
             model_system_ref=simulation.model_system[-1],
         )
