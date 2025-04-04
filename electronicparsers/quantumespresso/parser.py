@@ -2827,6 +2827,7 @@ class NMRFileParser(TextParser):
         super().__init__(None)
 
     def init_quantities(self):
+        re_float = r" *[-+]?\d+\.\d*(?:[Ee][-+]\d+)? *"
         def str_to_ms_tensor(val_in):
             pattern = re.compile(r'Atom.*?(?:\n\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+))\n\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\n\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)', re.DOTALL)
             tensors = []
@@ -2857,6 +2858,15 @@ class NMRFileParser(TextParser):
                 data.append([atom_type, atom_num] + values)
             return data
         
+        def str_to_chi_tensor(val_in):
+            lines = val_in.strip().splitlines()
+            tensor = []
+            for line in lines:
+                if line.strip():  # ignore empty lines
+                    row = [float(x) for x in line.strip().split()]
+                    tensor.append(row)
+            return np.array(tensor)
+        
         self._quantities = [
             Quantity(
                 'ms_tensor',
@@ -2885,6 +2895,22 @@ class NMRFileParser(TextParser):
             Quantity(
                 'xc_functional',
                 r'Exchange-correlation\s*=\s*(.*?)\n',
+            ),
+            Quantity(
+                "chi_bare_pGv",
+                rf"chi_bare\s+pGv\s+\(\w+\)\s+in\s+10\^{{-6}}\s+cm\^3/mol:\s*\n"
+                rf"((?:\s*{re_float}\s+{re_float}\s+{re_float}\s*\n?){{1,}})",
+                repeats=False,
+                str_operation=str_to_chi_tensor,
+                convert=False,
+            ),
+            Quantity(
+                "chi_bare_vGv",
+                rf"chi_bare\s+vGv\s+\(\w+\)\s+in\s+10\^{{-6}}\s+cm\^3/mol:\s*\n"
+                rf"((?:\s*{re_float}\s+{re_float}\s+{re_float}\s*\n?){{1,}})",
+                repeats=False,
+                str_operation=str_to_chi_tensor,
+                convert=False,
             ),
         ]
 
@@ -3056,6 +3082,20 @@ class NMRParser(MatchingParser):
             magnetic_shieldings.append(sec_ms)
         return magnetic_shieldings
 
+    def parse_magnetic_susceptibilities(self):
+        chi_bare_pGv = self.nmr_parser.get("chi_bare_pGv", [])
+        chi_bare_vGv = self.nmr_parser.get("chi_bare_vGv", [])
+        if np.size(chi_bare_pGv) != 9 or np.size(chi_bare_vGv) != 9:
+            self.logger.warning(
+                "The shape of the matched text from the file for the `chi_bare` does not coincide with 9 (3x3 tensor)."
+            )
+            return []
+        data = (chi_bare_pGv + chi_bare_vGv) / 2
+        values = np.transpose(np.reshape(data, (3, 3)))
+        sec_sus = self.mag_susceptibility_class(scale_dimension="macroscopic")
+        sec_sus.value = values * 1e-6 * ureg("dimensionless")
+        return [sec_sus]
+
     def parse_outputs(self, simulation):
 
         if simulation.model_system is None:
@@ -3077,14 +3117,17 @@ class NMRParser(MatchingParser):
             return None
         cell = simulation.model_system[-1].cell[-1]
 
+        # magnetic shielding
         ms = self.parse_magnetic_shieldings(cell=cell)
         if len(ms) > 0:
             outputs.magnetic_shieldings = ms
+
+        # magnetic susceptibility
+        mag_sus = self.parse_magnetic_susceptibilities()
+        if len(mag_sus) > 0:
+            outputs.magnetic_susceptibilities = mag_sus
         
         return outputs
-
-
-
 
 
     def parse(
@@ -3107,6 +3150,8 @@ class NMRParser(MatchingParser):
         self.logger.debug(f"mainfile: {self.mainfile}")
         self.logger.debug(f"mainfile_type: {type(self.mainfile)}")
 
+        debug(self.nmr_parser._results)
+
         # program
         program_name_version  = self.nmr_parser.get('software_version', [])
         simulation.program = self.program_class(
@@ -3115,10 +3160,7 @@ class NMRParser(MatchingParser):
         )
         archive.data = simulation
 
-        debug(archive.data)
-        debug(archive.data.program)
-        debug(archive.data.program.name)
-        debug(archive.data.program.version)
+        debug(self.nmr_parser._results)
 
         # system
         debug(self._system)    
@@ -3903,9 +3945,9 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
 
         self.init_parser()
 
-        debug(self.out_parser.mainfile)
-        debug(self.out_parser._quantities)
-        debug(self.out_parser._results)
+        # debug(self.out_parser.mainfile)
+        # debug(self.out_parser._quantities)
+        # debug(self.out_parser._results)
         # debug(self._child_archives)
 
         # logger.debug(f"child_archives: {self._child_archives}")
