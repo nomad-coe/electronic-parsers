@@ -50,9 +50,6 @@ from runschema.method import (
 from runschema.system import System, Atoms
 from runschema.calculation import (
     Calculation,
-    MagneticSusceptibility,
-    MagneticShielding,
-    ElectricFieldGradient,
     Energy,
     EnergyEntry,
     Forces,
@@ -77,29 +74,24 @@ from .metainfo.quantum_espresso import (
     x_qe_section_parallel,
 )
 
+from nomad.parsing import MatchingParser
+from nomad.atomutils import Formula
+from nomad_simulations.schema_packages.atoms_state import AtomsState
 from nomad_simulations.schema_packages.general import Simulation
 
+from nomad_simulations.schema_packages.model_method import (
+    DFT as DFT_simu,
+    ModelMethod,
+    XCFunctional as XCFunctional_simu,
+)
+from nomad_simulations.schema_packages.model_system import AtomicCell, Cell, ModelSystem, AtomsState, Symmetry, ChemicalFormula
 from nomad_nmr_schema.schema_packages.schema_package import (
     ElectricFieldGradient,
     ElectricFieldGradients,
     MagneticShieldingTensor,
     MagneticSusceptibility,
     Outputs,
-    SpinSpinCoupling,
 )
-
-from nomad_simulations.schema_packages.model_method import (
-    DFT,
-    ModelMethod,
-    XCFunctional as XCFunctional_simu,
-)
-
-from nomad_simulations.schema_packages.atoms_state import AtomsState
-
-from nomad.parsing import MatchingParser
-
-from nomad_simulations.schema_packages.model_system import AtomicCell, Cell, ModelSystem, AtomsState, Symmetry, ChemicalFormula
-from nomad.atomutils import Formula
 
 
 RE_FLOAT = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -2828,10 +2820,10 @@ class NMRFileParser(TextParser):
         
         def str_to_ms_data_list(val_in):
             pattern = re.compile(
-                r'Atom\s+(\d+)\s+(\w+).*?\n'  # cattura numero atomo e simbolo
-                r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\n'  # riga 1 matrice
-                r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\n'  # riga 2
-                r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)',   # riga 3
+                r'Atom\s+(\d+)\s+(\w+).*?\n'
+                r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\n'
+                r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\n'
+                r'\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)',
                 re.DOTALL
             )
             
@@ -2847,7 +2839,7 @@ class NMRFileParser(TextParser):
             lines = val_in.strip().splitlines()
             tensor = []
             for line in lines:
-                if line.strip():  # ignore empty lines
+                if line.strip():
                     row = [float(x) for x in line.strip().split()]
                     tensor.append(row)
             return np.array(tensor)
@@ -2893,6 +2885,7 @@ class NMRFileParser(TextParser):
             ),
         ]
 
+
 class EFGFileParser(TextParser):
     def __init__(self):
         super().__init__(None)
@@ -2901,8 +2894,6 @@ class EFGFileParser(TextParser):
         def parse_tensor_block(val_in: str):
             lines = [line.strip() for line in val_in.strip().splitlines() if line.strip()]
             result = []
-            
-            # Processa ogni gruppo di 3 righe (una matrice)
             for i in range(0, len(lines), 3):
                 block = lines[i:i+3]
                 if len(block) < 3:
@@ -2920,7 +2911,6 @@ class EFGFileParser(TextParser):
                     values.extend([float(p) for p in parts[2:]])
 
                 result.append([atom_type, atom_index] + values)
-
             return result
         
         self._quantities = [
@@ -2932,26 +2922,19 @@ class EFGFileParser(TextParser):
             )
         ]
 
+
 class NMRParser(MatchingParser):
     _system: System
 
     # Data section classes:
     simulation_class = Simulation
     program_class = Program
-    cell_class = Cell
     model_system_class = ModelSystem
-    model_method_class = ModelMethod
-    atom_state_class = AtomsState
     magres_outputs_class = Outputs
-    spin_spin_couplings_class = SpinSpinCoupling
     e_field_gradients_class = ElectricFieldGradients
     e_field_gradient_class = ElectricFieldGradient
     mag_susceptibility_class = MagneticSusceptibility
     mag_shielding_tensor = MagneticShieldingTensor
-    # Workflow section classes:
-    # workflow_class = NMRMagRes
-    # workflow_method_class = NMRMagResMethod
-    # workflow_results_class = NMRMagResResults
 
     def __init__(self, system: System, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -2983,13 +2966,13 @@ class NMRParser(MatchingParser):
 
     def create_atomic_cell_from_atoms(self, atoms_section) -> AtomicCell:
         """
-        Converte il blocco System.atoms in un AtomicCell.
+        Converts `System.atoms` to an `AtomicCell` object
         """
         atomic_cell = AtomicCell()
         atomic_cell.name = 'AtomicCell'
         atomic_cell.type = 'original'
 
-        # Copia posizioni, velocità, lattice e periodicità
+        # positions, velocities, lattice_vectors, periodic, supercell_matrix
         if atoms_section.positions is not None:
             atomic_cell.positions = atoms_section.positions
         if atoms_section.velocities is not None:
@@ -3011,7 +2994,7 @@ class NMRParser(MatchingParser):
                 atom_state = AtomsState(atomic_number=atomic_number)
                 atomic_cell.atoms_state.append(atom_state)
 
-        # Opzionali
+        # Optionals
         if atoms_section.equivalent_atoms is not None:
             atomic_cell.equivalent_atoms = atoms_section.equivalent_atoms
         if atoms_section.wyckoff_letters is not None:
@@ -3021,7 +3004,7 @@ class NMRParser(MatchingParser):
 
     def convert_system_to_model_system(self, system: System) -> ModelSystem:
         """
-        Converte un oggetto `System` in `ModelSystem`.
+        Converts a `System` object into `ModelSystem`.
         """
         model_system = self.model_system_class()
         model_system.name = system.name
@@ -3044,7 +3027,7 @@ class NMRParser(MatchingParser):
                 chem_formula.anonymous = system.chemical_composition_anonymous
             model_system.chemical_formula = chem_formula
         else:
-            # fallback: usa ASE per ricavare formula
+            # fallback: use ASE
             try:
                 ase_atoms = system.atoms.to_ase()
                 f = Formula(ase_atoms.get_chemical_formula())
@@ -3094,6 +3077,16 @@ class NMRParser(MatchingParser):
         return xc_sections
     
     def parse_magnetic_shieldings(self, cell):
+        """
+        Parse the magnetic shieldings from the NMR file.
+
+        Args:
+            cell: The parsed `cell_class` section.
+            logger (BoundLogger): The logger to log messages.
+
+        Returns:
+            list[MagresParser.mag_shielding_tensor]: The list of parsed `MagresParser.mag_shielding_tensor` sections.
+        """
         n_atoms = len(cell.atoms_state)
 
         # Magnetic Shielding Tensor (ms) parsing
@@ -3105,11 +3098,9 @@ class NMRParser(MatchingParser):
             )
             return []
 
-        # Parse magnetic shieldings and their refs to the specific `MagresParser.atom_state_class`
+        # Parse magnetic shieldings and their refs to the specific `atom_state_class`
         magnetic_shieldings = []
-        from devtools import debug
         for i, atom_data in enumerate(data):
-            debug(cell.atoms_state[i], atom_data)
             # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
             values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
             sec_ms = self.mag_shielding_tensor(entity_ref=cell.atoms_state[i])
@@ -3144,12 +3135,10 @@ class NMRParser(MatchingParser):
                 "The shape of the matched text from the magres file for the `efg` does not coincide with the number of atoms."
             )        
         
-        # Parse electronic field gradients for each contribution and their refs to the specific `MagresParser.atom_state_class`
+        # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
         for i, atom_data in enumerate(data):
             # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
             values = np.reshape(atom_data[2:], (3, 3))  # no need to transpose
-            debug(values)
-            debug(cell.atoms_state[i])
             sec_efg = self.e_field_gradient_class(
                 type="total", entity_ref=cell.atoms_state[i]
             )
@@ -3161,7 +3150,7 @@ class NMRParser(MatchingParser):
 
         if simulation.model_system is None:
             self.logger.warning(
-                "Could not find the `MagresParser.model_system_class` that the outputs reference to."
+                "Could not find the `model_system_class` that the outputs reference to."
             )
             return None
         outputs = self.magres_outputs_class(
@@ -3173,7 +3162,7 @@ class NMRParser(MatchingParser):
             or not simulation.model_system[-1].cell[-1].atoms_state
         ):
             self.logger.warning(
-                "Could not find the `cell` sub-section or the `MagresParser.atom_state_class` list under it."
+                "Could not find the `cell` sub-section or the `atom_state_class` list under it."
             )
             return None
         cell = simulation.model_system[-1].cell[-1]
@@ -3194,11 +3183,8 @@ class NMRParser(MatchingParser):
             efg.model_system_ref = simulation.model_system[-1]
             efg.model_method_ref = simulation.model_method[-1]
             outputs.electric_field_gradients.append(efg)
-        
-        debug(outputs)
-        
-        return outputs
 
+        return outputs
 
     def parse(
         self,
@@ -3217,11 +3203,6 @@ class NMRParser(MatchingParser):
         # Adding self.simulation_class to data
         simulation = self.simulation_class()
 
-        self.logger.debug(f"mainfile: {self.mainfile}")
-        self.logger.debug(f"mainfile_type: {type(self.mainfile)}")
-
-        debug(self.nmr_parser._results)
-
         # program
         program_name_version  = self.nmr_parser.get('software_version', [])
         simulation.program = self.program_class(
@@ -3230,30 +3211,24 @@ class NMRParser(MatchingParser):
         )
         archive.data = simulation
 
-        debug(self.nmr_parser._results)
-
-        # system
-        debug(self._system)    
+        # model system 
         model_system = self.convert_system_to_model_system(system = self._system)
         simulation.model_system.append(model_system)
 
 
-        # method
-        model_method = DFT(name="NMR")
+        # model method
+        model_method = DFT_simu(name="NMR")
         xc_functionals = self.parse_xc_functional()
-        debug(xc_functionals)
         if len(xc_functionals) > 0:
             model_method.xc_functionals = xc_functionals
 
         simulation.model_method.append(model_method)
 
-        # debug(self.archive.run[-1])
-
-        # Outputs
-
+        # outputs
         outputs = self.parse_outputs(simulation=simulation)
         if outputs is not None:
             simulation.outputs.append(outputs)
+
 
 class QuantumEspressoParser(BeyondDFTWorkflowsParser):
     def __init__(self):
