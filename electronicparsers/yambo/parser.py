@@ -747,8 +747,6 @@ class YamboParser:
                     positions = np.array(positions)
                     blocks = []
                     selected = []
-
-
                     positions = positions.reshape(-1, 3)
     
                     n_points = positions.shape[0] 
@@ -759,8 +757,6 @@ class YamboParser:
                         end_idx = (int(i) + 1) * int(max_n_atoms)
                         block = positions[start_idx:end_idx]
                         blocks.append(block)
-    
-    
                     for i, block in enumerate(blocks):
                         n_to_select = int(n_atoms[int(i)])
                         selected_from_block = block[:n_to_select]
@@ -768,8 +764,8 @@ class YamboParser:
                             selected.append(point)
     
                     positions=np.array(selected)
-                
                     return positions        
+                    
                 except Exception as e:
                     raise e
 
