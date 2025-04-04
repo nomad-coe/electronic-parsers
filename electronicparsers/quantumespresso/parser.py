@@ -2827,18 +2827,6 @@ class NMRFileParser(TextParser):
 
     def init_quantities(self):
         re_float = r" *[-+]?\d+\.\d*(?:[Ee][-+]\d+)? *"
-        def str_to_ms_tensor(val_in):
-            pattern = re.compile(r'Atom.*?(?:\n\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+))\n\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\n\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)', re.DOTALL)
-            tensors = []
-            for atom_match in pattern.findall(val_in):
-                tensor = np.array([
-                    [float(atom_match[0]), float(atom_match[1]), float(atom_match[2])],
-                    [float(atom_match[3]), float(atom_match[4]), float(atom_match[5])],
-                    [float(atom_match[6]), float(atom_match[7]), float(atom_match[8])]
-                ])
-                tensors.append(tensor)
-            
-            return np.array(tensors)
         
         def str_to_ms_data_list(val_in):
             pattern = re.compile(
@@ -2867,12 +2855,6 @@ class NMRFileParser(TextParser):
             return np.array(tensor)
         
         self._quantities = [
-            Quantity(
-                'ms_tensor',
-                r'Total NMR chemical shifts in ppm:\s*((?:.*?\n)*?)\s*Initialization:',
-                str_operation=str_to_ms_tensor,
-                convert=False,
-            ),
             Quantity(
                 'ms_list',
                 r'Total NMR chemical shifts in ppm:\s*((?:.*?\n)*?)\s*Initialization:',
@@ -3274,10 +3256,6 @@ class NMRParser(MatchingParser):
         outputs = self.parse_outputs(simulation=simulation)
         if outputs is not None:
             simulation.outputs.append(outputs)
-
-        
-
-
 
 class QuantumEspressoParser(BeyondDFTWorkflowsParser):
     def __init__(self):
