@@ -743,32 +743,35 @@ class YamboParser:
 
             def process_and_select(positions, max_n_atoms, n_atoms): 
 """we define the process_and_select function within the parse_input function"""
-                positions = np.array(positions)
-                blocks = []
-                selected = []
+                try:
+                    positions = np.array(positions)
+                    blocks = []
+                    selected = []
 
 
-                positions = positions.reshape(-1, 3)
+                    positions = positions.reshape(-1, 3)
     
-                n_points = positions.shape[0] 
-                n_blocks = int( int(n_points) // int(max_n_atoms) )
+                    n_points = positions.shape[0] 
+                    n_blocks = int( int(n_points) // int(max_n_atoms) )
 
-                for i in range(n_blocks):
-                    start_idx = int(i) * int(max_n_atoms)
-                    end_idx = (int(i) + 1) * int(max_n_atoms)
-                    block = positions[start_idx:end_idx]
-                    blocks.append(block)
+                    for i in range(n_blocks):
+                        start_idx = int(i) * int(max_n_atoms)
+                        end_idx = (int(i) + 1) * int(max_n_atoms)
+                        block = positions[start_idx:end_idx]
+                        blocks.append(block)
     
     
-                for i, block in enumerate(blocks):
-                    n_to_select = int(n_atoms[int(i)])
-                    selected_from_block = block[:n_to_select]
-                    for point in selected_from_block:
-                        selected.append(point)
+                    for i, block in enumerate(blocks):
+                        n_to_select = int(n_atoms[int(i)])
+                        selected_from_block = block[:n_to_select]
+                        for point in selected_from_block:
+                            selected.append(point)
     
-                positions=np.array(selected)
+                    positions=np.array(selected)
                 
-                return positions        
+                    return positions        
+                except Exception as e:
+                    raise e
 
             positions = process_and_select(positions, max_n_atoms, n_atoms)
             
