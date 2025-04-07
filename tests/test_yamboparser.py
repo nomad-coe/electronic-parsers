@@ -222,16 +222,12 @@ def test_5(parser):
     parser.parse(
         'tests/data/yambo/CH4_db_minimal/r_setup', archive, None
     )
-    system = archive.run[-1].system
-    assert (
-        system[1].atoms.positions
-        == './SAVE//ns.db1'
-    )
-    assert (
-        system[1].atoms.labels
-        == './SAVE//ns.db1'
-    )
-    assert (
-        system[1].atoms.lattice_vectors
-        == './SAVE//ns.db1'
-    )
+    run = archive.run[-1]
+    system = run.system
+    atoms = system[0].atoms[0]
+    assert run.x_yambo_input.x_yambo_file == './SAVE//ns.db1'
+    assert system[0].atoms.positions[0][0] == approx(0.67500)
+    assert x_yambo_parameters[0].x_yambo_max_atoms_species[0] == 4
+    assert x_yambo_parameters[0].x_yambo_n_atom_species[0] == 4
+    assert x_yambo_parameters[0].x_yambo_n_atom_species[1] == 1
+    
