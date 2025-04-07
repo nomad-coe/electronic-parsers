@@ -64,6 +64,7 @@ from runschema.calculation import (
 )
 from simulationworkflowschema import (
     SinglePoint,
+    SimulationWorkflow,
     GeometryOptimization,
     MolecularDynamics,
 )
@@ -3229,6 +3230,8 @@ class NMRParser(MatchingParser):
         outputs = self.parse_outputs(simulation=simulation)
         if outputs is not None:
             simulation.outputs.append(outputs)
+
+        self.archive.workflow2 = SimulationWorkflow()
 
 
 class QuantumEspressoParser(BeyondDFTWorkflowsParser):

@@ -656,6 +656,7 @@ class BeyondDFTWorkflowsParser:
         )
 
         workflow = NMRQE(method=NMRQEMethod(), results=NMRQEResults())
+        workflow.name = "NMR QE"
 
         # Method
         # method_gw = extract_section(nmr_archive, ['run', 'method', 'gw'])
@@ -672,6 +673,7 @@ class BeyondDFTWorkflowsParser:
         # Inputs and Outputs
         input_structure = extract_section(self.archive, ['run', 'system'])
         dft_calculation = extract_section(self.archive, ['run', 'calculation'])
+        nmr_calculation = extract_section(nmr_archive, ["data", "outputs"])
         if input_structure:
             workflow.m_add_sub_section(
                 NMRQE.inputs, Link(name='Input structure', section=input_structure)
@@ -695,9 +697,9 @@ class BeyondDFTWorkflowsParser:
         if nmr_archive.workflow2:
             task = TaskReference(task=nmr_archive.workflow2)
             task.name = 'NMR'
-            if dft_calculation:
+            if nmr_calculation:
                 task.inputs = [
-                    Link(name='Output DFT calculation', section=dft_calculation)
+                    Link(name='Output NMR calculation', section=nmr_calculation)
                 ]
             workflow.m_add_sub_section(NMRQE.tasks, task)
 
