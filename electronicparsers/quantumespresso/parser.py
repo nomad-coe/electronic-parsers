@@ -2962,8 +2962,10 @@ class NMRParser(MatchingParser):
     def init_parser(self) -> None:
         self.nmr_parser.mainfile = self.mainfile
         self.nmr_parser.logger = self.logger
-        self.efg_parser.mainfile = self.mainfile.replace('-nmr.out', '-efg.out')
-        self.efg_parser.logger = self.logger
+        efg_path = self.mainfile.replace('-nmr.out', '-efg.out')
+        if Path(efg_path).exists():
+            self.efg_parser.mainfile = efg_path
+            self.efg_parser.logger = self.logger
 
     def create_atomic_cell_from_atoms(self, atoms_section) -> AtomicCell:
         """
@@ -3122,7 +3124,7 @@ class NMRParser(MatchingParser):
     ) -> "NMRParser.e_field_gradients_class":
         electric_field_gradients = self.e_field_gradients_class()
         # ckeck if the `efg.out` file exists
-        if not Path(self.efg_parser.mainfile).exists():
+        if self.efg_parser.mainfile is None:
             return electric_field_gradients
 
         n_atoms = len(cell.atoms_state)
