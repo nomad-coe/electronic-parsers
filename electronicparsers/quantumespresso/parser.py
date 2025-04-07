@@ -2866,7 +2866,8 @@ class NMRFileParser(TextParser):
             ),
             Quantity(
                 'xc_functional',
-                r'Exchange-correlation\s*=\s*(.*?)\n',
+                # r'Exchange-correlation\s*=\s*(.*?)\n',
+                r'Exchange-correlation\s*=\s*(\w+)\s*(?:\n\s*)?\(\s*((?:\d+\s+){5,}\d+)\s*\)',
             ),
             Quantity(
                 "chi_bare_pGv",
@@ -3064,7 +3065,7 @@ class NMRParser(MatchingParser):
         Parse the exchange-correlation functional.
         """
         xc_functional = self.nmr_parser.get("xc_functional", [])
-        xc_functional_labels = self._xc_functional_map.get(xc_functional, [])
+        xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
         xc_sections = []
         for xc in xc_functional_labels:
             functional = XCFunctional_simu(libxc_name=xc)
