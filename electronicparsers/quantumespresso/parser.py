@@ -16,7 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import glob
 import logging
 import numpy as np
 import re
@@ -24,7 +23,6 @@ from datetime import datetime
 import os
 from typing import Optional
 
-from nomad.datamodel.metainfo.simulation.calculation import BandStructure
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
 from runschema.run import Run, Program, TimeRun
@@ -2782,108 +2780,10 @@ class QuantumEspressoOutParser(TextParser):
         ]
 
 
-class QuantumEspressoBandParser(TextParser):
-    def init_quantities(self):
-        self._quantities = [
-            Quantity(
-                'kpoint',
-                rf'xk=\(\s*({RE_FLOAT}),\s*({RE_FLOAT}),\s*({RE_FLOAT})\s*\)',
-                repeats=True,
-                dtype=float,
-            ),  # ? nested arrays
-            Quantity(
-                'symmetry',
-                r'Band symmetry, ([\w_]+) \([\w\-]+\)\s+point group:',
-                repeats=True,
-                dtype=str,
-            ),
-            Quantity(
-                'band',
-                r'point group:([\s\S]+?)\n\n',
-                repeats=True,
-                sub_parser=TextParser(
-                    quantities=[
-                        Quantity(
-                            'energy',
-                            r'e\(\s*\d+ -\s*\d+\) =\s*([\-\d\.]+)\s+eV',
-                            repeats=True,
-                            dtype=float,  # unit (eV) should be specified later
-                        ),
-                        Quantity(
-                            'mult',
-                            r'eV\s*(\d+)\s*-->',
-                            repeats=True,
-                            dtype=int,
-                        ),
-                    ],
-                ),
-            ),
-        ]
-
-    @staticmethod
-    def scan_out_files(directory: str) -> list[str]:
-        return glob.glob(os.path.join(directory, '*.out'))
-
-    @staticmethod
-    def read_header(filepath: str) -> str:
-        with open(filepath, 'r') as file:
-            file.readline()
-            return_value = file.readline()
-        return return_value
-
-    @staticmethod
-    def match_header(line: str) -> bool:
-        pattern = re.compile(
-            r'Program BANDS v\.\d+\.\d+ starts on \d+\w+\d+ at \d+:\d+: \d+'
-        )
-        return True if pattern.search(line) else False
-
-    @staticmethod
-    def points_to_segments(kpoints: list, symmetries: list) -> list[list[list[float]]]:
-        """Split the kpoints by segment based on differing symmetry group."""
-
-        def shift_window(window: tuple, elem) -> tuple:
-            return window[1:] + (elem,)
-
-        previous_point: Optional[list[float]] = None
-        symmetry_window: tuple[Optional[str]] = (None,) * 3
-
-        segments: list[list[list[float]]] = [[]]
-        for point, symmetry in zip(kpoints, symmetries):
-            symmetry_window = shift_window(symmetry_window, symmetry)
-            # case enumeration for `symmetry_window`:
-            # 1. (None, None, None) -> not possible
-            # 2. (None, None, X) -> first step (add to initial bucket)
-            # 3. (X, None, None) -> not possible
-            # 4. (X, Y, None) -> end reached
-            # 5. (None, X, Y) -> add to initial bucket
-            # 6. (X, X, Y) -> add Y to latest bucket
-            # 7. (X, Y, Y) -> add Y to latest bucket
-            # 8. (X, Y, X) -> add Y and X a new, latest bucket
-            # 9. (X, Y, Z) -> add Y and Z a new, latest bucket
-            if (None not in symmetry_window) and all(
-                [symmetry_window[i] != symmetry_window[i + 1] for i in range(2)]
-            ):
-                segments.append([previous_point])
-            segments[-1].append(point)
-            previous_point = point
-        return segments
-
-    @staticmethod
-    def apply_multiplicity(
-        energies: list[list[float]], multiplicity: list[int]
-    ) -> list[list[float]]:
-        return [
-            [e for e, m in zip(energy, mult) for _ in range(m)]
-            for energy, mult in zip(energies, multiplicity)
-        ]
-
-
 class QuantumEspressoParser:
     def __init__(self):
         self.out_parser = QuantumEspressoOutParser()
         self.dos_parser = DataTextParser()
-        self.band_parser = QuantumEspressoBandParser()
         self.smearing_map = {
             '-99': 'fermi',
             '-1': 'marzari-vanderbilt',
@@ -3033,7 +2933,7 @@ class QuantumEspressoParser:
         if (
             homo is None
             and fermi_energy is None
-            and self.get_n_electrons_safe() is None
+            and len(self.get_n_electrons_safe()) == 0
         ):
             self.logger.error('Reference energy is not defined')
 
@@ -3181,7 +3081,10 @@ class QuantumEspressoParser:
                 if cell is None:
                     cell = _convert('simulation_cell', run.get('header', {}))
                 if cell is not None:
-                    value = np.dot(value, cell)
+                    value = np.dot(
+                        value.magnitude if hasattr(value, 'magnitude') else value,
+                        cell.magnitude if hasattr(cell, 'magnitude') else cell
+                    ) * cell.units if hasattr(cell, 'units') else 1.0
             return value
 
         sec_run = self.archive.run[-1]
@@ -3228,7 +3131,7 @@ class QuantumEspressoParser:
             )
             reciprocal_cell *= 2 * np.pi / volume
         if reciprocal_cell is not None:
-            sec_system.x_qe_reciprocal_cell = reciprocal_cell  # TODO write to `run.system.atoms.lattice_vectors_reciprocal`
+            sec_system.x_qe_reciprocal_cell = reciprocal_cell
 
         starting_magnetization = calculation.get(
             'starting_magnetization', run.get_header('starting_magnetization')
@@ -3362,49 +3265,6 @@ class QuantumEspressoParser:
                     sec_dos.total.append(sec_dos_total)
                     sec_dos_total.value = dos[spin] / ureg.eV
                     sec_dos_total.value_integrated = integrated[spin]
-
-        # band structure
-        out_files = self.band_parser.scan_out_files(
-            os.path.dirname(self.out_parser.mainfile)
-        )  # ! move to a separate class
-        out_headers = [self.band_parser.read_header(f) for f in out_files]
-
-        for out_header, out_file in zip(out_headers, out_files):
-            if self.band_parser.match_header(out_header):
-                self.band_parser.mainfile = out_file
-                self.band_parser.parse()
-                if self.band_parser.results:
-                    kpoints, symmetries, bands = (
-                        self.band_parser.get('kpoint', []),
-                        self.band_parser.get('symmetry', []),
-                        self.band_parser.get('band', []),
-                    )
-                    if len(kpoints) and len(symmetries) and len(bands):
-                        sec_run.calculation[-1].band_structure_electronic = []
-                        bandstructure = []
-                        for kpath in self.band_parser.points_to_segments(
-                            kpoints, symmetries
-                        ):
-                            band_selection, bands = (
-                                bands[: len(kpath)],
-                                bands[len(kpath) :],
-                            )
-                            desymm_energies = self.band_parser.apply_multiplicity(
-                                [b.get('energy', []) for b in band_selection],
-                                [b.get('mult', []) for b in band_selection],
-                            )
-                            bandstructure.append(
-                                BandEnergies(
-                                    kpoints=kpath,
-                                    energies=[desymm_energies],
-                                )
-                            )
-                        sec_run.calculation[-1].band_structure_electronic.append(
-                            BandStructure(
-                                segment=bandstructure,
-                                reciprocal_cell=sec_run.system[-1].x_qe_reciprocal_cell,
-                            )
-                        )
 
     def parse_method(self, run):
         sec_method = Method()
