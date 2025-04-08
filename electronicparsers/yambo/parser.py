@@ -41,6 +41,7 @@ from .metainfo.yambo import (
     x_yambo_bare_xc_bandenergies,
     x_yambo_module,
     x_yambo_transferred_momenta,
+    x_yambo_spectra,   # to be defined in the yambo metainfo
 )
 
 
@@ -582,6 +583,7 @@ class YamboParser:
         self.mainfile_parser = MainfileParser()
         self.input_parser = InputParser()
         self.netcdf_parser = NetCDFParser()
+        self.output_parser = OutputParser()
         self.metainfo_map = {
             'cpu': 'cores',
             'threads': 'threads_per_core',
@@ -935,6 +937,13 @@ class YamboParser:
                 )
                 self.netcdf_parser.parse()
                 self.parse_calculation(source.qp_properties)
+
+    def parse_spectrum(self, filepath, archive, logger):
+        source = module.spectra
+        if source is None:
+            return
+        self._module = x_yambo_spectra  # to be defined in the yambo metainfo
+    
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
