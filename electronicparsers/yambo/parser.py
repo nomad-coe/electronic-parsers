@@ -525,6 +525,26 @@ class NetCDFParser(FileParser):
             ][:].data
 
 
+##
+class OutputParser(TextParser):
+    def __init__(self):
+        super().__init__()
+
+    self._quantities = [
+        Quantity(  
+            'spectra',
+            r'Polarizability|Absorption',
+            
+            sub_parser=TextParser(
+                quantities=[Quantity('energies',
+                            )
+                ]
+        )
+    ]
+
+##
+
+
 class InputParser(TextParser):
     def __init__(self):
         super().__init__()
