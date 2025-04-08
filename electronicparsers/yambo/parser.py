@@ -536,9 +536,14 @@ class OutputParser(TextParser):
             r'Polarizability|Absorption',
             
             sub_parser=TextParser(
-                quantities=[Quantity('energies',
-                                     rf'E/ev[1] *(\d+) Im[2]  *(\d+) Re[3] *(\d+) Im[4] *(\d+) Re[5]'
+                quantities=[Quantity('output_spectra',
+                                     rf'E/ev[1] *({re_f}) Im[2]  *({re_f}) Re[3] *({re_f}) Im[4] *({re_f}) Re[5] *({re_f})'
                             )
+                            Quantity(
+                                    'energies',
+                                    rf'E/ev[1] *({re_f}),
+                                    dtype=np.dtype(np.float64),
+                            ),
                 ]
         )
     ]
