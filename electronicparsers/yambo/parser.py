@@ -537,6 +537,7 @@ class OutputParser(TextParser):
             
             sub_parser=TextParser(
                 quantities=[Quantity('energies',
+                                     rf'E/ev[1] *(\d+) Im[2]  *(\d+) Re[3] *(\d+) Im[4] *(\d+) Re[5]'
                             )
                 ]
         )
