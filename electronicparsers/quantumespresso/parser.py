@@ -2963,9 +2963,13 @@ class NMRParser(MatchingParser):
     def init_parser(self) -> None:
         self.nmr_parser.mainfile = self.mainfile
         self.nmr_parser.logger = self.logger
-        efg_path = self.mainfile.replace('-nmr.out', '-efg.out')
-        if Path(efg_path).exists():
-            self.efg_parser.mainfile = efg_path
+        filedir = Path(self.nmr_parser.mainfile).parent
+        matches = [f for f in filedir.iterdir() if f.name.endswith('efg.out')]
+
+        if len(matches) > 1:
+            self.logger.error(f"Found multiple files ending with 'efg.out': {[f.name for f in matches]}")
+        elif matches:
+            self.efg_parser.mainfile = str(next(f for f in matches))
             self.efg_parser.logger = self.logger
 
     def create_atomic_cell_from_atoms(self, atoms_section) -> AtomicCell:
