@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Optional
 from typing import TYPE_CHECKING
 
+from electronicparsers.utils.nmr_qe_workflow import NMRQE, NMRQEMethod, NMRQEResults
 from nomad.datamodel import EntryArchive
 
 if TYPE_CHECKING:
@@ -3238,7 +3239,10 @@ class NMRParser(MatchingParser):
         if outputs is not None:
             simulation.outputs.append(outputs)
 
-        self.archive.workflow2 = SimulationWorkflow()
+        # workflow
+        workflow = NMRQE(method=NMRQEMethod(), results=NMRQEResults())
+        workflow.name = "NMR QE"
+        self.archive.workflow2 = workflow
 
 
 class QuantumEspressoParser(BeyondDFTWorkflowsParser):
