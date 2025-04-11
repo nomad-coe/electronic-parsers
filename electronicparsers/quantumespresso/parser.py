@@ -3980,11 +3980,17 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         self.dos_parser.logger = self.logger
 
     def get_mainfile_keys(self, **kwargs):
-        filepath = Path(kwargs.get('filename'))
-        nmrfilepath = filepath.with_name(filepath.stem.replace("scf", "") + "nmr.out")
-        if nmrfilepath.exists():
+        filedir = Path(kwargs.get('filename')).parent
+        matches = [f for f in filedir.iterdir() if f.name.endswith('nmr.out')]
+
+        if len(matches) > 1:
+            self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in matches]}")
+            return True
+        elif matches:
             return ['NMR', 'NMR_workflow']
-        return True
+        else:
+            return True
+
 
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
@@ -4075,8 +4081,9 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             nmr_archive = self._child_archives.get('NMR')
             if nmr_archive is not None:
                 # parse NMR
-                filepath = Path(self.filepath)
-                nmrfilepath = str(filepath.with_name(filepath.stem.replace("scf", "") + "nmr.out"))
+                filedir = Path(self.filepath).parent
+                nmrfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None))
+
                 p = NMRParser(system=sec_run.system[-1])
                 p.parse(nmrfilepath, nmr_archive, logger)
 
