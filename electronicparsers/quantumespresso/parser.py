@@ -33,6 +33,7 @@ if TYPE_CHECKING:
     from structlog.stdlib import BoundLogger
 
 from electronicparsers.utils.utils import BeyondDFTWorkflowsParser
+from electronicparsers.utils.utils import convert_system_to_model_system
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
 from runschema.run import Run, Program, TimeRun
@@ -2890,12 +2891,11 @@ class NMRFileParser(TextParser):
 
 
 class NMRParser(MatchingParser):
-    _system: System
+    _model_system: ModelSystem
 
     # Data section classes:
     simulation_class = Simulation
     program_class = Program
-    model_system_class = ModelSystem
     nmr_outputs_class = Outputs
     mag_susceptibility_class = MagneticSusceptibility
     mag_shielding_tensor = MagneticShieldingTensor
@@ -2920,103 +2920,11 @@ class NMRParser(MatchingParser):
             "HSE06": ["HYB_GGA_XC_HSE06"],
             "RSCAN": ["MGGA_X_RSCAN", "MGGA_C_RSCAN"],
         }
-        self._system = system
+        self._model_system = system
 
     def init_parser(self) -> None:
         self.nmr_parser.mainfile = self.mainfile
         self.nmr_parser.logger = self.logger
-
-    def create_atomic_cell_from_atoms(self, atoms_section) -> AtomicCell:
-        """
-        Converts `System.atoms` to an `AtomicCell` object
-        """
-        atomic_cell = AtomicCell()
-        atomic_cell.name = 'AtomicCell'
-        atomic_cell.type = 'original'
-
-        # positions, velocities, lattice_vectors, periodic, supercell_matrix
-        if atoms_section.positions is not None:
-            atomic_cell.positions = atoms_section.positions
-        if atoms_section.velocities is not None:
-            atomic_cell.velocities = atoms_section.velocities
-        if atoms_section.lattice_vectors is not None:
-            atomic_cell.lattice_vectors = atoms_section.lattice_vectors
-        if atoms_section.periodic is not None:
-            atomic_cell.periodic_boundary_conditions = atoms_section.periodic
-        if atoms_section.supercell_matrix is not None:
-            atomic_cell.supercell_matrix = atoms_section.supercell_matrix
-
-        # AtomsState
-        if atoms_section.labels is not None:
-            for label in atoms_section.labels:
-                atom_state = AtomsState(chemical_symbol=label)
-                atomic_cell.atoms_state.append(atom_state)
-        elif atoms_section.atomic_numbers is not None:
-            for atomic_number in atoms_section.atomic_numbers:
-                atom_state = AtomsState(atomic_number=atomic_number)
-                atomic_cell.atoms_state.append(atom_state)
-
-        # Optionals
-        if atoms_section.equivalent_atoms is not None:
-            atomic_cell.equivalent_atoms = atoms_section.equivalent_atoms
-        if atoms_section.wyckoff_letters is not None:
-            atomic_cell.wyckoff_letters = atoms_section.wyckoff_letters
-
-        return atomic_cell
-
-    def convert_system_to_model_system(self, system: System) -> ModelSystem:
-        """
-        Converts a `System` object into `ModelSystem`.
-        """
-        model_system = self.model_system_class()
-        model_system.name = system.name
-        model_system.type = system.type
-        model_system.is_representative = system.is_representative
-
-        # AtomicCell
-        if system.atoms:
-            atomic_cell = self.create_atomic_cell_from_atoms(system.atoms)
-            model_system.cell.append(atomic_cell)
-
-        # ChemicalFormula
-        if system.chemical_composition_reduced or system.chemical_composition_hill:
-            chem_formula = ChemicalFormula()
-            if system.chemical_composition_reduced:
-                chem_formula.reduced = system.chemical_composition_reduced
-            if system.chemical_composition_hill:
-                chem_formula.hill = system.chemical_composition_hill
-            if system.chemical_composition_anonymous:
-                chem_formula.anonymous = system.chemical_composition_anonymous
-            model_system.chemical_formula = chem_formula
-        else:
-            # fallback: use ASE
-            try:
-                ase_atoms = system.atoms.to_ase()
-                f = Formula(ase_atoms.get_chemical_formula())
-                chem_formula = ChemicalFormula()
-                chem_formula.resolve_chemical_formulas(f)
-                model_system.chemical_formula = chem_formula
-            except Exception:
-                pass
-
-        # Symmetry
-        if system.symmetry:
-            for sym in system.symmetry:
-                sym_section = Symmetry()
-                for key in [
-                    'bravais_lattice', 'hall_symbol', 'point_group_symbol',
-                    'space_group_number', 'space_group_symbol', 'strukturbericht_designation',
-                    'prototype_formula', 'prototype_aflow_id', 'origin_shift', 'transformation_matrix'
-                ]:
-                    if hasattr(sym, key):
-                        setattr(sym_section, key, getattr(sym, key, None))
-                model_system.symmetry.append(sym_section)
-
-        # Bond list
-        if system.atoms and system.atoms.bond_list is not None:
-            model_system.bond_list = system.atoms.bond_list
-
-        return model_system
 
     def parse_xc_functional(self) -> list[XCFunctional_simu]:
         """
@@ -3084,7 +2992,7 @@ class NMRParser(MatchingParser):
 
         if simulation.model_system is None:
             self.logger.warning(
-                "Could not find the `model_system_class` that the outputs reference to."
+                "Could not find the `ModelSystem` that the outputs reference to."
             )
             return None
         outputs = self.nmr_outputs_class(
@@ -3139,10 +3047,8 @@ class NMRParser(MatchingParser):
         archive.data = simulation
 
         # model system 
-        model_system = self.convert_system_to_model_system(system = self._system)
-        model_system.is_representative = True
-        simulation.model_system.append(model_system)
-
+        self._model_system.is_representative = True
+        simulation.model_system.append(self._model_system)
 
         # model method
         model_method = DFT_simu(name="NMR")
@@ -3217,12 +3123,11 @@ class EFGFileParser(TextParser):
 
 
 class EFGParser(MatchingParser):
-    _system: System
+    _model_system: ModelSystem
 
     # Data section classes:
     simulation_class = Simulation
     program_class = Program
-    model_system_class = ModelSystem
     efg_outputs_class = Outputs
     e_field_gradients_class = ElectricFieldGradients
     e_field_gradient_class = ElectricFieldGradient
@@ -3247,103 +3152,11 @@ class EFGParser(MatchingParser):
             "HSE06": ["HYB_GGA_XC_HSE06"],
             "RSCAN": ["MGGA_X_RSCAN", "MGGA_C_RSCAN"],
         }
-        self._system = system
+        self._model_system = system
 
     def init_parser(self) -> None:
         self.efg_parser.mainfile = self.mainfile
         self.efg_parser.logger = self.logger
-
-    def create_atomic_cell_from_atoms(self, atoms_section) -> AtomicCell:
-        """
-        Converts `System.atoms` to an `AtomicCell` object
-        """
-        atomic_cell = AtomicCell()
-        atomic_cell.name = 'AtomicCell'
-        atomic_cell.type = 'original'
-
-        # positions, velocities, lattice_vectors, periodic, supercell_matrix
-        if atoms_section.positions is not None:
-            atomic_cell.positions = atoms_section.positions
-        if atoms_section.velocities is not None:
-            atomic_cell.velocities = atoms_section.velocities
-        if atoms_section.lattice_vectors is not None:
-            atomic_cell.lattice_vectors = atoms_section.lattice_vectors
-        if atoms_section.periodic is not None:
-            atomic_cell.periodic_boundary_conditions = atoms_section.periodic
-        if atoms_section.supercell_matrix is not None:
-            atomic_cell.supercell_matrix = atoms_section.supercell_matrix
-
-        # AtomsState
-        if atoms_section.labels is not None:
-            for label in atoms_section.labels:
-                atom_state = AtomsState(chemical_symbol=label)
-                atomic_cell.atoms_state.append(atom_state)
-        elif atoms_section.atomic_numbers is not None:
-            for atomic_number in atoms_section.atomic_numbers:
-                atom_state = AtomsState(atomic_number=atomic_number)
-                atomic_cell.atoms_state.append(atom_state)
-
-        # Optionals
-        if atoms_section.equivalent_atoms is not None:
-            atomic_cell.equivalent_atoms = atoms_section.equivalent_atoms
-        if atoms_section.wyckoff_letters is not None:
-            atomic_cell.wyckoff_letters = atoms_section.wyckoff_letters
-
-        return atomic_cell
-
-    def convert_system_to_model_system(self, system: System) -> ModelSystem:
-        """
-        Converts a `System` object into `ModelSystem`.
-        """
-        model_system = self.model_system_class()
-        model_system.name = system.name
-        model_system.type = system.type
-        model_system.is_representative = system.is_representative
-
-        # AtomicCell
-        if system.atoms:
-            atomic_cell = self.create_atomic_cell_from_atoms(system.atoms)
-            model_system.cell.append(atomic_cell)
-
-        # ChemicalFormula
-        if system.chemical_composition_reduced or system.chemical_composition_hill:
-            chem_formula = ChemicalFormula()
-            if system.chemical_composition_reduced:
-                chem_formula.reduced = system.chemical_composition_reduced
-            if system.chemical_composition_hill:
-                chem_formula.hill = system.chemical_composition_hill
-            if system.chemical_composition_anonymous:
-                chem_formula.anonymous = system.chemical_composition_anonymous
-            model_system.chemical_formula = chem_formula
-        else:
-            # fallback: use ASE
-            try:
-                ase_atoms = system.atoms.to_ase()
-                f = Formula(ase_atoms.get_chemical_formula())
-                chem_formula = ChemicalFormula()
-                chem_formula.resolve_chemical_formulas(f)
-                model_system.chemical_formula = chem_formula
-            except Exception:
-                pass
-
-        # Symmetry
-        if system.symmetry:
-            for sym in system.symmetry:
-                sym_section = Symmetry()
-                for key in [
-                    'bravais_lattice', 'hall_symbol', 'point_group_symbol',
-                    'space_group_number', 'space_group_symbol', 'strukturbericht_designation',
-                    'prototype_formula', 'prototype_aflow_id', 'origin_shift', 'transformation_matrix'
-                ]:
-                    if hasattr(sym, key):
-                        setattr(sym_section, key, getattr(sym, key, None))
-                model_system.symmetry.append(sym_section)
-
-        # Bond list
-        if system.atoms and system.atoms.bond_list is not None:
-            model_system.bond_list = system.atoms.bond_list
-
-        return model_system
 
     def parse_xc_functional(self) -> list[XCFunctional_simu]:
         """
@@ -3396,7 +3209,7 @@ class EFGParser(MatchingParser):
 
         if simulation.model_system is None:
             self.logger.warning(
-                "Could not find the `model_system_class` that the outputs reference to."
+                "Could not find the `ModelSystem` that the outputs reference to."
             )
             return None
         outputs = self.efg_outputs_class(
@@ -3448,9 +3261,8 @@ class EFGParser(MatchingParser):
         archive.data = simulation
 
         # model system 
-        model_system = self.convert_system_to_model_system(system = self._system)
-        model_system.is_representative = True
-        simulation.model_system.append(model_system)
+        self._model_system.is_representative = True
+        simulation.model_system.append(self._model_system)
 
         # model method
         model_method = DFT_simu(name="EFG")
@@ -4321,27 +4133,32 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                     date_time - datetime(1970, 1, 1)
                 ).total_seconds()
 
-            # NMR archive
+            # child archives
             nmr_archive = self._child_archives.get('NMR')
+            efg_archive = self._child_archives.get('EFG')
+
+            if nmr_archive is not None or efg_archive is not None:
+                model_system = convert_system_to_model_system(system=self.archive.run[-1].system[-1])
+            
+            # NMR
             if nmr_archive is not None:
                 # parse NMR
                 filedir = Path(self.filepath).parent
                 nmrfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None))
 
-                p = NMRParser(system=sec_run.system[-1])
+                p = NMRParser(system=model_system)
                 p.parse(nmrfilepath, nmr_archive, logger)
 
-            # EFG archive
-            efg_archive = self._child_archives.get('EFG')
+            # EFG
             if efg_archive is not None:
                 # parse EFG
                 filedir = Path(self.filepath).parent
                 efgfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None))
 
-                p = EFGParser(system=sec_run.system[-1])
+                p = EFGParser(system=model_system)
                 p.parse(efgfilepath, efg_archive, logger)
 
-            # # parse workflow archive
+            # # workflow
             # nmr_workflow_archive = self._child_archives.get('EFG_workflow')
             # try:
             #     self.parse_nmr_qe_workflow(nmr_archive, nmr_workflow_archive)

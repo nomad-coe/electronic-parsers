@@ -20,6 +20,8 @@ import os
 import pytest
 import numpy as np
 
+from electronicparsers.quantumespresso.parser import EFGParser
+from electronicparsers.utils.utils import convert_system_to_model_system
 from nomad.datamodel import EntryArchive
 from runschema.system import System
 from nomad.units import ureg
@@ -38,10 +40,11 @@ def parser():
 
 
 @pytest.fixture(scope='module')
-def quartz_scf(parser):
+def quartz_scf_model_system(parser):
     archive = EntryArchive()
     parser.parse('tests/data/quantumespresso/quartz/quartz-scf.out', archive, None)
-    return archive
+    model_system = convert_system_to_model_system(system=archive.run[-1].system[-1])
+    return model_system
 
 
 def RyB_to_N(value):
@@ -256,17 +259,18 @@ def test_noncolmag(parser):
     assert sec_method.electronic.n_spin_channels is None
 
 
-def test_nmr_mainfile_keys(parser):
+def test_mainfile_keys(parser):
     filepath = 'tests/data/quantumespresso/quartz/quartz-scf.out'
     mainfile_keys = parser.get_mainfile_keys(filename=filepath)
-    debug(mainfile_keys[1])
+    debug(mainfile_keys)
     assert mainfile_keys[0] == 'NMR'
-    assert mainfile_keys[1] == 'NMR_workflow'
+    assert mainfile_keys[1] == 'EFG'
+    assert mainfile_keys[2] == 'GIPAW_Workflow'
 
 
-def test_nmr_standalone(parser, quartz_scf):
+def test_nmr_standalone(parser, quartz_scf_model_system):
     archive = EntryArchive()
-    parser = NMRParser(system=quartz_scf.run[0].system[-1])
+    parser = NMRParser(system=quartz_scf_model_system)
     parser.parse(
         filepath='tests/data/quantumespresso/quartz/quartz-nmr.out',
         archive=archive,
@@ -311,7 +315,6 @@ def test_nmr_standalone(parser, quartz_scf):
     #   Properties
     assert len(output.m_xpath('magnetic_shieldings', dict=False)) == 9  # per atom
     for property_name in [
-        'electric_field_gradients',
         'magnetic_shieldings',
         'magnetic_susceptibilities'
     ]:
@@ -319,3 +322,12 @@ def test_nmr_standalone(parser, quartz_scf):
     #       MagneticShieldingTensor
     for i, ms in enumerate(output.magnetic_shieldings):
         assert ms.entity_ref.chemical_symbol == labels[i]
+
+
+def test_efg_standalone(parser, quartz_scf):
+    archive = EntryArchive()
+    parser = EFGParser(system=quartz_scf.run[0].system[-1])
+    parser.parse(
+        filepath='tests/data/quantumespresso/quartz/quartz-efg.out',
+        archive=archive,
+        logger=None)
