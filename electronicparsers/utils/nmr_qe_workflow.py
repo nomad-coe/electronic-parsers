@@ -17,12 +17,13 @@
 # limitations under the License.
 #
 from nomad.metainfo import SubSection, Quantity, Reference
-from runschema.method import Method
 from simulationworkflowschema import (
     SimulationWorkflowResults,
     SimulationWorkflowMethod,
     SerialSimulation,
 )
+from nomad_simulations.schema_packages.model_method import ModelMethod
+from nomad_nmr_schema.schema_packages.schema_package import Outputs
 
 
 class NMRQEResults(SimulationWorkflowResults):
@@ -35,13 +36,13 @@ class NMRQEResults(SimulationWorkflowResults):
 
 class NMRQEMethod(SimulationWorkflowMethod):
     """
-    References the NMR (first principles) input methodology.
+    References the NMR (first principles) input model method.
     """
 
     nmr_method_ref = Quantity(
-        type=Reference(Method),
+        type=Reference(ModelMethod),
         description="""
-        Reference to the NMR (first principles) methodology.
+        Reference to the NMR (first principles) model method.
         """,
     )
 
@@ -56,6 +57,43 @@ class NMRQE(SerialSimulation):
     method = SubSection(sub_section=NMRQEMethod)
 
     results = SubSection(sub_section=NMRQEResults)
+
+    def normalize(self, archive, logger):
+        super().normalize(archive, logger)
+
+
+
+class EFGQEResults(SimulationWorkflowResults):
+    """
+    Groups the NMR QE outputs.
+    """
+
+    pass
+
+
+class EFGQEMethod(SimulationWorkflowMethod):
+    """
+    References the NMR (first principles) input model method.
+    """
+
+    nmr_method_ref = Quantity(
+        type=Reference(ModelMethod),
+        description="""
+        Reference to the NMR (first principles) model method.
+        """,
+    )
+
+
+class EFGQE(SerialSimulation):
+    """
+    The NMR QE workflow is generated in an extra EntryArchive IF both the NMR (first
+    principles) and the NMR QE SinglePoint EntryArchives are present in the
+    upload.
+    """
+
+    method = SubSection(sub_section=EFGQEMethod)
+
+    results = SubSection(sub_section=EFGQEResults)
 
     def normalize(self, archive, logger):
         super().normalize(archive, logger)
