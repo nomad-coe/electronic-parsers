@@ -324,10 +324,54 @@ def test_nmr_standalone(parser, quartz_scf_model_system):
         assert ms.entity_ref.chemical_symbol == labels[i]
 
 
-def test_efg_standalone(parser, quartz_scf):
+def test_efg_standalone(parser, quartz_scf_model_system):
     archive = EntryArchive()
-    parser = EFGParser(system=quartz_scf.run[0].system[-1])
+    parser = EFGParser(system=quartz_scf_model_system)
     parser.parse(
         filepath='tests/data/quantumespresso/quartz/quartz-efg.out',
         archive=archive,
         logger=None)
+    
+    simulation = archive.data
+    
+    # Program
+    assert simulation.program.name == 'GIPAW'
+    assert simulation.program.version == '7.4.1'
+
+    # ModelSystem
+    assert len(simulation.model_system) == 1
+    model_system = simulation.model_system[0]
+    assert model_system.is_representative
+    #   Cell ???
+    assert len(model_system.cell) == 1
+    atomic_cell = model_system.cell[0]
+    #       AtomsState
+    assert len(atomic_cell.atoms_state) == 9
+    labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
+    for index, symbol in enumerate(labels):
+        assert atomic_cell.atoms_state[index].chemical_symbol == symbol
+
+    # ModelMethod
+    assert len(simulation.model_method) == 1
+    assert simulation.model_method[0].m_def.name == 'DFT'
+    assert simulation.model_method[0].name == 'EFG'
+    dft = simulation.model_method[0]
+    assert len(dft.xc_functionals) == 2
+    assert dft.xc_functionals[0].name == 'correlation'
+    assert dft.xc_functionals[0].libxc_name == 'GGA_C_PBE'
+    assert dft.xc_functionals[1].name == 'exchange'
+    assert dft.xc_functionals[1].libxc_name == 'GGA_X_PBE'
+
+
+    # Outputs
+    assert len(simulation.outputs) == 1
+    output = simulation.outputs[0]
+    assert output.model_system_ref == model_system
+    assert output.model_method_ref == dft
+    #   Properties
+    assert output.m_xpath('electric_field_gradients', dict=False) is not None
+    
+
+def test_conversion():
+    # TODO: write test for convert_system_to_model_system
+    pass

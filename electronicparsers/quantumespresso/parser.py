@@ -4033,11 +4033,13 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         keys = []
 
         if len(nmr_matches) > 1:
+            # FIXME: this doesn't log correctly
             self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in nmr_matches]}")
         elif nmr_matches:
             keys.append("NMR")
 
         if len(efg_matches) > 1:
+            # FIXME: this doesn't log correctly
             self.logger.error(f"Found multiple files ending with 'efg.out': {[f.name for f in efg_matches]}")
         elif efg_matches:
             keys.append("EFG")
@@ -4055,7 +4057,6 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
 
         self.init_parser()
 
-        # TODO include x_qe_warning
         for run in self.out_parser.get('run', []):
             self.sampling_method = None
             sec_run = Run()
