@@ -95,6 +95,8 @@ from nomad_nmr_schema.schema_packages.schema_package import (
     Outputs,
 )
 
+from devtools import debug
+
 
 RE_FLOAT = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
 
@@ -2973,6 +2975,7 @@ class NMRParser(MatchingParser):
             self.efg_parser.mainfile = str(next(f for f in matches))
             self.efg_parser.logger = self.logger
 
+
     def create_atomic_cell_from_atoms(self, atoms_section) -> AtomicCell:
         """
         Converts `System.atoms` to an `AtomicCell` object
@@ -3989,13 +3992,24 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
 
     def get_mainfile_keys(self, **kwargs):
         filedir = Path(kwargs.get('filename')).parent
-        matches = [f for f in filedir.iterdir() if f.name.endswith('nmr.out')]
+        nmr_matches = [f for f in filedir.iterdir() if f.name.endswith('nmr.out')]
+        efg_matches = [f for f in filedir.iterdir() if f.name.endswith('efg.out')]
 
-        if len(matches) > 1:
-            self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in matches]}")
-            return True
-        elif matches:
-            return ['NMR', 'NMR_workflow']
+        keys = []
+
+        if len(nmr_matches) > 1:
+            self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in nmr_matches]}")
+        elif nmr_matches:
+            keys.append("NMR")
+
+        if len(efg_matches) > 1:
+            self.logger.error(f"Found multiple files ending with 'efg.out': {[f.name for f in efg_matches]}")
+        elif efg_matches:
+            keys.append("EFG")
+
+        if keys:
+            keys.append("GIPAW_Workflow")
+            return keys
         else:
             return True
 
