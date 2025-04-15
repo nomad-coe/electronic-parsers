@@ -20,7 +20,7 @@ import os
 import pytest
 import numpy as np
 
-from electronicparsers.quantumespresso.parser import EFGParser
+from electronicparsers.quantumespresso.parser import EFGParser, XMLParser
 from electronicparsers.utils.utils import convert_system_to_model_system
 from nomad.datamodel import EntryArchive
 from runschema.system import System
@@ -43,6 +43,13 @@ def parser():
 def quartz_scf_model_system(parser):
     archive = EntryArchive()
     parser.parse('tests/data/quantumespresso/quartz/quartz-scf.out', archive, None)
+    model_system = convert_system_to_model_system(system=archive.run[-1].system[-1])
+    return model_system
+
+@pytest.fixture(scope='module')
+def benzene_scf_model_system(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/quantumespresso/benzene_xml/benzene-scf.out', archive, None)
     model_system = convert_system_to_model_system(system=archive.run[-1].system[-1])
     return model_system
 
@@ -268,7 +275,7 @@ def test_mainfile_keys(parser):
     assert mainfile_keys[2] == 'GIPAW_Workflow'
 
 
-def test_nmr_standalone(parser, quartz_scf_model_system):
+def test_nmr_text(quartz_scf_model_system):
     archive = EntryArchive()
     parser = NMRParser(system=quartz_scf_model_system)
     parser.parse(
@@ -324,7 +331,7 @@ def test_nmr_standalone(parser, quartz_scf_model_system):
         assert ms.entity_ref.chemical_symbol == labels[i]
 
 
-def test_efg_standalone(parser, quartz_scf_model_system):
+def test_efg_standalone(quartz_scf_model_system):
     archive = EntryArchive()
     parser = EFGParser(system=quartz_scf_model_system)
     parser.parse(
@@ -375,3 +382,22 @@ def test_efg_standalone(parser, quartz_scf_model_system):
 def test_conversion():
     # TODO: write test for convert_system_to_model_system
     pass
+
+def test_xml_parser():
+    archive = EntryArchive()
+    parser = XMLParser()
+    parser.parse(
+        filepath='/home/cecilia/lavoro/qe-gipaw/schema/examples/benzene-gipaw.xml',
+        archive=archive,
+        logger=None)
+    
+
+def test_nmr_xml(benzene_scf_model_system):
+    archive = EntryArchive()
+    parser = NMRParser(system=benzene_scf_model_system)
+    parser.parse(
+        filepath='tests/data/quantumespresso/benzene_xml/benzene-gipaw.xml',
+        archive=archive,
+        logger=None)
+    
+    simulation = archive.data

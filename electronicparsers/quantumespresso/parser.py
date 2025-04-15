@@ -26,6 +26,7 @@ from typing import Optional
 from typing import TYPE_CHECKING
 
 from electronicparsers.utils.qe_gipaw_workflow import EFGQE, NMRQE, EFGQEMethod, EFGQEResults, NMRQEMethod, NMRQEResults
+from electronicparsers.vasp.parser import ContentParser, RunFileParser, RunXmlContentHandler
 from nomad.datamodel import EntryArchive
 
 if TYPE_CHECKING:
@@ -96,6 +97,7 @@ from nomad_nmr_schema.schema_packages.schema_package import (
     Outputs,
 )
 
+from devtools import debug
 
 RE_FLOAT = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
 
@@ -2906,6 +2908,123 @@ class NMRFileParser(TextParser):
         ]
 
 
+class GIPAWContentParser:
+    def __init__(self):
+        self.fileparser = None
+        self._results = {}
+
+    def init_parser(self, filepath, logger):
+        self.fileparser = RunFileParser(filepath, logger)
+        self.fileparser.parse()
+        self.handler = self.fileparser._results  # RunXmlContentHandler
+
+    def get(self, key: str, default=None):
+        if key not in self._results:
+            self.parse(key)
+        return self._results.get(key, default)
+    
+    def parse_sl_to_array(self, sl_string):
+        # Estrae tutti i numeri in formato float dalla stringa
+        numbers = re.findall(r'[-+]?\d*\.\d+e[+-]?\d+', sl_string)
+        # Converte le stringhe in float
+        floats = list(map(float, numbers))
+        # Converte in array NumPy 3x3
+        return np.array(floats).reshape((3, 3))
+    
+    def extract_floats_from_string(self, s):
+        # Estrae tutti i float in notazione scientifica
+        numbers = re.findall(r'[-+]?\d*\.\d+e[+-]?\d+', s)
+        return list(map(float, numbers))
+
+    def parse(self, quantity_key: str = None):
+        # debug(self.fileparser.results._data['gpw:gipaw[0]'].keys())
+
+        # General info
+        # debug(self.fileparser.results._data['gpw:gipaw[0]']['general_info[0]']['creator[0]']['_data'])
+        gi = self.fileparser.results._data['gpw:gipaw[0]']['general_info[0]']['creator[0]']['_data'][0]
+        self._results['software_version'] = [gi['NAME'], gi['VERSION']]
+
+
+        # Output
+        # debug(self.fileparser.results._data['gpw:gipaw[0]']['output[0]'])
+        # susceptibility_low
+        sl = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['susceptibility_low[0]']['_data'][0]['susceptibility_low']
+        tensor = self.parse_sl_to_array(sl)
+        self._results['chi_bare_vGv'] = tensor
+
+        # susceptibility_high
+        sh = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['susceptibility_high[0]']['_data'][0]['susceptibility_high']
+        tensor = self.parse_sl_to_array(sh)
+        self._results['chi_bare_pGv'] = tensor
+
+        # shielding_tensors
+        st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['shielding_tensors[0]']
+        # debug(st)
+        ms_list = []
+        for key, value in st.items():
+            if not isinstance(value, dict):
+                continue
+
+            for atom in value['_data']:
+                atom_list = []
+                atom_list.append(atom['name'])
+                atom_list = atom_list + self.extract_floats_from_string(atom['atom'])
+                ms_list.append(atom_list)
+        
+        self._results['ms_list'] = ms_list
+
+        # debug(self.results)
+
+    
+
+
+    @property
+    def results(self):
+        if not self._results:
+            self.parse()
+        return self._results
+
+    def __repr__(self):
+        return f"GIPAWContentParser({list(self._results.keys())})"
+
+
+
+class XMLParser(MatchingParser):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._xml_parser = GIPAWContentParser()
+
+    def init_parser(self) -> None:
+        self.parser = self._xml_parser
+        self.parser.init_parser(self.mainfile, self.logger)
+
+    def parse(
+        self,
+        filepath: str,
+        archive: "EntryArchive",
+        logger: "BoundLogger",
+    ) -> None:
+        self.mainfile = filepath
+        self.maindir = os.path.dirname(self.mainfile)
+        self.basename = os.path.basename(self.mainfile)
+        self.archive = archive
+        self.logger = logger or logging.getLogger(__name__)
+
+        self.init_parser()
+
+        # Trigger parsing of susceptibility_low (and all quantities via general parse())
+        # debug(self.parser._results)
+        _ = self.parser.get("software_version", [])
+
+        # Debug printout of all parsed results
+        # debug(self.parser._results)
+
+        # Puoi anche salvare le info nell’archive se vuoi:
+        # self.archive.run[0].x_qe_susceptibility_low = self.parser["susceptibility_low"]
+
+
+
+
 class NMRParser(MatchingParser):
     _model_system: ModelSystem
 
@@ -2919,20 +3038,28 @@ class NMRParser(MatchingParser):
     def __init__(self, system: System, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.nmr_parser = NMRFileParser()
-        self.efg_parser = EFGFileParser()
+        self.xml_parser = GIPAWContentParser()
         self._xc_functional_map = _xc_functional_map
         self._model_system = system
 
     def init_parser(self) -> None:
-        self.nmr_parser.mainfile = self.mainfile
-        self.nmr_parser.logger = self.logger
+        if 'gipaw.xml' in self.mainfile:
+            self.parser = self.xml_parser
+            self.parser.init_parser(self.mainfile, self.logger)
+        else:
+            self.parser = self.nmr_parser
+            self.parser.mainfile = self.mainfile
+            self.parser.logger = self.logger
 
     def parse_xc_functional(self) -> list[XCFunctional_simu]:
         """
         Parse the exchange-correlation functional.
         """
-        xc_functional = self.nmr_parser.get("xc_functional", [])
-        xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
+        try:
+            xc_functional = self.parser.get("xc_functional", [])
+            xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
+        except:
+            xc_functional_labels = self._xc_functional_map.get('PBE', [])
         xc_sections = []
         for xc in xc_functional_labels:
             functional = XCFunctional_simu(libxc_name=xc)
@@ -2954,9 +3081,11 @@ class NMRParser(MatchingParser):
         n_atoms = len(cell.atoms_state)
 
         # Magnetic Shielding Tensor (ms) parsing
-        data = self.nmr_parser.get('ms_list', [])
+        data = self.parser.get('ms_list', [])
+        debug(data)
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
+            debug("The shape of the matched text for the `ms_list` does not coincide with the number of atoms.")
             self.logger.warning(
                 "The shape of the matched text for the `ms_list` does not coincide with the number of atoms."
             )
@@ -2970,11 +3099,12 @@ class NMRParser(MatchingParser):
             sec_ms = self.mag_shielding_tensor(entity_ref=cell.atoms_state[i])
             sec_ms.value = values * 1e-6 * ureg("dimensionless")
             magnetic_shieldings.append(sec_ms)
+        debug(magnetic_shieldings)
         return magnetic_shieldings
 
     def parse_magnetic_susceptibilities(self) -> list["NMRParser.mag_susceptibility_class"]:
-        chi_bare_pGv = self.nmr_parser.get("chi_bare_pGv", [])
-        chi_bare_vGv = self.nmr_parser.get("chi_bare_vGv", [])
+        chi_bare_pGv = self.parser.get("chi_bare_pGv", [])
+        chi_bare_vGv = self.parser.get("chi_bare_vGv", [])
         if np.size(chi_bare_pGv) != 9 or np.size(chi_bare_vGv) != 9:
             self.logger.warning(
                 "The shape of the matched text from the file for the `chi_bare` does not coincide with 9 (3x3 tensor)."
@@ -3040,12 +3170,14 @@ class NMRParser(MatchingParser):
         simulation = self.simulation_class()
 
         # program
-        program_name_version  = self.nmr_parser.get('software_version', [])
+        program_name_version  = self.parser.get('software_version', [])
         simulation.program = self.program_class(
             name=program_name_version[0],
             version=program_name_version[1],
         )
         archive.data = simulation
+
+        # debug(self.parser._results)
 
         # model system 
         self._model_system.is_representative = True
@@ -3135,7 +3267,6 @@ class EFGParser(MatchingParser):
 
     def __init__(self, system: System, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.nmr_parser = NMRFileParser()
         self.efg_parser = EFGFileParser()
         self._xc_functional_map = _xc_functional_map
         self._model_system = system
@@ -4015,13 +4146,14 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         filedir = Path(kwargs.get('filename')).parent
         nmr_matches = [f for f in filedir.iterdir() if f.name.endswith('nmr.out')]
         efg_matches = [f for f in filedir.iterdir() if f.name.endswith('efg.out')]
+        xml_matches = [f for f in filedir.iterdir() if f.name.endswith('gipaw.xml')]
 
         keys = []
 
         if len(nmr_matches) > 1:
             # FIXME: this doesn't log correctly
             self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in nmr_matches]}")
-        elif nmr_matches:
+        elif nmr_matches or xml_matches:
             keys.append("NMR")
 
         if len(efg_matches) > 1:
@@ -4132,7 +4264,14 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             # NMR
             if nmr_archive is not None:
                 filedir = Path(self.filepath).parent
-                nmrfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None))
+
+                xmlfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('gipaw.xml')), None))
+                textfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None))
+
+                if xmlfilepath is not None:
+                    nmrfilepath = xmlfilepath
+                else:
+                    nmrfilepath = textfilepath
 
                 p = NMRParser(system=model_system)
                 p.parse(nmrfilepath, nmr_archive, logger)
