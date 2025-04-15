@@ -4151,14 +4151,15 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
 
             # Workflow
             gipaw_workflow_archive = self._child_archives.get('GIPAW_Workflow')
-            try:
-                self.parse_gipaw_qe_workflow(
-                    qe_model_system=model_system,
-                    gipaw_list=gipaw_list,
-                    gipaw_workflow_archive=gipaw_workflow_archive
-                    )
-            except Exception:
-                self.logger.error('Error parsing the automatic NMR workflow')
+            if gipaw_workflow_archive:
+                try:
+                    self.parse_gipaw_qe_workflow(
+                        qe_model_system=model_system,
+                        gipaw_list=gipaw_list,
+                        gipaw_workflow_archive=gipaw_workflow_archive
+                        )
+                except Exception:
+                    self.logger.error('Error parsing the automatic NMR workflow')
 
             job_done = run.get('job_done')
             if job_done:
