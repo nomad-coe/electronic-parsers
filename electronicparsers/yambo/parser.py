@@ -55,20 +55,7 @@ class MainfileParser(TextParser):
 
         
         io_quantities = [
-###
-#            Quantity(
-#                'alat_factors',
-#                rf'(Alat factors \: \s*({re_f})\s*({re_f})\s*({re_f}))',
-#                unit=ureg.atomic_unit_of_length,
-#                dtype=np.float64,
-#            ),
-#            Quantity(
-#                'simulation_cell',
-#                r'A\[1\] \: \(([\-\d\. ]+)\)\s*A\[2\] \: \(([\-\d\. ]+)\)\s*A\[3\] \: \(([\-\d\. ]+)\)\s*',
-#                dtype=np.float64,
-#                shape=(3, 3),
-#            ),
-###
+
             Quantity(
                 'key_value',
                 r'([A-Z\d].+?)(?:\(.+\)|\[.+\]| |)(:.+?)(?:\[|\n)',
