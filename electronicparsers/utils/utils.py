@@ -49,6 +49,7 @@ from .magres_workflow import (
     NMRMagResResults,
 )
 from .nmr_qe_workflow import (
+    GIPAWQE,
     NMRQE,
     NMRQEMethod,
     NMRQEResults,
@@ -86,7 +87,6 @@ def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = Tru
 
     filenames = [f for f in filenames if os.access(f, os.F_OK)]
     return filenames
-
 
 def numpy_type_to_json_serializable(
     quantity: Union[np.bool_, np.int32, np.int64, np.float64],
@@ -199,7 +199,6 @@ def convert_system_to_model_system(system: System) -> ModelSystem:
         model_system.bond_list = system.atoms.bond_list
 
     return model_system
-
 
 
 class BeyondDFTWorkflowsParser:
@@ -737,67 +736,92 @@ class BeyondDFTWorkflowsParser:
 
         self.archive.workflow2 = workflow
 
-
-    def parse_nmr_qe_workflow(
-        self, nmr_archive: EntryArchive, nmr_workflow_archive: EntryArchive
+    def parse_gipaw_qe_workflow(
+        self,
+        qe_model_system: ModelSystem,
+        nmr_archive: EntryArchive,
+        efg_archive:EntryArchive,
+        gipaw_workflow_archive: EntryArchive
     ):
-        """Automatically parses the NMR workflow. Here, `self.archive` is the QE archive.
+        """Automatically parses the GIPAW workflow. Here, `self.archive` is the QE archive.
 
         Args:
+            qe_model_system (ModelSystem): self.System converted to ModelSystem
             nmr_archive (EntryArchive): the NMR archive
-            nmr_workflow_archive (EntryArchive): the NMR workflow archive
+            efg_archive (EntryArchive): the EFG archive
+            gipaw_workflow_archive (EntryArchive): the NMR workflow archive
         """
-        self.run_workflow_archive(nmr_workflow_archive)
-        nmr_workflow_archive.run[-1].m_add_sub_section(
-            Run.system, self.archive.run[-1].system[-1]
-        )
+        workflow = GIPAWQE()
+        workflow.name = "GIPAW QE"
 
-        workflow = NMRQE(method=NMRQEMethod(), results=NMRQEResults())
-        workflow.name = "NMR QE"
-
-        # Method
-        # method_gw = extract_section(nmr_archive, ['run', 'method', 'gw'])
-        # method_xcfunctional = extract_section(
-        #     self.archive, ['run', 'method', 'dft', 'xc_functional']
-        # )
-        # method_basisset = extract_section(
-        #     self.archive, ['run', 'method', 'electrons_representation']
-        # )
-        # workflow.method.gw_method_ref = method_gw
-        # workflow.method.starting_point = method_xcfunctional
-        # workflow.method.electrons_representation = method_basisset
-
-        # Inputs and Outputs
-        input_structure = extract_section(self.archive, ['run', 'system'])
-        dft_calculation = extract_section(self.archive, ['run', 'calculation'])
-        nmr_calculation = extract_section(nmr_archive, ["data", "outputs"])
+        # Inputs
+        input_structure = qe_model_system
         if input_structure:
             workflow.m_add_sub_section(
-                NMRQE.inputs, Link(name='Input structure', section=input_structure)
+                GIPAWQE.inputs, Link(name='Input structure', section=input_structure)
+            )
+        
+        # Outputs
+        qe_calculation = extract_section(self.archive, ['run', 'calculation'])
+        workflow.m_add_sub_section(
+                GIPAWQE.outputs,
+                Link(name='Output DFT calculation', section=qe_calculation),
+            )
+
+        if nmr_archive:
+            nmr_calculation = extract_section(nmr_archive, ["data", "outputs"])
+            workflow.m_add_sub_section(
+                GIPAWQE.outputs,
+                Link(name='Output NMR calculation', section=nmr_calculation),
+            )
+        
+        if efg_archive:
+            efg_calculation = extract_section(efg_archive, ["data", "outputs"])
+            workflow.m_add_sub_section(
+                GIPAWQE.outputs,
+                Link(name='Output EFG calculation', section=efg_calculation),
             )
 
 
-        # DFT task
+        # QE task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
             task.name = 'DFT'
             # TODO check why this re-writting is necessary to not repeat sections inside tasks
             if input_structure:
                 task.inputs = [Link(name='Input structure', section=input_structure)]
-            if dft_calculation:
+            if qe_calculation:
                 task.outputs = [
-                    Link(name='Output DFT calculation', section=dft_calculation)
+                    Link(name='Output DFT calculation', section=qe_calculation)
                 ]
-            workflow.m_add_sub_section(NMRQE.tasks, task)
+            workflow.m_add_sub_section(GIPAWQE.tasks, task)
 
         # NMR task
         if nmr_archive.workflow2:
             task = TaskReference(task=nmr_archive.workflow2)
             task.name = 'NMR'
-            if nmr_calculation:
+            if qe_calculation:
                 task.inputs = [
+                    Link(name='Output DFT calculation', section=qe_calculation)
+                ]
+            if nmr_calculation:
+                task.outputs = [
                     Link(name='Output NMR calculation', section=nmr_calculation)
                 ]
-            workflow.m_add_sub_section(NMRQE.tasks, task)
+            workflow.m_add_sub_section(GIPAWQE.tasks, task)
+        
+        # EFG task
+        if efg_archive.workflow2:
+            task = TaskReference(task=efg_archive.workflow2)
+            task.name = 'EFG'
+            if qe_calculation:
+                task.inputs = [
+                    Link(name='Output DFT calculation', section=qe_calculation)
+                ]
+            if efg_calculation:
+                task.outputs = [
+                    Link(name='Output EFG calculation', section=efg_calculation)
+                ]
+            workflow.m_add_sub_section(GIPAWQE.tasks, task)
 
-        nmr_workflow_archive.workflow2 = workflow
+        gipaw_workflow_archive.workflow2 = workflow

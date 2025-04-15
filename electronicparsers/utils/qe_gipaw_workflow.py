@@ -97,3 +97,13 @@ class EFGQE(SerialSimulation):
 
     def normalize(self, archive, logger):
         super().normalize(archive, logger)
+
+
+
+class GIPAWQE(SerialSimulation):
+    """
+    The GIPAW QE workflow is generated in an extra EntryArchive.
+    """
+
+    def normalize(self, archive, logger):
+        super().normalize(archive, logger)

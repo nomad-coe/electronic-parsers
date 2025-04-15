@@ -4143,7 +4143,6 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             
             # NMR
             if nmr_archive is not None:
-                # parse NMR
                 filedir = Path(self.filepath).parent
                 nmrfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None))
 
@@ -4152,19 +4151,23 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
 
             # EFG
             if efg_archive is not None:
-                # parse EFG
                 filedir = Path(self.filepath).parent
                 efgfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None))
 
                 p = EFGParser(system=model_system)
                 p.parse(efgfilepath, efg_archive, logger)
 
-            # # workflow
-            # nmr_workflow_archive = self._child_archives.get('EFG_workflow')
-            # try:
-            #     self.parse_nmr_qe_workflow(nmr_archive, nmr_workflow_archive)
-            # except Exception:
-            #     self.logger.error('Error parsing the automatic NMR workflow')
+            # Workflow
+            gipaw_workflow_archive = self._child_archives.get('GIPAW_Workflow')
+            try:
+                self.parse_gipaw_qe_workflow(
+                    qe_model_system=model_system,
+                    nmr_archive=nmr_archive,
+                    efg_archive=efg_archive,
+                    gipaw_workflow_archive=gipaw_workflow_archive
+                    )
+            except Exception:
+                self.logger.error('Error parsing the automatic NMR workflow')
 
             job_done = run.get('job_done')
             if job_done:
