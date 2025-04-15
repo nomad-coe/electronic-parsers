@@ -48,7 +48,7 @@ from .magres_workflow import (
     NMRMagResMethod,
     NMRMagResResults,
 )
-from .nmr_qe_workflow import (
+from .qe_gipaw_workflow import (
     GIPAWQE,
     NMRQE,
     NMRQEMethod,
@@ -739,8 +739,7 @@ class BeyondDFTWorkflowsParser:
     def parse_gipaw_qe_workflow(
         self,
         qe_model_system: ModelSystem,
-        nmr_archive: EntryArchive,
-        efg_archive:EntryArchive,
+        gipaw_list: list[EntryArchive],
         gipaw_workflow_archive: EntryArchive
     ):
         """Automatically parses the GIPAW workflow. Here, `self.archive` is the QE archive.
@@ -765,24 +764,9 @@ class BeyondDFTWorkflowsParser:
         qe_calculation = extract_section(self.archive, ['run', 'calculation'])
         workflow.m_add_sub_section(
                 GIPAWQE.outputs,
-                Link(name='Output DFT calculation', section=qe_calculation),
-            )
-
-        if nmr_archive:
-            nmr_calculation = extract_section(nmr_archive, ["data", "outputs"])
-            workflow.m_add_sub_section(
-                GIPAWQE.outputs,
-                Link(name='Output NMR calculation', section=nmr_calculation),
+                Link(name='Output DFT', section=qe_calculation),
             )
         
-        if efg_archive:
-            efg_calculation = extract_section(efg_archive, ["data", "outputs"])
-            workflow.m_add_sub_section(
-                GIPAWQE.outputs,
-                Link(name='Output EFG calculation', section=efg_calculation),
-            )
-
-
         # QE task
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
@@ -796,31 +780,25 @@ class BeyondDFTWorkflowsParser:
                 ]
             workflow.m_add_sub_section(GIPAWQE.tasks, task)
 
-        # NMR task
-        if nmr_archive.workflow2:
-            task = TaskReference(task=nmr_archive.workflow2)
-            task.name = 'NMR'
+        for archive in gipaw_list:
+            # Outputs
+            calculation = extract_section(archive, ["data", "outputs"])
+            name = archive.workflow2.name
+            workflow.m_add_sub_section(
+                GIPAWQE.outputs,
+                Link(name=f'Output {name}', section=calculation),
+            )
+
+            # Tasks
+            task = TaskReference(task=archive.workflow2)
+            task.name = name
             if qe_calculation:
                 task.inputs = [
                     Link(name='Output DFT calculation', section=qe_calculation)
                 ]
-            if nmr_calculation:
+            if calculation:
                 task.outputs = [
-                    Link(name='Output NMR calculation', section=nmr_calculation)
-                ]
-            workflow.m_add_sub_section(GIPAWQE.tasks, task)
-        
-        # EFG task
-        if efg_archive.workflow2:
-            task = TaskReference(task=efg_archive.workflow2)
-            task.name = 'EFG'
-            if qe_calculation:
-                task.inputs = [
-                    Link(name='Output DFT calculation', section=qe_calculation)
-                ]
-            if efg_calculation:
-                task.outputs = [
-                    Link(name='Output EFG calculation', section=efg_calculation)
+                    Link(name=f'Output {name} calculation', section=calculation)
                 ]
             workflow.m_add_sub_section(GIPAWQE.tasks, task)
 

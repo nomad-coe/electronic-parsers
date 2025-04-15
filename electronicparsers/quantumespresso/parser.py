@@ -25,7 +25,7 @@ from pathlib import Path
 from typing import Optional
 from typing import TYPE_CHECKING
 
-from electronicparsers.utils.nmr_qe_workflow import EFGQE, NMRQE, EFGQEMethod, EFGQEResults, NMRQEMethod, NMRQEResults
+from electronicparsers.utils.qe_gipaw_workflow import EFGQE, NMRQE, EFGQEMethod, EFGQEResults, NMRQEMethod, NMRQEResults
 from nomad.datamodel import EntryArchive
 
 if TYPE_CHECKING:
@@ -1712,6 +1712,22 @@ _libxc_shortcut = {
     },
 }
 
+_xc_functional_map = {
+            "LDA": ["LDA_C_PZ", "LDA_X_PZ"],
+            "PW91": ["GGA_C_PW91", "GGA_X_PW91"],
+            "PBE": ["GGA_C_PBE", "GGA_X_PBE"],
+            "RPBE": ["GGA_X_RPBE"],
+            "WC": ["GGA_C_PBE_GGA_X_WC"],
+            "PBESOL": ["GGA_X_RPBE"],
+            "BLYP": ["GGA_C_LYP", "LDA_X_B88"],
+            "B3LYP": ["HYB_GGA_XC_B3LYP5"],
+            "HF": ["HF_X"],
+            "HF-LDA": ["HF_X_LDA_C_PW"],
+            "PBE0": ["HYB_GGA_XC_PBEH"],
+            "HSE03": ["HYB_GGA_XC_HSE03"],
+            "HSE06": ["HYB_GGA_XC_HSE06"],
+            "RSCAN": ["MGGA_X_RSCAN", "MGGA_C_RSCAN"],
+        }
 
 class QuantumEspressoRunParser(TextParser):
     def __init__(self, quantities):
@@ -2904,22 +2920,7 @@ class NMRParser(MatchingParser):
         super().__init__(*args, **kwargs)
         self.nmr_parser = NMRFileParser()
         self.efg_parser = EFGFileParser()
-        self._xc_functional_map = {
-            "LDA": ["LDA_C_PZ", "LDA_X_PZ"],
-            "PW91": ["GGA_C_PW91", "GGA_X_PW91"],
-            "PBE": ["GGA_C_PBE", "GGA_X_PBE"],
-            "RPBE": ["GGA_X_RPBE"],
-            "WC": ["GGA_C_PBE_GGA_X_WC"],
-            "PBESOL": ["GGA_X_RPBE"],
-            "BLYP": ["GGA_C_LYP", "LDA_X_B88"],
-            "B3LYP": ["HYB_GGA_XC_B3LYP5"],
-            "HF": ["HF_X"],
-            "HF-LDA": ["HF_X_LDA_C_PW"],
-            "PBE0": ["HYB_GGA_XC_PBEH"],
-            "HSE03": ["HYB_GGA_XC_HSE03"],
-            "HSE06": ["HYB_GGA_XC_HSE06"],
-            "RSCAN": ["MGGA_X_RSCAN", "MGGA_C_RSCAN"],
-        }
+        self._xc_functional_map = _xc_functional_map
         self._model_system = system
 
     def init_parser(self) -> None:
@@ -3065,7 +3066,7 @@ class NMRParser(MatchingParser):
 
         # workflow
         workflow = NMRQE(method=NMRQEMethod(), results=NMRQEResults())
-        workflow.name = "NMR QE"
+        workflow.name = "NMR"
         self.archive.workflow2 = workflow
 
 
@@ -3136,22 +3137,7 @@ class EFGParser(MatchingParser):
         super().__init__(*args, **kwargs)
         self.nmr_parser = NMRFileParser()
         self.efg_parser = EFGFileParser()
-        self._xc_functional_map = {
-            "LDA": ["LDA_C_PZ", "LDA_X_PZ"],
-            "PW91": ["GGA_C_PW91", "GGA_X_PW91"],
-            "PBE": ["GGA_C_PBE", "GGA_X_PBE"],
-            "RPBE": ["GGA_X_RPBE"],
-            "WC": ["GGA_C_PBE_GGA_X_WC"],
-            "PBESOL": ["GGA_X_RPBE"],
-            "BLYP": ["GGA_C_LYP", "LDA_X_B88"],
-            "B3LYP": ["HYB_GGA_XC_B3LYP5"],
-            "HF": ["HF_X"],
-            "HF-LDA": ["HF_X_LDA_C_PW"],
-            "PBE0": ["HYB_GGA_XC_PBEH"],
-            "HSE03": ["HYB_GGA_XC_HSE03"],
-            "HSE06": ["HYB_GGA_XC_HSE06"],
-            "RSCAN": ["MGGA_X_RSCAN", "MGGA_C_RSCAN"],
-        }
+        self._xc_functional_map = _xc_functional_map
         self._model_system = system
 
     def init_parser(self) -> None:
@@ -3279,7 +3265,7 @@ class EFGParser(MatchingParser):
 
         # workflow
         workflow = EFGQE(method=EFGQEMethod(), results=EFGQEResults())
-        workflow.name = "EFG QE"
+        workflow.name = "EFG"
         self.archive.workflow2 = workflow
 
 
@@ -4141,6 +4127,8 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             if nmr_archive is not None or efg_archive is not None:
                 model_system = convert_system_to_model_system(system=self.archive.run[-1].system[-1])
             
+            gipaw_list = []
+            
             # NMR
             if nmr_archive is not None:
                 filedir = Path(self.filepath).parent
@@ -4148,6 +4136,8 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
 
                 p = NMRParser(system=model_system)
                 p.parse(nmrfilepath, nmr_archive, logger)
+                
+                gipaw_list.append(nmr_archive)
 
             # EFG
             if efg_archive is not None:
@@ -4157,13 +4147,14 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                 p = EFGParser(system=model_system)
                 p.parse(efgfilepath, efg_archive, logger)
 
+                gipaw_list.append(efg_archive)
+
             # Workflow
             gipaw_workflow_archive = self._child_archives.get('GIPAW_Workflow')
             try:
                 self.parse_gipaw_qe_workflow(
                     qe_model_system=model_system,
-                    nmr_archive=nmr_archive,
-                    efg_archive=efg_archive,
+                    gipaw_list=gipaw_list,
                     gipaw_workflow_archive=gipaw_workflow_archive
                     )
             except Exception:
