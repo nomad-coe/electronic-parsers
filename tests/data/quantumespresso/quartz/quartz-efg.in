@@ -1,9 +1,10 @@
 &inputgipaw
         job = 'efg'
         prefix = 'quartz'
-        tmp_dir = '/tmp/ceresoli/'
+        tmp_dir = './tmp/'
         verbosity = 'high'
-        Q_efg(1) = 1.0     ! fake value for 1H
+        spline_ps = .true.
+        Q_efg(1) = 1.0     ! fake value for 29Si
         Q_efg(2) = 2.55    ! 17O
 /
 

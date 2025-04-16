@@ -2948,7 +2948,6 @@ class GIPAWContentParser:
             gi = self.fileparser.results._data['gpw:gipaw[0]']['general_info[0]']['creator[0]']['_data'][0]
             self._results['software_version'] = [gi['NAME'], gi['VERSION']]
 
-
         # Output
         # debug(self.fileparser.results._data['gpw:gipaw[0]']['output[0]'])
         # susceptibility_low
@@ -2966,7 +2965,6 @@ class GIPAWContentParser:
         # shielding_tensors
         if 'ms_list' not in self._results:
             st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['shielding_tensors[0]']
-            debug(st)
             ms_list = []
             for key, value in st.items():
                 if not isinstance(value, dict):
@@ -2985,7 +2983,6 @@ class GIPAWContentParser:
         # debug(self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['electric_field_gradients[0]'])
         if 'efg' not in self._results:
             st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['electric_field_gradients[0]']
-            debug(st)
             efg = []
             for key, value in st.items():
                 if not isinstance(value, dict):
@@ -3000,7 +2997,7 @@ class GIPAWContentParser:
             
             self._results['efg'] = efg
 
-        debug(self.results)
+        # debug(self.results)
     
     @property
     def results(self):
@@ -3037,7 +3034,7 @@ class XMLParser(MatchingParser):
         # Trigger parsing of susceptibility_low (and all quantities via general parse())
         # debug(self.parser._results)
         _ = self.parser.get("software_version", [])
-        debug(self.parser._results)
+        # debug(self.parser._results)
 
 
         # Debug printout of all parsed results
@@ -3106,12 +3103,8 @@ class NMRParser(MatchingParser):
 
         # Magnetic Shielding Tensor (ms) parsing
         data = self.parser.get('ms_list', [])
-        debug(n_atoms)
-        debug(np.size(data))
-        # debug(data)
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
-            debug("The shape of the matched text for the `ms_list` does not coincide with the number of atoms.")
             self.logger.warning(
                 "The shape of the matched text for the `ms_list` does not coincide with the number of atoms."
             )
@@ -3203,7 +3196,7 @@ class NMRParser(MatchingParser):
         )
         archive.data = simulation
 
-        debug(self.parser._results)
+        # debug(self.parser._results)
 
         # model system 
         self._model_system.is_representative = True
@@ -3294,19 +3287,28 @@ class EFGParser(MatchingParser):
     def __init__(self, system: System, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.efg_parser = EFGFileParser()
+        self.xml_parser = GIPAWContentParser()
         self._xc_functional_map = _xc_functional_map
         self._model_system = system
 
     def init_parser(self) -> None:
-        self.efg_parser.mainfile = self.mainfile
-        self.efg_parser.logger = self.logger
+        if 'gipaw.xml' in self.mainfile:
+            self.parser = self.xml_parser
+            self.parser.init_parser(self.mainfile, self.logger)
+        else:
+            self.parser = self.efg_parser    
+            self.parser.mainfile = self.mainfile
+            self.parser.logger = self.logger
 
     def parse_xc_functional(self) -> list[XCFunctional_simu]:
         """
         Parse the exchange-correlation functional.
         """
-        xc_functional = self.efg_parser.get("xc_functional", [])
-        xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
+        try:
+            xc_functional = self.parser.get("xc_functional", [])
+            xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
+        except:
+            xc_functional_labels = self._xc_functional_map.get('PBE', [])
         xc_sections = []
         for xc in xc_functional_labels:
             functional = XCFunctional_simu(libxc_name=xc)
@@ -3327,7 +3329,7 @@ class EFGParser(MatchingParser):
     ) -> "EFGParser.e_field_gradients_class":
         electric_field_gradients = self.e_field_gradients_class()
         n_atoms = len(cell.atoms_state)
-        data = self.efg_parser.get('efg', [])
+        data = self.parser.get('efg', [])
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
             self.logger.warning(
@@ -3396,7 +3398,7 @@ class EFGParser(MatchingParser):
         simulation = self.simulation_class()
 
         # program
-        program_name_version  = self.efg_parser.get('software_version', [])
+        program_name_version  = self.parser.get('software_version', [])
         simulation.program = self.program_class(
             name=program_name_version[0],
             version=program_name_version[1],
@@ -4339,7 +4341,7 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                 # get file to parse
                 xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('efg', [])), None)) is not None else None
                 if xmlfilepath is not None:
-                    nmrfilepath = xmlfilepath
+                    efgfilepath = xmlfilepath
                 else:
                     efgfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None))
 
