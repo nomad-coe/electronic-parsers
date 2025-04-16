@@ -24,6 +24,7 @@ import os
 from pathlib import Path
 from typing import Optional
 from typing import TYPE_CHECKING
+import xml.etree.ElementTree as ET
 
 from electronicparsers.utils.qe_gipaw_workflow import EFGQE, NMRQE, EFGQEMethod, EFGQEResults, NMRQEMethod, NMRQEResults
 from electronicparsers.vasp.parser import ContentParser, RunFileParser, RunXmlContentHandler
@@ -2923,7 +2924,6 @@ class GIPAWContentParser:
             self.parse(key)
         return self._results.get(key, default)
 
-
     def parse_sl_to_array(self, sl_string):
         # Regex più generale: supporta 'e' o 'E', con segni opzionali, e decimali opzionali prima della 'e/E'
         number_pattern = r'[-+]?\d*\.\d+(?:[eE][-+]?\d+)?'
@@ -2933,7 +2933,6 @@ class GIPAWContentParser:
         # Converte in array NumPy 3x3
         return np.array(floats).reshape((3, 3))
 
-    
     def extract_floats_from_string(self, s):
         # Regex più generale per float in notazione scientifica (sia e che E)
         number_pattern = r'[-+]?\d*\.\d+(?:[eE][-+]?\d+)?'
@@ -3002,18 +3001,13 @@ class GIPAWContentParser:
             self._results['efg'] = efg
 
         debug(self.results)
-
     
-
-
     @property
     def results(self):
         if not self._results:
             self.parse()
         return self._results
 
-    def __repr__(self):
-        return f"GIPAWContentParser({list(self._results.keys())})"
 
 
 
@@ -4174,24 +4168,47 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         self.dos_parser.mainfile = self.filepath
         self.dos_parser.logger = self.logger
 
+    def extract_xml_input_job(self, xml_file):
+        tree = ET.parse(xml_file)
+        root = tree.getroot()
+
+        input_tag = root.find(".//input")
+        if input_tag is not None:
+            job_tag = input_tag.find("job")
+            if job_tag is not None and job_tag.text:
+                return job_tag.text.strip()
+        
+        return None
+    
     def get_mainfile_keys(self, **kwargs):
         filedir = Path(kwargs.get('filename')).parent
-        nmr_matches = [f for f in filedir.iterdir() if f.name.endswith('nmr.out')]
-        efg_matches = [f for f in filedir.iterdir() if f.name.endswith('efg.out')]
+        nmr_text_matches = [f for f in filedir.iterdir() if f.name.endswith('nmr.out')]
+        efg_text_matches = [f for f in filedir.iterdir() if f.name.endswith('efg.out')]
         xml_matches = [f for f in filedir.iterdir() if f.name.endswith('gipaw.xml')]
+
+        xml_jobs = {}
+        for f in xml_matches:
+            job = self.extract_xml_input_job(f)
+            xml_jobs.setdefault(job, []).append(f)
 
         keys = []
 
-        if len(nmr_matches) > 1:
+        if len(nmr_text_matches) > 1:
             # FIXME: this doesn't log correctly
-            self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in nmr_matches]}")
-        elif nmr_matches or xml_matches:
+            self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in nmr_text_matches]}")
+        elif len(xml_jobs.get('nmr', [])) > 1:
+            # FIXME: this doesn't log correctly
+            self.logger.error(f"Found multiple xml files with job 'nmr': {[f.name for f in xml_jobs['nmr']]}")
+        elif nmr_text_matches or xml_jobs['nmr']:
             keys.append("NMR")
 
-        if len(efg_matches) > 1:
+        if len(efg_text_matches) > 1:
             # FIXME: this doesn't log correctly
-            self.logger.error(f"Found multiple files ending with 'efg.out': {[f.name for f in efg_matches]}")
-        elif efg_matches:
+            self.logger.error(f"Found multiple files ending with 'efg.out': {[f.name for f in efg_text_matches]}")
+        elif len(xml_jobs.get('efg', [])) > 1:
+            # FIXME: this doesn't log correctly
+            self.logger.error(f"Found multiple xml files with job 'efg': {[f.name for f in xml_jobs['efg']]}")
+        elif efg_text_matches:
             keys.append("EFG")
 
         if keys:
@@ -4289,22 +4306,29 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             efg_archive = self._child_archives.get('EFG')
 
             if nmr_archive is not None or efg_archive is not None:
+                # convert Model to ModelSystem
                 model_system = convert_system_to_model_system(system=self.archive.run[-1].system[-1])
-            
-            gipaw_list = []
+                
+                # read gipaw.xml jobs
+                filedir = Path(self.filepath).parent
+                xml_matches = [f for f in filedir.iterdir() if f.name.endswith('gipaw.xml')]
+                xml_jobs = {}
+                for f in xml_matches:
+                    job = self.extract_xml_input_job(f)
+                    xml_jobs.setdefault(job, []).append(f)
+                
+                gipaw_list = []
             
             # NMR
             if nmr_archive is not None:
-                filedir = Path(self.filepath).parent
-
-                xmlfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('gipaw.xml')), None))
-                textfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None))
-
+                # get file to parse
+                xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('nmr', [])), None)) is not None else None
                 if xmlfilepath is not None:
                     nmrfilepath = xmlfilepath
                 else:
-                    nmrfilepath = textfilepath
-
+                    nmrfilepath = str(val) if (val := next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None)) is not None else None
+                
+                # parse
                 p = NMRParser(system=model_system)
                 p.parse(nmrfilepath, nmr_archive, logger)
                 
@@ -4312,9 +4336,14 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
 
             # EFG
             if efg_archive is not None:
-                filedir = Path(self.filepath).parent
-                efgfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None))
+                # get file to parse
+                xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('efg', [])), None)) is not None else None
+                if xmlfilepath is not None:
+                    nmrfilepath = xmlfilepath
+                else:
+                    efgfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None))
 
+                # parse
                 p = EFGParser(system=model_system)
                 p.parse(efgfilepath, efg_archive, logger)
 
