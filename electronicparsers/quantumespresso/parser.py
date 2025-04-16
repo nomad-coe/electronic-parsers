@@ -2922,18 +2922,22 @@ class GIPAWContentParser:
         if key not in self._results:
             self.parse(key)
         return self._results.get(key, default)
-    
+
+
     def parse_sl_to_array(self, sl_string):
-        # Estrae tutti i numeri in formato float dalla stringa
-        numbers = re.findall(r'[-+]?\d*\.\d+e[+-]?\d+', sl_string)
-        # Converte le stringhe in float
+        # Regex più generale: supporta 'e' o 'E', con segni opzionali, e decimali opzionali prima della 'e/E'
+        number_pattern = r'[-+]?\d*\.\d+(?:[eE][-+]?\d+)?'
+        # Estrae tutti i float
+        numbers = re.findall(number_pattern, sl_string)
         floats = list(map(float, numbers))
         # Converte in array NumPy 3x3
         return np.array(floats).reshape((3, 3))
+
     
     def extract_floats_from_string(self, s):
-        # Estrae tutti i float in notazione scientifica
-        numbers = re.findall(r'[-+]?\d*\.\d+e[+-]?\d+', s)
+        # Regex più generale per float in notazione scientifica (sia e che E)
+        number_pattern = r'[-+]?\d*\.\d+(?:[eE][-+]?\d+)?'
+        numbers = re.findall(number_pattern, s)
         return list(map(float, numbers))
 
     def parse(self, quantity_key: str = None):
@@ -2941,39 +2945,63 @@ class GIPAWContentParser:
 
         # General info
         # debug(self.fileparser.results._data['gpw:gipaw[0]']['general_info[0]']['creator[0]']['_data'])
-        gi = self.fileparser.results._data['gpw:gipaw[0]']['general_info[0]']['creator[0]']['_data'][0]
-        self._results['software_version'] = [gi['NAME'], gi['VERSION']]
+        if 'software_version' not in self._results:
+            gi = self.fileparser.results._data['gpw:gipaw[0]']['general_info[0]']['creator[0]']['_data'][0]
+            self._results['software_version'] = [gi['NAME'], gi['VERSION']]
 
 
         # Output
         # debug(self.fileparser.results._data['gpw:gipaw[0]']['output[0]'])
         # susceptibility_low
-        sl = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['susceptibility_low[0]']['_data'][0]['susceptibility_low']
-        tensor = self.parse_sl_to_array(sl)
-        self._results['chi_bare_vGv'] = tensor
+        if 'chi_bare_vGv' not in self._results:
+            sl = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['susceptibility_low[0]']['_data'][0]['susceptibility_low']
+            tensor = self.parse_sl_to_array(sl)
+            self._results['chi_bare_vGv'] = tensor
 
         # susceptibility_high
-        sh = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['susceptibility_high[0]']['_data'][0]['susceptibility_high']
-        tensor = self.parse_sl_to_array(sh)
-        self._results['chi_bare_pGv'] = tensor
+        if 'chi_bare_pGv' not in self._results:
+            sh = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['susceptibility_high[0]']['_data'][0]['susceptibility_high']
+            tensor = self.parse_sl_to_array(sh)
+            self._results['chi_bare_pGv'] = tensor
 
         # shielding_tensors
-        st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['shielding_tensors[0]']
-        # debug(st)
-        ms_list = []
-        for key, value in st.items():
-            if not isinstance(value, dict):
-                continue
+        if 'ms_list' not in self._results:
+            st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['shielding_tensors[0]']
+            debug(st)
+            ms_list = []
+            for key, value in st.items():
+                if not isinstance(value, dict):
+                    continue
 
-            for atom in value['_data']:
-                atom_list = []
-                atom_list.append(atom['name'])
-                atom_list = atom_list + self.extract_floats_from_string(atom['atom'])
-                ms_list.append(atom_list)
-        
-        self._results['ms_list'] = ms_list
+                for atom in value['_data']:
+                    atom_list = []
+                    atom_list.append(atom['name'])
+                    atom_list.append(int(atom['index']))
+                    atom_list = atom_list + self.extract_floats_from_string(atom['atom'])
+                    ms_list.append(atom_list)
+            
+            self._results['ms_list'] = ms_list
 
-        # debug(self.results)
+        # electric_field_gradients
+        # debug(self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['electric_field_gradients[0]'])
+        if 'efg' not in self._results:
+            st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['electric_field_gradients[0]']
+            debug(st)
+            efg = []
+            for key, value in st.items():
+                if not isinstance(value, dict):
+                    continue
+
+                for atom in value['_data']:
+                    atom_list = []
+                    atom_list.append(atom['name'])
+                    atom_list.append(int(atom['index']))
+                    atom_list = atom_list + self.extract_floats_from_string(atom['atom'])
+                    efg.append(atom_list)
+            
+            self._results['efg'] = efg
+
+        debug(self.results)
 
     
 
@@ -3015,6 +3043,8 @@ class XMLParser(MatchingParser):
         # Trigger parsing of susceptibility_low (and all quantities via general parse())
         # debug(self.parser._results)
         _ = self.parser.get("software_version", [])
+        debug(self.parser._results)
+
 
         # Debug printout of all parsed results
         # debug(self.parser._results)
@@ -3082,7 +3112,9 @@ class NMRParser(MatchingParser):
 
         # Magnetic Shielding Tensor (ms) parsing
         data = self.parser.get('ms_list', [])
-        debug(data)
+        debug(n_atoms)
+        debug(np.size(data))
+        # debug(data)
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
             debug("The shape of the matched text for the `ms_list` does not coincide with the number of atoms.")
@@ -3099,7 +3131,7 @@ class NMRParser(MatchingParser):
             sec_ms = self.mag_shielding_tensor(entity_ref=cell.atoms_state[i])
             sec_ms.value = values * 1e-6 * ureg("dimensionless")
             magnetic_shieldings.append(sec_ms)
-        debug(magnetic_shieldings)
+        # debug(magnetic_shieldings)
         return magnetic_shieldings
 
     def parse_magnetic_susceptibilities(self) -> list["NMRParser.mag_susceptibility_class"]:
@@ -3177,7 +3209,7 @@ class NMRParser(MatchingParser):
         )
         archive.data = simulation
 
-        # debug(self.parser._results)
+        debug(self.parser._results)
 
         # model system 
         self._model_system.is_representative = True
