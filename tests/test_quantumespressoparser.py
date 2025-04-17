@@ -21,7 +21,7 @@ import pytest
 import numpy as np
 
 from electronicparsers.quantumespresso.parser import EFGParser, XMLParser
-from electronicparsers.utils.utils import convert_system_to_model_system
+from electronicparsers.utils.utils import convert_system_to_model_system, convert_xcfunctional
 from nomad.datamodel import EntryArchive
 from runschema.system import System
 from nomad.units import ureg
@@ -40,11 +40,12 @@ def parser():
 
 
 @pytest.fixture(scope='module')
-def quartz_scf_model_system(parser):
+def quartz_scf_fixtures(parser):
     archive = EntryArchive()
     parser.parse('tests/data/quantumespresso/quartz/quartz-scf.out', archive, None)
     model_system = convert_system_to_model_system(system=archive.run[-1].system[-1])
-    return model_system
+    xc_fun_list = convert_xcfunctional(archive.run[-1].method[-1].dft.xc_functional)
+    return model_system, xc_fun_list
 
 
 def RyB_to_N(value):
@@ -268,9 +269,10 @@ def test_mainfile_keys(parser):
     assert mainfile_keys[2] == 'GIPAW_Workflow'
 
 
-def test_nmr_text(quartz_scf_model_system):
+def test_nmr_text(quartz_scf_fixtures):
     archive = EntryArchive()
-    parser = NMRParser(system=quartz_scf_model_system)
+    model_system, _ = quartz_scf_fixtures
+    parser = NMRParser(system=model_system, xc_func_list=None)
     parser.parse(
         filepath='tests/data/quantumespresso/quartz/quartz-nmr.out',
         archive=archive,
@@ -324,9 +326,10 @@ def test_nmr_text(quartz_scf_model_system):
         assert ms.entity_ref.chemical_symbol == labels[i]
 
 
-def test_nmr_xml(quartz_scf_model_system):
+def test_nmr_xml(quartz_scf_fixtures):
     archive = EntryArchive()
-    parser = NMRParser(system=quartz_scf_model_system)
+    model_system, xc_fun_list = quartz_scf_fixtures
+    parser = NMRParser(system=model_system, xc_func_list=xc_fun_list)
     parser.parse(
         filepath='tests/data/quantumespresso/quartz/quartz-nmr-gipaw.xml',
         archive=archive,
@@ -357,10 +360,10 @@ def test_nmr_xml(quartz_scf_model_system):
     assert simulation.model_method[0].name == 'NMR'
     dft = simulation.model_method[0]
     assert len(dft.xc_functionals) == 2
-    assert dft.xc_functionals[0].name == 'correlation'
-    assert dft.xc_functionals[0].libxc_name == 'GGA_C_PBE'
-    assert dft.xc_functionals[1].name == 'exchange'
-    assert dft.xc_functionals[1].libxc_name == 'GGA_X_PBE'
+    assert dft.xc_functionals[1].name == 'correlation'
+    assert dft.xc_functionals[1].libxc_name == 'GGA_C_PBE'
+    assert dft.xc_functionals[0].name == 'exchange'
+    assert dft.xc_functionals[0].libxc_name == 'GGA_X_PBE'
 
 
     # Outputs
@@ -380,9 +383,10 @@ def test_nmr_xml(quartz_scf_model_system):
         assert ms.entity_ref.chemical_symbol == labels[i]
 
 
-def test_efg_xml(quartz_scf_model_system):
+def test_efg_xml(quartz_scf_fixtures):
     archive = EntryArchive()
-    parser = EFGParser(system=quartz_scf_model_system)
+    model_system, xc_fun_list = quartz_scf_fixtures
+    parser = EFGParser(system=model_system, xc_func_list=xc_fun_list)
     parser.parse(
         filepath='tests/data/quantumespresso/quartz/quartz-efg-gipaw.xml',
         archive=archive,
@@ -413,10 +417,10 @@ def test_efg_xml(quartz_scf_model_system):
     assert simulation.model_method[0].name == 'EFG'
     dft = simulation.model_method[0]
     assert len(dft.xc_functionals) == 2
-    assert dft.xc_functionals[0].name == 'correlation'
-    assert dft.xc_functionals[0].libxc_name == 'GGA_C_PBE'
-    assert dft.xc_functionals[1].name == 'exchange'
-    assert dft.xc_functionals[1].libxc_name == 'GGA_X_PBE'
+    assert dft.xc_functionals[1].name == 'correlation'
+    assert dft.xc_functionals[1].libxc_name == 'GGA_C_PBE'
+    assert dft.xc_functionals[0].name == 'exchange'
+    assert dft.xc_functionals[0].libxc_name == 'GGA_X_PBE'
 
 
     # Outputs
@@ -428,9 +432,10 @@ def test_efg_xml(quartz_scf_model_system):
     assert output.m_xpath('electric_field_gradients', dict=False) is not None
 
 
-def test_efg_text(quartz_scf_model_system):
+def test_efg_text(quartz_scf_fixtures):
     archive = EntryArchive()
-    parser = EFGParser(system=quartz_scf_model_system)
+    model_system, _ = quartz_scf_fixtures
+    parser = EFGParser(system=model_system, xc_func_list=None)
     parser.parse(
         filepath='tests/data/quantumespresso/quartz/quartz-efg.out',
         archive=archive,
@@ -476,8 +481,12 @@ def test_efg_text(quartz_scf_model_system):
     assert output.m_xpath('electric_field_gradients', dict=False) is not None
     
 
-def test_conversion():
+def test_system_conversion():
     # TODO: write test for convert_system_to_model_system
+    pass
+
+def test_xcfunctional_conversion():
+    # TODO: write test for convert_xcfunctional
     pass
 
 def test_xml_parser():

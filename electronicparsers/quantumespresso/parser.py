@@ -34,7 +34,7 @@ if TYPE_CHECKING:
     from nomad.datamodel.datamodel import EntryArchive
     from structlog.stdlib import BoundLogger
 
-from electronicparsers.utils.utils import BeyondDFTWorkflowsParser
+from electronicparsers.utils.utils import BeyondDFTWorkflowsParser, convert_xcfunctional
 from electronicparsers.utils.utils import convert_system_to_model_system
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
@@ -3048,6 +3048,7 @@ class XMLParser(MatchingParser):
 
 class NMRParser(MatchingParser):
     _model_system: ModelSystem
+    _xc_func_list: list[XCFunctional_simu] | None
 
     # Data section classes:
     simulation_class = Simulation
@@ -3056,12 +3057,18 @@ class NMRParser(MatchingParser):
     mag_susceptibility_class = MagneticSusceptibility
     mag_shielding_tensor = MagneticShieldingTensor
 
-    def __init__(self, system: System, *args, **kwargs):
+    def __init__(
+            self, 
+            system: System, 
+            xc_func_list: list[XCFunctional_simu] | None, 
+            *args, 
+            **kwargs):
         super().__init__(*args, **kwargs)
         self.nmr_parser = NMRFileParser()
         self.xml_parser = GIPAWContentParser()
         self._xc_functional_map = _xc_functional_map
         self._model_system = system
+        self._xc_func_list = xc_func_list
 
     def init_parser(self) -> None:
         if 'gipaw.xml' in self.mainfile:
@@ -3076,11 +3083,9 @@ class NMRParser(MatchingParser):
         """
         Parse the exchange-correlation functional.
         """
-        try:
-            xc_functional = self.parser.get("xc_functional", [])
-            xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
-        except:
-            xc_functional_labels = self._xc_functional_map.get('PBE', [])
+        xc_functional = self.parser.get("xc_functional", [])
+        xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
+        xc_functional_labels = self._xc_functional_map.get('PBE', [])
         xc_sections = []
         for xc in xc_functional_labels:
             functional = XCFunctional_simu(libxc_name=xc)
@@ -3204,9 +3209,12 @@ class NMRParser(MatchingParser):
 
         # model method
         model_method = DFT_simu(name="NMR")
-        xc_functionals = self.parse_xc_functional()
-        if len(xc_functionals) > 0:
-            model_method.xc_functionals = xc_functionals
+        if self._xc_func_list is not None:
+            model_method.xc_functionals = self._xc_func_list
+        else:
+            xc_functionals = self.parse_xc_functional()
+            if len(xc_functionals) > 0:
+                model_method.xc_functionals = xc_functionals
 
         simulation.model_method.append(model_method)
 
@@ -3276,6 +3284,7 @@ class EFGFileParser(TextParser):
 
 class EFGParser(MatchingParser):
     _model_system: ModelSystem
+    _xc_func_list: list[XCFunctional_simu] | None
 
     # Data section classes:
     simulation_class = Simulation
@@ -3284,12 +3293,18 @@ class EFGParser(MatchingParser):
     e_field_gradients_class = ElectricFieldGradients
     e_field_gradient_class = ElectricFieldGradient
 
-    def __init__(self, system: System, *args, **kwargs):
+    def __init__(
+            self, 
+            system: System, 
+            xc_func_list: list[XCFunctional_simu] | None, 
+            *args, 
+            **kwargs):
         super().__init__(*args, **kwargs)
         self.efg_parser = EFGFileParser()
         self.xml_parser = GIPAWContentParser()
         self._xc_functional_map = _xc_functional_map
         self._model_system = system
+        self._xc_func_list = xc_func_list
 
     def init_parser(self) -> None:
         if 'gipaw.xml' in self.mainfile:
@@ -3304,11 +3319,8 @@ class EFGParser(MatchingParser):
         """
         Parse the exchange-correlation functional.
         """
-        try:
-            xc_functional = self.parser.get("xc_functional", [])
-            xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
-        except:
-            xc_functional_labels = self._xc_functional_map.get('PBE', [])
+        xc_functional = self.parser.get("xc_functional", [])
+        xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
         xc_sections = []
         for xc in xc_functional_labels:
             functional = XCFunctional_simu(libxc_name=xc)
@@ -3411,9 +3423,12 @@ class EFGParser(MatchingParser):
 
         # model method
         model_method = DFT_simu(name="EFG")
-        xc_functionals = self.parse_xc_functional()
-        if len(xc_functionals) > 0:
-            model_method.xc_functionals = xc_functionals
+        if self._xc_func_list is not None:
+            model_method.xc_functionals = self._xc_func_list
+        else:
+            xc_functionals = self.parse_xc_functional()
+            if len(xc_functionals) > 0:
+                model_method.xc_functionals = xc_functionals
 
         simulation.model_method.append(model_method)
 
@@ -4181,7 +4196,8 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                 return job_tag.text.strip()
         
         return None
-    
+
+
     def get_mainfile_keys(self, **kwargs):
         filedir = Path(kwargs.get('filename')).parent
         nmr_text_matches = [f for f in filedir.iterdir() if f.name.endswith('nmr.out')]
@@ -4218,7 +4234,7 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             return keys
         else:
             return True
-
+    
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
@@ -4318,6 +4334,10 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                 for f in xml_matches:
                     job = self.extract_xml_input_job(f)
                     xml_jobs.setdefault(job, []).append(f)
+
+                # convert xc_functional for the xml case
+                if xml_jobs:
+                    xc_func_list = convert_xcfunctional(sec_run.method[0].dft.xc_functional)
                 
                 gipaw_list = []
             
@@ -4329,9 +4349,10 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                     nmrfilepath = xmlfilepath
                 else:
                     nmrfilepath = str(val) if (val := next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None)) is not None else None
+                    xc_func_list = None
                 
                 # parse
-                p = NMRParser(system=model_system)
+                p = NMRParser(system=model_system, xc_func_list=xc_func_list)
                 p.parse(nmrfilepath, nmr_archive, logger)
                 
                 gipaw_list.append(nmr_archive)
@@ -4344,9 +4365,10 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                     efgfilepath = xmlfilepath
                 else:
                     efgfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None))
+                    xc_func_list = None
 
                 # parse
-                p = EFGParser(system=model_system)
+                p = EFGParser(system=model_system, xc_func_list=xc_func_list)
                 p.parse(efgfilepath, efg_archive, logger)
 
                 gipaw_list.append(efg_archive)

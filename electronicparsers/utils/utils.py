@@ -56,8 +56,9 @@ from .qe_gipaw_workflow import (
 )
 from nomad.atomutils import Formula
 from runschema.system import System
+from runschema.method import XCFunctional
 from nomad_simulations.schema_packages.model_system import AtomicCell, Cell, ModelSystem, AtomsState, Symmetry, ChemicalFormula
-
+from nomad_simulations.schema_packages.model_method import XCFunctional as XCFunctional_simu
 
 def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
     """Get files following the `pattern` with respect to the file `stripname` (usually this
@@ -199,6 +200,26 @@ def convert_system_to_model_system(system: System) -> ModelSystem:
         model_system.bond_list = system.atoms.bond_list
 
     return model_system
+
+
+def convert_xcfunctional(xcfunc: XCFunctional) -> list[XCFunctional_simu]:
+    """
+    Convers `method.XCFunctional` in una list[`model_method.XCFunctional`].
+    """
+    result = []
+
+    for kind in ['exchange', 'correlation', 'hybrid', 'contributions']:
+        section_list = getattr(xcfunc, kind, [])
+        for func in section_list:
+            if func is None:
+                continue
+            result.append(XCFunctional_simu(
+                libxc_name=func.name,
+                name=kind[:-1] if kind.endswith('s') else kind,
+                weight=func.weight if func.weight is not None else 1.0
+            ))
+
+    return result
 
 
 class BeyondDFTWorkflowsParser:
