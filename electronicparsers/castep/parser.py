@@ -1437,8 +1437,8 @@ class CastepParser:
             if cell_contents.get('positions') is not None:
                 sec_atoms.labels = cell_contents.get('positions')[0]
                 sec_atoms.positions = np.dot(
-                    cell_contents.get('positions')[1], sec_system.atoms.lattice_vectors
-                )
+                    cell_contents.get('positions')[1], sec_system.atoms.lattice_vectors.magnitude
+                ) * sec_system.atoms.lattice_vectors.units
             if cell_contents.get('velocities') is not None:
                 sec_atoms.velocities = cell_contents.get('velocities')[1] * (
                     length_unit / self.units.get('time', 1)

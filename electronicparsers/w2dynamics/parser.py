@@ -274,7 +274,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             for key in self._hubbard_kanamori_map.keys():
                 parameters = (
                     data.attrs.get(
-                        f'atoms.{n+1}.{key}{angular_momentum}{angular_momentum}', None
+                        f'atoms.{n + 1}.{key}{angular_momentum}{angular_momentum}', None
                     )
                     * ureg.eV
                 )
@@ -284,9 +284,9 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
                     parameters,
                 )
 
-            if data.attrs.get(f'atoms.{n+1}.hamiltonian') == 'Density':
+            if data.attrs.get(f'atoms.{n + 1}.hamiltonian') == 'Density':
                 sec_hubbard_kanamori_model.j = 0.0
-            elif data.attrs.get(f'atoms.{n+1}.hamiltonian') == 'Kanamori':
+            elif data.attrs.get(f'atoms.{n + 1}.hamiltonian') == 'Kanamori':
                 sec_hubbard_kanamori_model.j = sec_hubbard_kanamori_model.jh
 
     def parse_method(self, data: h5py.Group):
@@ -329,7 +329,7 @@ class W2DynamicsParser(BeyondDFTWorkflowsParser):
             sec_config_subsection = x_w2dynamics_config_atoms_parameters()
             sec_config.x_w2dynamics_config_atoms.append(sec_config_subsection)
             for key in data.attrs.keys():
-                if key.startswith(f'atoms.{i+1}'):
+                if key.startswith(f'atoms.{i + 1}'):
                     keys_mod = (key.replace('-', '_')).split('.')
                     parameters = data.attrs.get(key)
                     setattr(

@@ -3254,7 +3254,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         volume_index = 1
         while True:
             info_volume = get_files(
-                f"run_dir{str(volume_index).rjust(2, '0')}/INFO.OUT",
+                f'run_dir{str(volume_index).rjust(2, "0")}/INFO.OUT',
                 self.filepath,
                 'INFO.OUT',
             )

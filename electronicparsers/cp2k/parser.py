@@ -1685,7 +1685,10 @@ class CP2KParser:
         if trajectory.positions is not None:
             sec_atoms.positions = trajectory.positions
         elif trajectory.scaled_positions is not None and lattice_vectors is not None:
-            sec_atoms.positions = np.dot(trajectory.scaled_positions, lattice_vectors)
+            sec_atoms.positions = np.dot(
+                trajectory.scaled_positions.magnitude, lattice_vectors.magnitude
+            ) * lattice_vectors.units
+
 
         labels = (
             trajectory.labels

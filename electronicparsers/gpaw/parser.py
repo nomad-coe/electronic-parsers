@@ -429,7 +429,7 @@ class GPAWParser:
                 self.parser.get_array_dimension('ngpts'), 'lengthunit'
             )
             if cell.any() and ngpts.all():
-                h_grid = np.linalg.norm(cell, axis=1) / np.array(ngpts[:3])
+                h_grid = np.linalg.norm(cell, axis=1) / np.array(ngpts.magnitude[:3])
                 bs.grid_spacing = self.apply_unit(h_grid, 'lengthunit')
         elif mode == 'lcao':
             bs = BasisSet(
