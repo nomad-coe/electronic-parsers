@@ -24,15 +24,17 @@ import os
 from pathlib import Path
 from typing import Optional
 from typing import TYPE_CHECKING
+import xml.etree.ElementTree as ET
 
 from electronicparsers.utils.qe_gipaw_workflow import EFGQE, NMRQE, EFGQEMethod, EFGQEResults, NMRQEMethod, NMRQEResults
+from electronicparsers.vasp.parser import ContentParser, RunFileParser, RunXmlContentHandler
 from nomad.datamodel import EntryArchive
 
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import EntryArchive
     from structlog.stdlib import BoundLogger
 
-from electronicparsers.utils.utils import BeyondDFTWorkflowsParser
+from electronicparsers.utils.utils import BeyondDFTWorkflowsParser, convert_xcfunctional
 from electronicparsers.utils.utils import convert_system_to_model_system
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
@@ -96,6 +98,7 @@ from nomad_nmr_schema.schema_packages.schema_package import (
     Outputs,
 )
 
+from devtools import debug
 
 RE_FLOAT = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
 
@@ -2903,8 +2906,146 @@ class NMRFileParser(TextParser):
         ]
 
 
+class GIPAWContentParser:
+    def __init__(self):
+        self.fileparser = None
+        self._results = {}
+
+    def init_parser(self, filepath, logger):
+        self.fileparser = RunFileParser(filepath, logger)
+        self.fileparser.parse()
+        self.handler = self.fileparser._results  # RunXmlContentHandler
+
+    def get(self, key: str, default=None):
+        if key not in self._results:
+            self.parse(key)
+        return self._results.get(key, default)
+
+    def parse_sl_to_array(self, sl_string):
+        # Regex più generale: supporta 'e' o 'E', con segni opzionali, e decimali opzionali prima della 'e/E'
+        number_pattern = r'[-+]?\d*\.\d+(?:[eE][-+]?\d+)?'
+        # Estrae tutti i float
+        numbers = re.findall(number_pattern, sl_string)
+        floats = list(map(float, numbers))
+        # Converte in array NumPy 3x3
+        return np.array(floats).reshape((3, 3))
+
+    def extract_floats_from_string(self, s):
+        # Regex più generale per float in notazione scientifica (sia e che E)
+        number_pattern = r'[-+]?\d*\.\d+(?:[eE][-+]?\d+)?'
+        numbers = re.findall(number_pattern, s)
+        return list(map(float, numbers))
+
+    def parse(self, quantity_key: str = None):
+        # debug(self.fileparser.results._data['gpw:gipaw[0]'].keys())
+
+        # General info
+        # debug(self.fileparser.results._data['gpw:gipaw[0]']['general_info[0]']['creator[0]']['_data'])
+        if 'software_version' not in self._results:
+            gi = self.fileparser.results._data['gpw:gipaw[0]']['general_info[0]']['creator[0]']['_data'][0]
+            self._results['software_version'] = [gi['NAME'], gi['VERSION']]
+
+        # Output
+        # debug(self.fileparser.results._data['gpw:gipaw[0]']['output[0]'])
+        # susceptibility_low
+        if 'chi_bare_vGv' not in self._results:
+            sl = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['susceptibility_low[0]']['_data'][0]['susceptibility_low']
+            tensor = self.parse_sl_to_array(sl)
+            self._results['chi_bare_vGv'] = tensor
+
+        # susceptibility_high
+        if 'chi_bare_pGv' not in self._results:
+            sh = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['susceptibility_high[0]']['_data'][0]['susceptibility_high']
+            tensor = self.parse_sl_to_array(sh)
+            self._results['chi_bare_pGv'] = tensor
+
+        # shielding_tensors
+        if 'ms_list' not in self._results:
+            st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['shielding_tensors[0]']
+            ms_list = []
+            for key, value in st.items():
+                if not isinstance(value, dict):
+                    continue
+
+                for atom in value['_data']:
+                    atom_list = []
+                    atom_list.append(atom['name'])
+                    atom_list.append(int(atom['index']))
+                    atom_list = atom_list + self.extract_floats_from_string(atom['atom'])
+                    ms_list.append(atom_list)
+            
+            self._results['ms_list'] = ms_list
+
+        # electric_field_gradients
+        # debug(self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['electric_field_gradients[0]'])
+        if 'efg' not in self._results:
+            st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['electric_field_gradients[0]']
+            efg = []
+            for key, value in st.items():
+                if not isinstance(value, dict):
+                    continue
+
+                for atom in value['_data']:
+                    atom_list = []
+                    atom_list.append(atom['name'])
+                    atom_list.append(int(atom['index']))
+                    atom_list = atom_list + self.extract_floats_from_string(atom['atom'])
+                    efg.append(atom_list)
+            
+            self._results['efg'] = efg
+
+        # debug(self.results)
+    
+    @property
+    def results(self):
+        if not self._results:
+            self.parse()
+        return self._results
+
+
+
+
+class XMLParser(MatchingParser):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._xml_parser = GIPAWContentParser()
+
+    def init_parser(self) -> None:
+        self.parser = self._xml_parser
+        self.parser.init_parser(self.mainfile, self.logger)
+
+    def parse(
+        self,
+        filepath: str,
+        archive: "EntryArchive",
+        logger: "BoundLogger",
+    ) -> None:
+        self.mainfile = filepath
+        self.maindir = os.path.dirname(self.mainfile)
+        self.basename = os.path.basename(self.mainfile)
+        self.archive = archive
+        self.logger = logger or logging.getLogger(__name__)
+
+        self.init_parser()
+
+        # Trigger parsing of susceptibility_low (and all quantities via general parse())
+        # debug(self.parser._results)
+        _ = self.parser.get("software_version", [])
+        # debug(self.parser._results)
+
+
+        # Debug printout of all parsed results
+        # debug(self.parser._results)
+
+        # Puoi anche salvare le info nell’archive se vuoi:
+        # self.archive.run[0].x_qe_susceptibility_low = self.parser["susceptibility_low"]
+
+
+
+
 class NMRParser(MatchingParser):
     _model_system: ModelSystem
+    _xc_func_list: list[XCFunctional_simu] | None
 
     # Data section classes:
     simulation_class = Simulation
@@ -2913,23 +3054,35 @@ class NMRParser(MatchingParser):
     mag_susceptibility_class = MagneticSusceptibility
     mag_shielding_tensor = MagneticShieldingTensor
 
-    def __init__(self, system: System, *args, **kwargs):
+    def __init__(
+            self, 
+            system: System, 
+            xc_func_list: list[XCFunctional_simu] | None, 
+            *args, 
+            **kwargs):
         super().__init__(*args, **kwargs)
         self.nmr_parser = NMRFileParser()
-        self.efg_parser = EFGFileParser()
+        self.xml_parser = GIPAWContentParser()
         self._xc_functional_map = _xc_functional_map
         self._model_system = system
+        self._xc_func_list = xc_func_list
 
     def init_parser(self) -> None:
-        self.nmr_parser.mainfile = self.mainfile
-        self.nmr_parser.logger = self.logger
+        if 'gipaw.xml' in self.mainfile:
+            self.parser = self.xml_parser
+            self.parser.init_parser(self.mainfile, self.logger)
+        else:
+            self.parser = self.nmr_parser
+            self.parser.mainfile = self.mainfile
+            self.parser.logger = self.logger
 
     def parse_xc_functional(self) -> list[XCFunctional_simu]:
         """
         Parse the exchange-correlation functional.
         """
-        xc_functional = self.nmr_parser.get("xc_functional", [])
+        xc_functional = self.parser.get("xc_functional", [])
         xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
+        xc_functional_labels = self._xc_functional_map.get('PBE', [])
         xc_sections = []
         for xc in xc_functional_labels:
             functional = XCFunctional_simu(libxc_name=xc)
@@ -2951,7 +3104,7 @@ class NMRParser(MatchingParser):
         n_atoms = len(cell.atoms_state)
 
         # Magnetic Shielding Tensor (ms) parsing
-        data = self.nmr_parser.get('ms_list', [])
+        data = self.parser.get('ms_list', [])
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
             self.logger.warning(
@@ -2967,11 +3120,12 @@ class NMRParser(MatchingParser):
             sec_ms = self.mag_shielding_tensor(entity_ref=cell.atoms_state[i])
             sec_ms.value = values * 1e-6 * ureg("dimensionless")
             magnetic_shieldings.append(sec_ms)
+        # debug(magnetic_shieldings)
         return magnetic_shieldings
 
     def parse_magnetic_susceptibilities(self) -> list["NMRParser.mag_susceptibility_class"]:
-        chi_bare_pGv = self.nmr_parser.get("chi_bare_pGv", [])
-        chi_bare_vGv = self.nmr_parser.get("chi_bare_vGv", [])
+        chi_bare_pGv = self.parser.get("chi_bare_pGv", [])
+        chi_bare_vGv = self.parser.get("chi_bare_vGv", [])
         if np.size(chi_bare_pGv) != 9 or np.size(chi_bare_vGv) != 9:
             self.logger.warning(
                 "The shape of the matched text from the file for the `chi_bare` does not coincide with 9 (3x3 tensor)."
@@ -3037,12 +3191,14 @@ class NMRParser(MatchingParser):
         simulation = self.simulation_class()
 
         # program
-        program_name_version  = self.nmr_parser.get('software_version', [])
+        program_name_version  = self.parser.get('software_version', [])
         simulation.program = self.program_class(
             name=program_name_version[0],
             version=program_name_version[1],
         )
         archive.data = simulation
+
+        # debug(self.parser._results)
 
         # model system 
         self._model_system.is_representative = True
@@ -3050,9 +3206,12 @@ class NMRParser(MatchingParser):
 
         # model method
         model_method = DFT_simu(name="NMR")
-        xc_functionals = self.parse_xc_functional()
-        if len(xc_functionals) > 0:
-            model_method.xc_functionals = xc_functionals
+        if self._xc_func_list is not None:
+            model_method.xc_functionals = self._xc_func_list
+        else:
+            xc_functionals = self.parse_xc_functional()
+            if len(xc_functionals) > 0:
+                model_method.xc_functionals = xc_functionals
 
         simulation.model_method.append(model_method)
 
@@ -3122,6 +3281,7 @@ class EFGFileParser(TextParser):
 
 class EFGParser(MatchingParser):
     _model_system: ModelSystem
+    _xc_func_list: list[XCFunctional_simu] | None
 
     # Data section classes:
     simulation_class = Simulation
@@ -3130,22 +3290,33 @@ class EFGParser(MatchingParser):
     e_field_gradients_class = ElectricFieldGradients
     e_field_gradient_class = ElectricFieldGradient
 
-    def __init__(self, system: System, *args, **kwargs):
+    def __init__(
+            self, 
+            system: System, 
+            xc_func_list: list[XCFunctional_simu] | None, 
+            *args, 
+            **kwargs):
         super().__init__(*args, **kwargs)
-        self.nmr_parser = NMRFileParser()
         self.efg_parser = EFGFileParser()
+        self.xml_parser = GIPAWContentParser()
         self._xc_functional_map = _xc_functional_map
         self._model_system = system
+        self._xc_func_list = xc_func_list
 
     def init_parser(self) -> None:
-        self.efg_parser.mainfile = self.mainfile
-        self.efg_parser.logger = self.logger
+        if 'gipaw.xml' in self.mainfile:
+            self.parser = self.xml_parser
+            self.parser.init_parser(self.mainfile, self.logger)
+        else:
+            self.parser = self.efg_parser    
+            self.parser.mainfile = self.mainfile
+            self.parser.logger = self.logger
 
     def parse_xc_functional(self) -> list[XCFunctional_simu]:
         """
         Parse the exchange-correlation functional.
         """
-        xc_functional = self.efg_parser.get("xc_functional", [])
+        xc_functional = self.parser.get("xc_functional", [])
         xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
         xc_sections = []
         for xc in xc_functional_labels:
@@ -3167,7 +3338,7 @@ class EFGParser(MatchingParser):
     ) -> "EFGParser.e_field_gradients_class":
         electric_field_gradients = self.e_field_gradients_class()
         n_atoms = len(cell.atoms_state)
-        data = self.efg_parser.get('efg', [])
+        data = self.parser.get('efg', [])
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
             self.logger.warning(
@@ -3236,7 +3407,7 @@ class EFGParser(MatchingParser):
         simulation = self.simulation_class()
 
         # program
-        program_name_version  = self.efg_parser.get('software_version', [])
+        program_name_version  = self.parser.get('software_version', [])
         simulation.program = self.program_class(
             name=program_name_version[0],
             version=program_name_version[1],
@@ -3249,9 +3420,12 @@ class EFGParser(MatchingParser):
 
         # model method
         model_method = DFT_simu(name="EFG")
-        xc_functionals = self.parse_xc_functional()
-        if len(xc_functionals) > 0:
-            model_method.xc_functionals = xc_functionals
+        if self._xc_func_list is not None:
+            model_method.xc_functionals = self._xc_func_list
+        else:
+            xc_functionals = self.parse_xc_functional()
+            if len(xc_functionals) > 0:
+                model_method.xc_functionals = xc_functionals
 
         simulation.model_method.append(model_method)
 
@@ -4011,23 +4185,48 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         self.dos_parser.mainfile = self.filepath
         self.dos_parser.logger = self.logger
 
+    def extract_xml_input_job(self, xml_file):
+        tree = ET.parse(xml_file)
+        root = tree.getroot()
+
+        input_tag = root.find(".//input")
+        if input_tag is not None:
+            job_tag = input_tag.find("job")
+            if job_tag is not None and job_tag.text:
+                return job_tag.text.strip()
+        
+        return None
+
+
     def get_mainfile_keys(self, **kwargs):
         filedir = Path(kwargs.get('filename')).parent
-        nmr_matches = [f for f in filedir.iterdir() if f.name.endswith('nmr.out')]
-        efg_matches = [f for f in filedir.iterdir() if f.name.endswith('efg.out')]
+        nmr_text_matches = [f for f in filedir.iterdir() if f.name.endswith('nmr.out')]
+        efg_text_matches = [f for f in filedir.iterdir() if f.name.endswith('efg.out')]
+        xml_matches = [f for f in filedir.iterdir() if f.name.endswith('gipaw.xml')]
+
+        xml_jobs = {}
+        for f in xml_matches:
+            job = self.extract_xml_input_job(f)
+            xml_jobs.setdefault(job, []).append(f)
 
         keys = []
 
-        if len(nmr_matches) > 1:
+        if len(nmr_text_matches) > 1:
             # FIXME: this doesn't log correctly
-            self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in nmr_matches]}")
-        elif nmr_matches:
+            self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in nmr_text_matches]}")
+        elif len(xml_jobs.get('nmr', [])) > 1:
+            # FIXME: this doesn't log correctly
+            self.logger.error(f"Found multiple xml files with job 'nmr': {[f.name for f in xml_jobs['nmr']]}")
+        elif nmr_text_matches or xml_jobs['nmr']:
             keys.append("NMR")
 
-        if len(efg_matches) > 1:
+        if len(efg_text_matches) > 1:
             # FIXME: this doesn't log correctly
-            self.logger.error(f"Found multiple files ending with 'efg.out': {[f.name for f in efg_matches]}")
-        elif efg_matches:
+            self.logger.error(f"Found multiple files ending with 'efg.out': {[f.name for f in efg_text_matches]}")
+        elif len(xml_jobs.get('efg', [])) > 1:
+            # FIXME: this doesn't log correctly
+            self.logger.error(f"Found multiple xml files with job 'efg': {[f.name for f in xml_jobs['efg']]}")
+        elif efg_text_matches:
             keys.append("EFG")
 
         if keys:
@@ -4035,7 +4234,7 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             return keys
         else:
             return True
-
+    
     def parse(self, filepath, archive, logger):
         self.filepath = filepath
         self.archive = archive
@@ -4125,26 +4324,51 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             efg_archive = self._child_archives.get('EFG')
 
             if nmr_archive is not None or efg_archive is not None:
+                # convert Model to ModelSystem
                 model_system = convert_system_to_model_system(system=self.archive.run[-1].system[-1])
-            
-            gipaw_list = []
+                
+                # read gipaw.xml jobs
+                filedir = Path(self.filepath).parent
+                xml_matches = [f for f in filedir.iterdir() if f.name.endswith('gipaw.xml')]
+                xml_jobs = {}
+                for f in xml_matches:
+                    job = self.extract_xml_input_job(f)
+                    xml_jobs.setdefault(job, []).append(f)
+
+                # convert xc_functional for the xml case
+                if xml_jobs:
+                    xc_func_list = convert_xcfunctional(sec_run.method[0].dft.xc_functional)
+                
+                gipaw_list = []
             
             # NMR
             if nmr_archive is not None:
-                filedir = Path(self.filepath).parent
-                nmrfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None))
-
-                p = NMRParser(system=model_system)
+                # get file to parse
+                xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('nmr', [])), None)) is not None else None
+                if xmlfilepath is not None:
+                    nmrfilepath = xmlfilepath
+                else:
+                    nmrfilepath = str(val) if (val := next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None)) is not None else None
+                    xc_func_list = None
+                
+                # parse
+                p = NMRParser(system=model_system, xc_func_list=xc_func_list)
                 p.parse(nmrfilepath, nmr_archive, logger)
                 
                 gipaw_list.append(nmr_archive)
 
             # EFG
             if efg_archive is not None:
-                filedir = Path(self.filepath).parent
-                efgfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None))
+                # get file to parse
+                xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('efg', [])), None)) is not None else None
+                if xmlfilepath is not None:
+                    efgfilepath = xmlfilepath
+                else:
+                    efgfilepath = str(next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None))
+                    xc_func_list = None
 
-                p = EFGParser(system=model_system)
+                # parse
+                p = EFGParser(system=model_system, xc_func_list=xc_func_list)
                 p.parse(efgfilepath, efg_archive, logger)
 
                 gipaw_list.append(efg_archive)
