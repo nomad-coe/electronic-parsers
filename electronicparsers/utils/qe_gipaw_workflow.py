@@ -36,22 +36,20 @@ class NMRQEResults(SimulationWorkflowResults):
 
 class NMRQEMethod(SimulationWorkflowMethod):
     """
-    References the NMR (first principles) input model method.
+    References the NMR input model method.
     """
 
     nmr_method_ref = Quantity(
         type=Reference(ModelMethod),
         description="""
-        Reference to the NMR (first principles) model method.
+        Reference to the NMR model method.
         """,
     )
 
 
 class NMRQE(SerialSimulation):
     """
-    The NMR QE workflow is generated in an extra EntryArchive IF both the NMR (first
-    principles) and the NMR QE SinglePoint EntryArchives are present in the
-    upload.
+    NMR QE workflow
     """
 
     method = SubSection(sub_section=NMRQEMethod)
@@ -65,7 +63,7 @@ class NMRQE(SerialSimulation):
 
 class EFGQEResults(SimulationWorkflowResults):
     """
-    Groups the NMR QE outputs.
+    Groups the EFG QE outputs.
     """
 
     pass
@@ -73,22 +71,20 @@ class EFGQEResults(SimulationWorkflowResults):
 
 class EFGQEMethod(SimulationWorkflowMethod):
     """
-    References the NMR (first principles) input model method.
+    References the EFG input model method.
     """
 
     nmr_method_ref = Quantity(
         type=Reference(ModelMethod),
         description="""
-        Reference to the NMR (first principles) model method.
+        Reference to the EFG model method.
         """,
     )
 
 
 class EFGQE(SerialSimulation):
     """
-    The NMR QE workflow is generated in an extra EntryArchive IF both the NMR (first
-    principles) and the NMR QE SinglePoint EntryArchives are present in the
-    upload.
+    EFG QE workflow
     """
 
     method = SubSection(sub_section=EFGQEMethod)
@@ -102,7 +98,7 @@ class EFGQE(SerialSimulation):
 
 class GIPAWQE(SerialSimulation):
     """
-    The GIPAW QE workflow is generated in an extra EntryArchive.
+    The QE-GIPAW workflow is generated in an extra EntryArchive.
     """
 
     def normalize(self, archive, logger):

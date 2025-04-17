@@ -16,14 +16,15 @@
 # limitations under the License.
 #
 
-import os
 import pytest
 import numpy as np
 
 from electronicparsers.quantumespresso.parser import EFGParser, XMLParser
-from electronicparsers.utils.utils import convert_system_to_model_system, convert_xcfunctional
+from electronicparsers.utils.utils import (
+    convert_system_to_model_system,
+    convert_xcfunctional
+)
 from nomad.datamodel import EntryArchive
-from runschema.system import System
 from nomad.units import ureg
 from electronicparsers.quantumespresso import QuantumEspressoParser, NMRParser
 
@@ -42,9 +43,17 @@ def parser():
 @pytest.fixture(scope='module')
 def quartz_scf_fixtures(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/quantumespresso/quartz/quartz-scf.out', archive, None)
-    model_system = convert_system_to_model_system(system=archive.run[-1].system[-1])
-    xc_fun_list = convert_xcfunctional(archive.run[-1].method[-1].dft.xc_functional)
+    parser.parse(
+        'tests/data/quantumespresso/quartz/quartz-scf.out',
+        archive,
+        None
+    )
+    model_system = convert_system_to_model_system(
+        system=archive.run[-1].system[-1]
+    )
+    xc_fun_list = convert_xcfunctional(
+        archive.run[-1].method[-1].dft.xc_functional
+    )
     return model_system, xc_fun_list
 
 
@@ -54,7 +63,11 @@ def RyB_to_N(value):
 
 def test_scf(parser):
     archive = EntryArchive()
-    parser.parse('tests/data/quantumespresso/HO_scf/benchmark2.out', archive, None)
+    parser.parse(
+        'tests/data/quantumespresso/HO_scf/benchmark2.out', 
+        archive, 
+        None
+    )
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '5.2.1 (svn rev. 11920)'
@@ -315,7 +328,7 @@ def test_nmr_text(quartz_scf_fixtures):
     assert output.model_system_ref == model_system
     assert output.model_method_ref == dft
     #   Properties
-    assert len(output.m_xpath('magnetic_shieldings', dict=False)) == 9  # per atom
+    assert len(output.m_xpath('magnetic_shieldings', dict=False)) == 9
     for property_name in [
         'magnetic_shieldings',
         'magnetic_susceptibilities'
@@ -372,7 +385,7 @@ def test_nmr_xml(quartz_scf_fixtures):
     assert output.model_system_ref == model_system
     assert output.model_method_ref == dft
     #   Properties
-    assert len(output.m_xpath('magnetic_shieldings', dict=False)) == 9  # per atom
+    assert len(output.m_xpath('magnetic_shieldings', dict=False)) == 9
     for property_name in [
         'magnetic_shieldings',
         'magnetic_susceptibilities'

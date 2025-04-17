@@ -48,17 +48,19 @@ from .magres_workflow import (
     NMRMagResMethod,
     NMRMagResResults,
 )
-from .qe_gipaw_workflow import (
-    GIPAWQE,
-    NMRQE,
-    NMRQEMethod,
-    NMRQEResults,
-)
+from .qe_gipaw_workflow import GIPAWQE
 from nomad.atomutils import Formula
 from runschema.system import System
 from runschema.method import XCFunctional
-from nomad_simulations.schema_packages.model_system import AtomicCell, Cell, ModelSystem, AtomsState, Symmetry, ChemicalFormula
+from nomad_simulations.schema_packages.model_system import (
+    AtomicCell, 
+    ModelSystem, 
+    AtomsState, 
+    Symmetry, 
+    ChemicalFormula
+)
 from nomad_simulations.schema_packages.model_method import XCFunctional as XCFunctional_simu
+
 
 def get_files(pattern: str, filepath: str, stripname: str = '', deep: bool = True):
     """Get files following the `pattern` with respect to the file `stripname` (usually this
@@ -109,9 +111,10 @@ def numpy_type_to_json_serializable(quantity) -> Optional[Union[bool, int, float
         return float(quantity)
     return None
 
+
 def create_atomic_cell_from_atoms(atoms_section) -> AtomicCell:
     """
-    Converts `System.atoms` to an `AtomicCell` object
+    Converts `System.atoms` to an `AtomicCell` object.
     """
     atomic_cell = AtomicCell()
     atomic_cell.name = 'AtomicCell'
@@ -146,6 +149,7 @@ def create_atomic_cell_from_atoms(atoms_section) -> AtomicCell:
         atomic_cell.wyckoff_letters = atoms_section.wyckoff_letters
 
     return atomic_cell
+
 
 def convert_system_to_model_system(system: System) -> ModelSystem:
     """
@@ -189,8 +193,9 @@ def convert_system_to_model_system(system: System) -> ModelSystem:
             sym_section = Symmetry()
             for key in [
                 'bravais_lattice', 'hall_symbol', 'point_group_symbol',
-                'space_group_number', 'space_group_symbol', 'strukturbericht_designation',
-                'prototype_formula', 'prototype_aflow_id', 'origin_shift', 'transformation_matrix'
+                'space_group_number', 'space_group_symbol',
+                'strukturbericht_designation', 'prototype_formula',
+                'prototype_aflow_id', 'origin_shift', 'transformation_matrix'
             ]:
                 if hasattr(sym, key):
                     setattr(sym_section, key, getattr(sym, key, None))
@@ -764,7 +769,9 @@ class BeyondDFTWorkflowsParser:
         gipaw_list: list[EntryArchive],
         gipaw_workflow_archive: EntryArchive
     ):
-        """Automatically parses the GIPAW workflow. Here, `self.archive` is the QE archive.
+        """
+        Automatically parses the GIPAW workflow. Here, `self.archive` is the 
+        QE archive.
 
         Args:
             qe_model_system (ModelSystem): self.System converted to ModelSystem
@@ -779,7 +786,8 @@ class BeyondDFTWorkflowsParser:
         input_structure = qe_model_system
         if input_structure:
             workflow.m_add_sub_section(
-                GIPAWQE.inputs, Link(name='Input structure', section=input_structure)
+                GIPAWQE.inputs, 
+                Link(name='Input structure', section=input_structure)
             )
         
         # Outputs
@@ -793,9 +801,12 @@ class BeyondDFTWorkflowsParser:
         if self.archive.workflow2:
             task = TaskReference(task=self.archive.workflow2)
             task.name = 'DFT'
-            # TODO check why this re-writting is necessary to not repeat sections inside tasks
+            # TODO check why this re-writting is necessary to not repeat 
+            # sections inside tasks
             if input_structure:
-                task.inputs = [Link(name='Input structure', section=input_structure)]
+                task.inputs = [
+                    Link(name='Input structure', section=input_structure)
+                ]
             if qe_calculation:
                 task.outputs = [
                     Link(name='Output DFT calculation', section=qe_calculation)
