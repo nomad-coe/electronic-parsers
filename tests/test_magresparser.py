@@ -18,13 +18,9 @@
 
 import pytest
 import numpy as np
-from pathlib import Path
 
 from nomad.datamodel import EntryArchive
 from electronicparsers.magres import MagresParser
-from devtools import debug
-
-TEST_FILE_PATH = Path(__file__).parent.parent.parent.parent / ".dati_fm/qe-gipaw"
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -82,71 +78,3 @@ def test_single_point_ethanol(parser):
     assert sec_efg.contribution == 'total'
     assert sec_efg.value.shape == sec_ms.value.shape
     assert sec_efg.value[4][2][1].magnitude == approx(-3.0317252106856217e21)
-
-
-
-def test_qe_gpaw(parser):
-    filename = TEST_FILE_PATH / "benzene-USPP/benzene.nmr.magres" # 'QE'
-    # filename = 'benzene-NCPP/benzene.nmr.magres'
-    # filename = 'H2O_environ/h2o.nmr.magres' # 'QE' + verifica errore
-    # filename = 'quartz/quartz.nmr.magres' # 'QE' + verifica errore
-    # filename = 'quartz/quartz.efg.magres' # 'QE' come sopra
-    # filename = 'quartz-ncpp/quartz.efg.magres' # 'QE' come sopra
-    # filename = 'quartz-ncpp/quartz.nmr.magres' # 'QE' come sopra
-    # filename = 'urea/urea.nmr.magres' # 'QE' come sopra
-    archive = EntryArchive()
-    parser.parse(filename, archive, None)
-    sec_run = archive.run[-1]
-
-    # Program debugging
-    debug(sec_run.program.name)
-    debug(sec_run.program.version)
-
-    # System debugging
-    debug(len(sec_run.system))
-    sec_system = sec_run.system[-1]
-    debug(sec_system.atoms.labels)
-    debug(sec_system.atoms.positions[0][1].magnitude)
-
-    # Method debugging
-    debug(len(sec_run.method))
-    sec_method = sec_run.method[-1]
-    debug(sec_method.label)
-    debug(sec_method.dft.xc_functional.exchange[-1].name)
-    debug(sec_method.dft.xc_functional.correlation[-1].name)
-    debug(sec_method.k_mesh.grid)
-    # debug(sec_method.electrons_representation[-1].type)
-
-    # Calculation debugging
-    debug(len(sec_run.calculation))
-    sec_calc = sec_run.calculation[-1]
-    debug(sec_calc.system_ref)
-    debug(sec_calc.method_ref)
-    debug(sec_calc.magnetic_shielding)
-    debug(sec_calc.electric_field_gradient)
-    debug(sec_calc.spin_spin_coupling)
-    debug(sec_calc.magnetic_susceptibility)
-
-    # Magnetic shielding debugging
-    debug(len(sec_calc.magnetic_shielding))
-    sec_ms = sec_calc.magnetic_shielding
-    debug(type(sec_ms))
-    debug(sec_ms) # it is a list
-    debug(sec_ms[0].atoms.shape)
-    debug(sec_ms[0].atoms)
-    debug(sec_ms[0].value.shape)
-    debug(sec_ms[0].value)
-    debug(sec_ms[0].isotropic_value.shape)
-    debug(sec_ms[0].isotropic_value)
-
-    # Electric field gradient debugging
-    # (len(sec_calc.electric_field_gradient))
-    # debug(sec_calc.electric_field_gradient)
-    # sec_efg = sec_calc.electric_field_gradient
-    # debug(sec_efg.contribution)
-    # debug(sec_efg.value.shape)
-    # debug(sec_efg.value[4][2][1].magnitude)
-
-
-def test_filepath():
-    debug(TEST_FILE_PATH)
