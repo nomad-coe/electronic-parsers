@@ -103,7 +103,7 @@ class SolidDMFTParser:
     def extract_groups_datasets(
         self,
         data: Union[h5py.Dataset, h5py.Group],
-        default: Union[bool, int, float, np.ndarray, None] = None,
+        default: Union[bool, int, float, None] = None,
     ):
         """Extracts the content from the h5 file groups and datasets.
 
@@ -113,7 +113,7 @@ class SolidDMFTParser:
 
         Args:
             data (Union[h5py.Dataset, h5py.Group]): The dataset or group to extract from.
-            default (Union[bool, int, float, np.ndarray, None], optional): The default value
+            default (Union[bool, int, float, None], optional): The default value
                 to return if data does not exists. Defaults to None.
 
         Returns:
@@ -129,7 +129,9 @@ class SolidDMFTParser:
                 if not isinstance(value, h5py.Dataset) or value.shape or not value:
                     continue
                 val = value[()].decode() if isinstance(value[()], bytes) else value[()]
-                params[key] = numpy_type_to_json_serializable(val)
+                params[key] = numpy_type_to_json_serializable(
+                    val
+                )  # unprotected overwrite of key
             return params
         else:
             return default

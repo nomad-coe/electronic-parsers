@@ -945,7 +945,7 @@ _exchange_gradient_correction_map = [
         ],
         'xc_section_method': {
             'x_qe_xc_igcx_name': 'x3lp',
-            'x_qe_xc_igcx_comment': 'X3LYP (Becke88*0.542 ' ' + Perdew-Wang91*0.167)',
+            'x_qe_xc_igcx_comment': 'X3LYP (Becke88*0.542  + Perdew-Wang91*0.167)',
             'x_qe_xc_igcx': 28,
         },
     },
@@ -1662,8 +1662,7 @@ _van_der_waals_map = [
         ],
         'xc_section_method': {
             'x_qe_xc_inlc_name': 'vdwx',
-            'x_qe_xc_inlc_comment': 'vdW-DF-x (reserved Thonhauser,'
-            ' not implemented)',
+            'x_qe_xc_inlc_comment': 'vdW-DF-x (reserved Thonhauser, not implemented)',
             'x_qe_xc_inlc': 4,
         },
     },
@@ -1675,8 +1674,7 @@ _van_der_waals_map = [
         ],
         'xc_section_method': {
             'x_qe_xc_inlc_name': 'vdwy',
-            'x_qe_xc_inlc_comment': 'vdW-DF-y (reserved Thonhauser,'
-            ' not implemented)',
+            'x_qe_xc_inlc_comment': 'vdW-DF-y (reserved Thonhauser, not implemented)',
             'x_qe_xc_inlc': 5,
         },
     },
@@ -1688,8 +1686,7 @@ _van_der_waals_map = [
         ],
         'xc_section_method': {
             'x_qe_xc_inlc_name': 'vdwz',
-            'x_qe_xc_inlc_comment': 'vdW-DF-z (reserved Thonhauser,'
-            ' not implemented)',
+            'x_qe_xc_inlc_comment': 'vdW-DF-z (reserved Thonhauser, not implemented)',
             'x_qe_xc_inlc': 6,
         },
     },
@@ -3571,7 +3568,10 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                 if cell is None:
                     cell = _convert('simulation_cell', run.get('header', {}))
                 if cell is not None:
-                    value = np.dot(value, cell)
+                    value = np.dot(
+                        value.magnitude if hasattr(value, 'magnitude') else value,
+                        cell.magnitude if hasattr(cell, 'magnitude') else cell
+                    ) * cell.units if hasattr(cell, 'units') else 1.0
             return value
 
         sec_run = self.archive.run[-1]

@@ -41,7 +41,7 @@ class EntryPoint(ParserEntryPoint):
     metadata: Optional[dict] = Field(
         None,
         description="""
-        Metadata passed to the UI. Deprecated. """
+        Metadata passed to the UI. Deprecated. """,
     )
 
     def load(self):
