@@ -4191,8 +4191,8 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in nmr_text_matches]}")
         elif len(xml_jobs.get('nmr', [])) > 1:
             # FIXME: this doesn't log correctly
-            self.logger.error(f"Found multiple xml files with job 'nmr': {[f.name for f in xml_jobs['nmr']]}")
-        elif nmr_text_matches or xml_jobs['nmr']:
+            self.logger.error(f"Found multiple xml files with job 'nmr': {[f.name for f in xml_jobs.get('nmr')]}")
+        elif nmr_text_matches or xml_jobs.get('nmr'):
             keys.append("NMR")
 
         if len(efg_text_matches) > 1:
@@ -4200,8 +4200,8 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             self.logger.error(f"Found multiple files ending with 'efg.out': {[f.name for f in efg_text_matches]}")
         elif len(xml_jobs.get('efg', [])) > 1:
             # FIXME: this doesn't log correctly
-            self.logger.error(f"Found multiple xml files with job 'efg': {[f.name for f in xml_jobs['efg']]}")
-        elif efg_text_matches:
+            self.logger.error(f"Found multiple xml files with job 'efg': {[f.name for f in xml_jobs.get('efg')]}")
+        elif efg_text_matches or xml_jobs.get('efg'):
             keys.append("EFG")
 
         if keys:

@@ -19,7 +19,7 @@
 import pytest
 import numpy as np
 
-from electronicparsers.quantumespresso.parser import EFGParser, XMLParser
+from electronicparsers.quantumespresso.parser import EFGParser
 from electronicparsers.utils.utils import (
     convert_system_to_model_system,
     convert_xcfunctional
@@ -495,15 +495,7 @@ def test_system_conversion():
     # TODO: write test for convert_system_to_model_system
     pass
 
+
 def test_xcfunctional_conversion():
     # TODO: write test for convert_xcfunctional
     pass
-
-def test_xml_parser():
-    archive = EntryArchive()
-    parser = XMLParser()
-    parser.parse(
-        filepath='/home/cecilia/lavoro/qe-gipaw/schema/examples/benzene-gipaw.xml',
-        archive=archive,
-        logger=None)
-
