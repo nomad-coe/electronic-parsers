@@ -3386,12 +3386,13 @@ class QuantumEspressoParser:
                         for kpath in self.band_parser.points_to_segments(
                             kpoints, symmetries
                         ):
+                            band_split = len(kpath)
                             band_selection, bands = (
-                                bands[: len(kpath)],
-                                bands[len(kpath) :],
+                                bands[: band_split],
+                                bands[band_split - 1 :],
                             )
                             desymm_energies = self.band_parser.apply_multiplicity(
-                                [b.get('energy', []) for b in band_selection],
+                                [b.get('energy', []) * ureg.eV for b in band_selection],
                                 [b.get('mult', []) for b in band_selection],
                             )
                             band_energy = BandEnergies(
