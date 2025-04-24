@@ -3229,7 +3229,8 @@ class QuantumEspressoParser:
             )
             reciprocal_cell *= 2 * np.pi / volume
         if reciprocal_cell is not None:
-            sec_system.x_qe_reciprocal_cell = reciprocal_cell  # TODO write to `run.system.atoms.lattice_vectors_reciprocal`
+            sec_system.x_qe_reciprocal_cell = reciprocal_cell  # ? deprecate
+            sec_system.atoms.lattice_vectors_reciprocal = reciprocal_cell
 
         starting_magnetization = calculation.get(
             'starting_magnetization', run.get_header('starting_magnetization')
@@ -3375,42 +3376,43 @@ class QuantumEspressoParser:
                 if self.band_parser.match_header(out_header):
                     self.band_parser.mainfile = out_file
                     self.band_parser.parse()
-                    if self.band_parser.results:
-                        kpoints, symmetries, bands = (
-                            self.band_parser.get('kpoint', []),
-                            self.band_parser.get('symmetry', []),
-                            self.band_parser.get('band', []),
-                        )
-                        if len(kpoints) and len(symmetries) and len(bands):
-                            sec_run.calculation[-1].band_structure_electronic = []
-                            bandstructure = []
-                            for kpath in self.band_parser.points_to_segments(
-                                kpoints, symmetries
-                            ):
-                                band_split = len(kpath)
-                                band_selection, bands = (
-                                    bands[: band_split],
-                                    bands[band_split - 1 :],
-                                )
-                                desymm_energies = self.band_parser.apply_multiplicity(
-                                    [b.get('energy', []) * ureg.eV for b in band_selection],
-                                    [b.get('mult', []) for b in band_selection],
-                                )
-                                band_energy = BandEnergies(
-                                    kpoints=kpath,
-                                    energies=[desymm_energies],
-                                )
-                                # this is never executed
-                                if energy_highest_occupied := self.out_parser.get('run', [{}])[0].get('bandstructure', {}).get('fermi_energy'):
-                                    band_energy.band_gap = [BandGapDeprecated(energy_highest_occupied)]  # TODO: for-loop over spin channels
-                                bandstructure.append(band_energy)
 
-                            sec_run.calculation[-1].band_structure_electronic.append(
-                                BandStructure(
-                                    segment=bandstructure,
-                                    reciprocal_cell=sec_run.system[-1].x_qe_reciprocal_cell,
-                                )  # TODO add safety checks
-                            )
+            if self.band_parser.results:
+                kpoints, symmetries, bands = (
+                    self.band_parser.get('kpoint', []),
+                    self.band_parser.get('symmetry', []),
+                    self.band_parser.get('band', []),
+                )
+                if len(kpoints) and len(symmetries) and len(bands):
+                    sec_run.calculation[-1].band_structure_electronic = []
+                    bandstructure = []
+                    for kpath in self.band_parser.points_to_segments(
+                        kpoints, symmetries
+                    ):
+                        band_split = len(kpath)
+                        band_selection, bands = (
+                            bands[: band_split],
+                            bands[band_split - 1 :],
+                        )
+                        desymm_energies = self.band_parser.apply_multiplicity(
+                            [b.get('energy', []) * ureg.eV for b in band_selection],
+                            [b.get('mult', []) for b in band_selection],
+                        )
+                        band_energy = BandEnergies(
+                            kpoints=kpath,
+                            energies=[desymm_energies],
+                        )
+                        # this is never executed
+                        if energy_highest_occupied := self.out_parser.get('run', [{}])[0].get('bandstructure', {}).get('fermi_energy'):
+                            band_energy.band_gap = [BandGapDeprecated(energy_highest_occupied)]  # TODO: for-loop over spin channels
+                        bandstructure.append(band_energy)
+
+                    sec_run.calculation[-1].band_structure_electronic.append(
+                        BandStructure(
+                            segment=bandstructure,
+                            reciprocal_cell=sec_run.system[-1].atoms.lattice_vectors_reciprocal,
+                        )  # TODO add safety checks
+                    )
 
                 # under testing
                 filepath_stripped = self.filepath.split('raw/')[-1]
