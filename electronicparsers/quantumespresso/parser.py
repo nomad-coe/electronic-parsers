@@ -2723,7 +2723,7 @@ class QuantumEspressoOutParser(TextParser):
                 sub_parser=TextParser(quantities=scf_quantities),
             ),
             Quantity(
-                'bandstructure',
+                'bandstructure',  # flag for SCF part of the band structure
                 r'(Structure Calculation[\s\S]+?)(?:init_run|\Z)',
                 repeats=False,
                 sub_parser=TextParser(quantities=bandstructure_quantities),
@@ -3365,80 +3365,81 @@ class QuantumEspressoParser:
                     sec_dos_total.value_integrated = integrated[spin]
 
         # band structure
-        out_files = self.band_parser.scan_out_files(
-            os.path.dirname(self.out_parser.mainfile)
-        )  # ! move to a separate class
-        out_headers = [self.band_parser.read_header(f) for f in out_files]
+        if (bs_context := run.get('bandstructure')) is not None:
+            out_files = self.band_parser.scan_out_files(
+                os.path.dirname(self.out_parser.mainfile)
+            )  # ! move to a separate class
+            out_headers = [self.band_parser.read_header(f) for f in out_files]
 
-        for out_header, out_file in zip(out_headers, out_files):
-            if self.band_parser.match_header(out_header):
-                self.band_parser.mainfile = out_file
-                self.band_parser.parse()
-                if self.band_parser.results:
-                    kpoints, symmetries, bands = (
-                        self.band_parser.get('kpoint', []),
-                        self.band_parser.get('symmetry', []),
-                        self.band_parser.get('band', []),
-                    )
-                    if len(kpoints) and len(symmetries) and len(bands):
-                        sec_run.calculation[-1].band_structure_electronic = []
-                        bandstructure = []
-                        for kpath in self.band_parser.points_to_segments(
-                            kpoints, symmetries
-                        ):
-                            band_split = len(kpath)
-                            band_selection, bands = (
-                                bands[: band_split],
-                                bands[band_split - 1 :],
-                            )
-                            desymm_energies = self.band_parser.apply_multiplicity(
-                                [b.get('energy', []) * ureg.eV for b in band_selection],
-                                [b.get('mult', []) for b in band_selection],
-                            )
-                            band_energy = BandEnergies(
-                                kpoints=kpath,
-                                energies=[desymm_energies],
-                            )
-                            # this is never executed
-                            if energy_highest_occupied := self.out_parser.get('run', [{}])[0].get('bandstructure', {}).get('fermi_energy'):
-                                band_energy.band_gap = [BandGapDeprecated(energy_highest_occupied)]  # TODO: for-loop over spin channels
-                            bandstructure.append(band_energy)
-
-                        sec_run.calculation[-1].band_structure_electronic.append(
-                            BandStructure(
-                                segment=bandstructure,
-                                reciprocal_cell=sec_run.system[-1].x_qe_reciprocal_cell,
-                            )  # TODO add safety checks
+            for out_header, out_file in zip(out_headers, out_files):
+                if self.band_parser.match_header(out_header):
+                    self.band_parser.mainfile = out_file
+                    self.band_parser.parse()
+                    if self.band_parser.results:
+                        kpoints, symmetries, bands = (
+                            self.band_parser.get('kpoint', []),
+                            self.band_parser.get('symmetry', []),
+                            self.band_parser.get('band', []),
                         )
+                        if len(kpoints) and len(symmetries) and len(bands):
+                            sec_run.calculation[-1].band_structure_electronic = []
+                            bandstructure = []
+                            for kpath in self.band_parser.points_to_segments(
+                                kpoints, symmetries
+                            ):
+                                band_split = len(kpath)
+                                band_selection, bands = (
+                                    bands[: band_split],
+                                    bands[band_split - 1 :],
+                                )
+                                desymm_energies = self.band_parser.apply_multiplicity(
+                                    [b.get('energy', []) * ureg.eV for b in band_selection],
+                                    [b.get('mult', []) for b in band_selection],
+                                )
+                                band_energy = BandEnergies(
+                                    kpoints=kpath,
+                                    energies=[desymm_energies],
+                                )
+                                # this is never executed
+                                if energy_highest_occupied := self.out_parser.get('run', [{}])[0].get('bandstructure', {}).get('fermi_energy'):
+                                    band_energy.band_gap = [BandGapDeprecated(energy_highest_occupied)]  # TODO: for-loop over spin channels
+                                bandstructure.append(band_energy)
 
-            # under testing
-            filepath_stripped = self.filepath.split('raw/')[-1]
-            from nomad.search import search
-            from nomad.app.v1.models import MetadataRequired
+                            sec_run.calculation[-1].band_structure_electronic.append(
+                                BandStructure(
+                                    segment=bandstructure,
+                                    reciprocal_cell=sec_run.system[-1].x_qe_reciprocal_cell,
+                                )  # TODO add safety checks
+                            )
 
-            upload_id = self.archive.metadata.upload_id
-            search_ids = search(
-                owner='visible',
-                user_id=self.archive.metadata.main_author.user_id,
-                query={'upload_id': upload_id},
-                required=MetadataRequired(include=['entry_id', 'mainfile']),
-            ).data
-            metadata = [[sid['entry_id'], sid['mainfile']] for sid in search_ids]
-            if len(metadata) > 1:
-                for entry_id, mainfile in metadata:
-                    if (mainfile == filepath_stripped):
-                        continue # skip the current mainfile
-                    entry_archive = self.archive.m_context.load_archive(
-                        entry_id, upload_id, None
-                    )
-                    for bs_elec in sec_run.calculation[-1].band_structure_electronic:
-                        entry_calc = entry_archive.run[-1].calculation[-1]
-                        if (fermi_energy := entry_calc.energy.fermi) is not None:
-                            bs_elec.fermi = fermi_energy
-                            bs_elec.band_gap = [BandGapDeprecated(energy_highest_occupied = fermi_energy)]
-                        elif (highest_occ := entry_calc.energy.highest_occupied) is not None:
-                            bs_elec.fermi = fermi_energy
-                            bs_elec.band_gap = [BandGapDeprecated(energy_highest_occupied = highest_occ)]
+                # under testing
+                filepath_stripped = self.filepath.split('raw/')[-1]
+                from nomad.search import search
+                from nomad.app.v1.models import MetadataRequired
+
+                upload_id = self.archive.metadata.upload_id
+                search_ids = search(
+                    owner='visible',
+                    user_id=self.archive.metadata.main_author.user_id,
+                    query={'upload_id': upload_id},
+                    required=MetadataRequired(include=['entry_id', 'mainfile']),
+                ).data
+                metadata = [[sid['entry_id'], sid['mainfile']] for sid in search_ids]
+                if len(metadata) > 1:
+                    for entry_id, mainfile in metadata:
+                        if (mainfile == filepath_stripped):
+                            continue # skip the current mainfile
+                        entry_archive = self.archive.m_context.load_archive(
+                            entry_id, upload_id, None
+                        )
+                        for bs_elec in sec_run.calculation[-1].band_structure_electronic:
+                            entry_calc = entry_archive.run[-1].calculation[-1]
+                            if (fermi_energy := entry_calc.energy.fermi) is not None:
+                                bs_elec.fermi = fermi_energy
+                                bs_elec.band_gap = [BandGapDeprecated(energy_highest_occupied = fermi_energy)]
+                            elif (highest_occ := entry_calc.energy.highest_occupied) is not None:
+                                bs_elec.fermi = fermi_energy
+                                bs_elec.band_gap = [BandGapDeprecated(energy_highest_occupied = highest_occ)]
 
 
     def parse_method(self, run):
