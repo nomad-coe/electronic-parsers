@@ -272,11 +272,15 @@ def test_noncolmag(parser):
 
 
 def test_mainfile_keys(parser):
-    filepath = 'tests/data/quantumespresso/quartz/quartz-scf.out'
-    mainfile_keys = parser.get_mainfile_keys(filename=filepath)
-    assert mainfile_keys[0] == 'NMR'
-    assert mainfile_keys[1] == 'EFG'
-    assert mainfile_keys[2] == 'GIPAW_Workflow'
+    filepath1 = 'tests/data/quantumespresso/quartz/quartz-scf.out'
+    mainfile_keys1 = parser.get_mainfile_keys(filename=filepath1)
+    assert mainfile_keys1[0] == 'NMR'
+    assert mainfile_keys1[1] == 'EFG'
+    assert mainfile_keys1[2] == 'GIPAW_Workflow'
+
+    filepath2 = 'tests/data/quantumespresso/HO_scf/benchmark2.out'
+    mainfile_keys2 = parser.get_mainfile_keys(filename=filepath2)
+    assert mainfile_keys2
 
 
 def test_nmr_text(quartz_scf_fixtures):
