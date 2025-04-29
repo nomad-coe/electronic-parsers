@@ -4158,8 +4158,7 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         self.dos_parser.mainfile = self.filepath
         self.dos_parser.logger = self.logger
 
-    def get_mainfile_keys(self, **kwargs):
-        filedir = Path(kwargs.get('filename')).parent
+    def check_auxilliary_files(self, filedir):
         nmr_text_matches = [
             f 
             for f 
@@ -4187,22 +4186,25 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         keys = []
 
         if len(nmr_text_matches) > 1:
-            # FIXME: this doesn't log correctly
             self.logger.error(f"Found multiple files ending with 'nmr.out': {[f.name for f in nmr_text_matches]}")
         elif len(xml_jobs.get('nmr', [])) > 1:
-            # FIXME: this doesn't log correctly
             self.logger.error(f"Found multiple xml files with job 'nmr': {[f.name for f in xml_jobs.get('nmr')]}")
         elif nmr_text_matches or xml_jobs.get('nmr'):
             keys.append("NMR")
 
         if len(efg_text_matches) > 1:
-            # FIXME: this doesn't log correctly
             self.logger.error(f"Found multiple files ending with 'efg.out': {[f.name for f in efg_text_matches]}")
         elif len(xml_jobs.get('efg', [])) > 1:
-            # FIXME: this doesn't log correctly
             self.logger.error(f"Found multiple xml files with job 'efg': {[f.name for f in xml_jobs.get('efg')]}")
         elif efg_text_matches or xml_jobs.get('efg'):
             keys.append("EFG")
+        
+        return keys
+    
+    def get_mainfile_keys(self, **kwargs):
+        filedir = Path(kwargs.get('filename')).parent
+        
+        keys = self.check_auxilliary_files(filedir)
 
         if keys:
             keys.append("GIPAW_Workflow")
@@ -4299,12 +4301,13 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             nmr_archive = self._child_archives.get('NMR')
             efg_archive = self._child_archives.get('EFG')
 
+            filedir = Path(self.filepath).parent
+
             if nmr_archive is not None or efg_archive is not None:
                 # convert Model to ModelSystem
                 model_system = convert_system_to_model_system(system=self.archive.run[-1].system[-1])
                 
                 # read gipaw.xml jobs
-                filedir = Path(self.filepath).parent
                 xml_matches = [f for f in filedir.iterdir() if f.name.endswith('gipaw.xml')]
                 xml_jobs = {}
                 for f in xml_matches:
@@ -4316,9 +4319,11 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                     xc_func_list = convert_xcfunctional(sec_run.method[0].dft.xc_functional)
                 
                 gipaw_list = []
+
+            keys = self.check_auxilliary_files(filedir)
             
             # NMR
-            if nmr_archive is not None:
+            if nmr_archive is not None and "NMR" in keys:
                 # get file to parse
                 xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('nmr', [])), None)) is not None else None
                 if xmlfilepath is not None:
@@ -4334,7 +4339,7 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                 gipaw_list.append(nmr_archive)
 
             # EFG
-            if efg_archive is not None:
+            if efg_archive is not None and "EFG" in keys:
                 # get file to parse
                 xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('efg', [])), None)) is not None else None
                 if xmlfilepath is not None:
