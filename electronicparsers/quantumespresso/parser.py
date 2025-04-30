@@ -4199,12 +4199,12 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         elif efg_text_matches or xml_jobs.get('efg'):
             keys.append("EFG")
         
-        return keys
+        return keys, xml_jobs
     
     def get_mainfile_keys(self, **kwargs):
         filedir = Path(kwargs.get('filename')).parent
         
-        keys = self.check_auxilliary_files(filedir)
+        keys, _ = self.check_auxilliary_files(filedir)
 
         if keys:
             keys.append("GIPAW_Workflow")
@@ -4301,18 +4301,13 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             nmr_archive = self._child_archives.get('NMR')
             efg_archive = self._child_archives.get('EFG')
 
-            filedir = Path(self.filepath).parent
-
             if nmr_archive is not None or efg_archive is not None:
+                # double check on auxilliary files
+                filedir = Path(self.filepath).parent
+                keys, xml_jobs = self.check_auxilliary_files(filedir)
+
                 # convert Model to ModelSystem
                 model_system = convert_system_to_model_system(system=self.archive.run[-1].system[-1])
-                
-                # read gipaw.xml jobs
-                xml_matches = [f for f in filedir.iterdir() if f.name.endswith('gipaw.xml')]
-                xml_jobs = {}
-                for f in xml_matches:
-                    job = extract_xml_input_job(f)
-                    xml_jobs.setdefault(job, []).append(f)
 
                 # convert xc_functional for the xml case
                 if xml_jobs:
@@ -4320,51 +4315,49 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                 
                 gipaw_list = []
 
-            keys = self.check_auxilliary_files(filedir)
-            
-            # NMR
-            if nmr_archive is not None and "NMR" in keys:
-                # get file to parse
-                xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('nmr', [])), None)) is not None else None
-                if xmlfilepath is not None:
-                    nmrfilepath = xmlfilepath
-                else:
-                    nmrfilepath = str(val) if (val := next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None)) is not None else None
-                    xc_func_list = None
-                
-                # parse
-                p = NMRParser(system=model_system, xc_func_list=xc_func_list)
-                p.parse(nmrfilepath, nmr_archive, logger)
-                
-                gipaw_list.append(nmr_archive)
+                # NMR
+                if "NMR" in keys:
+                    # get file to parse
+                    xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('nmr', [])), None)) is not None else None
+                    if xmlfilepath is not None:
+                        nmrfilepath = xmlfilepath
+                    else:
+                        nmrfilepath = str(val) if (val := next((f for f in filedir.iterdir() if f.name.endswith('nmr.out')), None)) is not None else None
+                        xc_func_list = None
+                    
+                    # parse
+                    p = NMRParser(system=model_system, xc_func_list=xc_func_list)
+                    p.parse(nmrfilepath, nmr_archive, logger)
+                    
+                    gipaw_list.append(nmr_archive)
 
-            # EFG
-            if efg_archive is not None and "EFG" in keys:
-                # get file to parse
-                xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('efg', [])), None)) is not None else None
-                if xmlfilepath is not None:
-                    efgfilepath = xmlfilepath
-                else:
-                    efgfilepath = str(val) if (val := next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None)) is not None else None
-                    xc_func_list = None
+                # EFG
+                if "EFG" in keys:
+                    # get file to parse
+                    xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('efg', [])), None)) is not None else None
+                    if xmlfilepath is not None:
+                        efgfilepath = xmlfilepath
+                    else:
+                        efgfilepath = str(val) if (val := next((f for f in filedir.iterdir() if f.name.endswith('efg.out')), None)) is not None else None
+                        xc_func_list = None
 
-                # parse
-                p = EFGParser(system=model_system, xc_func_list=xc_func_list)
-                p.parse(efgfilepath, efg_archive, logger)
+                    # parse
+                    p = EFGParser(system=model_system, xc_func_list=xc_func_list)
+                    p.parse(efgfilepath, efg_archive, logger)
 
-                gipaw_list.append(efg_archive)
+                    gipaw_list.append(efg_archive)
 
-            # Workflow
-            gipaw_workflow_archive = self._child_archives.get('GIPAW_Workflow')
-            if gipaw_workflow_archive:
-                try:
-                    self.parse_gipaw_qe_workflow(
-                        qe_model_system=model_system,
-                        gipaw_list=gipaw_list,
-                        gipaw_workflow_archive=gipaw_workflow_archive
-                        )
-                except Exception:
-                    self.logger.error('Error parsing the automatic NMR workflow')
+                # Workflow
+                gipaw_workflow_archive = self._child_archives.get('GIPAW_Workflow')
+                if gipaw_workflow_archive:
+                    try:
+                        self.parse_gipaw_qe_workflow(
+                            qe_model_system=model_system,
+                            gipaw_list=gipaw_list,
+                            gipaw_workflow_archive=gipaw_workflow_archive
+                            )
+                    except Exception:
+                        self.logger.error('Error parsing the automatic NMR workflow')
 
             job_done = run.get('job_done')
             if job_done:
