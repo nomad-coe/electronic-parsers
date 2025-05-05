@@ -892,6 +892,7 @@ quantumespresso_parser_entry_point = EntryPoint(
     ),
     supported_compressions=['gz', 'bz2', 'xz'],
     parser_class_name='electronicparsers.quantumespresso.QuantumEspressoParser',
+    level=2,
     code_name='QuantumESPRESSO',
     code_homepage='http://www.quantum-espresso.org/',
     code_category='Atomistic code',
