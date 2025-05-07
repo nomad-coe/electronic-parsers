@@ -2826,7 +2826,7 @@ class QuantumEspressoParser:
                 break
             pattern = os.path.join('**', pattern)
 
-        # key for the overall workflow
+        # keys for all relevant workflow tasks
         keys = []
         for qe_file in qe_files:
             with open(qe_file) as f:
@@ -3662,46 +3662,30 @@ class QuantumEspressoParser:
 
         # connect the qe workflow entries
         if self._child_archives:
-            from nomad.search import search
-            from nomad.app.v1.models import MetadataRequired
-
             try:
-                upload_id = archive.metadata.upload_id
-                search_ids = search(
-                    owner='visible',
-                    user_id=archive.metadata.main_author.user_id,
-                    query={'upload_id': upload_id},
-                    required=MetadataRequired(include=['entry_id', 'mainfile']),
-                ).data
-
-                for search_id in search_ids:
-                    for qe_file, workflow_archive in self._child_archives.items():
-                        if search_id.get('mainfile') in qe_file:
-                            # link qe workflow entry
-                            workflow_archive.workflow2 = SimulationWorkflow()
-                            workflow_archive.workflow2.inputs = archive.workflow2.inputs
-                            entry_archive = archive.m_context.load_archive(
-                                search_id.get('entry_id'), upload_id, None
-                            )
-                            if entry_archive.workflow2 is None:
-                                continue
-                            workflow_archive.workflow2.outputs = (
-                                entry_archive.workflow2.outputs
-                            )
-                            workflow_archive.workflow2.tasks.extend(
-                                [
-                                    TaskReference(
-                                        name=f'{archive.run[0].program.name} calculation',
-                                        task=archive.workflow2,
-                                        inputs=workflow_archive.workflow2.inputs,
-                                    ),
-                                    TaskReference(
-                                        name=f'{entry_archive.run[0].program.name} calculation',
-                                        task=entry_archive.workflow2,
-                                        inputs=[Link(section=archive.workflow2)],
-                                        outputs=workflow_archive.workflow2.outputs,
-                                    ),
-                                ]
-                            )
-            except Exception:
-                self.logger.error('Error linking workflow entries.')
+                for qe_file, workflow_archive in self._child_archives.items():
+                    mainfile = qe_file.split('/raw/')[-1]
+                    entry_archive = archive.m_context.resolve_archive_url(
+                        f'../upload/archive/mainfile/{mainfile}#/workflow2'
+                    )
+                    # link qe workflow entry
+                    workflow_archive.workflow2 = SimulationWorkflow()
+                    if entry_archive is None:
+                        continue
+                    workflow_archive.workflow2.tasks.extend(
+                        [
+                            TaskReference(
+                                name=f'{archive.run[0].program.name} calculation',
+                                task=archive.workflow2,
+                                inputs=workflow_archive.workflow2.inputs,
+                            ),
+                            TaskReference(
+                                name=f'{entry_archive.run[0].program.name} calculation',
+                                task=entry_archive.workflow2,
+                                inputs=[Link(section=archive.workflow2)],
+                                outputs=workflow_archive.workflow2.outputs,
+                            ),
+                        ]
+                    )
+            except Exception as e:
+                self.logger.error('Error retrieving task entries or linking them.')
