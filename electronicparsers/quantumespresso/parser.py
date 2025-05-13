@@ -2443,7 +2443,7 @@ class QuantumEspressoOutParser(TextParser):
             ),
             Quantity(
                 'fermi_energy',
-                rf'(?:the Fermi energy is|the spin up/dw Fermi energies are)\s*([\-\d\. ]+)',
+                r'(?:Fermi energy is|Fermi energies are)\s*([\-\d\.]+)',
                 dtype=float,
             ),
             Quantity(
@@ -2842,9 +2842,9 @@ class QuantumEspressoParser:
         return keys if keys else True
 
     def get_n_electrons_safe(self) -> Optional[float]:
-        n_electrons = self.out_parser.get('run', [])
-        if n_electrons:
-            n_electrons = n_electrons[0].get_header('number_of_electrons', {})
+        runs = self.out_parser.get('run', [])
+        if runs:
+            n_electrons = runs[0].get_header('number_of_electrons', {})
             if total_n_electrons := n_electrons.get('total'):
                 return total_n_electrons
             elif (up := n_electrons.get('up')) and (down := n_electrons.get('down')):
@@ -2979,7 +2979,7 @@ class QuantumEspressoParser:
         if (
             homo is None
             and fermi_energy is None
-            and len(self.get_n_electrons_safe()) == 0
+            and self.get_n_electrons_safe() is None
         ):
             self.logger.error('Reference energy is not defined')
 
@@ -3703,27 +3703,28 @@ class QuantumEspressoParser:
             sec_bs = entry_archive.run[-1].calculation[-1].band_structure_electronic[0]
             # Add reciprocal cell and alignment energies from reference SCF
             try:
-                sec_bs.reciprocal_cell = sec_run.system[
-                        -1
-                    ].atoms.lattice_vectors_reciprocal
+                latt = sec_run.system[-1].atoms.lattice_vectors
+                sec_bs.reciprocal_cell = np.linalg.inv(latt.magnitude) / latt.units
             except (IndexError, AttributeError):
                 self.logger.warning(f'No reciprocal lattice found in reference SCF.')
 
             try:
+                if (fermi := sec_run.calculation[-1].energy.fermi) is not None:
+                    sec_bs.energy_fermi = fermi
+            except(IndexError, AttributeError):
+                self.logger.warning(f'No fermi energy found in reference SCF.')
+
+            try:
                 # TODO: handle multiple band gaps
                 sec_bg = sec_run.calculation[-1].band_gap[0]
+
+                if (eho := sec_bg.energy_highest_occupied) is not None:
+                    sec_bs.energy_fermi = eho
+                    sec_bg_new = BandGapDeprecated(energy_highest_occupied=eho)
+                    sec_bs.band_gap.append(sec_bg_new)
+
+                if (elu := sec_bg.energy_lowest_unoccupied) is not None:
+                    sec_bg_new.energy_lowest_unoccupied = elu
+                    sec_bg_new.value = sec_bg_new.energy_highest_occupied - sec_bg_new.energy_lowest_unoccupied
             except (IndexError, AttributeError):
-                self.logger.error(f'No energy alignment data found in reference SCF.')
-
-            if (eho := sec_bg.energy_highest_occupied) is not None:
-                sec_bs.energy_fermi = eho
-                sec_band_gap = BandGapDeprecated(energy_highest_occupied=eho)
-                sec_bs.band_gap.append(sec_band_gap)
-            else:
-                self.logger.error(f'No energy alignment data found in reference SCF.')
-
-            if (elu := sec_bg.energy_lowest_unoccupied) is not None:
-                sec_band_gap.energy_lowest_unoccupied = elu
-                sec_band_gap.value = sec_band_gap.energy_highest_occupied - sec_band_gap.energy_lowest_unoccupied
-            else:
-                self.logger.warning(f'No LUMO found in reference SCF.')
+                self.logger.warning(f'No energy alignment data found in reference SCF.')
