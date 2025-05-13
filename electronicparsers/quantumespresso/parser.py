@@ -55,6 +55,7 @@ from runschema.calculation import (
     ScfIteration,
     Dos,
     DosValues,
+    BandGapDeprecated,
 )
 from simulationworkflowschema import (
     SinglePoint,
@@ -2859,8 +2860,11 @@ class QuantumEspressoParser:
             sec_run.calculation[-1].time_physical if sec_run.calculation else 0 * ureg.s
         )
 
-        sec_scc = Calculation()
-        sec_run.calculation.append(sec_scc)
+        if sec_run.calculation:
+            sec_scc = sec_run.calculation[-1]
+        else:
+            sec_scc = Calculation()
+            sec_run.calculation.append(sec_scc)
 
         # energies
         energies = calculation.get('energies', {})
@@ -3163,7 +3167,7 @@ class QuantumEspressoParser:
         if simulation_cell is not None:
             sec_atoms.lattice_vectors = simulation_cell
 
-        sec_atoms.periodic = [True, True, True]
+        sec_atoms.periodic = [True] * 3
 
         reciprocal_cell = _convert(
             'reciprocal_cell', calculation, 'reciprocal_cell_units'
@@ -3581,7 +3585,10 @@ class QuantumEspressoParser:
         # TODO include x_qe_warning
         for run in self.out_parser.get('run', []):
             self.sampling_method = None
-            sec_run = Run()
+            if self.archive.run:
+                sec_run = self.archive.run[-1]
+            else:
+                sec_run = Run()
             self.archive.run.append(sec_run)
             sec_run.program = Program(name='Quantum Espresso')
             name_version = run.get('program_name_version')
@@ -3689,3 +3696,34 @@ class QuantumEspressoParser:
                     )
             except Exception as e:
                 self.logger.error('Error retrieving task entries or linking them.')
+
+        # handle the band structure workflow
+        bs_flag = "Quantum ESPRESSO BANDS"
+        if entry_archive.run[-1].program.name == bs_flag:
+            sec_bs = entry_archive.run[-1].calculation[-1].band_structure_electronic[0]
+            # Add reciprocal cell and alignment energies from reference SCF
+            try:
+                sec_bs.reciprocal_cell = sec_run.system[
+                        -1
+                    ].atoms.lattice_vectors_reciprocal
+            except (IndexError, AttributeError):
+                self.logger.warning(f'No reciprocal lattice found in reference SCF.')
+
+            try:
+                # TODO: handle multiple band gaps
+                sec_bg = sec_run.calculation[-1].band_gap[0]
+            except (IndexError, AttributeError):
+                self.logger.error(f'No energy alignment data found in reference SCF.')
+
+            if (eho := sec_bg.energy_highest_occupied) is not None:
+                sec_bs.energy_fermi = eho
+                sec_band_gap = BandGapDeprecated(energy_highest_occupied=eho)
+                sec_bs.band_gap.append(sec_band_gap)
+            else:
+                self.logger.error(f'No energy alignment data found in reference SCF.')
+
+            if (elu := sec_bg.energy_lowest_unoccupied) is not None:
+                sec_band_gap.energy_lowest_unoccupied = elu
+                sec_band_gap.value = sec_band_gap.energy_highest_occupied - sec_band_gap.energy_lowest_unoccupied
+            else:
+                self.logger.warning(f'No LUMO found in reference SCF.')
