@@ -3728,3 +3728,6 @@ class QuantumEspressoParser:
                     sec_bg_new.value = sec_bg_new.energy_highest_occupied - sec_bg_new.energy_lowest_unoccupied
             except (IndexError, AttributeError):
                 self.logger.warning(f'No energy alignment data found in reference SCF.')
+
+            with archive.m_context.update_entry(f'../upload/archive/mainfile/archive.json', process=False) as content:
+                content.run[-1].calculation[-1].band_structure_electronic[0] = sec_bs
