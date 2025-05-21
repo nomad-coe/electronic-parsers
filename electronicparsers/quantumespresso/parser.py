@@ -21,7 +21,10 @@ import numpy as np
 import re
 from datetime import datetime
 import os
+from glob import glob
 from typing import Optional
+from nomad.config import config
+from nomad.datamodel.metainfo.workflow import Link, TaskReference
 
 from nomad.units import ureg
 from nomad.parsing.file_parser.text_parser import TextParser, Quantity, DataTextParser
@@ -57,6 +60,7 @@ from simulationworkflowschema import (
     SinglePoint,
     GeometryOptimization,
     MolecularDynamics,
+    SimulationWorkflow,
 )
 from .metainfo.quantum_espresso import (
     x_qe_section_scf_diagonalization,
@@ -2797,6 +2801,44 @@ class QuantumEspressoParser:
             'tetrahedron': 'tetrahedra',
         }
         self._re_label = re.compile(r'([A-Z][a-z]?)')
+        self._re_program = re.compile(r'Program\s+(\w+)')
+        self._child_archives = {}
+
+    def get_mainfile_keys(self, **kwargs):
+        """
+        Return the QE workflow files in the directory or sub-directory.
+        """
+        qe_files = []
+        filename = kwargs.get('filename')
+
+        max_dirs = 5
+        # scan sub-directory
+        pattern = '*.out'
+        for _ in range(max_dirs):
+            qe_files.extend(
+                [
+                    f
+                    for f in glob(f'{os.path.dirname(filename)}/{pattern}')
+                    if f != filename
+                ]
+            )
+            if qe_files:
+                break
+            pattern = os.path.join('**', pattern)
+
+        # keys for all relevant workflow tasks
+        keys = []
+        for qe_file in qe_files:
+            with open(qe_file) as f:
+                match = self._re_program.search(
+                    f.read(config.process.parser_matching_size)
+                )
+                if not match:
+                    continue
+                # add only qe workflow files
+                if match.group(1).lower() != 'pwscf':
+                    keys.append(qe_file)
+        return keys if keys else True
 
     def get_n_electrons_safe(self) -> Optional[float]:
         n_electrons = self.out_parser.get('run', [])
@@ -3081,10 +3123,15 @@ class QuantumEspressoParser:
                 if cell is None:
                     cell = _convert('simulation_cell', run.get('header', {}))
                 if cell is not None:
-                    value = np.dot(
-                        value.magnitude if hasattr(value, 'magnitude') else value,
-                        cell.magnitude if hasattr(cell, 'magnitude') else cell
-                    ) * cell.units if hasattr(cell, 'units') else 1.0
+                    value = (
+                        np.dot(
+                            value.magnitude if hasattr(value, 'magnitude') else value,
+                            cell.magnitude if hasattr(cell, 'magnitude') else cell,
+                        )
+                        * cell.units
+                        if hasattr(cell, 'units')
+                        else 1.0
+                    )
             return value
 
         sec_run = self.archive.run[-1]
@@ -3612,3 +3659,33 @@ class QuantumEspressoParser:
             job_done = run.get('job_done')
             if job_done:
                 sec_run.clean_end = True
+
+        # connect the qe workflow entries
+        if self._child_archives:
+            try:
+                for qe_file, workflow_archive in self._child_archives.items():
+                    mainfile = qe_file.split('/raw/')[-1]
+                    entry_archive = archive.m_context.resolve_archive_url(
+                        f'../upload/archive/mainfile/{mainfile}#/workflow2'
+                    )
+                    # link qe workflow entry
+                    workflow_archive.workflow2 = SimulationWorkflow()
+                    if entry_archive is None:
+                        continue
+                    workflow_archive.workflow2.tasks.extend(
+                        [
+                            TaskReference(
+                                name=f'{archive.run[0].program.name} calculation',
+                                task=archive.workflow2,
+                                inputs=workflow_archive.workflow2.inputs,
+                            ),
+                            TaskReference(
+                                name=f'{entry_archive.run[0].program.name} calculation',
+                                task=entry_archive.workflow2,
+                                inputs=[Link(section=archive.workflow2)],
+                                outputs=workflow_archive.workflow2.outputs,
+                            ),
+                        ]
+                    )
+            except Exception as e:
+                self.logger.error('Error retrieving task entries or linking them.')
