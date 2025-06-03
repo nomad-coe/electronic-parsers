@@ -50,10 +50,7 @@ class MainfileParser(TextParser):
 
     def init_quantities(self):
         re_f = r'[-+]*\d*\.\d+[Ee]*[-+]*\d*'
-
-
-
-        
+  
         io_quantities = [
 
             Quantity(
@@ -163,16 +160,7 @@ class MainfileParser(TextParser):
             ),
         ]
 
-        
-###
-#        def rescaled_simulation_cell(self, simulation_cell, alat_factors):
-#            rescaled_simulation_cell = np.zeros((3,3))
-#            for i in range(0, 3):
-#                for j in range(0, 3):
-#                    rescaled_simulation_cell[i][j] = simulation_cell[i][j] * alat_factors[i]
-#            return rescaled_simulation_cell
-###
-        
+                
         qp_properties_quantity = Quantity(
             'qp_properties',
             r'QP properties and I/O([\s\S]+? S/N \d+.+)',
@@ -496,12 +484,6 @@ class MainfileParser(TextParser):
                 repeats=True,
                 sub_parser=TextParser(quantities=module_quantities),
             ),
-            Quantity(
-                'io',
-                r'(Version [\s\S]+?)(Unit cells [\s\S]+?)',
-                repeats=False,
-                sub_parser=TextParser(quantities=io_quantities),
-            ),
         ]
 
 
@@ -750,9 +732,12 @@ class YamboParser:
                 ]
             )
 
-#     we define the process_and_select function within the parse_input function
             def process_and_select(positions, max_n_atoms, n_atoms): 
-
+                '''We split the positions array into blocks, each corresponding 
+                to a chemical species, then we extract the first n_atoms 
+                (value of n_atoms for each chemical species present in the system)
+                from each block, and finally we reassemble the modified blocks
+                into to corrected positions array'''
                 positions = np.array(positions)
                 blocks = []
                 selected = []
