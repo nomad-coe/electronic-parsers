@@ -732,7 +732,7 @@ class YamboParser:
                 ]
             )
 
-            def process_and_select(positions, max_n_atoms, n_atoms): 
+            def correct_position_array(positions, max_n_atoms, n_atoms): 
                 '''We split the positions array into blocks, each corresponding 
                 to a chemical species, then we extract the first n_atoms 
                 (value of n_atoms for each chemical species present in the system)
@@ -764,7 +764,7 @@ class YamboParser:
 
                 return positions        
 
-            positions = process_and_select(positions, max_n_atoms, n_atoms)    
+            positions = correct_position_array(positions, max_n_atoms, n_atoms)    
             
         
             system.atoms = Atoms(
