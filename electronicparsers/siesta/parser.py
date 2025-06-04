@@ -485,7 +485,9 @@ class SiestaParser:
                     positions = positions * ureg.angstrom
                 elif coordinates_format in ['fractional', 'scaledcartesian']:
                     if lattice_vectors is not None:
-                        positions = np.dot(positions, lattice_vectors)
+                        positions = np.dot(
+                            positions, lattice_vectors.magnitude
+                        ) * lattice_vectors.units
 
             sec_system.atoms = Atoms(
                 positions=positions,

@@ -270,7 +270,7 @@ class ControlParser(TextParser):
         vals = value.split('*')
         if len(vals) > 1:
             vals = [self.evaluate_value(v) for v in vals]
-            return np.product(vals)
+            return np.prod(vals)
 
         vals = value.split('/')
         if len(vals) > 1:

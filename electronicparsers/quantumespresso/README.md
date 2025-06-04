@@ -11,4 +11,5 @@ One of the top lines must contain '`Program PWSCF.*starts`', \
 where '`.*`' means an arbitrary number '`*`' of arbitrary \
 characters '`.`'|"
 
-
+The PWSCF entry is linked automatically to QUANTUM ESPRESSO worflow entries that
+are found in the directory or the sub-directories of the mainfile.

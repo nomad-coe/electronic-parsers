@@ -27,6 +27,9 @@ from runschema.calculation import (
     Thermodynamics,
     ScfIteration,
 )
+from simulationworkflowschema import (
+    GeometryOptimization,
+)
 from .metainfo.gaussian import (
     x_gaussian_section_elstruc_method,
     x_gaussian_section_moller_plesset,
@@ -644,6 +647,7 @@ class GaussianOutParser(TextParser):
                 r'%[Nn][Pp]roc=([A-Za-z0-9.]*)',
                 dtype=str,
             ),
+            Quantity('calc_type', r'\s-+\n\sGaussian ([\w\s]+)\n', convert=lambda x: ' '.join(x)),
             Quantity(
                 'run',
                 r'(-{10}\s*#[\s\S]+?Normal termination.*\n)',
@@ -1554,3 +1558,7 @@ class GaussianParser:
                 val = runs[n].get(key)
                 if val is not None:
                     setattr(sec_times, 'x_gaussian_%s' % key, val.strip())
+
+        if calc_type := self.out_parser.get('calc_type'):
+            if ' '.join(calc_type) == 'geometry optimization':
+                self.archive.workflow = [GeometryOptimization()]

@@ -848,8 +848,7 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         if params_files:
             if len(params_files) > 1:
                 self.logger.warning(
-                    'Multiple *params.dat files found; we will parse the last one.',
-                    data={'files': params_files},
+                    f'Multiple *params.dat files found: we will parse the last one.',
                 )
             self.params_parser.mainfile = params_files[-1]
 
@@ -875,8 +874,7 @@ class EDMFTParser(BeyondDFTWorkflowsParser):
         if indmfl_files:
             if len(indmfl_files) > 1:
                 self.logger.warning(
-                    'Multiple *.indmfl files found; we will parse the last one.',
-                    data={'files': indmfl_files},
+                    f'Multiple *.indmfl files found we will parse the last one.',
                 )
             self.indmfl_parser.mainfile = indmfl_files[-1]
             if self.general_parameters and self.impurity_parameters:

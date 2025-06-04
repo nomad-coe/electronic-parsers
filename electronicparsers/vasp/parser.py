@@ -982,15 +982,17 @@ class OutcarContentParser(ContentParser):
                     atom += 1
                     continue
                 if i > (n_dos + 6):
-                    dos.append([float(v) for v in line.split()])
-                if i >= ((n_dos + 1) * (n_atoms + 1) + 5):
-                    break
+                    value = line.split()
+                    if len(value) < 4:
+                        continue
+                    dos.append([float(v) for v in value])
+
         if len(dos) == 0:
             return None, None
 
-        dos = np.transpose(dos)[1:]
-        n_lm = len(dos) // self.ispin
         try:
+            dos = np.transpose(dos)[1:]
+            n_lm = len(dos) // self.ispin
             dos = np.reshape(dos, (n_lm, self.ispin, n_atoms, n_dos))
         except Exception:
             self.parser.logger.error('Error reading partial dos.')
@@ -1640,6 +1642,7 @@ class VASPParser:
             'GW0R': 'scGW0',
             'GWR': 'scGW',
         }
+        self.allowed_species = set(ase.data.chemical_symbols[1:])
 
     def init_parser(self, filepath, logger):
         self.parser = (
@@ -1987,6 +1990,22 @@ class VASPParser:
 
             sec_atoms.periodic = [True] * 3
             sec_atoms.labels = self.parser.atom_info.get('atoms', {}).get('element', [])
+            # create a set of allowed species for faster lookup. The ase data starts with a vacancy labelled 'X', so start with the second entry.
+            unidentified_labels = [(idx, label) for idx, label in enumerate(sec_atoms.labels) if label not in self.allowed_species]
+            if len(unidentified_labels) > 0:
+                self.logger.warning('Unidentified atom labels.', data=list(zip(*unidentified_labels))[1])
+                for idx, _label in unidentified_labels:
+                    try:
+                        # get the atom index of wrong species
+                        atom_index = self.parser.atom_info.get('atomtypes', {}).get('element', []).index(_label)
+                        # get the label from the PP info. The second entry appears to be the chemical element.
+                        recovered_label = self.parser.atom_info.get('atomtypes', {}).get('pseudopotential')[atom_index][1]
+                        # account for cases where PP names include underscores
+                        recovered_label = recovered_label.split('_')[0]
+                        assert recovered_label in self.allowed_species, 'Recovered species label is also invalid'
+                        sec_atoms.labels[idx] = recovered_label
+                    except Exception as e:
+                        self.logger.error('Unable to recover atom label.', data=_label, reason=str(e))
 
             positions = structure.get('positions', None)
             if positions is not None:

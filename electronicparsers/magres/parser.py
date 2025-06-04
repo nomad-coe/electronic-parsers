@@ -105,7 +105,7 @@ class MagresFileParser(TextParser):
                         ),
                         Quantity(
                             'kpoint_mp_offset',
-                            rf'calc\_kpoint\_mp\_offset({re_float*3})$',
+                            rf'calc\_kpoint\_mp\_offset({re_float * 3})$',
                         ),
                     ]
                 ),
@@ -115,11 +115,11 @@ class MagresFileParser(TextParser):
                 r'([\[\<]*atoms[\>\]]*[\s\S]+?)(?:[\[\<]*\/atoms[\>\]]*)',
                 sub_parser=TextParser(
                     quantities=[
-                        Quantity('lattice', rf'lattice({re_float*9})'),
+                        Quantity('lattice', rf'lattice({re_float * 9})'),
                         Quantity('symmetry', r'symmetry *([\w\-\+\,]+)', repeats=True),
                         Quantity(
                             'atom',
-                            rf'atom *([a-zA-Z]+) *[a-zA-Z\d]* *([\d]+) *({re_float*3})',
+                            rf'atom *([a-zA-Z]+) *[a-zA-Z\d]* *([\d]+) *({re_float * 3})',
                             repeats=True,
                         ),
                     ]
@@ -131,47 +131,47 @@ class MagresFileParser(TextParser):
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            'ms', rf'ms *(\w+) *(\d+)({re_float*9})', repeats=True
+                            'ms', rf'ms *(\w+) *(\d+)({re_float * 9})', repeats=True
                         ),
                         Quantity(
-                            'efg', rf'efg *(\w+) *(\d+)({re_float*9})', repeats=True
+                            'efg', rf'efg *(\w+) *(\d+)({re_float * 9})', repeats=True
                         ),
                         Quantity(
                             'efg_local',
-                            rf'efg_local *(\w+) *(\d+)({re_float*9})',
+                            rf'efg_local *(\w+) *(\d+)({re_float * 9})',
                             repeats=True,
                         ),
                         Quantity(
                             'efg_nonlocal',
-                            rf'efg_nonlocal *(\w+) *(\d+)({re_float*9})',
+                            rf'efg_nonlocal *(\w+) *(\d+)({re_float * 9})',
                             repeats=True,
                         ),
                         Quantity(
                             'isc',
-                            rf'isc *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
+                            rf'isc *(\w+) *(\d+) *(\w+) *(\d+)({re_float * 9})',
                             repeats=True,
                         ),
                         Quantity(
                             'isc_fc',
-                            rf'isc_fc *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
+                            rf'isc_fc *(\w+) *(\d+) *(\w+) *(\d+)({re_float * 9})',
                             repeats=True,
                         ),
                         Quantity(
                             'isc_orbital_p',
-                            rf'isc_orbital_p *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
+                            rf'isc_orbital_p *(\w+) *(\d+) *(\w+) *(\d+)({re_float * 9})',
                             repeats=True,
                         ),
                         Quantity(
                             'isc_orbital_d',
-                            rf'isc_orbital_d *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
+                            rf'isc_orbital_d *(\w+) *(\d+) *(\w+) *(\d+)({re_float * 9})',
                             repeats=True,
                         ),
                         Quantity(
                             'isc_spin',
-                            rf'isc_spin *(\w+) *(\d+) *(\w+) *(\d+)({re_float*9})',
+                            rf'isc_spin *(\w+) *(\d+) *(\w+) *(\d+)({re_float * 9})',
                             repeats=True,
                         ),
-                        Quantity('sus', rf'sus *({re_float*9})', repeats=True),
+                        Quantity('sus', rf'sus *({re_float * 9})', repeats=True),
                     ]
                 ),
             ),
@@ -443,8 +443,7 @@ class MagresParser(BeyondDFTWorkflowsParser):
         program_name = calculation_params.get('code', '')
         if program_name != 'CASTEP':
             self.logger.error(
-                'Only CASTEP-based NMR simulations are supported by the '
-                'magres parser.'
+                'Only CASTEP-based NMR simulations are supported by the magres parser.'
             )
             return
         sec_run.program = Program(
