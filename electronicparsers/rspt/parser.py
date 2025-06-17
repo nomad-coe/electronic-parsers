@@ -23,6 +23,7 @@ import numpy as np
 
 from simulationparsers.utils import BasicParser
 from nomad.units import ureg
+from nomad.utils import get_logger
 from nomad.parsing.file_parser import Quantity, TextParser, Parser
 from runschema.system import System, Atoms
 from runschema.calculation import Calculation
@@ -59,23 +60,17 @@ class MethodParser(TextParser):
 
 
 class RSPtParser(Parser):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs) -> None:
         self._method_parser = MethodParser()
+        super().__init__(**kwargs)
 
         self._parser = BasicParser(
             'RSPt',
             program_version=r'RSPt version number:\s*rspt\.(\d+\.\d+)',
         )
 
-    def get_cif_files(self, auxillary_files):
-        cif_files = []
-        for f in auxillary_files:
-            if f.endswith('.cif'):
-                cif_files.append(f)
-        return cif_files
-
     def parse(self, mainfile, archive, logger=None):
+        logger = logger if logger is not None else get_logger(__name__)
         self._method_parser.logger = logger
         self._method_parser.mainfile = mainfile
         self.mainfile = mainfile
@@ -97,7 +92,6 @@ class RSPtParser(Parser):
                 Method(dft=DFT(), electronic=Electronic(method='DFT'))
             )
         elif all(m.upper() == 'DMFT' for m in method):
-            # archive.run[0].method.append(Method(dmft=DMFT()))
             archive.run[0].method.append(
                 Method(dmft=DMFT(inverse_temperature=inverse_temperature))
             )
@@ -107,15 +101,14 @@ class RSPtParser(Parser):
             )
 
         # PARSE SYSTEM
-        cif_files = self.get_cif_files(self._auxillary_files)
+        cif_files = [f for f in self._auxillary_files if f.endswith('.cif')]
         if cif_files:
             if len(cif_files) > 1:
-                logger.warning(
-                    f'RSPtParser found multiple CIF files, using {cif_files[0]}.'
+                self.logger.warning(
+                    'RSPtParser found multiple CIF files, using the first one found.'
                 )
             ase_atoms = ase_read(f'{self._maindir}/{cif_files[0]}', format='cif')
             nomad_atoms = nomad_atoms_from_ase_atoms(ase_atoms)
-            logger.warning(f'nomad_atoms: {nomad_atoms}')
             archive.run[0].system.append(
                 System(
                     atoms=Atoms(
