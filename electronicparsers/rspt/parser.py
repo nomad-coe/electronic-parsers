@@ -46,9 +46,6 @@ class MethodParser(TextParser):
             Quantity(
                 'method',
                 r'\s*Initialization of the (\w+) code\s*\n',
-                # r'^\s*\*+\s*Initialization of the (\w+) code',
-                # r'RSPt version number:\s*rspt\.(\d+\.\d+)',
-                # str_operation=str_op,
                 comment='#',
                 repeats=True,
             ),
