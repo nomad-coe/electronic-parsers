@@ -22,10 +22,10 @@ import logging
 
 from nomad.utils import configure_logging
 from nomad.datamodel import EntryArchive
-from electronicparsers.charmm import CharmmParser
+from electronicparsers.rspt import RSPtParser
 
 if __name__ == '__main__':
     configure_logging(console_log_level=logging.DEBUG)
     archive = EntryArchive()
-    CharmmParser().parse(sys.argv[1], archive, logging)
+    RSPtParser().parse(sys.argv[1], archive, logging)
     json.dump(archive.m_to_dict(), sys.stdout, indent=2)
