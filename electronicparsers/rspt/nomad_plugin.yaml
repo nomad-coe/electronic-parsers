@@ -1,0 +1,18 @@
+code_category: Atomistic code
+code_homepage: https://www.charmm.org
+code_name: CHARMM
+metadata:
+  codeCategory: Atomistic code
+  codeLabel: CHARMM
+  codeLabelStyle: all in capitals
+  codeName: charmm
+  codeUrl: https://www.charmm.org
+  parserDirName: dependencies/electronic/electronicparsers/charmm/
+  parserGitUrl: https://github.com/nomad-coe/electronic-parsers.git
+  preamble: ''
+  status: production
+  tableOfFiles: ''
+name: parsers/charmm
+parser_class_name: electronicparsers.charmm.parser.CharmmParser
+python_package: electronicparsers.charmm
+plugin_source_code_url: https://github.com/nomad-coe/electronic-parsers/tree/develop/electronicparsers/charmm
