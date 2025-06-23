@@ -135,21 +135,39 @@ def convert_system_to_model_system(system: System):
     # Sezione atoms
     atoms = getattr(system, "atoms", None)
     if atoms is not None:
-        # Posizioni
+        # POSITIONS
         if atoms.positions is not None:
-            positions = ensure_unit(atoms.positions, ureg.meter)
-            model.positions = positions
-            model.n_particles = len(positions)
+            model.positions = ensure_unit(atoms.positions, ureg.meter)
+            model.n_particles = len(model.positions)
 
-        # Stati particellari
-        if atoms.labels is not None and atoms.atomic_numbers is not None:
-            for symbol, Z in zip(atoms.labels, atoms.atomic_numbers):
-                model.particle_states.append(AtomsState(chemical_symbol=symbol, atomic_number=Z))
+        # PARTICLE STATES
+        labels = getattr(atoms, "labels", None)
+        atomic_numbers = getattr(atoms, "atomic_numbers", None)
+        concentrations = getattr(atoms, "concentrations", None)
+        species = getattr(atoms, "species", None)
+        local_rotations = getattr(atoms, "local_rotations", None)
 
-        # Cell
+        n_atoms = len(labels) if labels is not None else model.n_particles
+
+        for i in range(n_atoms):
+            state = AtomsState()
+            if labels is not None:
+                state.chemical_symbol = labels[i]
+            if atomic_numbers is not None:
+                state.atomic_number = atomic_numbers[i]
+            if concentrations is not None:
+                state.concentration = concentrations[i]
+            if species is not None:
+                state.species = species[i]
+            if local_rotations is not None:
+                state.local_rotation = local_rotations[i]
+            model.particle_states.append(state)
+
+        # CELL
         if atoms.lattice_vectors is not None:
             cell = Cell()
             cell.lattice_vectors = ensure_unit(atoms.lattice_vectors, ureg.meter)
+
             if atoms.periodic is not None:
                 cell.periodic_boundary_conditions = atoms.periodic
             if atoms.supercell_matrix is not None:
@@ -158,9 +176,10 @@ def convert_system_to_model_system(system: System):
                 cell.equivalent_atoms = atoms.equivalent_atoms
             if atoms.wyckoff_letters is not None:
                 cell.wyckoff_letters = atoms.wyckoff_letters
+
             model.cell.append(cell)
 
-        # Bond list
+        # BOND LIST
         if atoms.bond_list is not None:
             model.bond_list = atoms.bond_list
 

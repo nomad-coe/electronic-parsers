@@ -327,6 +327,7 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     
     simulation = archive.data
 
+
     # Program
     assert simulation.program.name == 'GIPAW'
     assert simulation.program.version == '7.4'
@@ -353,12 +354,12 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     )
     assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
 
-    assert False
-    #       AtomsState
-    assert len(atomic_cell.atoms_state) == 9
+    #       ParticleStates
     labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
     for index, symbol in enumerate(labels):
-        assert atomic_cell.atoms_state[index].chemical_symbol == symbol
+        assert model_system.particle_states[index].chemical_symbol == symbol
+
+    assert False
 
     # ModelMethod
     assert len(simulation.model_method) == 1
@@ -425,13 +426,13 @@ def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
     )
     assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
 
-    assert False
-
-    #       AtomsState
-    assert len(atomic_cell.atoms_state) == 9
+    #       ParticleStates
     labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
     for index, symbol in enumerate(labels):
-        assert atomic_cell.atoms_state[index].chemical_symbol == symbol
+        assert model_system.particle_states[index].chemical_symbol == symbol
+
+    assert False
+
 
     # ModelMethod
     assert len(simulation.model_method) == 1
@@ -498,12 +499,13 @@ def test_efg_xml(quartz_scf_fixtures, quartz_expected_cell):
     )
     assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
 
-    assert False
-    #       AtomsState
-    assert len(atomic_cell.atoms_state) == 9
+    #       ParticleStates
     labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
     for index, symbol in enumerate(labels):
-        assert atomic_cell.atoms_state[index].chemical_symbol == symbol
+        assert model_system.particle_states[index].chemical_symbol == symbol
+
+    assert False
+    
 
     # ModelMethod
     assert len(simulation.model_method) == 1
@@ -551,7 +553,7 @@ def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
         EXPECTED["positions"].to('meter').magnitude,
         rtol=1e-8
     )
-    
+
     #   Cell
     atomic_cell = model_system.cell[0]
 
@@ -562,12 +564,12 @@ def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
     )
     assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
 
-    assert False
-    #       AtomsState
-    assert len(atomic_cell.atoms_state) == 9
+    #       ParticleStates
     labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
     for index, symbol in enumerate(labels):
-        assert atomic_cell.atoms_state[index].chemical_symbol == symbol
+        assert model_system.particle_states[index].chemical_symbol == symbol
+
+    assert False
 
     # ModelMethod
     assert len(simulation.model_method) == 1
