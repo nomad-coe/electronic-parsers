@@ -31,6 +31,18 @@ from nomad_simulations.schema_packages.model_system import Cell
 from devtools import debug
 
 EXPECTED = {
+    "positions": np.array([
+        [ 1.15464835e-10, -1.99991799e-10,  1.80119567e-10],
+        [ 1.15464835e-10,  1.99991799e-10,  3.60239158e-10],
+        [-2.30929670e-10,  0.00000000e+00,  0.00000000e+00],
+        [ 1.67339273e-10, -6.23246070e-11,  1.15852911e-10],
+        [-2.96951681e-11,  1.76082964e-10,  2.95972478e-10],
+        [-1.37644104e-10, -1.13758357e-10,  4.76092069e-10],
+        [ 1.67339273e-10,  6.23246070e-11, -1.15852911e-10],
+        [-2.96951681e-11, -1.76082964e-10,  2.44386248e-10],
+        [-1.37644104e-10,  1.13758357e-10,  6.42666562e-11],
+    ]) * ureg.meter,
+
     "cell_lactice_vectors": np.array([
         [ 2.45617602e-10, -4.25423933e-10,  0.00000000e+00],
         [ 2.45617602e-10,  4.25423933e-10,  0.00000000e+00],
@@ -322,7 +334,15 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     # ModelSystem
     assert len(simulation.model_system) == 1
     model_system = simulation.model_system[0]
+    
     assert model_system.is_representative
+    model_system.n_particles == 9
+    assert np.allclose(
+        model_system.positions.to('meter').magnitude,
+        EXPECTED["positions"].to('meter').magnitude,
+        rtol=1e-8
+    )
+
     #   Cell
     atomic_cell = model_system.cell[0]
 
@@ -388,6 +408,13 @@ def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
     assert len(simulation.model_system) == 1
     model_system = simulation.model_system[0]
     assert model_system.is_representative
+    model_system.n_particles == 9
+    assert np.allclose(
+        model_system.positions.to('meter').magnitude,
+        EXPECTED["positions"].to('meter').magnitude,
+        rtol=1e-8
+    )
+
     #   Cell
     atomic_cell = model_system.cell[0]
 
@@ -454,6 +481,13 @@ def test_efg_xml(quartz_scf_fixtures, quartz_expected_cell):
     assert len(simulation.model_system) == 1
     model_system = simulation.model_system[0]
     assert model_system.is_representative
+    model_system.n_particles == 9
+    assert np.allclose(
+        model_system.positions.to('meter').magnitude,
+        EXPECTED["positions"].to('meter').magnitude,
+        rtol=1e-8
+    )
+
     #   Cell
     atomic_cell = model_system.cell[0]
 
@@ -511,6 +545,13 @@ def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
     assert len(simulation.model_system) == 1
     model_system = simulation.model_system[0]
     assert model_system.is_representative
+    model_system.n_particles == 9
+    assert np.allclose(
+        model_system.positions.to('meter').magnitude,
+        EXPECTED["positions"].to('meter').magnitude,
+        rtol=1e-8
+    )
+    
     #   Cell
     atomic_cell = model_system.cell[0]
 
