@@ -50,15 +50,14 @@ from .magres_workflow import (
 )
 from .qe_gipaw_workflow import GIPAWQE
 from nomad.atomutils import Formula
+from nomad.units import ureg
 from runschema.system import System
 from runschema.method import XCFunctional
 from nomad_simulations.schema_packages.model_system import (
-    AtomicCell, 
+    Cell, 
     ModelSystem, 
-    AtomsState, 
-    Symmetry, 
-    ChemicalFormula
 )
+from nomad_simulations.schema_packages.atoms_state import AtomsState
 from nomad_simulations.schema_packages.model_method import XCFunctional as XCFunctional_simu
 
 
@@ -112,100 +111,62 @@ def numpy_type_to_json_serializable(quantity) -> Optional[Union[bool, int, float
     return None
 
 
-def create_atomic_cell_from_atoms(atoms_section) -> AtomicCell:
+def ensure_unit(quantity, unit):
     """
-    Converts `System.atoms` to an `AtomicCell` object.
+    Assicura che il valore abbia unità fisiche. Se già le ha, lo restituisce invariato.
+    Altrimenti lo converte moltiplicando per l'unità desiderata.
     """
-    atomic_cell = AtomicCell()
-    atomic_cell.name = 'AtomicCell'
-    atomic_cell.type = 'original'
+    if hasattr(quantity, 'units'):
+        return quantity
+    return quantity * unit
 
-    # positions, velocities, lattice_vectors, periodic, supercell_matrix
-    if atoms_section.positions is not None:
-        atomic_cell.positions = atoms_section.positions
-    if atoms_section.velocities is not None:
-        atomic_cell.velocities = atoms_section.velocities
-    if atoms_section.lattice_vectors is not None:
-        atomic_cell.lattice_vectors = atoms_section.lattice_vectors
-    if atoms_section.periodic is not None:
-        atomic_cell.periodic_boundary_conditions = atoms_section.periodic
-    if atoms_section.supercell_matrix is not None:
-        atomic_cell.supercell_matrix = atoms_section.supercell_matrix
-
-    # AtomsState
-    if atoms_section.labels is not None:
-        for label in atoms_section.labels:
-            atom_state = AtomsState(chemical_symbol=label)
-            atomic_cell.atoms_state.append(atom_state)
-    elif atoms_section.atomic_numbers is not None:
-        for atomic_number in atoms_section.atomic_numbers:
-            atom_state = AtomsState(atomic_number=atomic_number)
-            atomic_cell.atoms_state.append(atom_state)
-
-    # Optionals
-    if atoms_section.equivalent_atoms is not None:
-        atomic_cell.equivalent_atoms = atoms_section.equivalent_atoms
-    if atoms_section.wyckoff_letters is not None:
-        atomic_cell.wyckoff_letters = atoms_section.wyckoff_letters
-
-    return atomic_cell
-
-
-def convert_system_to_model_system(system: System) -> ModelSystem:
+def convert_system_to_model_system(system: System):
     """
-    Converts `System` object into a `ModelSystem`.
+    Converte un oggetto System (vecchio schema) in un ModelSystem (nuovo schema).
     """
+    model = ModelSystem()
 
-    model_system = ModelSystem()
-    model_system.name = system.name
-    model_system.type = system.type
-    model_system.is_representative = system.is_representative
+    # Attributi principali
+    model.name = getattr(system, "name", None)
+    model.type = getattr(system, "type", None)
+    model.is_representative = getattr(system, "is_representative", False)
+    model.composition_formula = getattr(system, "chemical_composition", None)
 
-    # AtomicCell
-    if system.atoms:
-        atomic_cell = create_atomic_cell_from_atoms(system.atoms)
-        model_system.cell.append(atomic_cell)
+    # Sezione atoms
+    atoms = getattr(system, "atoms", None)
+    if atoms is not None:
+        # Posizioni
+        if atoms.positions is not None:
+            positions = ensure_unit(atoms.positions, ureg.meter)
+            model.positions = positions
+            model.n_particles = len(positions)
 
-    # ChemicalFormula
-    if system.chemical_composition_reduced or system.chemical_composition_hill:
-        chem_formula = ChemicalFormula()
-        if system.chemical_composition_reduced:
-            chem_formula.reduced = system.chemical_composition_reduced
-        if system.chemical_composition_hill:
-            chem_formula.hill = system.chemical_composition_hill
-        if system.chemical_composition_anonymous:
-            chem_formula.anonymous = system.chemical_composition_anonymous
-        model_system.chemical_formula = chem_formula
-    else:
-        # fallback: use ASE
-        try:
-            ase_atoms = system.atoms.to_ase()
-            f = Formula(ase_atoms.get_chemical_formula())
-            chem_formula = ChemicalFormula()
-            chem_formula.resolve_chemical_formulas(f)
-            model_system.chemical_formula = chem_formula
-        except Exception:
-            pass
+        # Stati particellari
+        if atoms.labels is not None and atoms.atomic_numbers is not None:
+            for symbol, Z in zip(atoms.labels, atoms.atomic_numbers):
+                model.particle_states.append(AtomsState(chemical_symbol=symbol, atomic_number=Z))
 
-    # Symmetry
-    if system.symmetry:
-        for sym in system.symmetry:
-            sym_section = Symmetry()
-            for key in [
-                'bravais_lattice', 'hall_symbol', 'point_group_symbol',
-                'space_group_number', 'space_group_symbol',
-                'strukturbericht_designation', 'prototype_formula',
-                'prototype_aflow_id', 'origin_shift', 'transformation_matrix'
-            ]:
-                if hasattr(sym, key):
-                    setattr(sym_section, key, getattr(sym, key, None))
-            model_system.symmetry.append(sym_section)
+        # Cell
+        if atoms.lattice_vectors is not None:
+            cell = Cell()
+            cell.lattice_vectors = ensure_unit(atoms.lattice_vectors, ureg.meter)
+            if atoms.periodic is not None:
+                cell.periodic_boundary_conditions = atoms.periodic
+            if atoms.supercell_matrix is not None:
+                cell.supercell_matrix = atoms.supercell_matrix
+            if atoms.equivalent_atoms is not None:
+                cell.equivalent_atoms = atoms.equivalent_atoms
+            if atoms.wyckoff_letters is not None:
+                cell.wyckoff_letters = atoms.wyckoff_letters
+            model.cell.append(cell)
 
-    # Bond list
-    if system.atoms and system.atoms.bond_list is not None:
-        model_system.bond_list = system.atoms.bond_list
+        # Bond list
+        if atoms.bond_list is not None:
+            model.bond_list = atoms.bond_list
 
-    return model_system
+    return model
+
+
 
 
 def convert_xcfunctional(xcfunc: XCFunctional) -> list[XCFunctional_simu]:
