@@ -102,11 +102,13 @@ from nomad_simulations.schema_packages.model_method import (
 from nomad_simulations.schema_packages.model_system import Cell, ModelSystem
 from nomad_nmr_schema.schema_packages.schema_package import (
     ElectricFieldGradient,
-    ElectricFieldGradients,
-    MagneticShieldingTensor,
+    # ElectricFieldGradients,
+    # MagneticShieldingTensor,
     MagneticSusceptibility,
     Outputs,
 )
+
+from devtools import debug
 
 RE_FLOAT = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
 
@@ -2969,7 +2971,12 @@ class NMRFileParser(TextParser):
                 if line.strip():
                     row = [float(x) for x in line.strip().split()]
                     tensor.append(row)
-            return np.array(tensor)
+            
+            # Convert from units of 10^{-6} cm^3/mol to m^3/mol
+            FACTOR = 1e-12
+            res = np.array(tensor) * FACTOR
+
+            return res
         
         self._quantities = [
             Quantity(
@@ -3023,7 +3030,7 @@ class NMRParser(MatchingParser):
     program_class = Program
     nmr_outputs_class = Outputs
     mag_susceptibility_class = MagneticSusceptibility
-    mag_shielding_tensor = MagneticShieldingTensor
+    # mag_shielding_tensor = MagneticShieldingTensor
 
     def __init__(
             self, 
@@ -3069,42 +3076,57 @@ class NMRParser(MatchingParser):
         self,
         cell: Cell
     ) -> list["NMRParser.mag_shielding_tensor"]:
-        n_atoms = len(cell.atoms_state)
+        pass
+        # n_atoms = len(cell.atoms_state)
 
-        data = self.parser.get('ms_list', [])
-        # Initial check on the size of the matched text
-        if np.size(data) != n_atoms * (9 + 2):
-            self.logger.warning(
-                "The shape of the matched text for the `ms_list` does not coincide with the number of atoms."
-            )
-            return []
+        # data = self.parser.get('ms_list', [])
+        # # Initial check on the size of the matched text
+        # if np.size(data) != n_atoms * (9 + 2):
+        #     self.logger.warning(
+        #         "The shape of the matched text for the `ms_list` does not coincide with the number of atoms."
+        #     )
+        #     return []
 
-        # Parse magnetic shieldings and their refs to the specific
-        # `atom_state_class`
-        magnetic_shieldings = []
-        for i, atom_data in enumerate(data):
-            # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
-            values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
-            sec_ms = self.mag_shielding_tensor(entity_ref=cell.atoms_state[i])
-            sec_ms.value = values * 1e-6 * ureg("dimensionless")
-            magnetic_shieldings.append(sec_ms)
-        return magnetic_shieldings
+        # # Parse magnetic shieldings and their refs to the specific
+        # # `atom_state_class`
+        # magnetic_shieldings = []
+        # for i, atom_data in enumerate(data):
+        #     # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
+        #     values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
+        #     sec_ms = self.mag_shielding_tensor(entity_ref=cell.atoms_state[i])
+        #     sec_ms.value = values * 1e-6 * ureg("dimensionless")
+        #     magnetic_shieldings.append(sec_ms)
+        # return magnetic_shieldings
 
     def parse_magnetic_susceptibilities(
             self
         ) -> list["NMRParser.mag_susceptibility_class"]:
         chi_bare_pGv = self.parser.get("chi_bare_pGv", [])
         chi_bare_vGv = self.parser.get("chi_bare_vGv", [])
+        debug(chi_bare_pGv)
+        debug(chi_bare_vGv)
         if np.size(chi_bare_pGv) != 9 or np.size(chi_bare_vGv) != 9:
             self.logger.warning(
                 "The shape of the matched text from the file for the `chi_bare`" \
                 "does not coincide with 9 (3x3 tensor)."
             )
             return []
-        data = (chi_bare_pGv + chi_bare_vGv) / 2
-        values = np.transpose(np.reshape(data, (3, 3)))
-        sec_sus = self.mag_susceptibility_class(scale_dimension="macroscopic")
-        sec_sus.value = values * 1e-6 * ureg("dimensionless")
+        
+
+
+        sus = (chi_bare_pGv + chi_bare_vGv) / 2
+        sec_sus = self.mag_susceptibility_class()
+        sec_sus.value = sus
+        sec_sus.value_vgv_approx = chi_bare_vGv
+        sec_sus.value_pgv_approx = chi_bare_pGv
+
+        debug(sec_sus.name)
+        debug(sec_sus.rank)
+        debug(sec_sus.value)
+        debug(sec_sus.value_pgv_approx)
+        debug(sec_sus.value_vgv_approx)
+        debug(sec_sus.variables)
+
         return [sec_sus]
 
     def parse_outputs(
@@ -3132,10 +3154,10 @@ class NMRParser(MatchingParser):
             return None
         cell = simulation.model_system[-1].cell[-1]
 
-        # magnetic shielding
-        ms = self.parse_magnetic_shieldings(cell=cell)
-        if len(ms) > 0:
-            outputs.magnetic_shieldings = ms
+        # # magnetic shielding
+        # ms = self.parse_magnetic_shieldings(cell=cell)
+        # if len(ms) > 0:
+        #     outputs.magnetic_shieldings = ms
 
         # magnetic susceptibility
         mag_sus = self.parse_magnetic_susceptibilities()
@@ -3261,7 +3283,7 @@ class EFGParser(MatchingParser):
     simulation_class = Simulation
     program_class = Program
     efg_outputs_class = Outputs
-    e_field_gradients_class = ElectricFieldGradients
+    # e_field_gradients_class = ElectricFieldGradients
     e_field_gradient_class = ElectricFieldGradient
 
     def __init__(
@@ -3307,26 +3329,27 @@ class EFGParser(MatchingParser):
         self,
         cell: Cell
     ) -> "EFGParser.e_field_gradients_class":
-        electric_field_gradients = self.e_field_gradients_class()
-        n_atoms = len(cell.atoms_state)
-        data = self.parser.get('efg', [])
-        # Initial check on the size of the matched text
-        if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
-            self.logger.warning(
-                "The shape of the matched text for the `efg` does not coincide" \
-                " with the number of atoms."
-            )        
+        pass
+        # electric_field_gradients = self.e_field_gradients_class()
+        # n_atoms = len(cell.atoms_state)
+        # data = self.parser.get('efg', [])
+        # # Initial check on the size of the matched text
+        # if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
+        #     self.logger.warning(
+        #         "The shape of the matched text for the `efg` does not coincide" \
+        #         " with the number of atoms."
+        #     )        
         
-        # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
-        for i, atom_data in enumerate(data):
-            # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
-            values = np.reshape(atom_data[2:], (3, 3))  # no need to transpose
-            sec_efg = self.e_field_gradient_class(
-                type="total", entity_ref=cell.atoms_state[i]
-            )
-            sec_efg.value = np.transpose(values) * 9.717362e21 * ureg("V/m^2")
-            electric_field_gradients.efg_total.append(sec_efg)
-        return electric_field_gradients
+        # # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
+        # for i, atom_data in enumerate(data):
+        #     # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
+        #     values = np.reshape(atom_data[2:], (3, 3))  # no need to transpose
+        #     sec_efg = self.e_field_gradient_class(
+        #         type="total", entity_ref=cell.atoms_state[i]
+        #     )
+        #     sec_efg.value = np.transpose(values) * 9.717362e21 * ureg("V/m^2")
+        #     electric_field_gradients.efg_total.append(sec_efg)
+        # return electric_field_gradients
 
     def parse_outputs(
         self, 
