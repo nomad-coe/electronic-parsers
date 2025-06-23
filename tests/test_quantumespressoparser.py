@@ -435,7 +435,7 @@ def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
         assert ms.entity_ref.chemical_symbol == labels[i]
 
 
-def test_efg_xml(quartz_scf_fixtures):
+def test_efg_xml(quartz_scf_fixtures, quartz_expected_cell):
     archive = EntryArchive()
     model_system, xc_fun_list = quartz_scf_fixtures
     parser = EFGParser(system=model_system, xc_func_list=xc_fun_list)
@@ -454,9 +454,17 @@ def test_efg_xml(quartz_scf_fixtures):
     assert len(simulation.model_system) == 1
     model_system = simulation.model_system[0]
     assert model_system.is_representative
-    #   Cell ???
-    assert len(model_system.cell) == 1
+    #   Cell
     atomic_cell = model_system.cell[0]
+
+    assert np.allclose(
+        atomic_cell.lattice_vectors.to('meter').magnitude,
+        quartz_expected_cell.lattice_vectors.to('meter').magnitude,
+        rtol=1e-8
+    )
+    assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
+
+    assert False
     #       AtomsState
     assert len(atomic_cell.atoms_state) == 9
     labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
@@ -484,7 +492,7 @@ def test_efg_xml(quartz_scf_fixtures):
     assert output.m_xpath('electric_field_gradients', dict=False) is not None
 
 
-def test_efg_text(quartz_scf_fixtures):
+def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
     archive = EntryArchive()
     model_system, _ = quartz_scf_fixtures
     parser = EFGParser(system=model_system, xc_func_list=None)
@@ -503,9 +511,17 @@ def test_efg_text(quartz_scf_fixtures):
     assert len(simulation.model_system) == 1
     model_system = simulation.model_system[0]
     assert model_system.is_representative
-    #   Cell ???
-    assert len(model_system.cell) == 1
+    #   Cell
     atomic_cell = model_system.cell[0]
+
+    assert np.allclose(
+        atomic_cell.lattice_vectors.to('meter').magnitude,
+        quartz_expected_cell.lattice_vectors.to('meter').magnitude,
+        rtol=1e-8
+    )
+    assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
+
+    assert False
     #       AtomsState
     assert len(atomic_cell.atoms_state) == 9
     labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
@@ -532,12 +548,3 @@ def test_efg_text(quartz_scf_fixtures):
     #   Properties
     assert output.m_xpath('electric_field_gradients', dict=False) is not None
     
-
-def test_system_conversion():
-    # TODO: write test for convert_system_to_model_system
-    pass
-
-
-def test_xcfunctional_conversion():
-    # TODO: write test for convert_xcfunctional
-    pass

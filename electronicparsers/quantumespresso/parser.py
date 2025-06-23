@@ -3315,31 +3315,30 @@ class EFGParser(MatchingParser):
             xc_sections.append(functional)
         return xc_sections
 
-    def parse_electric_field_gradients(
-        self,
-        cell: Cell
-    ) -> "EFGParser.e_field_gradients_class":
-        pass
-        # electric_field_gradients = self.e_field_gradients_class()
-        # n_atoms = len(cell.atoms_state)
-        # data = self.parser.get('efg', [])
-        # # Initial check on the size of the matched text
-        # if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
-        #     self.logger.warning(
-        #         "The shape of the matched text for the `efg` does not coincide" \
-        #         " with the number of atoms."
-        #     )        
+    # def parse_electric_field_gradients(
+    #     self,
+    #     cell: Cell
+    # ) -> "EFGParser.e_field_gradients_class":
+    #     electric_field_gradients = self.e_field_gradients_class()
+    #     n_atoms = len(cell.atoms_state)
+    #     data = self.parser.get('efg', [])
+    #     # Initial check on the size of the matched text
+    #     if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
+    #         self.logger.warning(
+    #             "The shape of the matched text for the `efg` does not coincide" \
+    #             " with the number of atoms."
+    #         )        
         
-        # # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
-        # for i, atom_data in enumerate(data):
-        #     # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
-        #     values = np.reshape(atom_data[2:], (3, 3))  # no need to transpose
-        #     sec_efg = self.e_field_gradient_class(
-        #         type="total", entity_ref=cell.atoms_state[i]
-        #     )
-        #     sec_efg.value = np.transpose(values) * 9.717362e21 * ureg("V/m^2")
-        #     electric_field_gradients.efg_total.append(sec_efg)
-        # return electric_field_gradients
+    #     # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
+    #     for i, atom_data in enumerate(data):
+    #         # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
+    #         values = np.reshape(atom_data[2:], (3, 3))  # no need to transpose
+    #         sec_efg = self.e_field_gradient_class(
+    #             type="total", entity_ref=cell.atoms_state[i]
+    #         )
+    #         sec_efg.value = np.transpose(values) * 9.717362e21 * ureg("V/m^2")
+    #         electric_field_gradients.efg_total.append(sec_efg)
+    #     return electric_field_gradients
 
     def parse_outputs(
         self, 
@@ -3357,7 +3356,6 @@ class EFGParser(MatchingParser):
         )
         if (
             not simulation.model_system[-1].cell
-            or not simulation.model_system[-1].cell[-1].atoms_state
         ):
             self.logger.warning(
                 "Could not find the `cell` sub-section or the `atom_state_class`" \
@@ -3366,12 +3364,12 @@ class EFGParser(MatchingParser):
             return None
         cell = simulation.model_system[-1].cell[-1]
 
-        # electric field gradients
-        efg = self.parse_electric_field_gradients(cell=cell)
-        if len(efg.efg_total) > 0:
-            efg.model_system_ref = simulation.model_system[-1]
-            efg.model_method_ref = simulation.model_method[-1]
-            outputs.electric_field_gradients.append(efg)
+        # # electric field gradients
+        # efg = self.parse_electric_field_gradients(cell=cell)
+        # if len(efg.efg_total) > 0:
+        #     efg.model_system_ref = simulation.model_system[-1]
+        #     efg.model_method_ref = simulation.model_method[-1]
+        #     outputs.electric_field_gradients.append(efg)
 
         return outputs
 
