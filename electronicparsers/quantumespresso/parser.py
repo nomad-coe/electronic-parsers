@@ -3058,7 +3058,7 @@ class NMRParser(MatchingParser):
                 functional.name = "exchange"
             elif "_C_" in xc:
                 functional.name = "correlation"
-            elif "HYB" in xc:
+            elif "_XC_" in xc:
                 functional.name = "hybrid"
             else:
                 functional.name = "contribution"
