@@ -30,6 +30,17 @@ from electronicparsers.quantumespresso import QuantumEspressoParser, NMRParser
 from nomad_simulations.schema_packages.model_system import Cell
 from devtools import debug
 
+EXPECTED = {
+    "cell_lactice_vectors": np.array([
+        [ 2.45617602e-10, -4.25423933e-10,  0.00000000e+00],
+        [ 2.45617602e-10,  4.25423933e-10,  0.00000000e+00],
+        [ 0.00000000e+00,  0.00000000e+00,  5.40358725e-10]
+    ]) * ureg.meter,
+
+    "cell_periodic_boundary_conditions": [True, True, True],
+
+}
+
 
 def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
@@ -55,6 +66,14 @@ def quartz_scf_fixtures(parser):
         archive.run[-1].method[-1].dft.xc_functional
     )
     return model_system, xc_fun_list
+
+
+@pytest.fixture(scope='module')
+def quartz_expected_cell():
+    expected_cell = Cell()
+    expected_cell.lattice_vectors = EXPECTED['cell_lactice_vectors']
+    expected_cell.periodic_boundary_conditions = EXPECTED['cell_periodic_boundary_conditions']
+    return expected_cell
 
 
 def RyB_to_N(value):
@@ -285,7 +304,7 @@ def test_mainfile_keys(parser):
     assert mainfile_keys2
 
 
-def test_nmr_text(quartz_scf_fixtures):
+def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     archive = EntryArchive()
     model_system, _ = quartz_scf_fixtures
     parser = NMRParser(system=model_system, xc_func_list=None)
@@ -306,22 +325,15 @@ def test_nmr_text(quartz_scf_fixtures):
     assert model_system.is_representative
     #   Cell
     atomic_cell = model_system.cell[0]
-    expected_cell = Cell()
-    expected_cell.lattice_vectors = np.array([
-        [ 2.45617602e-10, -4.25423933e-10,  0.00000000e+00],
-        [ 2.45617602e-10,  4.25423933e-10,  0.00000000e+00],
-        [ 0.00000000e+00,  0.00000000e+00,  5.40358725e-10]
-    ]) * ureg.meter
-    expected_cell.periodic_boundary_conditions = [True, True, True]
 
     assert np.allclose(
         atomic_cell.lattice_vectors.to('meter').magnitude,
-        expected_cell.lattice_vectors.to('meter').magnitude,
+        quartz_expected_cell.lattice_vectors.to('meter').magnitude,
         rtol=1e-8
     )
-    assert atomic_cell.periodic_boundary_conditions == expected_cell.periodic_boundary_conditions
+    assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
 
-
+    assert False
     #       AtomsState
     assert len(atomic_cell.atoms_state) == 9
     labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
@@ -357,7 +369,7 @@ def test_nmr_text(quartz_scf_fixtures):
         assert ms.entity_ref.chemical_symbol == labels[i]
 
 
-def test_nmr_xml(quartz_scf_fixtures):
+def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
     archive = EntryArchive()
     model_system, xc_fun_list = quartz_scf_fixtures
     parser = NMRParser(system=model_system, xc_func_list=xc_fun_list)
@@ -376,9 +388,18 @@ def test_nmr_xml(quartz_scf_fixtures):
     assert len(simulation.model_system) == 1
     model_system = simulation.model_system[0]
     assert model_system.is_representative
-    #   Cell ???
-    assert len(model_system.cell) == 1
+    #   Cell
     atomic_cell = model_system.cell[0]
+
+    assert np.allclose(
+        atomic_cell.lattice_vectors.to('meter').magnitude,
+        quartz_expected_cell.lattice_vectors.to('meter').magnitude,
+        rtol=1e-8
+    )
+    assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
+
+    assert False
+
     #       AtomsState
     assert len(atomic_cell.atoms_state) == 9
     labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
