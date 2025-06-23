@@ -27,6 +27,8 @@ from electronicparsers.utils.utils import (
 from nomad.datamodel import EntryArchive
 from nomad.units import ureg
 from electronicparsers.quantumespresso import QuantumEspressoParser, NMRParser
+from nomad_simulations.schema_packages.model_system import Cell
+from devtools import debug
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -302,9 +304,24 @@ def test_nmr_text(quartz_scf_fixtures):
     assert len(simulation.model_system) == 1
     model_system = simulation.model_system[0]
     assert model_system.is_representative
-    #   Cell ???
-    assert len(model_system.cell) == 1
+    #   Cell
     atomic_cell = model_system.cell[0]
+    expected_cell = Cell()
+    expected_cell.lattice_vectors = np.array([
+        [ 2.45617602e-10, -4.25423933e-10,  0.00000000e+00],
+        [ 2.45617602e-10,  4.25423933e-10,  0.00000000e+00],
+        [ 0.00000000e+00,  0.00000000e+00,  5.40358725e-10]
+    ]) * ureg.meter
+    expected_cell.periodic_boundary_conditions = [True, True, True]
+
+    assert np.allclose(
+        atomic_cell.lattice_vectors.to('meter').magnitude,
+        expected_cell.lattice_vectors.to('meter').magnitude,
+        rtol=1e-8
+    )
+    assert atomic_cell.periodic_boundary_conditions == expected_cell.periodic_boundary_conditions
+
+
     #       AtomsState
     assert len(atomic_cell.atoms_state) == 9
     labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']

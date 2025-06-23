@@ -3103,29 +3103,19 @@ class NMRParser(MatchingParser):
         ) -> list["NMRParser.mag_susceptibility_class"]:
         chi_bare_pGv = self.parser.get("chi_bare_pGv", [])
         chi_bare_vGv = self.parser.get("chi_bare_vGv", [])
-        debug(chi_bare_pGv)
-        debug(chi_bare_vGv)
+
         if np.size(chi_bare_pGv) != 9 or np.size(chi_bare_vGv) != 9:
             self.logger.warning(
                 "The shape of the matched text from the file for the `chi_bare`" \
                 "does not coincide with 9 (3x3 tensor)."
             )
             return []
-        
-
 
         sus = (chi_bare_pGv + chi_bare_vGv) / 2
         sec_sus = self.mag_susceptibility_class()
         sec_sus.value = sus
         sec_sus.value_vgv_approx = chi_bare_vGv
         sec_sus.value_pgv_approx = chi_bare_pGv
-
-        debug(sec_sus.name)
-        debug(sec_sus.rank)
-        debug(sec_sus.value)
-        debug(sec_sus.value_pgv_approx)
-        debug(sec_sus.value_vgv_approx)
-        debug(sec_sus.variables)
 
         return [sec_sus]
 
@@ -3143,9 +3133,9 @@ class NMRParser(MatchingParser):
             model_method_ref=simulation.model_method[-1],
             model_system_ref=simulation.model_system[-1],
         )
+
         if (
             not simulation.model_system[-1].cell
-            or not simulation.model_system[-1].cell[-1].atoms_state
         ):
             self.logger.warning(
                 "Could not find the `cell` sub-section or the `atom_state_class`" \
