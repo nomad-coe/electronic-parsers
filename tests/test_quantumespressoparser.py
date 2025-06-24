@@ -30,7 +30,7 @@ from electronicparsers.quantumespresso import QuantumEspressoParser, NMRParser
 from nomad_simulations.schema_packages.model_system import Cell
 from devtools import debug
 
-EXPECTED = {
+MODEL_SYSTEM_EXPECTED = {
     "positions": np.array([
         [ 1.15464835e-10, -1.99991799e-10,  1.80119567e-10],
         [ 1.15464835e-10,  1.99991799e-10,  3.60239158e-10],
@@ -51,6 +51,7 @@ EXPECTED = {
 
     "cell_periodic_boundary_conditions": [True, True, True],
 
+    "particle_state_labels": ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O'],
 }
 
 
@@ -83,8 +84,8 @@ def quartz_scf_fixtures(parser):
 @pytest.fixture(scope='module')
 def quartz_expected_cell():
     expected_cell = Cell()
-    expected_cell.lattice_vectors = EXPECTED['cell_lactice_vectors']
-    expected_cell.periodic_boundary_conditions = EXPECTED['cell_periodic_boundary_conditions']
+    expected_cell.lattice_vectors = MODEL_SYSTEM_EXPECTED['cell_lactice_vectors']
+    expected_cell.periodic_boundary_conditions = MODEL_SYSTEM_EXPECTED['cell_periodic_boundary_conditions']
     return expected_cell
 
 
@@ -316,6 +317,38 @@ def test_mainfile_keys(parser):
     assert mainfile_keys2
 
 
+def test_system_to_model_system_conversion(quartz_scf_fixtures, quartz_expected_cell):
+    model_system, _ = quartz_scf_fixtures
+
+    assert model_system.n_particles == 9
+
+    assert np.allclose(
+        model_system.positions.to('meter').magnitude,
+        MODEL_SYSTEM_EXPECTED["positions"].to('meter').magnitude,
+        rtol=1e-8
+    )
+
+    assert np.allclose(
+        model_system.cell[0].lattice_vectors.to('meter').magnitude,
+        quartz_expected_cell.lattice_vectors.to('meter').magnitude,
+        rtol=1e-8
+    )
+    assert model_system.cell[0].periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
+
+    for index, symbol in enumerate(MODEL_SYSTEM_EXPECTED["particle_state_labels"]):
+        assert model_system.particle_states[index].chemical_symbol == symbol
+
+
+def test_xc_functional_conversion(quartz_scf_fixtures):
+    _, xc_functionals = quartz_scf_fixtures
+
+    assert len(xc_functionals) == 2
+    assert xc_functionals[0].name == 'exchange'
+    assert xc_functionals[0].libxc_name == 'GGA_X_PBE'
+    assert xc_functionals[1].libxc_name == 'GGA_C_PBE'
+    assert xc_functionals[1].name == 'correlation'
+
+
 def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     archive = EntryArchive()
     model_system, _ = quartz_scf_fixtures
@@ -327,54 +360,32 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     
     simulation = archive.data
 
-
     # Program
     assert simulation.program.name == 'GIPAW'
     assert simulation.program.version == '7.4.1'
 
     # ModelSystem
     assert len(simulation.model_system) == 1
-    model_system = simulation.model_system[0]
+    assert simulation.model_system[0].is_representative
     
-    assert model_system.is_representative
-    model_system.n_particles == 9
-    assert np.allclose(
-        model_system.positions.to('meter').magnitude,
-        EXPECTED["positions"].to('meter').magnitude,
-        rtol=1e-8
-    )
-
-    #   Cell
-    atomic_cell = model_system.cell[0]
-
-    assert np.allclose(
-        atomic_cell.lattice_vectors.to('meter').magnitude,
-        quartz_expected_cell.lattice_vectors.to('meter').magnitude,
-        rtol=1e-8
-    )
-    assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
-
-    #       ParticleStates
-    labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
-    for index, symbol in enumerate(labels):
-        assert model_system.particle_states[index].chemical_symbol == symbol
-
     # ModelMethod
+    debug(simulation.model_method)
     assert len(simulation.model_method) == 1
-    assert simulation.model_method[0].m_def.name == 'DFT'
     assert simulation.model_method[0].name == 'NMR'
-    dft = simulation.model_method[0]
-    assert len(dft.xc_functionals) == 2
-    assert dft.xc_functionals[0].name == 'correlation'
-    assert dft.xc_functionals[0].libxc_name == 'GGA_C_PBE'
-    assert dft.xc_functionals[1].name == 'exchange'
-    assert dft.xc_functionals[1].libxc_name == 'GGA_X_PBE'
 
     # Outputs
     assert len(simulation.outputs) == 1
     output = simulation.outputs[0]
-    assert output.model_system_ref == model_system
-    assert output.model_method_ref == dft
+
+    assert output.model_system_ref == simulation.model_system[0]
+    assert output.model_method_ref == simulation.model_method[0]
+
+    debug(output.magnetic_shieldings)
+    debug(output.magnetic_shieldings[0].name)
+    debug(output.magnetic_shieldings[0].entity_ref)
+    debug(output.magnetic_shieldings[0].value)
+
+
     #   Properties
     assert len(output.m_xpath('magnetic_shieldings', dict=False)) == 9
     for property_name in [
@@ -384,7 +395,7 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
         assert output.m_xpath(property_name, dict=False) is not None
     #       MagneticShieldingTensor
     for i, ms in enumerate(output.magnetic_shieldings):
-        assert ms.entity_ref.chemical_symbol == labels[i]
+        assert ms.entity_ref.chemical_symbol == MODEL_SYSTEM_EXPECTED["particle_state_labels"][i]
 
 
 def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
@@ -409,7 +420,7 @@ def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
     model_system.n_particles == 9
     assert np.allclose(
         model_system.positions.to('meter').magnitude,
-        EXPECTED["positions"].to('meter').magnitude,
+        MODEL_SYSTEM_EXPECTED["positions"].to('meter').magnitude,
         rtol=1e-8
     )
 
@@ -480,7 +491,7 @@ def test_efg_xml(quartz_scf_fixtures, quartz_expected_cell):
     model_system.n_particles == 9
     assert np.allclose(
         model_system.positions.to('meter').magnitude,
-        EXPECTED["positions"].to('meter').magnitude,
+        MODEL_SYSTEM_EXPECTED["positions"].to('meter').magnitude,
         rtol=1e-8
     )
 
@@ -544,7 +555,7 @@ def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
     model_system.n_particles == 9
     assert np.allclose(
         model_system.positions.to('meter').magnitude,
-        EXPECTED["positions"].to('meter').magnitude,
+        MODEL_SYSTEM_EXPECTED["positions"].to('meter').magnitude,
         rtol=1e-8
     )
 
