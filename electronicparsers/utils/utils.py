@@ -154,6 +154,7 @@ def convert_system_to_model_system(system: System):
             state = AtomsState()
             if labels is not None:
                 state.chemical_symbol = labels[i]
+                state.label = labels[i]
             if atomic_numbers is not None:
                 state.atomic_number = atomic_numbers[i]
             if concentrations is not None:
