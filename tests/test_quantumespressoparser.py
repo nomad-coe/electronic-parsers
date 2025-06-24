@@ -428,8 +428,6 @@ def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
     for index, symbol in enumerate(labels):
         assert model_system.particle_states[index].chemical_symbol == symbol
 
-    assert False
-
 
     # ModelMethod
     assert len(simulation.model_method) == 1
@@ -501,7 +499,6 @@ def test_efg_xml(quartz_scf_fixtures, quartz_expected_cell):
     for index, symbol in enumerate(labels):
         assert model_system.particle_states[index].chemical_symbol == symbol
 
-    assert False
     
 
     # ModelMethod
@@ -566,7 +563,6 @@ def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
     for index, symbol in enumerate(labels):
         assert model_system.particle_states[index].chemical_symbol == symbol
 
-    assert False
 
     # ModelMethod
     assert len(simulation.model_method) == 1
@@ -585,6 +581,15 @@ def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
     output = simulation.outputs[0]
     assert output.model_system_ref == model_system
     assert output.model_method_ref == dft
+
+    debug(output.electric_field_gradients[0])
+    debug(output.electric_field_gradients[0].name)
+    debug(output.electric_field_gradients[0].type)
+    debug(output.electric_field_gradients[0].entity_ref.chemical_symbol)
+    debug(output.electric_field_gradients[0].value)
+    debug(output.electric_field_gradients[0].Vzz)
+
+
     #   Properties
     assert output.m_xpath('electric_field_gradients', dict=False) is not None
     

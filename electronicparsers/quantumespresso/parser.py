@@ -3082,7 +3082,6 @@ class NMRParser(MatchingParser):
         n_atoms = len(particle_state)
 
         data = self.parser.get('ms_list', [])
-        debug(data)
 
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):
@@ -3094,10 +3093,10 @@ class NMRParser(MatchingParser):
         # Parse magnetic shieldings and their refs to the specific AtomsState
         magnetic_shieldings = []
         for i, atom_data in enumerate(data):
-            # NOTE: is it necessary to transpose here?
-            values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
+            values = np.reshape(atom_data[2:], (3, 3))
             sec_ms = self.mag_shielding(entity_ref=particle_state[i])
-            sec_ms.value = values * 1e-6 * ureg("dimensionless")
+            FACTOR = 1e-6
+            sec_ms.value = values * FACTOR * ureg("dimensionless")
         
             magnetic_shieldings.append(sec_ms)
         return magnetic_shieldings
@@ -3277,7 +3276,6 @@ class EFGParser(MatchingParser):
     simulation_class = Simulation
     program_class = Program
     efg_outputs_class = Outputs
-    # e_field_gradients_class = ElectricFieldGradients
     e_field_gradient_class = ElectricFieldGradient
 
     def __init__(
@@ -3319,30 +3317,32 @@ class EFGParser(MatchingParser):
             xc_sections.append(functional)
         return xc_sections
 
-    # def parse_electric_field_gradients(
-    #     self,
-    #     cell: Cell
-    # ) -> "EFGParser.e_field_gradients_class":
-    #     electric_field_gradients = self.e_field_gradients_class()
-    #     n_atoms = len(cell.atoms_state)
-    #     data = self.parser.get('efg', [])
-    #     # Initial check on the size of the matched text
-    #     if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
-    #         self.logger.warning(
-    #             "The shape of the matched text for the `efg` does not coincide" \
-    #             " with the number of atoms."
-    #         )        
+    def parse_electric_field_gradients(
+        self,
+        particle_state: AtomsState
+    ) -> list["EFGParser.e_field_gradient_class"]:
         
-    #     # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
-    #     for i, atom_data in enumerate(data):
-    #         # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
-    #         values = np.reshape(atom_data[2:], (3, 3))  # no need to transpose
-    #         sec_efg = self.e_field_gradient_class(
-    #             type="total", entity_ref=cell.atoms_state[i]
-    #         )
-    #         sec_efg.value = np.transpose(values) * 9.717362e21 * ureg("V/m^2")
-    #         electric_field_gradients.efg_total.append(sec_efg)
-    #     return electric_field_gradients
+        n_atoms = len(particle_state)
+        
+        data = self.parser.get('efg', [])
+        
+        # Initial check on the size of the matched text
+        if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
+            self.logger.warning(
+                "The shape of the matched text for the `efg` does not coincide" \
+                " with the number of atoms."
+            )        
+        
+        # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
+        electric_field_gradients = []
+        for i, atom_data in enumerate(data):
+            values = np.reshape(atom_data[2:], (3, 3))
+            sec_efg = self.e_field_gradient_class(
+                type="total", entity_ref=particle_state[i]
+            )
+            sec_efg.value = values
+            electric_field_gradients.append(sec_efg)
+        return electric_field_gradients
 
     def parse_outputs(
         self, 
@@ -3359,21 +3359,18 @@ class EFGParser(MatchingParser):
             model_system_ref=simulation.model_system[-1],
         )
         if (
-            not simulation.model_system[-1].cell
+            not simulation.model_system[-1].particle_states
         ):
             self.logger.warning(
-                "Could not find the `cell` sub-section or the `atom_state_class`" \
-                " list under it."
+                "Could not find the `particle_states` sub-section."
             )
             return None
-        cell = simulation.model_system[-1].cell[-1]
+        particle_states = simulation.model_system[-1].particle_states
 
-        # # electric field gradients
-        # efg = self.parse_electric_field_gradients(cell=cell)
-        # if len(efg.efg_total) > 0:
-        #     efg.model_system_ref = simulation.model_system[-1]
-        #     efg.model_method_ref = simulation.model_method[-1]
-        #     outputs.electric_field_gradients.append(efg)
+        # electric field gradients
+        efg = self.parse_electric_field_gradients(particle_state=particle_states)
+        if len(efg) > 0:
+            outputs.electric_field_gradients = efg
 
         return outputs
 
