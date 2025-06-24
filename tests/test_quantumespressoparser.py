@@ -54,6 +54,64 @@ MODEL_SYSTEM_EXPECTED = {
     "particle_state_labels": ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O'],
 }
 
+MS_EXPECTED_VALUES= np.array([
+    [[ 4.325142e-04,  5.825000e-07,  6.176400e-06],
+        [ 5.819000e-07,  4.318332e-04,  3.559900e-06],
+        [-1.130830e-05, -6.529500e-06,  4.295852e-04]],
+
+    [[ 4.325142e-04, -5.825000e-07, -6.176400e-06],
+        [-5.819000e-07,  4.318332e-04,  3.559900e-06],
+        [ 1.130830e-05, -6.529500e-06,  4.295852e-04]],
+
+    [[ 4.314911e-04,  0.000000e+00,  0.000000e+00],
+        [ 0.000000e+00,  4.328567e-04, -7.129500e-06],
+        [ 0.000000e+00,  1.306330e-05,  4.295880e-04]],
+
+    [[ 2.113641e-04,  2.251230e-05, -2.008190e-05],
+        [ 2.158540e-05,  2.335098e-04, -2.789930e-05],
+        [-2.096140e-05, -2.718030e-05,  2.249562e-04]],
+
+    [[ 2.470986e-04, -9.521000e-07,  3.419190e-05],
+        [-1.879900e-06,  1.977630e-04, -3.471100e-06],
+        [ 3.398330e-05, -4.590500e-06,  2.249352e-04]],
+
+    [[ 2.089116e-04, -2.017010e-05, -1.410880e-05],
+        [-2.109170e-05,  2.359424e-04,  3.132410e-05],
+        [-1.304160e-05,  3.171420e-05,  2.249453e-04]],
+
+    [[ 2.113641e-04, -2.251230e-05,  2.008190e-05],
+        [-2.158540e-05,  2.335098e-04, -2.789930e-05],
+        [ 2.096140e-05, -2.718030e-05,  2.249562e-04]],
+
+    [[ 2.470986e-04,  9.521000e-07, -3.419190e-05],
+        [ 1.879900e-06,  1.977630e-04, -3.471100e-06],
+        [-3.398330e-05, -4.590500e-06,  2.249352e-04]],
+
+    [[2.089116e-04, 2.017010e-05, 1.410880e-05],
+        [2.109170e-05, 2.359424e-04, 3.132410e-05],
+        [1.304160e-05, 3.171420e-05, 2.249453e-04]],
+])
+
+SUS_EXPECTED_VALUES = {
+        "value": np.array([
+            [-6.372115e-11,  0.000000e+00,  0.000000e+00],
+            [ 0.000000e+00, -6.375900e-11, -2.180000e-14],
+            [ 0.000000e+00,  3.085000e-14, -6.403545e-11]
+        ]) * ureg('meter**3 / mole'),
+
+        "value_vgv_approx": np.array([
+            [-6.26047e-11,  0.00000e+00,  0.00000e+00],
+            [ 0.00000e+00, -6.26340e-11,  5.90000e-15],
+            [ 0.00000e+00,  5.70000e-15, -6.29139e-11]
+        ]) * ureg('meter**3 / mole'),
+
+        "value_pgv_approx": np.array([
+            [-6.48376e-11,  0.00000e+00,  0.00000e+00],
+            [ 0.00000e+00, -6.48840e-11, -4.95000e-14],
+            [ 0.00000e+00,  5.60000e-14, -6.51570e-11]
+        ]) * ureg('meter**3 / mole')
+
+    }
 
 def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
@@ -380,22 +438,24 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     assert output.model_system_ref == simulation.model_system[0]
     assert output.model_method_ref == simulation.model_method[0]
 
-    debug(output.magnetic_shieldings)
-    debug(output.magnetic_shieldings[0].name)
-    debug(output.magnetic_shieldings[0].entity_ref)
-    debug(output.magnetic_shieldings[0].value)
+    #   MagneticShielding
+    ms = output.magnetic_shieldings
+    assert len(ms) == 9
+    for i in range(9):
+        assert ms[i].name == "MagneticShielding"
+        if i in [0, 1, 2]:
+            assert ms[i].entity_ref.chemical_symbol == "Si"
+        else:
+            assert ms[i].entity_ref.chemical_symbol == "O"
+        assert np.allclose(ms[i].value, MS_EXPECTED_VALUES[i], rtol=1e-10)
 
+    #   MagneticSusceptibility
+    sus = output.magnetic_susceptibilities[0]
+    assert sus.name == "MagneticSusceptibility"
+    assert np.allclose(sus.value, SUS_EXPECTED_VALUES["value"], rtol=1e-10)
+    assert np.allclose(sus.value_vgv_approx, SUS_EXPECTED_VALUES["value_vgv_approx"], rtol=1e-10)
+    assert np.allclose(sus.value_pgv_approx, SUS_EXPECTED_VALUES["value_pgv_approx"], rtol=1e-10)
 
-    #   Properties
-    assert len(output.m_xpath('magnetic_shieldings', dict=False)) == 9
-    for property_name in [
-        'magnetic_shieldings',
-        'magnetic_susceptibilities'
-    ]:
-        assert output.m_xpath(property_name, dict=False) is not None
-    #       MagneticShieldingTensor
-    for i, ms in enumerate(output.magnetic_shieldings):
-        assert ms.entity_ref.chemical_symbol == MODEL_SYSTEM_EXPECTED["particle_state_labels"][i]
 
 
 def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
