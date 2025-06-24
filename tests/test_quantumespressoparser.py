@@ -330,7 +330,7 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
 
     # Program
     assert simulation.program.name == 'GIPAW'
-    assert simulation.program.version == '7.4'
+    assert simulation.program.version == '7.4.1'
 
     # ModelSystem
     assert len(simulation.model_system) == 1
@@ -535,7 +535,7 @@ def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
     
     # Program
     assert simulation.program.name == 'GIPAW'
-    assert simulation.program.version == '7.4'
+    assert simulation.program.version == '7.4.1'
 
     # ModelSystem
     assert len(simulation.model_system) == 1
