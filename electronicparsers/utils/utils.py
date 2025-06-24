@@ -120,6 +120,7 @@ def ensure_unit(quantity, unit):
         return quantity
     return quantity * unit
 
+
 def convert_system_to_model_system(system: System):
     """
     Converte un oggetto System (vecchio schema) in un ModelSystem (nuovo schema).
@@ -184,8 +185,6 @@ def convert_system_to_model_system(system: System):
             model.bond_list = atoms.bond_list
 
     return model
-
-
 
 
 def convert_xcfunctional(xcfunc: XCFunctional) -> list[XCFunctional_simu]:

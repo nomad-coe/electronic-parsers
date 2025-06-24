@@ -359,8 +359,6 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     for index, symbol in enumerate(labels):
         assert model_system.particle_states[index].chemical_symbol == symbol
 
-    assert False
-
     # ModelMethod
     assert len(simulation.model_method) == 1
     assert simulation.model_method[0].m_def.name == 'DFT'
@@ -371,7 +369,6 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     assert dft.xc_functionals[0].libxc_name == 'GGA_C_PBE'
     assert dft.xc_functionals[1].name == 'exchange'
     assert dft.xc_functionals[1].libxc_name == 'GGA_X_PBE'
-
 
     # Outputs
     assert len(simulation.outputs) == 1

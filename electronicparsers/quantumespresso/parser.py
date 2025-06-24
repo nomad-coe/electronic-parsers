@@ -36,6 +36,7 @@ from electronicparsers.utils.qe_gipaw_workflow import (
 )
 from electronicparsers.vasp.parser import RunFileParser
 from nomad.datamodel import EntryArchive
+from nomad.metainfo.util import MSubSectionList
 
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import EntryArchive
@@ -102,11 +103,12 @@ from nomad_simulations.schema_packages.model_method import (
 from nomad_simulations.schema_packages.model_system import Cell, ModelSystem
 from nomad_nmr_schema.schema_packages.schema_package import (
     ElectricFieldGradient,
-    # ElectricFieldGradients,
-    # MagneticShieldingTensor,
+    MagneticShielding,
     MagneticSusceptibility,
     Outputs,
 )
+from nomad_simulations.schema_packages.atoms_state import AtomsState
+
 
 from devtools import debug
 
@@ -3030,7 +3032,7 @@ class NMRParser(MatchingParser):
     program_class = Program
     nmr_outputs_class = Outputs
     mag_susceptibility_class = MagneticSusceptibility
-    # mag_shielding_tensor = MagneticShieldingTensor
+    mag_shielding = MagneticShielding
 
     def __init__(
             self, 
@@ -3074,29 +3076,31 @@ class NMRParser(MatchingParser):
     
     def parse_magnetic_shieldings(
         self,
-        cell: Cell
-    ) -> list["NMRParser.mag_shielding_tensor"]:
-        pass
-        # n_atoms = len(cell.atoms_state)
+        particle_state: AtomsState
+    ) -> list["NMRParser.mag_shielding"]:
 
-        # data = self.parser.get('ms_list', [])
-        # # Initial check on the size of the matched text
-        # if np.size(data) != n_atoms * (9 + 2):
-        #     self.logger.warning(
-        #         "The shape of the matched text for the `ms_list` does not coincide with the number of atoms."
-        #     )
-        #     return []
+        n_atoms = len(particle_state)
 
-        # # Parse magnetic shieldings and their refs to the specific
-        # # `atom_state_class`
-        # magnetic_shieldings = []
-        # for i, atom_data in enumerate(data):
-        #     # values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
-        #     values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
-        #     sec_ms = self.mag_shielding_tensor(entity_ref=cell.atoms_state[i])
-        #     sec_ms.value = values * 1e-6 * ureg("dimensionless")
-        #     magnetic_shieldings.append(sec_ms)
-        # return magnetic_shieldings
+        data = self.parser.get('ms_list', [])
+        debug(data)
+
+        # Initial check on the size of the matched text
+        if np.size(data) != n_atoms * (9 + 2):
+            self.logger.warning(
+                "The shape of the matched text for the `ms_list` does not coincide with the number of atoms."
+            )
+            return []
+
+        # Parse magnetic shieldings and their refs to the specific AtomsState
+        magnetic_shieldings = []
+        for i, atom_data in enumerate(data):
+            # NOTE: is it necessary to transpose here?
+            values = np.transpose(np.reshape(atom_data[2:], (3, 3)))
+            sec_ms = self.mag_shielding(entity_ref=particle_state[i])
+            sec_ms.value = values * 1e-6 * ureg("dimensionless")
+        
+            magnetic_shieldings.append(sec_ms)
+        return magnetic_shieldings
 
     def parse_magnetic_susceptibilities(
             self
@@ -3135,19 +3139,19 @@ class NMRParser(MatchingParser):
         )
 
         if (
-            not simulation.model_system[-1].cell
+            not simulation.model_system[-1].particle_states
         ):
             self.logger.warning(
-                "Could not find the `cell` sub-section or the `atom_state_class`" \
-                " list under it."
+                "Could not find the `particle_states` sub-section."
             )
             return None
-        cell = simulation.model_system[-1].cell[-1]
 
-        # # magnetic shielding
-        # ms = self.parse_magnetic_shieldings(cell=cell)
-        # if len(ms) > 0:
-        #     outputs.magnetic_shieldings = ms
+        particle_states = simulation.model_system[-1].particle_states
+
+        # magnetic shielding
+        ms = self.parse_magnetic_shieldings(particle_state=particle_states)
+        if len(ms) > 0:
+            outputs.magnetic_shieldings = ms
 
         # magnetic susceptibility
         mag_sus = self.parse_magnetic_susceptibilities()
