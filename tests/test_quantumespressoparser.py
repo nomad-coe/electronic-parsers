@@ -54,64 +54,204 @@ MODEL_SYSTEM_EXPECTED = {
     "particle_state_labels": ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O'],
 }
 
-MS_EXPECTED_VALUES= np.array([
-    [[ 4.325142e-04,  5.825000e-07,  6.176400e-06],
-        [ 5.819000e-07,  4.318332e-04,  3.559900e-06],
-        [-1.130830e-05, -6.529500e-06,  4.295852e-04]],
+MS_EXPECTED_VALUES = {
+    "text": np.array([
+        [[ 4.325142e-04,  5.825000e-07,  6.176400e-06],
+         [ 5.819000e-07,  4.318332e-04,  3.559900e-06],
+         [-1.130830e-05, -6.529500e-06,  4.295852e-04]],
 
-    [[ 4.325142e-04, -5.825000e-07, -6.176400e-06],
-        [-5.819000e-07,  4.318332e-04,  3.559900e-06],
-        [ 1.130830e-05, -6.529500e-06,  4.295852e-04]],
+        [[ 4.325142e-04, -5.825000e-07, -6.176400e-06],
+         [-5.819000e-07,  4.318332e-04,  3.559900e-06],
+         [ 1.130830e-05, -6.529500e-06,  4.295852e-04]],
 
-    [[ 4.314911e-04,  0.000000e+00,  0.000000e+00],
-        [ 0.000000e+00,  4.328567e-04, -7.129500e-06],
-        [ 0.000000e+00,  1.306330e-05,  4.295880e-04]],
+        [[ 4.314911e-04,  0.000000e+00,  0.000000e+00],
+         [ 0.000000e+00,  4.328567e-04, -7.129500e-06],
+         [ 0.000000e+00,  1.306330e-05,  4.295880e-04]],
 
-    [[ 2.113641e-04,  2.251230e-05, -2.008190e-05],
-        [ 2.158540e-05,  2.335098e-04, -2.789930e-05],
-        [-2.096140e-05, -2.718030e-05,  2.249562e-04]],
+        [[ 2.113641e-04,  2.251230e-05, -2.008190e-05],
+         [ 2.158540e-05,  2.335098e-04, -2.789930e-05],
+         [-2.096140e-05, -2.718030e-05,  2.249562e-04]],
 
-    [[ 2.470986e-04, -9.521000e-07,  3.419190e-05],
-        [-1.879900e-06,  1.977630e-04, -3.471100e-06],
-        [ 3.398330e-05, -4.590500e-06,  2.249352e-04]],
+        [[ 2.470986e-04, -9.521000e-07,  3.419190e-05],
+         [-1.879900e-06,  1.977630e-04, -3.471100e-06],
+         [ 3.398330e-05, -4.590500e-06,  2.249352e-04]],
 
-    [[ 2.089116e-04, -2.017010e-05, -1.410880e-05],
-        [-2.109170e-05,  2.359424e-04,  3.132410e-05],
-        [-1.304160e-05,  3.171420e-05,  2.249453e-04]],
+        [[ 2.089116e-04, -2.017010e-05, -1.410880e-05],
+         [-2.109170e-05,  2.359424e-04,  3.132410e-05],
+         [-1.304160e-05,  3.171420e-05,  2.249453e-04]],
 
-    [[ 2.113641e-04, -2.251230e-05,  2.008190e-05],
-        [-2.158540e-05,  2.335098e-04, -2.789930e-05],
-        [ 2.096140e-05, -2.718030e-05,  2.249562e-04]],
+        [[ 2.113641e-04, -2.251230e-05,  2.008190e-05],
+         [-2.158540e-05,  2.335098e-04, -2.789930e-05],
+         [ 2.096140e-05, -2.718030e-05,  2.249562e-04]],
 
-    [[ 2.470986e-04,  9.521000e-07, -3.419190e-05],
-        [ 1.879900e-06,  1.977630e-04, -3.471100e-06],
-        [-3.398330e-05, -4.590500e-06,  2.249352e-04]],
+        [[ 2.470986e-04,  9.521000e-07, -3.419190e-05],
+         [ 1.879900e-06,  1.977630e-04, -3.471100e-06],
+         [-3.398330e-05, -4.590500e-06,  2.249352e-04]],
 
-    [[2.089116e-04, 2.017010e-05, 1.410880e-05],
-        [2.109170e-05, 2.359424e-04, 3.132410e-05],
-        [1.304160e-05, 3.171420e-05, 2.249453e-04]],
-])
+        [[2.089116e-04, 2.017010e-05, 1.410880e-05],
+         [2.109170e-05, 2.359424e-04, 3.132410e-05],
+         [1.304160e-05, 3.171420e-05, 2.249453e-04]],
+    ]),
+
+    "xml": np.array([
+        [[ 4.41563539e-04,  7.39057663e-07,  6.31690773e-06],
+         [ 6.26376541e-07,  4.40604944e-04,  3.56587984e-06],
+         [-1.14783591e-05, -6.62512101e-06,  4.38388924e-04]],
+        
+        [[ 4.41563539e-04, -7.39057663e-07, -6.31690773e-06],
+         [-6.26376541e-07,  4.40604944e-04,  3.56587984e-06],
+         [ 1.14783591e-05, -6.62512101e-06,  4.38388924e-04]],
+
+        [[ 4.40310991e-04,  5.80716167e-22, -9.24422859e-23],
+         [-2.76820504e-20,  4.42180289e-04, -7.24753948e-06],
+         [ 7.89501593e-23,  1.33063891e-05,  4.38546713e-04]],
+
+        [[ 2.12248892e-04,  2.17201148e-05, -1.92951632e-05],
+         [ 2.09382548e-05,  2.33142256e-04, -2.72806345e-05],
+         [-2.04661901e-05, -2.67712434e-05,  2.25241935e-04]],
+
+        [[ 2.46993992e-04, -8.60713658e-07,  3.31460618e-05],
+         [-1.75607782e-06,  1.98580619e-04, -3.51434621e-06],
+         [ 3.28081306e-05, -4.68602317e-06,  2.24946526e-04]],
+
+        [[ 2.10056139e-04, -1.97009764e-05, -1.37998736e-05],
+         [-2.04954639e-05,  2.35244330e-04,  3.00495401e-05],
+         [-1.26765796e-05,  3.05365331e-05,  2.25168117e-04]],
+
+        [[ 2.12248892e-04, -2.17201148e-05,  1.92951632e-05],
+         [-2.09382548e-05,  2.33142256e-04, -2.72806345e-05],
+         [ 2.04661901e-05, -2.67712434e-05,  2.25241935e-04]],
+
+        [[ 2.46993992e-04,  8.60713658e-07, -3.31460618e-05],
+         [ 1.75607782e-06,  1.98580619e-04, -3.51434621e-06],
+         [-3.28081306e-05, -4.68602317e-06,  2.24946526e-04]],
+
+        [[2.10056139e-04, 1.97009764e-05, 1.37998736e-05],
+         [2.04954639e-05, 2.35244330e-04, 3.00495401e-05],
+         [1.26765796e-05, 3.05365331e-05, 2.25168117e-04]],
+    ])
+}
 
 SUS_EXPECTED_VALUES = {
-        "value": np.array([
-            [-6.372115e-11,  0.000000e+00,  0.000000e+00],
-            [ 0.000000e+00, -6.375900e-11, -2.180000e-14],
-            [ 0.000000e+00,  3.085000e-14, -6.403545e-11]
-        ]) * ureg('meter**3 / mole'),
+        "text": {
+            "value": np.array([
+                [-6.372115e-11,  0.000000e+00,  0.000000e+00],
+                [ 0.000000e+00, -6.375900e-11, -2.180000e-14],
+                [ 0.000000e+00,  3.085000e-14, -6.403545e-11]
+            ]) * ureg('meter**3 / mole'),
 
-        "value_vgv_approx": np.array([
-            [-6.26047e-11,  0.00000e+00,  0.00000e+00],
-            [ 0.00000e+00, -6.26340e-11,  5.90000e-15],
-            [ 0.00000e+00,  5.70000e-15, -6.29139e-11]
-        ]) * ureg('meter**3 / mole'),
+            "value_vgv_approx": np.array([
+                [-6.26047e-11,  0.00000e+00,  0.00000e+00],
+                [ 0.00000e+00, -6.26340e-11,  5.90000e-15],
+                [ 0.00000e+00,  5.70000e-15, -6.29139e-11]
+            ]) * ureg('meter**3 / mole'),
 
-        "value_pgv_approx": np.array([
-            [-6.48376e-11,  0.00000e+00,  0.00000e+00],
-            [ 0.00000e+00, -6.48840e-11, -4.95000e-14],
-            [ 0.00000e+00,  5.60000e-14, -6.51570e-11]
-        ]) * ureg('meter**3 / mole')
+            "value_pgv_approx": np.array([
+                [-6.48376e-11,  0.00000e+00,  0.00000e+00],
+                [ 0.00000e+00, -6.48840e-11, -4.95000e-14],
+                [ 0.00000e+00,  5.60000e-14, -6.51570e-11]
+            ]) * ureg('meter**3 / mole')
+        },
+
+        "xml": {
+            "value": np.array([
+                [-6.66333614e+01,  0.00000000e+00,  0.00000000e+00],
+                [ 0.00000000e+00, -6.66955489e+01, -7.12042136e-02],
+                [ 0.00000000e+00, -3.54456212e-02, -6.65337517e+01]
+            ]) * ureg('meter ** 3 / mole'),
+
+            "value_vgv_approx": np.array([
+                [-6.84937768e+01,  0.00000000e+00,  0.00000000e+00],
+                [ 0.00000000e+00, -6.85853665e+01, -1.09507752e-01],
+                [ 0.00000000e+00, -3.80460314e-02, -6.83273167e+01]
+            ]) * ureg('meter ** 3 / mole'),
+
+            "value_pgv_approx": np.array([
+                [-6.47729461e+01,  0.00000000e+00,  0.00000000e+00],
+                [ 0.00000000e+00, -6.48057312e+01, -3.29006750e-02],
+                [ 0.00000000e+00, -3.28452110e-02, -6.47401867e+01]
+            ]) * ureg('meter ** 3 / mole')
+        }
 
     }
+
+EFG_EXPECTED_VALUES = {
+    "text": np.array([
+        [[-0.027004, -0.061522,  0.013644],
+         [-0.061522,  0.044065,  0.007889],
+         [ 0.013644,  0.007889, -0.017062]],
+
+        [[-0.027004,  0.061522, -0.013644],
+         [ 0.061522,  0.044065,  0.007889],
+         [-0.013644,  0.007889, -0.017062]],
+
+        [[ 0.079563,  0.      ,  0.      ],
+         [ 0.      , -0.062482, -0.015764],
+         [ 0.      , -0.015764, -0.017081]],
+
+        [[-0.193956,  0.386184, -0.440635],
+         [ 0.386184,  0.181931, -0.48823 ],
+         [-0.440635, -0.48823 ,  0.012026]],
+
+        [[ 0.422345, -0.030355,  0.643132],
+         [-0.030355, -0.434371, -0.137484],
+         [ 0.643132, -0.137484,  0.012026]],
+
+        [[-0.246543, -0.35583 , -0.202511],
+         [-0.35583 ,  0.234523,  0.625715],
+         [-0.202511,  0.625715,  0.012021]],
+
+        [[-0.193956, -0.386184,  0.440635],
+         [-0.386184,  0.181931, -0.48823 ],
+         [ 0.440635, -0.48823 ,  0.012026]],
+
+        [[ 0.422345,  0.030355, -0.643132],
+         [ 0.030355, -0.434371, -0.137484],
+         [-0.643132, -0.137484,  0.012026]],
+         
+        [[-0.246543,  0.35583 ,  0.202511],
+         [ 0.35583 ,  0.234523,  0.625715],
+         [ 0.202511,  0.625715,  0.012021]],
+    ]) * ureg('attounified_atomic_mass_unit'),
+
+    "xml": np.array([
+        [[-0.0272077 , -0.06280041,  0.01391215],
+         [-0.06280041,  0.04512257,  0.00797996],
+         [ 0.01391215,  0.00797996, -0.01791486]],
+
+        [[-0.0272077 ,  0.06280041, -0.01391215],
+         [ 0.06280041,  0.04512257,  0.00797996],
+         [-0.01391215,  0.00797996, -0.01791486]],
+
+        [[ 0.08153004 , 0.         , 0.        ],
+         [ 0.        , -0.06350954, -0.01608141],
+         [ 0.        , -0.01608141, -0.01802049]],
+
+        [[-0.18840037,  0.37935967, -0.431783  ],
+         [ 0.37935967,  0.1782501 , -0.47938534],
+         [-0.431783  , -0.47938534,  0.01015027]],
+
+        [[ 0.41482547, -0.03115247,  0.6311346 ],
+         [-0.03115247, -0.4249499 , -0.13439391],
+         [ 0.6311346 , -0.13439391,  0.01012443]],
+
+        [[-0.24217828, -0.3482194 , -0.19920104],
+         [-0.3482194 ,  0.23206629,  0.61361959],
+         [-0.19920104,  0.61361959,  0.01011199]],
+
+        [[-0.18840037, -0.37935967,  0.431783  ],
+         [-0.37935967,  0.1782501 , -0.47938534],
+         [ 0.431783  , -0.47938534,  0.01015027]],
+
+        [[ 0.41482547,  0.03115247, -0.6311346 ],
+         [ 0.03115247, -0.4249499 , -0.13439391],
+         [-0.6311346 , -0.13439391,  0.01012443]],
+
+        [[-0.24217828,  0.3482194 ,  0.19920104],
+         [ 0.3482194 ,  0.23206629,  0.61361959],
+         [ 0.19920104,  0.61361959,  0.01011199]],
+    ]) * ureg('attounified_atomic_mass_unit')
+}
 
 def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
@@ -407,7 +547,7 @@ def test_xc_functional_conversion(quartz_scf_fixtures):
     assert xc_functionals[1].name == 'correlation'
 
 
-def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
+def test_nmr_text(quartz_scf_fixtures):
     archive = EntryArchive()
     model_system, _ = quartz_scf_fixtures
     parser = NMRParser(system=model_system, xc_func_list=None)
@@ -427,7 +567,6 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
     assert simulation.model_system[0].is_representative
     
     # ModelMethod
-    debug(simulation.model_method)
     assert len(simulation.model_method) == 1
     assert simulation.model_method[0].name == 'NMR'
 
@@ -447,18 +586,17 @@ def test_nmr_text(quartz_scf_fixtures, quartz_expected_cell):
             assert ms[i].entity_ref.chemical_symbol == "Si"
         else:
             assert ms[i].entity_ref.chemical_symbol == "O"
-        assert np.allclose(ms[i].value, MS_EXPECTED_VALUES[i], rtol=1e-10)
+        assert np.allclose(ms[i].value, MS_EXPECTED_VALUES["text"][i], rtol=1e-10)
 
     #   MagneticSusceptibility
     sus = output.magnetic_susceptibilities[0]
     assert sus.name == "MagneticSusceptibility"
-    assert np.allclose(sus.value, SUS_EXPECTED_VALUES["value"], rtol=1e-10)
-    assert np.allclose(sus.value_vgv_approx, SUS_EXPECTED_VALUES["value_vgv_approx"], rtol=1e-10)
-    assert np.allclose(sus.value_pgv_approx, SUS_EXPECTED_VALUES["value_pgv_approx"], rtol=1e-10)
+    assert np.allclose(sus.value, SUS_EXPECTED_VALUES["text"]["value"], rtol=1e-10)
+    assert np.allclose(sus.value_vgv_approx, SUS_EXPECTED_VALUES["text"]["value_vgv_approx"], rtol=1e-10)
+    assert np.allclose(sus.value_pgv_approx, SUS_EXPECTED_VALUES["text"]["value_pgv_approx"], rtol=1e-10)
 
 
-
-def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
+def test_nmr_xml(quartz_scf_fixtures):
     archive = EntryArchive()
     model_system, xc_fun_list = quartz_scf_fixtures
     parser = NMRParser(system=model_system, xc_func_list=xc_fun_list)
@@ -476,60 +614,39 @@ def test_nmr_xml(quartz_scf_fixtures, quartz_expected_cell):
     # ModelSystem
     assert len(simulation.model_system) == 1
     model_system = simulation.model_system[0]
-    assert model_system.is_representative
-    model_system.n_particles == 9
-    assert np.allclose(
-        model_system.positions.to('meter').magnitude,
-        MODEL_SYSTEM_EXPECTED["positions"].to('meter').magnitude,
-        rtol=1e-8
-    )
-
-    #   Cell
-    atomic_cell = model_system.cell[0]
-
-    assert np.allclose(
-        atomic_cell.lattice_vectors.to('meter').magnitude,
-        quartz_expected_cell.lattice_vectors.to('meter').magnitude,
-        rtol=1e-8
-    )
-    assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
-
-    #       ParticleStates
-    labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
-    for index, symbol in enumerate(labels):
-        assert model_system.particle_states[index].chemical_symbol == symbol
-
 
     # ModelMethod
     assert len(simulation.model_method) == 1
-    assert simulation.model_method[0].m_def.name == 'DFT'
     assert simulation.model_method[0].name == 'NMR'
-    dft = simulation.model_method[0]
-    assert len(dft.xc_functionals) == 2
-    assert dft.xc_functionals[1].name == 'correlation'
-    assert dft.xc_functionals[1].libxc_name == 'GGA_C_PBE'
-    assert dft.xc_functionals[0].name == 'exchange'
-    assert dft.xc_functionals[0].libxc_name == 'GGA_X_PBE'
-
 
     # Outputs
     assert len(simulation.outputs) == 1
     output = simulation.outputs[0]
-    assert output.model_system_ref == model_system
-    assert output.model_method_ref == dft
-    #   Properties
-    assert len(output.m_xpath('magnetic_shieldings', dict=False)) == 9
-    for property_name in [
-        'magnetic_shieldings',
-        'magnetic_susceptibilities'
-    ]:
-        assert output.m_xpath(property_name, dict=False) is not None
-    #       MagneticShieldingTensor
-    for i, ms in enumerate(output.magnetic_shieldings):
-        assert ms.entity_ref.chemical_symbol == labels[i]
+
+    assert output.model_system_ref == simulation.model_system[0]
+    assert output.model_method_ref == simulation.model_method[0]
+
+    #   MagneticShielding
+    ms = output.magnetic_shieldings
+    assert len(ms) == 9
+    for i in range(9):
+        debug(i)
+        assert ms[i].name == "MagneticShielding"
+        if i in [0, 1, 2]:
+            assert ms[i].entity_ref.chemical_symbol == "Si"
+        else:
+            assert ms[i].entity_ref.chemical_symbol == "O"
+        assert np.allclose(ms[i].value, MS_EXPECTED_VALUES["xml"][i], rtol=1e-10)
+
+    #   MagneticSusceptibility
+    sus = output.magnetic_susceptibilities[0]
+    assert sus.name == "MagneticSusceptibility"
+    assert np.allclose(sus.value.magnitude, SUS_EXPECTED_VALUES["xml"]["value"].magnitude, rtol=1e-8)
+    assert np.allclose(sus.value_vgv_approx.magnitude, SUS_EXPECTED_VALUES["xml"]["value_vgv_approx"].magnitude, rtol=1e-8)
+    assert np.allclose(sus.value_pgv_approx.magnitude, SUS_EXPECTED_VALUES["xml"]["value_pgv_approx"].magnitude, rtol=1e-8)
 
 
-def test_efg_xml(quartz_scf_fixtures, quartz_expected_cell):
+def test_efg_xml(quartz_scf_fixtures):
     archive = EntryArchive()
     model_system, xc_fun_list = quartz_scf_fixtures
     parser = EFGParser(system=model_system, xc_func_list=xc_fun_list)
@@ -546,54 +663,33 @@ def test_efg_xml(quartz_scf_fixtures, quartz_expected_cell):
 
     # ModelSystem
     assert len(simulation.model_system) == 1
-    model_system = simulation.model_system[0]
-    assert model_system.is_representative
-    model_system.n_particles == 9
-    assert np.allclose(
-        model_system.positions.to('meter').magnitude,
-        MODEL_SYSTEM_EXPECTED["positions"].to('meter').magnitude,
-        rtol=1e-8
-    )
-
-    #   Cell
-    atomic_cell = model_system.cell[0]
-
-    assert np.allclose(
-        atomic_cell.lattice_vectors.to('meter').magnitude,
-        quartz_expected_cell.lattice_vectors.to('meter').magnitude,
-        rtol=1e-8
-    )
-    assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
-
-    #       ParticleStates
-    labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
-    for index, symbol in enumerate(labels):
-        assert model_system.particle_states[index].chemical_symbol == symbol
-
+    assert simulation.model_system[0].is_representative
     
-
     # ModelMethod
     assert len(simulation.model_method) == 1
-    assert simulation.model_method[0].m_def.name == 'DFT'
     assert simulation.model_method[0].name == 'EFG'
-    dft = simulation.model_method[0]
-    assert len(dft.xc_functionals) == 2
-    assert dft.xc_functionals[1].name == 'correlation'
-    assert dft.xc_functionals[1].libxc_name == 'GGA_C_PBE'
-    assert dft.xc_functionals[0].name == 'exchange'
-    assert dft.xc_functionals[0].libxc_name == 'GGA_X_PBE'
-
 
     # Outputs
     assert len(simulation.outputs) == 1
     output = simulation.outputs[0]
-    assert output.model_system_ref == model_system
-    assert output.model_method_ref == dft
-    #   Properties
-    assert output.m_xpath('electric_field_gradients', dict=False) is not None
+
+    assert output.model_system_ref == simulation.model_system[0]
+    assert output.model_method_ref == simulation.model_method[0]
+
+    #   ElectricFieldGradient
+    efg = output.electric_field_gradients
+    assert len(efg) == 9
+    for i in range(9):
+        assert efg[i].name == "ElectricFieldGradient"
+        assert efg[i].type == "total"
+        if i in [0, 1, 2]:
+            assert efg[i].entity_ref.chemical_symbol == "Si"
+        else:
+            assert efg[i].entity_ref.chemical_symbol == "O"
+        assert np.allclose(efg[i].value, EFG_EXPECTED_VALUES["xml"][i], rtol=1e-10)
 
 
-def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
+def test_efg_text(quartz_scf_fixtures):
     archive = EntryArchive()
     model_system, _ = quartz_scf_fixtures
     parser = EFGParser(system=model_system, xc_func_list=None)
@@ -610,57 +706,29 @@ def test_efg_text(quartz_scf_fixtures, quartz_expected_cell):
 
     # ModelSystem
     assert len(simulation.model_system) == 1
-    model_system = simulation.model_system[0]
-    assert model_system.is_representative
-    model_system.n_particles == 9
-    assert np.allclose(
-        model_system.positions.to('meter').magnitude,
-        MODEL_SYSTEM_EXPECTED["positions"].to('meter').magnitude,
-        rtol=1e-8
-    )
-
-    #   Cell
-    atomic_cell = model_system.cell[0]
-
-    assert np.allclose(
-        atomic_cell.lattice_vectors.to('meter').magnitude,
-        quartz_expected_cell.lattice_vectors.to('meter').magnitude,
-        rtol=1e-8
-    )
-    assert atomic_cell.periodic_boundary_conditions == quartz_expected_cell.periodic_boundary_conditions
-
-    #       ParticleStates
-    labels = ['Si', 'Si', 'Si', 'O', 'O', 'O', 'O', 'O', 'O']
-    for index, symbol in enumerate(labels):
-        assert model_system.particle_states[index].chemical_symbol == symbol
-
-
+    assert simulation.model_system[0].is_representative
+    
     # ModelMethod
     assert len(simulation.model_method) == 1
-    assert simulation.model_method[0].m_def.name == 'DFT'
     assert simulation.model_method[0].name == 'EFG'
-    dft = simulation.model_method[0]
-    assert len(dft.xc_functionals) == 2
-    assert dft.xc_functionals[0].name == 'correlation'
-    assert dft.xc_functionals[0].libxc_name == 'GGA_C_PBE'
-    assert dft.xc_functionals[1].name == 'exchange'
-    assert dft.xc_functionals[1].libxc_name == 'GGA_X_PBE'
-
 
     # Outputs
     assert len(simulation.outputs) == 1
     output = simulation.outputs[0]
-    assert output.model_system_ref == model_system
-    assert output.model_method_ref == dft
 
-    debug(output.electric_field_gradients[0])
-    debug(output.electric_field_gradients[0].name)
-    debug(output.electric_field_gradients[0].type)
-    debug(output.electric_field_gradients[0].entity_ref.chemical_symbol)
-    debug(output.electric_field_gradients[0].value)
-    debug(output.electric_field_gradients[0].Vzz)
+    assert output.model_system_ref == simulation.model_system[0]
+    assert output.model_method_ref == simulation.model_method[0]
 
-
-    #   Properties
-    assert output.m_xpath('electric_field_gradients', dict=False) is not None
+    #   ElectricFieldGradient
+    efg = output.electric_field_gradients
+    assert len(efg) == 9
+    for i in range(9):
+        assert efg[i].name == "ElectricFieldGradient"
+        assert efg[i].type == "total"
+        if i in [0, 1, 2]:
+            assert efg[i].entity_ref.chemical_symbol == "Si"
+        else:
+            assert efg[i].entity_ref.chemical_symbol == "O"
+        assert np.allclose(efg[i].value, EFG_EXPECTED_VALUES["text"][i], rtol=1e-10)
+        
     
