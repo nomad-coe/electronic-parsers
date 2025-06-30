@@ -253,6 +253,47 @@ EFG_EXPECTED_VALUES = {
     ]) * ureg('attounified_atomic_mass_unit')
 }
 
+
+HYPERFINE_EXPECTED_VALUES = {
+    "text": {
+        "hyperfine_dipolar": np.array([
+            [[ 5.76604060e+01, -1.97200000e-03, -3.80000000e-05],
+             [-1.97200000e-03,  5.94429010e+01,  9.77000000e-04],
+             [-3.80000000e-05,  9.77000000e-04, -1.17103308e+02]],
+
+            [[ 1.4174625e+01,  2.5342277e+01,  5.3000000e-05],
+             [ 2.5342277e+01, -7.0013450e+00,  2.0000000e-06],
+             [ 5.3000000e-05,  2.0000000e-06, -7.1732800e+00]],
+
+            [[ 1.4173708e+01, -2.5341446e+01, -5.5000000e-05],
+             [-2.5341446e+01, -7.0010440e+00,  4.0000000e-06],
+             [-5.5000000e-05,  4.0000000e-06, -7.1726650e+00]],
+        ]) * ureg('megahertz'),
+
+        "hyperfine_fermi_contact": np.array(
+            [-30.412075, -24.194861, -24.181703]
+        ) * ureg('megahertz')
+    }
+}
+
+
+G_TENSOR_EXPECTED_VALUES = {
+    "text": {
+        "delta_g": np.array(
+            [[ 1.263998e+04,  0.000000e+00, -0.000000e+00],
+             [ 1.000000e-02,  4.508840e+03,  1.000000e-02],
+             [-0.000000e+00,  0.000000e+00, -1.289000e+02]]
+        ),
+
+        "delta_g_paratec": np.array(
+            [[ 1.263998e+04,  0.000000e+00, -0.000000e+00],
+             [ 1.000000e-02,  4.508840e+03,  1.000000e-02],
+             [-0.000000e+00,  0.000000e+00, -1.289000e+02]]
+        )
+    }
+}
+
+
 def approx(value, abs=0, rel=1e-6):
     return pytest.approx(value, abs=abs, rel=rel)
 
@@ -536,7 +577,6 @@ def test_mainfile_keys(parser):
     assert mainfile_keys3[1] == 'GIPAW_Workflow'    
     
 
-
 def test_system_to_model_system_conversion(quartz_scf_fixtures, quartz_expected_cell):
     model_system, _ = quartz_scf_fixtures
 
@@ -754,7 +794,6 @@ def test_efg_text(quartz_scf_fixtures):
         assert np.allclose(efg[i].value, EFG_EXPECTED_VALUES["text"][i], rtol=1e-10)
         
 
-
 def test_epr_hyperfine_text(h2o_scf_fixtures):
     archive = EntryArchive()
     model_system, _ = h2o_scf_fixtures
@@ -765,17 +804,46 @@ def test_epr_hyperfine_text(h2o_scf_fixtures):
         logger=None)
     
     simulation = archive.data
-
-    debug(simulation.outputs[0].hyperfine_dipolar)
-    debug(simulation.outputs[0].hyperfine_fermi_contact)
-
     
-    # # Program
-    # assert simulation.program.name == 'GIPAW'
-    # assert simulation.program.version == '7.4.1'
+    # Program
+    assert simulation.program.name == 'GIPAW'
+    assert simulation.program.version == '6.4.1'
 
+    # ModelSystem
+    assert len(simulation.model_system) == 1
+    assert simulation.model_system[0].is_representative
+    
+    # ModelMethod
+    assert len(simulation.model_method) == 1
+    assert simulation.model_method[0].name == 'EPR_Hyperfine'
 
+    # Outputs
+    assert len(simulation.outputs) == 1
+    output = simulation.outputs[0]
 
+    debug(output)
+
+    #   HyperfineDipolar
+    hd = output.hyperfine_dipolar
+    assert len(hd) == 3
+    for i in range(3):
+        assert hd[i].name == "HyperfineDipolar"
+        if i in [0]:
+            assert hd[i].entity_ref.chemical_symbol == "O"
+        else:
+            assert hd[i].entity_ref.chemical_symbol == "H"
+        assert np.allclose(hd[i].value, HYPERFINE_EXPECTED_VALUES["text"]["hyperfine_dipolar"][i], rtol=1e-10)
+
+    #   HyperfineFermiContact
+    hfc = output.hyperfine_fermi_contact
+    assert len(hfc) == 3
+    for i in range(3):
+        assert hfc[i].name == "HyperfineFermiContact"
+        if i in [0]:
+            assert hfc[i].entity_ref.chemical_symbol == "O"
+        else:
+            assert hfc[i].entity_ref.chemical_symbol == "H"
+        assert np.allclose(hfc[i].value, HYPERFINE_EXPECTED_VALUES["text"]["hyperfine_fermi_contact"][i], rtol=1e-10)
 
 
 def test_epr_gtensor_text(h2o_scf_fixtures):
@@ -788,15 +856,26 @@ def test_epr_gtensor_text(h2o_scf_fixtures):
         logger=None)
     
     simulation = archive.data
-
-    # debug(simulation.outputs[0].delta_g[0].value)
-    # debug(simulation.outputs[0].delta_g_paratec[0].value)
-
-    debug(simulation.outputs)
-    debug(simulation.outputs[0])
-
-
     
-    # # Program
-    # assert simulation.program.name == 'GIPAW'
-    # assert simulation.program.version == '7.4.1'
+    # Program
+    assert simulation.program.name == 'GIPAW'
+    assert simulation.program.version == '6.4.1'
+
+    # ModelSystem
+    assert len(simulation.model_system) == 1
+    assert simulation.model_system[0].is_representative
+    
+    # ModelMethod
+    assert len(simulation.model_method) == 1
+    assert simulation.model_method[0].name == 'EPR_Gtensor'
+
+    # Outputs
+    assert len(simulation.outputs) == 1
+    output = simulation.outputs[0]
+
+    #   Delta G
+    assert np.allclose(output.delta_g[0].value, G_TENSOR_EXPECTED_VALUES["text"]["delta_g"], rtol=1e-10)
+
+    #   Delta G Paratec
+    assert np.allclose(output.delta_g_paratec[0].value, G_TENSOR_EXPECTED_VALUES["text"]["delta_g_paratec"], rtol=1e-10)
+
