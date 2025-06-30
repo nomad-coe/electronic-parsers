@@ -19,7 +19,7 @@
 import pytest
 import numpy as np
 
-from electronicparsers.quantumespresso.parser import EFGParser
+from electronicparsers.quantumespresso.parser import EFGParser, EPRHyperfineParser
 from electronicparsers.utils.utils import (
     convert_system_to_model_system,
     convert_xcfunctional
@@ -278,6 +278,22 @@ def quartz_scf_fixtures(parser):
     )
     return model_system, xc_fun_list
 
+@pytest.fixture(scope='module')
+def h2o_scf_fixtures(parser):
+    archive = EntryArchive()
+    parser.parse(
+        'tests/data/quantumespresso/H2O+/H2O+_scf.out',
+        archive,
+        None
+    )
+    model_system = convert_system_to_model_system(
+        system=archive.run[-1].system[-1]
+    )
+    xc_fun_list = convert_xcfunctional(
+        archive.run[-1].method[-1].dft.xc_functional
+    )
+    return model_system, xc_fun_list
+
 
 @pytest.fixture(scope='module')
 def quartz_expected_cell():
@@ -514,6 +530,12 @@ def test_mainfile_keys(parser):
     mainfile_keys2 = parser.get_mainfile_keys(filename=filepath2)
     assert mainfile_keys2
 
+    filepath3 = 'tests/data/quantumespresso/H2O+/H2O+_scf.out'
+    mainfile_keys3 = parser.get_mainfile_keys(filename=filepath3)
+    assert mainfile_keys3[0] == 'Hyperfine'
+    assert mainfile_keys3[1] == 'GIPAW_Workflow'    
+    
+
 
 def test_system_to_model_system_conversion(quartz_scf_fixtures, quartz_expected_cell):
     model_system, _ = quartz_scf_fixtures
@@ -731,4 +753,24 @@ def test_efg_text(quartz_scf_fixtures):
             assert efg[i].entity_ref.chemical_symbol == "O"
         assert np.allclose(efg[i].value, EFG_EXPECTED_VALUES["text"][i], rtol=1e-10)
         
+
+
+def test_epr_text(h2o_scf_fixtures):
+    archive = EntryArchive()
+    model_system, _ = h2o_scf_fixtures
+    parser = EPRHyperfineParser(system=model_system, xc_func_list=None)
+    parser.parse(
+        filepath='tests/data/quantumespresso/H2O+/H2O+_hyperfine.out',
+        archive=archive,
+        logger=None)
     
+    simulation = archive.data
+
+    debug(simulation.outputs[0].hyperfine_dipolar)
+    debug(simulation.outputs[0].hyperfine_fermi_contact)
+
+    
+    # # Program
+    # assert simulation.program.name == 'GIPAW'
+    # assert simulation.program.version == '7.4.1'
+

@@ -1,0 +1,239 @@
+
+     Program GIPAW v.6.4.1 starts on 29May2019 at 13:26:56 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI), running on     4 processors
+
+     MPI processes distributed on     1 nodes
+     R & G space division:  proc/nbgrp/npool/nimage =       4
+ 
+     ***** This is GIPAW git revision 5391d9015a1d0d7f243b4ea6da3c02ea5229b7f7 *****
+     ***** you can cite: N. Varini et al., Comp. Phys. Comm. 184, 1827 (2013)  *****
+     ***** in publications or presentations arising from this work.            *****
+ 
+     Parallelizing q-star over 1 images
+
+     Reading data from directory:
+     /tmp/ceresoli/h2o+.save/
+
+     IMPORTANT: XC functional enforced from input :
+     Exchange-correlation      = PBE ( 1  4  3  4 0 0)
+     Any further DFT definition will be discarded
+     Please, verify this is what you really want
+
+ 
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min        3186    3186    795               270187   270187   33760
+     Max        3187    3187    796               270188   270188   33761
+     Sum       12745   12745   3181              1080751  1080751  135043
+ 
+     Generating pointlists ...
+     new r_m :   0.0389 (alat units)  0.7787 (a.u.) for type    1
+     new r_m :   0.0389 (alat units)  0.7787 (a.u.) for type    2
+
+     Subspace diagonalization in iterative solution of the eigenvalue problem:
+     a serial algorithm will be used
+
+     GIPAW projectors -----------------------------------------------
+     atom=  O    l=0  rc=    1.4500  rs=    0.9667
+     atom=  O    l=0  rc=    1.4500  rs=    0.9667
+     atom=  O    l=1  rc=    1.4500  rs=    0.9667
+     atom=  O    l=1  rc=    1.4500  rs=    0.9667
+     projs nearly linearly dependent: l=1  n1,n2= 1, 2  s= -0.99382826
+ 
+     atom=  H    l=0  rc=    1.2000  rs=    0.8000
+     atom=  H    l=0  rc=    1.2000  rs=    0.8000
+     projs nearly linearly dependent: l=0  n1,n2= 1, 2  s= -0.99707079
+     -----------------------------------------------------------------
+ 
+     GIPAW integrals: -------------------------------------------
+     Atom  i/j   nmr_para   nmr_dia   epr_rmc  epr_para   epr_dia
+       O   1 1   0.94E+03  0.22E+00  0.82E+01  0.16E+05  0.59E+01
+       O   2 1  -0.11E+04 -0.25E+00 -0.99E+01 -0.19E+05 -0.75E+01
+       O   2 2   0.13E+04  0.29E+00  0.12E+02  0.22E+05  0.97E+01
+       O   3 3   0.43E+01  0.13E+00  0.12E+01  0.98E+02  0.24E+01
+       O   4 3  -0.53E+01 -0.19E+00 -0.16E+01 -0.12E+03 -0.33E+01
+       O   4 4   0.64E+01  0.26E+00  0.23E+01  0.14E+03  0.45E+01
+       H   1 1   0.26E+02  0.66E-01  0.98E-01  0.15E+03  0.20E+00
+       H   2 1  -0.30E+02 -0.85E-01 -0.13E+00 -0.17E+03 -0.26E+00
+       H   2 2   0.35E+02  0.11E+00  0.18E+00  0.19E+03  0.36E+00
+     ------------------------------------------------------------
+ 
+     alpha_pv=     35.2958 eV
+ 
+     Number of occupied bands for each k-point:
+     k-point:     1    nbnd_occ=   4
+     k-point:     2    nbnd_occ=   3
+ 
+ 
+     q-space interpolation up to   110.00 Rydberg
+ 
+     GIPAW job: hyperfine                                                                       
+ 
+
+(RHO,ZETA) => (RHO_UP,RHO_DOWN)
+
+     select_spin: s_maj=1 s_min=2 rho_diff=    1.000000
+ 
+     select_spin: s_maj=1 s_min=2 rho_diff=    1.000000
+ 
+     select_spin: s_maj=1 s_min=2 rho_diff=    1.000000
+ 
+     Warning: core-relaxation is an experimental feature
+     core-relax: calculating AE orbitals
+     core-relax: method = 1
+     O      1S   eig=    -39.1840 Ry   norm=      1.0000
+     O      2S   eig=     -2.9114 Ry   norm=      1.0000
+     O      3S   eig=     -0.4474 Ry   norm=      1.0000
+     O      4S   eig=     -0.1545 Ry   norm=      1.0000
+     O      5S   eig=     -0.0809 Ry   norm=      1.0000
+     O      6S   eig=     -0.0493 Ry   norm=      1.0000
+     O      7S   eig=     -0.0331 Ry   norm=      1.0000
+     O      8S   eig=     -0.0237 Ry   norm=      1.0020
+ 
+     select_spin: s_maj=1 s_min=2 rho_diff=    1.000000
+ 
+     core-relax: max core radius (r_max) =        5.0000
+     core-relax: projecting around atom   1
+     core-relax: integrated charge =     8.9966
+     O    1  1S splitting:   -0.028401
+     O    1  1S -> 2S :   -0.184104
+     O    1  1S -> 3S :   -0.015040
+     O    1  1S -> 4S :   -0.002317
+     O    1  1S -> 5S :   -0.001017
+     O    1  1S -> 6S :   -0.000499
+     O    1  1S -> 7S :   -0.000277
+     O    1  1S -> 8S :   -0.000177
+ 
+ 
+     NUCLEAR G-TENSORS FROM INPUT:
+     O    1     -0.757500
+     H    2      5.585694
+     H    3      5.585694
+ 
+     NUCLEAR HYPERFINE COUPLINGS IN G         :
+ 
+     DIPOLAR COUPLINGS:
+     ----- bare term -----
+     O    1       33.245996       -0.001187       -0.000024
+     O    1       -0.001187       34.264133        0.000585
+     O    1       -0.000024        0.000585      -67.510128
+ 
+     H    2       14.174625       25.342277        0.000053
+     H    2       25.342277       -7.001345        0.000002
+     H    2        0.000053        0.000002       -7.173280
+ 
+     H    3       14.173708      -25.341446       -0.000055
+     H    3      -25.341446       -7.001044        0.000004
+     H    3       -0.000055        0.000004       -7.172665
+ 
+     ----- GIPAW term -----
+     O    1       24.414411       -0.000785       -0.000014
+     O    1       -0.000785       25.178769        0.000392
+     O    1       -0.000014        0.000392      -49.593180
+ 
+     H    2       -0.000000       -0.000000       -0.000000
+     H    2       -0.000000       -0.000000        0.000000
+     H    2       -0.000000        0.000000        0.000000
+ 
+     H    3       -0.000000       -0.000000       -0.000000
+     H    3       -0.000000       -0.000000        0.000000
+     H    3       -0.000000        0.000000        0.000000
+ 
+     ----- total dipolar -----
+     O    1       57.660406       -0.001972       -0.000038
+     O    1       -0.001972       59.442901        0.000977
+     O    1       -0.000038        0.000977     -117.103308
+ 
+     H    2       14.174625       25.342277        0.000053
+     H    2       25.342277       -7.001345        0.000002
+     H    2        0.000053        0.000002       -7.173280
+ 
+     H    3       14.173708      -25.341446       -0.000055
+     H    3      -25.341446       -7.001044        0.000004
+     H    3       -0.000055        0.000004       -7.172665
+ 
+     ----- total dipolar (symmetrized) -----
+     O    1       57.660406       -0.001972       -0.000038
+     O    1       -0.001972       59.442901        0.000977
+     O    1       -0.000038        0.000977     -117.103308
+ 
+     H    2       14.174625       25.342277        0.000053
+     H    2       25.342277       -7.001345        0.000002
+     H    2        0.000053        0.000002       -7.173280
+ 
+     H    3       14.173708      -25.341446       -0.000055
+     H    3      -25.341446       -7.001044        0.000004
+     H    3       -0.000055        0.000004       -7.172665
+ 
+ 
+     PRINCIPAL AXIS OF THE DIPOLAR COUPLINGS:
+     O    1    Axx=   57.6604    axis=(  0.999999  0.001107 -0.000000)
+     O    1    Ayy=   59.4429    axis=( -0.001107  0.999999  0.000006)
+     O    1    Azz= -117.1033    axis=(  0.000000 -0.000006  1.000000)
+ 
+     H    2    Axx=   -7.1733    axis=( -0.000000 -0.000002  1.000000)
+     H    2    Ayy=  -23.8785    axis=(  0.554299 -0.832318 -0.000002)
+     H    2    Azz=   31.0518    axis=(  0.832318  0.554299  0.000001)
+ 
+     H    3    Axx=   -7.1727    axis=(  0.000000 -0.000002  1.000000)
+     H    3    Ayy=  -23.8779    axis=( -0.554302 -0.832315 -0.000002)
+     H    3    Azz=   31.0505    axis=(  0.832315 -0.554302 -0.000001)
+ 
+ 
+     ISOTROPIC (FERMI-CONTACT) COUPLINGS WITHOUT ZORA:
+     USING CORE-RELAXATION METHOD: PRB 76, 035124 (2007)
+     Warning: core-relaxation is an experimental feature
+     ----- spin-densities in bohrradius^-3 -----
+               bare            GIPAW           core-relax      total
+     O    1        0.006667        0.337363       -0.203429        0.140601
+     H    2       -0.008880       -0.006290        0.000000       -0.015170
+     H    3       -0.008875       -0.006286        0.000000       -0.015161
+     ----- Fermi contact in G -----
+               bare            GIPAW           core-relax      total
+     O    1       -1.442134      -72.971690       44.001749      -30.412075
+     H    2      -14.162944      -10.031917        0.000000      -24.194861
+     H    3      -14.155248      -10.026455        0.000000      -24.181703
+ 
+     Initialization:
+     gipaw_setup  :      0.10s CPU      0.11s WALL (       1 calls)
+ 
+     Linear response
+ 
+     Apply operators
+ 
+     Induced current
+ 
+     Other routines
+     hyperfine    :      5.28s CPU      5.37s WALL (       1 calls)
+     core_relax   :      4.74s CPU      4.79s WALL (       1 calls)
+ 
+     General routines
+     calbec       :      0.02s CPU      0.01s WALL (       6 calls)
+     fft          :      0.97s CPU      1.00s WALL (      23 calls)
+     ffts         :      0.07s CPU      0.07s WALL (       2 calls)
+     fftw         :      0.14s CPU      0.15s WALL (       8 calls)
+     davcio       :      0.00s CPU      0.01s WALL (      10 calls)
+ 
+     Parallel routines
+ 
+     Plugins
+ 
+ 
+     GIPAW        :      7.05s CPU      7.25s WALL
+
+ 
+   This run was terminated on:  13:27: 3  29May2019            
+
+=------------------------------------------------------------------------------=
+   JOB DONE.
+=------------------------------------------------------------------------------=
