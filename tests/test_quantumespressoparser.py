@@ -19,7 +19,7 @@
 import pytest
 import numpy as np
 
-from electronicparsers.quantumespresso.parser import EFGParser, EPRHyperfineParser
+from electronicparsers.quantumespresso.parser import EFGParser, EPRGtensorParser, EPRHyperfineParser
 from electronicparsers.utils.utils import (
     convert_system_to_model_system,
     convert_xcfunctional
@@ -755,7 +755,7 @@ def test_efg_text(quartz_scf_fixtures):
         
 
 
-def test_epr_text(h2o_scf_fixtures):
+def test_epr_hyperfine_text(h2o_scf_fixtures):
     archive = EntryArchive()
     model_system, _ = h2o_scf_fixtures
     parser = EPRHyperfineParser(system=model_system, xc_func_list=None)
@@ -774,3 +774,29 @@ def test_epr_text(h2o_scf_fixtures):
     # assert simulation.program.name == 'GIPAW'
     # assert simulation.program.version == '7.4.1'
 
+
+
+
+
+def test_epr_gtensor_text(h2o_scf_fixtures):
+    archive = EntryArchive()
+    model_system, _ = h2o_scf_fixtures
+    parser = EPRGtensorParser(system=model_system, xc_func_list=None)
+    parser.parse(
+        filepath='tests/data/quantumespresso/H2O+/H2O+_g-tensor.out',
+        archive=archive,
+        logger=None)
+    
+    simulation = archive.data
+
+    # debug(simulation.outputs[0].delta_g[0].value)
+    # debug(simulation.outputs[0].delta_g_paratec[0].value)
+
+    debug(simulation.outputs)
+    debug(simulation.outputs[0])
+
+
+    
+    # # Program
+    # assert simulation.program.name == 'GIPAW'
+    # assert simulation.program.version == '7.4.1'

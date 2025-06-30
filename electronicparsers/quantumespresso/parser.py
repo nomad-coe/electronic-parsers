@@ -31,6 +31,9 @@ from electronicparsers.utils.qe_gipaw_workflow import (
     NMRQE, 
     EFGQEMethod, 
     EFGQEResults,
+    EPRGtensorQE,
+    EPRGtensorQEMethod,
+    EPRGtensorQEResults,
     EPRHyperfineQE,
     EPRHyperfineQEMethod,
     EPRHyperfineQEResults, 
@@ -105,6 +108,8 @@ from nomad_simulations.schema_packages.model_method import (
 )
 from nomad_simulations.schema_packages.model_system import Cell, ModelSystem
 from nomad_nmr_schema.schema_packages.schema_package import (
+    DeltaG,
+    DeltaGParatec,
     ElectricFieldGradient,
     HyperfineDipolar,
     HyperfineFermiContact,
@@ -3435,7 +3440,6 @@ class HyperfineFileParser(TextParser):
         super().__init__(None)
 
     def init_quantities(self):
-        float_re = r"[-+]?\d+\.\d+(?:[Ee][-+]?\d+)?"
 
         def parse_scalar_block(val):
             lines = [
@@ -3606,11 +3610,9 @@ class EPRHyperfineParser(MatchingParser):
         # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
         electric_field_gradients = []
         for i, atom_data in enumerate(data):
-            debug(atom_data)
             sec_hfc = self.hyperfine_fermi_contact(
                 entity_ref=particle_state[i]
             )
-            debug(atom_data[-1])
             sec_hfc.value = atom_data[-1]
             electric_field_gradients.append(sec_hfc)
         return electric_field_gradients
@@ -3669,8 +3671,6 @@ class EPRHyperfineParser(MatchingParser):
         # Adding self.simulation_class to data
         simulation = self.simulation_class()
 
-        debug(self.hyperfine_parser.results)
-
         # program
         program_name_version  = self.parser.get('software_version', [])
         simulation.program = self.program_class(
@@ -3702,6 +3702,220 @@ class EPRHyperfineParser(MatchingParser):
         # workflow
         workflow = EPRHyperfineQE(method=EPRHyperfineQEMethod(), results=EPRHyperfineQEResults())
         workflow.name = "EPR_Hyperfine"
+        self.archive.workflow2 = workflow
+
+
+class GtensorFileParser(TextParser):
+    def __init__(self):
+        super().__init__(None)
+
+    def init_quantities(self):
+        re_float = r" *[-+]?\d+\.\d*(?:[Ee][-+]\d+)? *"
+        
+        def str_to_gtensor(val_in):
+            lines = val_in.strip().splitlines()
+            tensor = []
+            for line in lines:
+                if line.strip():
+                    row = [float(x) for x in line.strip().split()]
+                    tensor.append(row)
+            return tensor
+
+        self._quantities = [
+            Quantity(
+                "delta_g_total_paratec",
+                rf"Delta_g total \(SOO a la Paratec\):\s*-+\s*\n"
+                rf"((?:\s*{re_float}\s+{re_float}\s+{re_float}\s*\n){{3}})",
+                repeats=False,
+                str_operation=str_to_gtensor,
+                convert=False,
+            ),
+            Quantity(
+                "delta_g_total",
+                rf"Delta_g total \(SOO as in Eq\.\(7\)\):\s*-+\s*\n"
+                rf"((?:\s*{re_float}\s+{re_float}\s+{re_float}\s*\n){{3}})",
+                repeats=False,
+                str_operation=str_to_gtensor,
+                convert=False,
+            ),
+            Quantity(
+                'software_version',
+                r'Program (\S+) v.(\S+) starts on',
+            ),
+            Quantity(
+                'processors',
+                r'Parallel version \(MPI\), running on\s+(\d+) processors',
+            ),
+            Quantity(
+                'nodes',
+                r'MPI processes distributed on\s+(\d+) nodes',
+            ),
+            Quantity(
+                'xc_functional',
+                r'Exchange-correlation\s*=\s*(\w+)\s*(?:\n\s*)?\(\s*((?:\d+\s+){5,}\d+)\s*\)',
+            ),
+        ]
+        
+
+class EPRGtensorParser(MatchingParser):
+    _model_system: ModelSystem
+    _xc_func_list: list[XCFunctional_simu] | None
+
+    # Data section classes:
+    simulation_class = Simulation
+    program_class = Program
+    gtensor_outputs_class = Outputs
+    delta_g = DeltaG
+    delta_g_paratec = DeltaGParatec
+
+    def __init__(
+            self, 
+            system: System, 
+            xc_func_list: list[XCFunctional_simu] | None, 
+            *args, 
+            **kwargs):
+        super().__init__(*args, **kwargs)
+        self.gtensor_parser = GtensorFileParser()
+        self.xml_parser = GIPAWContentParser()
+        self._xc_functional_map = _xc_functional_map
+        self._model_system = system
+        self._xc_func_list = xc_func_list
+
+    def init_parser(self) -> None:
+        if 'gipaw.xml' in self.mainfile:
+            self.parser = self.xml_parser
+            self.parser.init_parser(self.mainfile, self.logger)
+        else:
+            self.parser = self.gtensor_parser
+            self.parser.mainfile = self.mainfile
+            self.parser.logger = self.logger
+
+    def parse_xc_functional(self) -> list[XCFunctional_simu]:
+        xc_functional = self.parser.get("xc_functional", [])
+        xc_functional_labels = self._xc_functional_map.get(xc_functional[0], [])
+        xc_sections = []
+        for xc in xc_functional_labels:
+            functional = XCFunctional_simu(libxc_name=xc)
+            if "_X_" in xc:
+                functional.name = "exchange"
+            elif "_C_" in xc:
+                functional.name = "correlation"
+            elif "HYB" in xc:
+                functional.name = "hybrid"
+            else:
+                functional.name = "contribution"
+            xc_sections.append(functional)
+        return xc_sections
+
+    def parse_delta_g(self)-> list["EPRGtensorParser.delta_g"]:
+        data = self.parser.get("delta_g_total")
+
+        if np.size(data) != 9:
+            self.logger.warning(
+                "The shape of the matched text from the file for the `delta_g`" \
+                "does not coincide with 9 (3x3 tensor)."
+            )
+            return None
+        
+        delta_g = self.delta_g()
+        delta_g.value = data
+        
+        return [delta_g]
+    
+    def parse_delta_g_paratec(self)-> list["EPRGtensorParser.delta_g"]:
+        data = self.parser.get("delta_g_total")
+
+        if np.size(data) != 9:
+            self.logger.warning(
+                "The shape of the matched text from the file for the `delta_g`" \
+                "does not coincide with 9 (3x3 tensor)."
+            )
+            return None
+        
+        delta_g_paratec = self.delta_g_paratec()
+        delta_g_paratec.value = data
+        
+        return [delta_g_paratec]
+
+    
+    def parse_outputs(
+        self, 
+        simulation: "EFGParser.simulation_class"
+    ) -> Optional["EFGParser.efg_outputs_class"]:
+
+        if simulation.model_system is None:
+            self.logger.warning(
+                "Could not find the `ModelSystem` that the outputs reference to."
+            )
+            return None
+        outputs = self.gtensor_outputs_class(
+            model_method_ref=simulation.model_method[-1],
+            model_system_ref=simulation.model_system[-1],
+        )
+
+        # delta g
+        delta_g = self.parse_delta_g()
+
+        if delta_g is not None:
+            outputs.delta_g = delta_g
+
+        # delta g paratec
+        delta_g_paratec = self.parse_delta_g_paratec()
+
+        if delta_g_paratec is not None:
+            outputs.delta_g_paratec = delta_g_paratec
+
+        return outputs
+
+
+    def parse(
+        self,
+        filepath: str,
+        archive: "EntryArchive",
+        logger: "BoundLogger",
+    ) -> None:
+        self.mainfile = filepath
+        self.maindir = os.path.dirname(self.mainfile)
+        self.basename = os.path.basename(self.mainfile)
+        self.archive = archive
+        self.logger = logger if logger is not None else logging
+
+        self.init_parser()
+
+        # Adding self.simulation_class to data
+        simulation = self.simulation_class()
+
+        # program
+        program_name_version  = self.parser.get('software_version', [])
+        simulation.program = self.program_class(
+            name=program_name_version[0],
+            version=program_name_version[1],
+        )
+        archive.data = simulation
+
+        # model system 
+        self._model_system.is_representative = True
+        simulation.model_system.append(self._model_system)
+
+        # model method
+        model_method = DFT_simu(name="EPR_Gtensor")
+        if self._xc_func_list is not None:
+            model_method.xc_functionals = self._xc_func_list
+        else:
+            xc_functionals = self.parse_xc_functional()
+            if len(xc_functionals) > 0:
+                model_method.xc_functionals = xc_functionals
+
+        simulation.model_method.append(model_method)
+
+        # outputs
+        outputs = self.parse_outputs(simulation=simulation)
+        if outputs is not None:
+            simulation.outputs.append(outputs)
+
+        # workflow
+        workflow = EPRGtensorQE(method=EPRGtensorQEMethod(), results=EPRGtensorQEResults())
+        workflow.name = "EPR_Gtensor"
         self.archive.workflow2 = workflow
 
 
@@ -4510,12 +4724,12 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
         elif hyperfine_text_matches or xml_jobs.get('hyperfine'):
             keys.append("Hyperfine")
 
-        # if len(gtensor_text_matches) > 1:
-        #     self.logger.error(f"Found multiple files ending with 'g-tensor.out': {[f.name for f in gtensor_text_matches]}")
-        # elif len(xml_jobs.get('g-tensor', [])) > 1:
-        #     self.logger.error(f"Found multiple xml files with job 'g-tensor': {[f.name for f in xml_jobs.get('g-tensor')]}")
-        # elif gtensor_text_matches or xml_jobs.get('g-tensor'):
-        #     keys.append("g-tensor")
+        if len(gtensor_text_matches) > 1:
+            self.logger.error(f"Found multiple files ending with 'g-tensor.out': {[f.name for f in gtensor_text_matches]}")
+        elif len(xml_jobs.get('g-tensor', [])) > 1:
+            self.logger.error(f"Found multiple xml files with job 'g-tensor': {[f.name for f in xml_jobs.get('g-tensor')]}")
+        elif gtensor_text_matches or xml_jobs.get('g-tensor'):
+            keys.append("g-tensor")
         
         return keys, xml_jobs
     
@@ -4619,8 +4833,9 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
             nmr_archive = self._child_archives.get('NMR')
             efg_archive = self._child_archives.get('EFG')
             hyperfine_archive = self._child_archives.get('Hyperfine')
+            gtensor_archive = self._child_archives.get('g-tensor')
 
-            if nmr_archive is not None or efg_archive is not None or hyperfine_archive is not None :
+            if nmr_archive is not None or efg_archive is not None or hyperfine_archive is not None or gtensor_archive is not None:
                 # double check on auxilliary files
                 filedir = Path(self.filepath).parent
                 keys, xml_jobs = self.check_auxilliary_files(filedir)
@@ -4681,6 +4896,21 @@ class QuantumEspressoParser(BeyondDFTWorkflowsParser):
                     p.parse(hyperfinefilepath, hyperfine_archive, logger)
 
                     gipaw_list.append(hyperfine_archive)
+
+                if "g-tensor" in keys:
+                    # get file to parse
+                    xmlfilepath = str(val) if (val := next((f for f in xml_jobs.get('g-tensor', [])), None)) is not None else None
+                    if xmlfilepath is not None:
+                        gtensorfilepath = xmlfilepath
+                    else:
+                        gtensorfilepath = str(val) if (val := next((f for f in filedir.iterdir() if f.name.endswith('g-tensor.out')), None)) is not None else None
+                        xc_func_list = None
+
+                    # parse
+                    p = EPRGtensorParser(system=model_system, xc_func_list=xc_func_list)
+                    p.parse(gtensorfilepath, gtensor_archive, logger)
+
+                    gipaw_list.append(gtensor_archive)
 
                 # Workflow
                 gipaw_workflow_archive = self._child_archives.get('GIPAW_Workflow')
