@@ -120,8 +120,6 @@ from nomad_nmr_schema.schema_packages.schema_package import (
 from nomad_simulations.schema_packages.atoms_state import AtomsState
 
 
-from devtools import debug
-
 RE_FLOAT = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
 
 # origin: espresso-5.4.0/Modules/funct.f90
@@ -2944,6 +2942,41 @@ class GIPAWContentParser:
             
             self._results['efg'] = efg
 
+        # hyperfine_dipolar
+        if 'hyperfine_dipolar' not in self._results:
+            st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['hyperfine_dipolar[0]']
+            hd = []
+            for key, value in st.items():
+                if not isinstance(value, dict):
+                    continue
+
+                for atom in value['_data']:
+                    atom_list = []
+                    atom_list.append(atom['name'])
+                    atom_list.append(int(atom['index']))
+                    atom_list = atom_list + self.extract_floats_from_string(atom['atom'])
+                    hd.append(atom_list)
+            
+            self._results['hyperfine_dipolar'] = hd
+
+        # hyperfine_fermi_contact
+        if 'hyperfine_fermi_contact' not in self._results:
+            st = self.fileparser.results._data['gpw:gipaw[0]']['output[0]']['hyperfine_fermi_contact[0]']
+            hfc = []
+            for key, value in st.items():
+                if not isinstance(value, dict):
+                    continue
+
+                for atom in value['_data']:
+                    atom_list = []
+                    atom_list.append(atom['name'])
+                    atom_list.append(int(atom['index']))
+                    atom_list = atom_list + self.extract_floats_from_string(atom['atom'])
+                    hfc.append(atom_list)
+            
+            self._results['hyperfine_fermi_contact'] = hfc
+
+
     
     @property
     def results(self):
@@ -3096,7 +3129,8 @@ class NMRParser(MatchingParser):
         # Initial check on the size of the matched text
         if np.size(data) != n_atoms * (9 + 2):
             self.logger.warning(
-                "The shape of the matched text for the `ms_list` does not coincide with the number of atoms."
+                "The shape of the matched text for the `ms_list` does not " \
+                "coincide with the number of atoms."
             )
             return []
 
@@ -3336,14 +3370,12 @@ class EFGParser(MatchingParser):
         
         data = self.parser.get('efg', [])
         
-        # Initial check on the size of the matched text
-        if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
+        if np.size(data) != n_atoms * (9 + 2):
             self.logger.warning(
                 "The shape of the matched text for the `efg` does not coincide" \
                 " with the number of atoms."
             )        
         
-        # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
         electric_field_gradients = []
         for i, atom_data in enumerate(data):
             values = np.reshape(atom_data[2:], (3, 3))
@@ -3573,14 +3605,12 @@ class EPRHyperfineParser(MatchingParser):
         
         data = self.parser.get('hyperfine_dipolar', [])
 
-        # Initial check on the size of the matched text
-        if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
+        if np.size(data) != n_atoms * (9 + 2):
             self.logger.warning(
                 "The shape of the matched text for the `efg` does not coincide" \
                 " with the number of atoms."
             )
 
-        # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
         electric_field_gradients = []
         for i, atom_data in enumerate(data):
             values = np.reshape(atom_data[2:], (3, 3))
@@ -3600,14 +3630,12 @@ class EPRHyperfineParser(MatchingParser):
         
         data = self.parser.get('hyperfine_fermi_contact', [])
 
-        # Initial check on the size of the matched text
-        if np.size(data) != n_atoms * (9 + 2):  # 2 extra columns with atom labels
+        if np.size(data) != n_atoms * (9 + 2):
             self.logger.warning(
                 "The shape of the matched text for the `efg` does not coincide" \
                 " with the number of atoms."
             )
 
-        # Parse electronic field gradients for each contribution and their refs to the specific `atom_state_class`
         electric_field_gradients = []
         for i, atom_data in enumerate(data):
             sec_hfc = self.hyperfine_fermi_contact(

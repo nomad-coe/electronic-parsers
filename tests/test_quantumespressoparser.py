@@ -253,7 +253,6 @@ EFG_EXPECTED_VALUES = {
     ]) * ureg('attounified_atomic_mass_unit')
 }
 
-
 HYPERFINE_EXPECTED_VALUES = {
     "text": {
         "hyperfine_dipolar": np.array([
@@ -275,7 +274,6 @@ HYPERFINE_EXPECTED_VALUES = {
         ) * ureg('megahertz')
     }
 }
-
 
 G_TENSOR_EXPECTED_VALUES = {
     "text": {
@@ -821,7 +819,8 @@ def test_epr_hyperfine_text(h2o_scf_fixtures):
     assert len(simulation.outputs) == 1
     output = simulation.outputs[0]
 
-    debug(output)
+    assert output.model_system_ref == simulation.model_system[0]
+    assert output.model_method_ref == simulation.model_method[0]
 
     #   HyperfineDipolar
     hd = output.hyperfine_dipolar
@@ -844,6 +843,38 @@ def test_epr_hyperfine_text(h2o_scf_fixtures):
         else:
             assert hfc[i].entity_ref.chemical_symbol == "H"
         assert np.allclose(hfc[i].value, HYPERFINE_EXPECTED_VALUES["text"]["hyperfine_fermi_contact"][i], rtol=1e-10)
+
+
+def test_epr_hyperfine_xml(quartz_scf_fixtures):
+    archive = EntryArchive()
+    model_system, xc_fun_list = quartz_scf_fixtures
+    parser = EPRGtensorParser(system=model_system, xc_func_list=xc_fun_list)
+    parser.parse(
+        filepath='/home/cecilia/lavoro/nomad-distro-dev-fairymagic/.dati_fm/simu_andrea/gipaw/EPR/tmp/superox-gipaw.xml',
+        archive=archive,
+        logger=None)
+    
+    simulation = archive.data
+    
+    # # Program
+    # assert simulation.program.name == 'GIPAW'
+    # assert simulation.program.version == ''
+
+    # # ModelSystem
+    # assert len(simulation.model_system) == 1
+    # assert simulation.model_system[0].is_representative
+    
+    # # ModelMethod
+    # assert len(simulation.model_method) == 1
+    # assert simulation.model_method[0].name == 'EFG'
+
+    # # Outputs
+    # assert len(simulation.outputs) == 1
+    # output = simulation.outputs[0]
+
+    # assert output.model_system_ref == simulation.model_system[0]
+    # assert output.model_method_ref == simulation.model_method[0]
+
 
 
 def test_epr_gtensor_text(h2o_scf_fixtures):
@@ -872,6 +903,9 @@ def test_epr_gtensor_text(h2o_scf_fixtures):
     # Outputs
     assert len(simulation.outputs) == 1
     output = simulation.outputs[0]
+
+    assert output.model_system_ref == simulation.model_system[0]
+    assert output.model_method_ref == simulation.model_method[0]
 
     #   Delta G
     assert np.allclose(output.delta_g[0].value, G_TENSOR_EXPECTED_VALUES["text"]["delta_g"], rtol=1e-10)
