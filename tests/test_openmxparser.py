@@ -183,7 +183,7 @@ def test_AlN(parser):
     )
 
 
-def test_C2N2(parser):
+def test_C2H2(parser):
     """
     Molecular dynamics using the Nose-Hover thermostat for simple N2H2 molecule
     """
