@@ -61,6 +61,7 @@ lint.ignore = [
 	"PLW2901", # redefined-loop-name
 	"PLR1714", # consider-using-in
 	"PLR5501", # else-if-used
+        "PLC0415", # Import should be at top-level (conflicts with lazy imports)
 ]
 lint.fixable = ["ALL"]
 
