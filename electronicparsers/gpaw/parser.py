@@ -365,6 +365,9 @@ class GPAWParser:
         self.parser.logger = logger
 
     def apply_unit(self, val, unit):
+        if val is None:
+            return
+
         units_map = {
             'ev': ureg.eV,
             'hartree': ureg.hartree,
