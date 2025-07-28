@@ -62,6 +62,7 @@ from runschema.calculation import (
     ElectronicStructureProvenance,
 )
 from simulationworkflowschema import (
+    SimulationWorkflow,
     SinglePoint,
     GeometryOptimization,
     GeometryOptimizationMethod,
@@ -85,6 +86,7 @@ from .metainfo.exciting import (
 )
 from ..utils import get_files, BeyondDFTWorkflowsParser
 from typing import Any, Iterable
+from nomad.datamodel.metainfo.workflow import TaskReference, Link
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -2535,6 +2537,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         values = [
             freqs[0] + i * (freqs[-1] - freqs[0]) / n_freqs for i in range(n_freqs)
         ]
+        values = np.reshape([value.magnitude for value in values], (n_freqs, 1))
         sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_freqs, points=values)
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # Screening
@@ -3056,6 +3059,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         return sec_scc
 
     def parse_system(self, section):
+        if not section:
+            return
+
         sec_run = self.archive.run[-1]
 
         positions = self.info_parser.get_atom_positions(
@@ -3284,13 +3290,18 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
     def get_mainfile_keys(self, **kwargs):
         filepath = kwargs.get('filename')
         basename = os.path.basename(filepath)
+        gs_file = 'INFO.OUT' in basename
+        # parse xs for screening files if ground state file is missing
+        no_gs_file = re.match(r'INFO_SCR.OUT.*', basename) and not get_files(
+            'INFO.OUT', filepath
+        )
+
         dirname = os.path.dirname(filepath)
         if os.path.isfile(os.path.join(dirname, f'GW_{basename}')):
             return ['GW', 'GW_workflow']
-        xs_files = get_files(
-            basename.replace('INFO.OUT', 'INFOXS.OUT'), filepath, 'INFO.OUT'
-        )
-        if xs_files:
+
+        xs_files = get_files('*INFOXS*.OUT*', filepath, 'INFO.OUT')
+        if xs_files and (gs_file or no_gs_file):
             re_xs_mainfile = re.compile(r'.+\d\d\d\.OUT')
             spectra_files = []
             for prefix in self._xs_spectra_types:

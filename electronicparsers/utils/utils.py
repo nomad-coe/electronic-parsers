@@ -375,7 +375,7 @@ class BeyondDFTWorkflowsParser:
             index = 0
             for path, archive in self._child_archives.items():
                 if os.path.basename(path).split('_')[0] in self._xs_spectra_types:
-                    output_polarization = archive.run[-1].calculation[-1]
+                    output_polarization = extract_section(archive, ['run', 'calculation'])
                     output.append(
                         Link(
                             name=f'Output polarization {index + 1}',
@@ -387,6 +387,7 @@ class BeyondDFTWorkflowsParser:
 
         workflow = XS(method=XSMethod())
         workflow.name = 'XS'
+        xs_workflow_archive.workflow2 = workflow
 
         # Inputs and Outputs
         input_structure = extract_section(self.archive, ['run', 'system'])
@@ -442,8 +443,6 @@ class BeyondDFTWorkflowsParser:
                             ),
                         )
             workflow.m_add_sub_section(XS.tasks, task)
-
-        xs_workflow_archive.workflow2 = workflow
 
     def parse_dmft_maxent_workflow(
         self, maxent_archive: EntryArchive, workflow_archive: EntryArchive
