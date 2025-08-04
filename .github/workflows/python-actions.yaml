@@ -4,48 +4,27 @@ jobs:
   install-and-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install '.[dev,infrastructure]' --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
-        pip install coverage coveralls
-        pip install types-PyYAML
-        # we need the latest nomad version for testing
-        # pip install nomad-lab[infrastructure]@git+https://github.com/nomad-coe/nomad.git@develop
-    - name: mypy
-      run: |
-        python -m mypy --ignore-missing-imports --follow-imports=silent --no-strict-optional *parsers tests
-    - name: Test with pytest
-      if: success() || failure()
-      run: |
-        python -m coverage run -m pytest -sv tests
-    - name: Submit to coveralls
-      continue-on-error: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        coveralls --service=github
-  build-and-install:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Build the package
-      run: |
-        pip install --upgrade pip
-        pip install build
-        python -m build --sdist
-    - name: Install the package
-      run: |
-        pip install dist/*.tar.gz --index-url https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple
+      - uses: actions/checkout@v4
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: 3.12
+      - name: Install dependencies
+        run: |
+          uv sync --all-extras
+      - name: mypy
+        run: |
+          uv run --with types-PyYAML mypy --ignore-missing-imports --follow-imports=silent --no-strict-optional *parsers tests
+      - name: Test with pytest
+        run: |
+          uv run --with coverage coverage run -m pytest -sv
+      - name: Submit to coveralls
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          uv run --with coveralls coveralls --service=github
+
   ruff-linting:
     runs-on: ubuntu-latest
     steps:
