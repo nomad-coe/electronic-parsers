@@ -39,5 +39,5 @@ def integrate_dos(dos, e_fermi=None):
         except IndexError:
             raise IndexError('Check the no. spin-channels')
         occ_value = [v.magnitude for v in spin_channel]
-        dos_integrated += np.trapz(x=occ_energy[ispin], y=occ_value)
+        dos_integrated += np.trapezoid(x=occ_energy[ispin], y=occ_value)
     return dos_integrated
