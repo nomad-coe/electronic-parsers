@@ -20,7 +20,9 @@ import numpy as np
 from importlib.metadata import version
 
 numpy_version = version('numpy')
-use_trapz = int(numpy_version.split('.')[0]) < 2
+use_trapz = (
+    int(numpy_version.split('.')[0]) < 2
+)  # TODO: this can be removed once the numpy < 2 restriction from nomad-lab is gone
 
 
 def integrate_dos(dos, e_fermi=None):
