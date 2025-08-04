@@ -1843,7 +1843,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 0
             ]
             sec_fermisurface.x_exciting_number_of_mesh_points_fermi_surface = (
-                np.product(band_parameters[1])
+                np.prod(band_parameters[1])
             )
             sec_fermisurface.x_exciting_grid_fermi_surface = band_parameters[1]
             sec_fermisurface.x_exciting_origin_fermi_surface = band_parameters[2]
