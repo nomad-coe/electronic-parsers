@@ -441,7 +441,9 @@ class SiestaParser:
             )
         }
         sec_method.dft = DFT(xc_functional=XCFunctional())
-        for xc_functional in self._xc_map.get(parameters.get('xc.authors').lower(), []):
+        for xc_functional in self._xc_map.get(
+            parameters.get('xc.authors', '').lower(), []
+        ):
             if '_X_' in xc_functional:
                 sec_method.dft.xc_functional.exchange.append(
                     Functional(name=xc_functional)
@@ -485,9 +487,10 @@ class SiestaParser:
                     positions = positions * ureg.angstrom
                 elif coordinates_format in ['fractional', 'scaledcartesian']:
                     if lattice_vectors is not None:
-                        positions = np.dot(
-                            positions, lattice_vectors.magnitude
-                        ) * lattice_vectors.units
+                        positions = (
+                            np.dot(positions, lattice_vectors.magnitude)
+                            * lattice_vectors.units
+                        )
 
             sec_system.atoms = Atoms(
                 positions=positions,
