@@ -1842,8 +1842,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_fermisurface.x_exciting_number_of_bands_fermi_surface = band_parameters[
                 0
             ]
-            sec_fermisurface.x_exciting_number_of_mesh_points_fermi_surface = (
-                np.prod(band_parameters[1])
+            sec_fermisurface.x_exciting_number_of_mesh_points_fermi_surface = np.prod(
+                band_parameters[1]
             )
             sec_fermisurface.x_exciting_grid_fermi_surface = band_parameters[1]
             sec_fermisurface.x_exciting_origin_fermi_surface = band_parameters[2]
@@ -2658,20 +2658,21 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # QMesh same as KMesh
         sec_gw.m_add_sub_section(GW.q_mesh, sec_k_mesh)
         # Analytical continuation
-        if sec_gw.x_exciting_selfenergy.x_exciting_actype == 'pade':
-            sec_gw.analytical_continuation = (
-                sec_gw.x_exciting_selfenergy.x_exciting_actype
-            )
-        else:
-            if sec_gw.x_exciting_selfenergy.x_exciting_method == 'cd':
-                sec_gw.analytical_continuation = 'contour_deformation'
+        if sec_gw.x_exciting_selfenergy:
+            if sec_gw.x_exciting_selfenergy.x_exciting_actype == 'pade':
+                sec_gw.analytical_continuation = (
+                    sec_gw.x_exciting_selfenergy.x_exciting_actype
+                )
             else:
-                if sec_gw.x_exciting_scrcoul.x_exciting_scrtype == 'ppm':
-                    sec_gw.analytical_continuation = 'ppm_GodbyNeeds'
+                if sec_gw.x_exciting_selfenergy.x_exciting_method == 'cd':
+                    sec_gw.analytical_continuation = 'contour_deformation'
                 else:
-                    self.logger.warning(
-                        'Could not find the analytical continuation method.'
-                    )
+                    if sec_gw.x_exciting_scrcoul.x_exciting_scrtype == 'ppm':
+                        sec_gw.analytical_continuation = 'ppm_GodbyNeeds'
+                    else:
+                        self.logger.warning(
+                            'Could not find the analytical continuation method.'
+                        )
         # FrequencyMesh
         n_freqs = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
         freqmax = sec_gw.x_exciting_freqgrid.x_exciting_freqmax
