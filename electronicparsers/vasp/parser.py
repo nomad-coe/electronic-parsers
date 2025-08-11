@@ -46,7 +46,7 @@ from runschema.system import (
     Atoms,
     AtomsGroup,
 )
-from runschema.run import Run, Program
+from runschema.run import Run, Program, TimeRun
 from runschema.method import (
     Method,
     BasisSet,
@@ -2356,11 +2356,14 @@ class VASPParser:
 
         date = self.parser.header.get('date')
         if date is not None:
+            # date and time in the header are not the compilation time but rather
+            # the execution time, compilaton date (and time for some VASP versions)
+            # are part of the subversion
             date = datetime.strptime(date.strip(), '%Y %m %d').date()
             time = self.parser.header.get('time', '0:0:0')
             time = datetime.strptime(time.strip(), '%H:%M:%S').timetz()
             dtime = datetime.combine(date, time) - datetime.utcfromtimestamp(0)
-            sec_run.program.compilation_datetime = dtime.total_seconds()
+            sec_run.time_run = TimeRun(date_start=dtime.total_seconds())
 
         # TODO VASP>=6.3.0 can do DFT+GW calculations in one single step: with data we can extend
         # the parser to inherit from BeyondDFTWorkflowsParser to address automatic GW workflow.
