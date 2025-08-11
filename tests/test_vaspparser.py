@@ -64,6 +64,7 @@ def test_vasprunxml_static(parser):
     assert len(archive.run) == 1
 
     sec_run = archive.run[0]
+    assert sec_run.program.version == "4.6.35 3Apr08 complex parallel LinuxIFC"
 
     assert sec_run.time_run.date_start.magnitude == 1366564273.0
 
@@ -145,6 +146,8 @@ def test_vasprunxml_relax(parser):
     assert len(archive.run[0].method) == 1
 
     sec_run = archive.run[0]
+    assert sec_run.program.version == '5.3.2 13Sep12 complex serial LinuxIFC'
+    assert sec_run.program.compilation_datetime.magnitude == 1363689977.0
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 3
     assert sec_systems[1].atoms.positions[1][0].magnitude == approx(3.2771907e-10)
@@ -270,6 +273,7 @@ def test_outcar(parser):
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '5.3.2 13Sep12 complex serial LinuxIFC'
+    assert sec_run.program.compilation_datetime.magnitude == 1364808737.0
     assert sec_run.time_run.date_start.magnitude == 1378501941.0
 
     sec_method = sec_run.method[0]
@@ -350,6 +354,7 @@ def test_outcar_gamma(parser):
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '5.4.1 05Feb16 gamma-only parallel IFC91_ompi'
+    assert sec_run.program.compilation_datetime.magnitude == 1586575726.0
 
     sec_method = sec_run.method[0]
     k_mesh = sec_method.k_mesh
@@ -362,6 +367,11 @@ def test_outcar_gamma(parser):
     [
         (
             'tests/data/vasp/alternative_pseudopotentials/AlN/vasprun.xml',
+            'PAW_PBE Al 04Jan2001',
+            240.3,
+        ),
+        (
+            'tests/data/vasp/alternative_pseudopotentials/AlN/OUTCAR',
             'PAW_PBE Al 04Jan2001',
             240.3,
         ),
@@ -382,6 +392,12 @@ def test_potcar(parser, filename, name, cutoff):
     assert sec_pseudo.type == 'PAW'
     assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
     assert sec_pseudo.cutoff.to('eV').magnitude == approx(cutoff)
+
+    # The AlN case has also somewhat special header with git tag for version
+    # so check the version parsing as well
+    if 'AlN' in filename:
+        assert archive.run[0].program.version == '5.4.4 18Apr17-6-g9f103f2a35 complex parallel LINUX'
+        assert archive.run[0].program.compilation_datetime.magnitude == 1553622472.0
 
 
 def test_broken_xml(parser):
@@ -454,6 +470,11 @@ def test_dftu_static(parser, dir, slice, uref, jref):
             assert hubb.orbital == 'd'
             assert approx(hubb.u.to('eV').magnitude) == uref
             assert approx(hubb.j.to('eV').magnitude) == jref
+
+        # This one has header without the build time info so double check
+        # we parse version correctly
+        if filename == "tests/data/vasp/dftu/single_parameter/OUTCAR":
+            assert archive.run[-1].program.version == '4.6.35 3Apr08 complex parallel LinuxIFC'
 
 
 def test_gw(silicon_gw):
