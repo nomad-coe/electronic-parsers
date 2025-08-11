@@ -343,6 +343,12 @@ def test_outcar(parser):
 #    except AssertionError:
 #        raise AssertionError(sec_scc.energy.fermi)
 
+def test_outcar_gamma(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/vasp/gamma/OUTCAR', archive, None)
+
+    sec_run = archive.run[0]
+    assert sec_run.program.version == '5.4.1 05Feb16 gamma-only parallel IFC91_ompi'
 
 @pytest.mark.parametrize(
     'filename, name, cutoff',

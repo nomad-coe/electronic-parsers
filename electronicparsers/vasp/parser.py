@@ -539,7 +539,7 @@ class OutcarTextParser(TextParser):
             ),
             Quantity(
                 'header',
-                r'vasp\.([\d\.]+)\s*(\w+)\s*[\s\S]+?\)\s*(\w+)\s*'
+                r'vasp\.([\d\.]+)\s*(\w+)\s*[\s\S]+?\)\s*([\w-]+)\s*'
                 r'executed on\s*(\w+)\s*date\s*([\d\.]+)\s*([\d\:]+)\s*(\w+)',
                 repeats=False,
                 str_operation=str_to_header,
