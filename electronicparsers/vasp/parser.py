@@ -690,6 +690,13 @@ class OutcarContentParser(ContentParser):
                 k_mults = kpts_occs[3].T
                 self._kpoints_info['multiplicities'] = k_mults
                 self._kpoints_info['weights'] = k_mults / np.sum(k_mults)
+            else:
+                # gamma VASP does not print the gamma point explicitly
+                header = self.parser.get('header')
+                if header is not None and 'gamma' in header['subversion']:
+                    self._kpoints_info['points'] = [[0.0, 0.0, 0.0]]
+                    self._kpoints_info['multiplicities'] = [1]
+                    self._kpoints_info['weights'] = [1.0]
         return self._kpoints_info
 
     @property

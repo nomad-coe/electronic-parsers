@@ -350,6 +350,12 @@ def test_outcar_gamma(parser):
     sec_run = archive.run[0]
     assert sec_run.program.version == '5.4.1 05Feb16 gamma-only parallel IFC91_ompi'
 
+    sec_method = sec_run.method[0]
+    k_mesh = sec_method.k_mesh
+    assert np.all(k_mesh.points == np.array([[0.0, 0.0, 0.0]]))
+    assert np.all(k_mesh.multiplicities == np.array([1]))
+    assert np.all(k_mesh.weights == np.array([1.0]))
+
 @pytest.mark.parametrize(
     'filename, name, cutoff',
     [
