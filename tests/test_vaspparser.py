@@ -65,7 +65,7 @@ def test_vasprunxml_static(parser):
 
     sec_run = archive.run[0]
 
-    assert sec_run.program.compilation_datetime.magnitude == 1366564273.0
+    assert sec_run.time_run.date_start.magnitude == 1366564273.0
 
     sec_method = sec_run.method[0]
     assert len(sec_method.x_vasp_incar_in) == 27
@@ -270,6 +270,7 @@ def test_outcar(parser):
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '5.3.2 13Sep12 complex serial LinuxIFC'
+    assert sec_run.time_run.date_start.magnitude == 1378501941.0
 
     sec_method = sec_run.method[0]
     # basis set
