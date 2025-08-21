@@ -236,11 +236,11 @@ class OutParser(TextParser):
                     quantities=[
                         Quantity(
                             'atom',
-                            rf'(Species\:[\s\S]+?){re_n} *{re_n}',
+                            rf'(ecies\:[\s\S]+?(?:Sp|mu))',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=[
-                                    Quantity('label', r'Species\: *(\S+)', dtype=str),
+                                    Quantity('label', r'ecies\: *(\S+)', dtype=str),
                                     Quantity(
                                         'orbital',
                                         r'(\d[spdSPD]\S*) ',
@@ -249,7 +249,7 @@ class OutParser(TextParser):
                                     ),
                                     Quantity(
                                         'values',
-                                        rf'(\d+ +{re_f} +{re_f}[\d\.\-\s]+)',
+                                        rf'(\d+ +{re_f} +(?:{re_f}[\s\n]+)+)',
                                         dtype=np.dtype(np.float64),
                                     ),
                                 ]
