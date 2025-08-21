@@ -132,6 +132,11 @@ atk_parser_entry_point = EntryPoint(
     python_package='electronicparsers.atk',
     mainfile_mime_re='application/octet-stream',
     mainfile_name_re=r'^.*\.nc',
+    mainfile_contents_dict={
+        'variables': {
+            '__has_key': r'(?:Bulk|Molecule)Configuration_gID\d+_calculator'
+        }
+    },
     parser_class_name='electronicparsers.atk.ATKParser',
     code_name='QuantumATK',
     code_homepage='https://www.synopsys.com/silicon/quantumatk.html',
