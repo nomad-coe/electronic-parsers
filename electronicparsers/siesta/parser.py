@@ -123,6 +123,18 @@ class OutParser(TextParser):
             stress[0][2] = stress[2][0] = val[5]
             return stress * ureg.kbar
 
+        atoms_quantities = [
+            Quantity('coordinates_format', r'\((\S+)\)', dtype=str),
+            Quantity('labels', r' +([A-Z][a-z]*)', repeats=True, dtype=str),
+            Quantity('species', r'(\d+) +\d+', repeats=True, dtype=str),
+            Quantity(
+                'positions',
+                rf'({re_f} +{re_f} +{re_f})',
+                repeats=True,
+                dtype=np.dtype(np.float64),
+            ),
+        ]
+
         calc_quantities = [
             Quantity(
                 'lattice_vectors',
@@ -134,18 +146,13 @@ class OutParser(TextParser):
             Quantity(
                 'atoms',
                 r'outcoor: Atomic coordinates(.+[\s\w\.\-]+)',
-                sub_parser=TextParser(
-                    quantities=[
-                        Quantity('coordinates_format', r'\((\S+)\)', dtype=str),
-                        Quantity('labels', r' +([A-Z][a-z]*)', repeats=True, dtype=str),
-                        Quantity(
-                            'positions',
-                            rf'({re_f} +{re_f} +{re_f})',
-                            repeats=True,
-                            dtype=np.dtype(np.float64),
-                        ),
-                    ]
-                ),
+                sub_parser=TextParser(quantities=atoms_quantities),
+            ),
+            Quantity(
+                'atoms',
+                rf'(\w+\: Atomic coordinates.+'
+                rf'(?:\s+\w+\: +{re_f} +{re_f} +{re_f} +\d+ +\d+)+)',
+                sub_parser=TextParser(quantities=atoms_quantities),
             ),
             Quantity(
                 'energy',
@@ -478,23 +485,31 @@ class SiestaParser:
             sec_system = System()
             sec_run.system.append(sec_system)
             lattice_vectors = source.get('lattice_vectors')
-            atoms = source.get('atoms')
+            atoms = source.get('atoms', self.out_parser.get('atoms'))
             source = atoms if atoms is not None else source
             positions = source.get('positions')
             if positions is not None:
                 coordinates_format = source.get('coordinates_format', 'Ang').lower()
                 if coordinates_format == 'ang':
                     positions = positions * ureg.angstrom
+                elif coordinates_format == 'bohr':
+                    positions = positions * ureg.bohr
                 elif coordinates_format in ['fractional', 'scaledcartesian']:
                     if lattice_vectors is not None:
                         positions = (
                             np.dot(positions, lattice_vectors.magnitude)
                             * lattice_vectors.units
                         )
-
+            if source.get('species') is not None:
+                labels = [
+                    self.fdf_parser.labels[int(s) - 1]
+                    for s in source.get('species', [])
+                ]
+            else:
+                labels = source.get('labels')
             sec_system.atoms = Atoms(
                 positions=positions,
-                labels=source.get('labels'),
+                labels=labels if labels else None,
                 lattice_vectors=lattice_vectors,
             )
 
