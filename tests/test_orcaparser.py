@@ -42,7 +42,7 @@ def test_scf(parser):
     assert sec_method.electronic.method == 'DFT'
     assert sec_method.x_orca_nelectrons == 14.0
     assert sec_method.scf.threshold_energy_change.to('hartree').magnitude == 1.0e-6
-    assert sec_method.scf.threshold_density_change == 1.0e-6
+    assert sec_method.scf.threshold_density_change == approx(1.0e-6)
     assert sec_method.scf.x_orca_last_max_density_change == 1e-5
     assert sec_method.x_orca_radial_grid_type == 'Gauss-Chebyshev'
     assert len(sec_method.dft.xc_functional.exchange) == 2
