@@ -241,14 +241,14 @@ def test_noncolmag(parser):
     assert len(sec_scc.dos_electronic[0].total[0].value) == 501
     assert (
         sec_scc.dos_electronic[0].total[0].value[500].magnitude
-        == (0.4188 / ureg.eV).to_base_units().magnitude
+        == approx((0.4188 / ureg.eV).to_base_units().magnitude)
     )
 
     sec_method = sec_run.method[0]
     assert sec_method.electronic.smearing.kind == 'gaussian'
     assert (
         sec_method.electronic.smearing.width
-        == (0.01 * ureg.rydberg).to_base_units().magnitude
+        == approx((0.01 * ureg.rydberg).to_base_units().magnitude)
     )
     assert sec_method.electronic.n_spin_channels is None
     assert sec_method.scf.threshold_energy_change.magnitude == approx(Ry_to_J(1e-8))
