@@ -212,7 +212,7 @@ EFG_EXPECTED_VALUES = {
         [[-0.246543,  0.35583 ,  0.202511],
          [ 0.35583 ,  0.234523,  0.625715],
          [ 0.202511,  0.625715,  0.012021]],
-    ]) * ureg('attounified_atomic_mass_unit'),
+    ]) * ureg('volt / meter ** 2'),
 
     "xml": np.array([
         [[-0.0272077 , -0.06280041,  0.01391215],
@@ -250,7 +250,7 @@ EFG_EXPECTED_VALUES = {
         [[-0.24217828,  0.3482194 ,  0.19920104],
          [ 0.3482194 ,  0.23206629,  0.61361959],
          [ 0.19920104,  0.61361959,  0.01011199]],
-    ]) * ureg('attounified_atomic_mass_unit')
+    ]) * ureg('volt / meter ** 2')
 }
 
 def approx(value, abs=0, rel=1e-6):
@@ -686,6 +686,11 @@ def test_efg_xml(quartz_scf_fixtures):
             assert efg[i].entity_ref.chemical_symbol == "Si"
         else:
             assert efg[i].entity_ref.chemical_symbol == "O"
+
+        from devtools import debug
+        debug(efg[i].value)
+        debug(EFG_EXPECTED_VALUES["xml"][i])
+
         assert np.allclose(efg[i].value, EFG_EXPECTED_VALUES["xml"][i], rtol=1e-10)
 
 
