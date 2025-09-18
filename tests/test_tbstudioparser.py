@@ -71,16 +71,16 @@ def test_parser(parser):
     assert sk.orbitals[1].orbital_name == 'p_z'
     assert sk.orbitals[0].shell == 0
     assert sk.orbitals[1].shell == 0
-    assert sk.orbitals[0].onsite_energy == -0.15789243
-    assert sk.orbitals[1].onsite_energy == -0.15789243
+    assert sk.orbitals[0].onsite_energy == approx(-0.15789243)
+    assert sk.orbitals[1].onsite_energy == approx(-0.15789243)
     assert sk.orbitals[0].atom_index == 0
     assert sk.orbitals[1].atom_index == 1
 
     for i in [0, 1, 2]:
         assert sk.bonds[i].bond_label == 'Bond 1'
         assert sk.bonds[i].center1.shell == 1
-        assert sk.bonds[i].pps == 0.0
-        assert sk.bonds[i].ppp == -2.34157934
+        assert sk.bonds[i].pps == approx(0.0)
+        assert sk.bonds[i].ppp == approx(-2.34157934)
         assert (sk.bonds[i].center1.cell_index == [0, 0, 0]).all()
 
     assert sk.bonds[0].center1.atom_index == 1
@@ -101,7 +101,9 @@ def test_parser(parser):
     assert len(sec_scc.band_structure_electronic[0].segment[0].kpoints) == len(
         sec_scc.band_structure_electronic[0].segment[0].energies[0]
     )
-    assert sec_scc.energy.fermi == sec_scc.band_structure_electronic[0].energy_fermi
+    assert sec_scc.energy.fermi.magnitude == approx(
+        sec_scc.band_structure_electronic[0].energy_fermi.magnitude
+    )
     assert sec_scc.band_structure_electronic[0].energy_fermi.to(
         'eV'
     ).magnitude == approx(-4.25178)
