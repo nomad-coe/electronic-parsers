@@ -48,11 +48,13 @@ def test_versioning(parser):
 
     sec_run = archive.run[0]
     assert sec_run.system[0].atoms.labels == 287 * ['Se'] + 144 * ['W']
-    assert list(sec_run.system[0].atoms.positions[0].to('angstrom').magnitude) == [
-        11.616523,
-        1.916229,
-        18.320724,
-    ]
+    assert sec_run.system[0].atoms.positions[0].to('angstrom').magnitude == approx(
+        [
+            11.616523,
+            1.916229,
+            18.320724,
+        ]
+    )
 
 
 def test_single_point(parser):
@@ -95,7 +97,7 @@ def test_single_point(parser):
     )
     assert sec_method.dft.xc_functional.contributions[0].name == 'LDA_XC_TETER93'
     sec_qs_settings = sec_method.x_cp2k_section_quickstep_settings[0]
-    assert sec_qs_settings.x_cp2k_planewave_cutoff == 150.0
+    assert sec_qs_settings.x_cp2k_planewave_cutoff == approx(150.0)
     sec_atom_kind = sec_qs_settings.x_cp2k_section_atomic_kinds[
         0
     ].x_cp2k_section_atomic_kind[0]
@@ -128,7 +130,7 @@ def test_single_point(parser):
     assert sec_system.atoms.labels == ['Si'] * 8
     assert sec_system.atoms.positions[6][2].magnitude == approx(4.073023e-10)
     assert sec_system.atoms.lattice_vectors[2][2].magnitude == approx(5.431e-10)
-    assert False not in sec_system.atoms.periodic
+    assert all(sec_system.atoms.periodic)
 
     assert archive.workflow2.m_def.name == 'SinglePoint'
 
