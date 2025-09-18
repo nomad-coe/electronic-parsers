@@ -38,16 +38,16 @@ def test_scf(parser):
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '7.8.2'
-    assert sec_run.x_abinit_total_cpu_time == 1.4
+    assert sec_run.x_abinit_total_cpu_time == approx(1.4)
     assert sec_run.clean_end
-    assert sec_run.time_run.date_start.magnitude == 1467132480.0
+    assert sec_run.time_run.date_start.magnitude == approx(1467132480.0)
     sec_dataset = sec_run.x_abinit_section_dataset
     assert len(sec_dataset) == 1
     assert np.size(sec_dataset[0].x_abinit_section_input.x_abinit_var_symrel) == 432
-    assert sec_dataset[0].x_abinit_section_input.x_abinit_var_znucl[0] == 14.0
+    assert sec_dataset[0].x_abinit_section_input.x_abinit_var_znucl[0] == approx(14.0)
 
     sec_method = sec_run.method[0]
-    assert sec_method.scf.n_max_iteration == 10.0
+    assert sec_method.scf.n_max_iteration == 10
     assert sec_method.scf.threshold_energy_change.magnitude == approx(4.35974472e-24)
     assert sec_method.electrons_representation[0].basis_set[0].cutoff.to(
         'hartree'
@@ -62,7 +62,7 @@ def test_scf(parser):
 
     sec_scc = sec_run.calculation[0]
     assert sec_scc.energy.total.value.magnitude == approx(-3.86544728e-17)
-    assert np.max(sec_scc.forces.total.value_raw.magnitude) == 0.0
+    assert np.max(sec_scc.forces.total.value_raw.magnitude) == approx(0.0)
     assert sec_scc.stress.total.value[2][2].magnitude == approx(-5.60539974e08)
     assert sec_scc.energy.fermi.magnitude == approx(8.4504932e-19)
     assert sec_scc.energy.kinetic_electronic.value.magnitude == approx(1.3343978e-17)
