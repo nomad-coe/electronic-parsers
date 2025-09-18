@@ -80,9 +80,16 @@ def test_HfO2(parser):
     assert method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
     assert method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
     assert (method.k_mesh.grid == [10, 10, 10]).all()
-    assert np.allclose(method.k_mesh.points[0], np.array([-0.45000, -0.45000, -0.45000]).astype(complex), rtol=0.0)
-    assert np.allclose(method.k_mesh.points[499], np.array([-0.05000, 0.45000, 0.45000]).astype(complex), rtol=0.0)
-    assert method.k_mesh.multiplicities[0] == approx(2.0)
+    assert np.allclose(
+        method.k_mesh.points[0],
+        np.array([-0.45000, -0.45000, -0.45000]).astype(complex),
+        rtol=0.0,
+    )
+    assert np.allclose(
+        method.k_mesh.points[499],
+        np.array([-0.05000, 0.45000, 0.45000]).astype(complex),
+        rtol=0.0,
+    )
     assert method.k_mesh.multiplicities[0] == approx(2.0)
 
     system = run.system[0]
@@ -143,9 +150,19 @@ def test_AlN(parser):
     assert method.scf.n_max_iteration == 100
     assert method.scf.threshold_energy_change.magnitude == approx(Ha_to_J(1e-7))
     assert (method.k_mesh.grid == [7, 7, 3]).all()
-    assert np.allclose(method.k_mesh.points[0], np.array([ -0.42857, -0.42857, -0.33333]).astype(complex), rtol=0.0)
-    assert np.allclose(method.k_mesh.points[73], np.array([0.00000, -0.00000, 0.00000]).astype(complex), rtol=0.0)
-    assert np.allclose(method.k_mesh.multiplicities[0], np.array([2, 2, 2]).astype(complex), rtol=0.0)
+    assert np.allclose(
+        method.k_mesh.points[0],
+        np.array([-0.42857, -0.42857, -0.33333]).astype(complex),
+        rtol=0.0,
+    )
+    assert np.allclose(
+        method.k_mesh.points[73],
+        np.array([0.00000, -0.00000, 0.00000]).astype(complex),
+        rtol=0.0,
+    )
+    assert np.allclose(
+        method.k_mesh.multiplicities[0], np.array([2, 2, 2]).astype(complex), rtol=0.0
+    )
     assert method.k_mesh.multiplicities[73] == [1]
 
     workflow = archive.workflow2
@@ -167,8 +184,8 @@ def test_AlN(parser):
     assert system.atoms.labels[3] == 'N'
     system = run.system[0]
     assert np.shape(system.atoms.velocities) == (4, 3)
-    assert system.atoms.velocities[0][0].magnitude == pytest.approx(0.0)
-    assert system.atoms.velocities[3][2].magnitude == pytest.approx(0.0)
+    assert system.atoms.velocities[0][0].magnitude == approx(0.0)
+    assert system.atoms.velocities[3][2].magnitude == approx(0.0)
     system = run.system[3]
     assert system.atoms.lattice_vectors[1][1].magnitude == approx(A_to_m(2.69331))
     assert system.atoms.lattice_vectors[2][2].magnitude == approx(A_to_m(4.98010))
@@ -191,7 +208,7 @@ def test_AlN(parser):
     assert np.shape(eigenvalues.kpoints) == (74, 3)
     assert eigenvalues.kpoints[0][0] == approx(-0.42857)
     assert eigenvalues.kpoints[0][2] == approx(-0.33333)
-    assert eigenvalues.kpoints[73][2] == pytest.approx(0.0)
+    assert eigenvalues.kpoints[73][2] == approx(0.0)
     assert np.shape(eigenvalues.energies) == (1, 74, 52)
     assert eigenvalues.energies[0, 0, 0].magnitude == approx(Ha_to_J(-0.77128985545768))
     assert eigenvalues.energies[0, 73, 51].magnitude == approx(
