@@ -56,7 +56,9 @@ def test_single_point(parser):
     assert sec_method[0].electrons_representation[0].basis_set[0].cutoff.to(
         'Ry'
     ).magnitude == approx(70.0)
-    assert sec_method[0].x_cpmd_simulation_parameters['TIME STEP FOR ELECTRONS'] == 5.0
+    assert sec_method[0].x_cpmd_simulation_parameters[
+        'TIME STEP FOR ELECTRONS'
+    ] == approx(5.0)
     assert (
         sec_method[0].x_cpmd_simulation_parameters[
             'MAXIMUM NUMBER OF ITERATIONS FOR SC'
