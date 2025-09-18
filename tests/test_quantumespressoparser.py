@@ -48,12 +48,12 @@ def test_scf(parser):
     sec_run = archive.run[0]
     assert sec_run.program.version == '5.2.1 (svn rev. 11920)'
     assert sec_run.x_qe_input_filename == 'uspp1.in'
-    assert sec_run.time_run.date_start.magnitude == 1451140876.0
+    assert sec_run.time_run.date_start.magnitude == approx(1451140876.0)
     assert sec_run.x_qe_section_compile_options[0].x_qe_lmaxx == 3
     assert sec_run.x_qe_section_parallel[0].x_qe_nproc == 4
     assert archive.workflow2 is not None
     assert 'rdiaghg' in sec_run.x_qe_profile_function
-    assert sec_run.time_run.date_end.magnitude == 1451140881.0
+    assert sec_run.time_run.date_end.magnitude == approx(1451140881.0)
     assert sec_run.clean_end
 
     sec_method = sec_run.method[0]
@@ -67,11 +67,11 @@ def test_scf(parser):
     assert sec_method.x_qe_sticks_sum_G_smooth == 135043
 
     assert 'NL pseudopotentials' in sec_method.x_qe_allocated_array_name
-    assert sec_method.x_qe_allocated_array_size[2] == 33554432.0
+    assert sec_method.x_qe_allocated_array_size[2] == approx(33554432.0)
     assert sec_method.x_qe_temporary_array_dimensions[3] == '262144,    8'
     assert sec_method.x_qe_per_process_mem == approx(2.84373811e08)
     assert sec_method.x_qe_potential_mixing_scheme == 'plain'
-    assert sec_method.x_qe_starting_charge == 7.99998
+    assert sec_method.x_qe_starting_charge == approx(7.99998)
     assert len(sec_method.dft.xc_functional.exchange) == 1
     assert sec_method.x_qe_xc_igcc_name == 'pbc'
     assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE'
@@ -83,7 +83,7 @@ def test_scf(parser):
     assert sec_atoms[1].label == 'H'
     assert sec_atoms[0].x_qe_pp_md5sum == '7e325307d184e51bd80757047dcf04f9'
     assert sec_atoms[1].x_qe_pp_ncoefficients == 8
-    assert sec_atoms[0].x_qe_kind_mass == 16.0
+    assert sec_atoms[0].x_qe_kind_mass == approx(16.0)
 
     sec_system = sec_run.system[0]
     assert sec_system.atoms.labels == ['O', 'H', 'H']
@@ -114,8 +114,8 @@ def test_scf(parser):
     )
     assert sec_scfs[6].x_qe_iteration_ecutwfc == approx(5.4496809027589626e-17)
     # uncomment this when time_physical def is updated
-    # assert sec_scfs[0].time_calculation.magnitude == 1.2
-    assert sec_scfs[3].x_qe_iteration_charge_negative_up == 0.06614
+    # assert sec_scfs[0].time_calculation.magnitude == approx(1.2)
+    assert sec_scfs[3].x_qe_iteration_charge_negative_up == approx(0.06614)
 
 
 def test_multirun(parser):
@@ -134,11 +134,10 @@ def test_multirun(parser):
     assert sec_method.electronic.smearing.kind == 'fermi'
     assert sec_method.electronic.n_spin_channels == 2
     assert len(sec_runs[1].calculation[0].scf_iteration) == 111
-    assert (
-        sec_runs[2].calculation[0].scf_iteration[45].x_qe_iter_mpersite_magn[6]
-        == -0.3325
-    )
-    assert sec_runs[0].system[0].x_qe_atom_starting_magnetization[1] == 0.133
+    assert sec_runs[2].calculation[0].scf_iteration[45].x_qe_iter_mpersite_magn[
+        6
+    ] == approx(-0.3325)
+    assert sec_runs[0].system[0].x_qe_atom_starting_magnetization[1] == approx(0.133)
     assert np.shape(sec_runs[0].calculation[0].eigenvalues[0].energies[1][19]) == (100,)
     assert np.shape(sec_runs[1].calculation[0].eigenvalues[0].energies[1][19]) == (100,)
     assert np.shape(sec_runs[2].calculation[0].eigenvalues[0].energies[1][19]) == (100,)
@@ -204,7 +203,7 @@ def test_dos(parser):
     assert len(sec_dos.energies) == 1801
     assert sec_dos.energies[269].magnitude == approx(1.23207383e-18)
     assert sec_dos.total[0].value[150].magnitude == approx(2.8991809650870246e17)
-    assert sec_dos.total[0].value_integrated[1316] == 8.582
+    assert sec_dos.total[0].value_integrated[1316] == approx(8.582)
 
 
 def test_vcrelax(parser):
