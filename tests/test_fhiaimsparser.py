@@ -167,7 +167,7 @@ def test_band_spinpol(parser):
 
     # v151211 test for the Fermi level
     assert sec_scc.energy.fermi.to('eV').magnitude == approx(-9.3842209)
-    assert sec_k_band.energy_fermi == approx(sec_scc.energy.fermi)
+    assert sec_k_band.energy_fermi.magnitude == approx(sec_scc.energy.fermi.magnitude)
 
 
 @pytest.mark.parametrize('version', silicon_versions)
