@@ -64,7 +64,7 @@ def test_vasprunxml_static(parser):
     assert len(archive.run) == 1
 
     sec_run = archive.run[0]
-    assert sec_run.program.version == "4.6.35 3Apr08 complex parallel LinuxIFC"
+    assert sec_run.program.version == '4.6.35 3Apr08 complex parallel LinuxIFC'
 
     assert sec_run.time_run.date_start.magnitude == 1366564273.0
 
@@ -182,7 +182,7 @@ def test_vasprunxml_relax(parser):
     sec_dos = sec_sccs[-1].dos_electronic
     assert sec_dos[0].spin_channel == 0 and sec_dos[1].spin_channel == 1
     dos_integrated = integrate_dos(sec_dos, sec_sccs[-1].energy.fermi)
-    assert pytest.approx(dos_integrated, abs=1) == 22.0
+    assert dos_integrated == approx(22.0, abs=1)
     assert sec_sccs[1].time_calculation.magnitude == approx(438.32)
     assert sec_sccs[2].time_physical.magnitude == approx(1235.66)
     assert sec_sccs[0].scf_iteration[2].time_calculation.magnitude == approx(43.00)
@@ -264,7 +264,7 @@ def test_dos_silicon(silicon_dos):
 
     # Check that the no. valence electrons is recovered
     dos_integrated = integrate_dos(dos, scc.energy.fermi)
-    assert pytest.approx(dos_integrated, abs=1e-2) == 8.0
+    assert dos_integrated == approx(8.0, abs=1e-2)
 
 
 def test_outcar(parser):
@@ -344,9 +344,10 @@ def test_outcar(parser):
 #    BUG EMIN is stored in the fermi energy!!
 #    dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
 #    try:
-#        assert pytest.approx(dos_integrated, abs=1) == 22.
+#        assert dos_integrated == approx(22, abs=1)
 #    except AssertionError:
 #        raise AssertionError(sec_scc.energy.fermi)
+
 
 def test_outcar_gamma(parser):
     archive = EntryArchive()
@@ -361,6 +362,7 @@ def test_outcar_gamma(parser):
     assert np.all(k_mesh.points == np.array([[0.0, 0.0, 0.0]]))
     assert np.all(k_mesh.multiplicities == np.array([1]))
     assert np.all(k_mesh.weights == np.array([1.0]))
+
 
 @pytest.mark.parametrize(
     'filename, name, cutoff',
@@ -396,7 +398,10 @@ def test_potcar(parser, filename, name, cutoff):
     # The AlN case has also somewhat special header with git tag for version
     # so check the version parsing as well
     if 'AlN' in filename:
-        assert archive.run[0].program.version == '5.4.4 18Apr17-6-g9f103f2a35 complex parallel LINUX'
+        assert (
+            archive.run[0].program.version
+            == '5.4.4 18Apr17-6-g9f103f2a35 complex parallel LINUX'
+        )
         assert archive.run[0].program.compilation_datetime.magnitude == 1553622472.0
 
 
@@ -468,13 +473,16 @@ def test_dftu_static(parser, dir, slice, uref, jref):
         if hubb := param.hubbard_kanamori_model:
             assert hubb.double_counting_correction == 'Dudarev'
             assert hubb.orbital == 'd'
-            assert approx(hubb.u.to('eV').magnitude) == uref
-            assert approx(hubb.j.to('eV').magnitude) == jref
+            assert hubb.u.to('eV').magnitude == approx(uref)
+            assert hubb.j.to('eV').magnitude == approx(jref)
 
         # This one has header without the build time info so double check
         # we parse version correctly
-        if filename == "tests/data/vasp/dftu/single_parameter/OUTCAR":
-            assert archive.run[-1].program.version == '4.6.35 3Apr08 complex parallel LinuxIFC'
+        if filename == 'tests/data/vasp/dftu/single_parameter/OUTCAR':
+            assert (
+                archive.run[-1].program.version
+                == '4.6.35 3Apr08 complex parallel LinuxIFC'
+            )
 
 
 def test_gw(silicon_gw):
