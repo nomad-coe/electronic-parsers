@@ -56,7 +56,7 @@ def test_scf(parser):
 
     sec_system = sec_run.system[0]
     assert sec_system.atoms.labels == ['Si', 'Si']
-    assert False not in sec_system.atoms.periodic
+    assert all(sec_system.atoms.periodic)
     assert sec_system.atoms.positions[1][1].magnitude == approx(1.346756e-10)
     assert sec_system.atoms.lattice_vectors[2][0].magnitude == approx(2.693512e-10)
 

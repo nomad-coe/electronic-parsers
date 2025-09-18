@@ -88,7 +88,7 @@ def test_scf(parser):
     sec_system = sec_run.system[0]
     assert sec_system.atoms.labels == ['O', 'H', 'H']
     assert sec_system.atoms.positions[2][0].magnitude == approx(5.12015994e-10)
-    assert False not in sec_system.atoms.periodic
+    assert all(sec_system.atoms.periodic)
     assert sec_system.x_qe_reciprocal_cell[2][2].magnitude == approx(5.93674971e09)
     assert len(sec_system.x_qe_k_info_vec) == 1
     assert sec_system.x_qe_cell_volume == approx(1.18547769e-27)
@@ -239,16 +239,14 @@ def test_noncolmag(parser):
     assert np.shape(sec_scc.eigenvalues[0].energies) == (1, 288, 26)
     assert len(sec_scc.dos_electronic) == 1
     assert len(sec_scc.dos_electronic[0].total[0].value) == 501
-    assert (
-        sec_scc.dos_electronic[0].total[0].value[500].magnitude
-        == approx((0.4188 / ureg.eV).to_base_units().magnitude)
+    assert sec_scc.dos_electronic[0].total[0].value[500].magnitude == approx(
+        (0.4188 / ureg.eV).to_base_units().magnitude
     )
 
     sec_method = sec_run.method[0]
     assert sec_method.electronic.smearing.kind == 'gaussian'
-    assert (
-        sec_method.electronic.smearing.width
-        == approx((0.01 * ureg.rydberg).to_base_units().magnitude)
+    assert sec_method.electronic.smearing.width == approx(
+        (0.01 * ureg.rydberg).to_base_units().magnitude
     )
     assert sec_method.electronic.n_spin_channels is None
     assert sec_method.scf.threshold_energy_change.magnitude == approx(Ry_to_J(1e-8))

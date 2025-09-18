@@ -48,7 +48,7 @@ def test_scf(parser):
     assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PZ_MOD'
 
     sec_system = sec_run.system[0]
-    assert False not in sec_system.atoms.periodic
+    assert all(sec_system.atoms.periodic)
     assert sec_system.atoms.labels == ['Si', 'Si', 'Si', 'Si']
     assert sec_system.atoms.positions[1][0].magnitude == approx(1.91979671e-10)
 
