@@ -39,7 +39,7 @@ def test_scf(parser):
     assert sec_run.program.version == 'ATK 2016.0.3'
 
     sec_method = sec_run.method[0]
-    assert sec_method.electronic.smearing.width == 300
+    assert sec_method.electronic.smearing.width == approx(300)
     assert sec_method.dft.xc_functional.correlation[0].name == 'LDA_C_PZ'
 
     sec_system = sec_run.system[0]
