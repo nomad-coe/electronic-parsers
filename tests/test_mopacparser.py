@@ -41,7 +41,7 @@ def test_spin_pol(parser):
     assert sec_run.time_run.date_start > 0
 
     sec_method = sec_run.method[0]
-    sec_method.x_mopac_method == 'PM7'
+    assert sec_method.x_mopac_method == 'PM7'
     assert 'TRIPLET' in sec_method.x_mopac_calculation_parameters
 
     sec_system = sec_run.system[0]
@@ -61,9 +61,9 @@ def test_spin_pol(parser):
     assert sec_calc.eigenvalues[0].energies[1][0][5].magnitude == approx(
         -3.26395424e-20
     )
-    assert sec_calc.eigenvalues[0].occupations[0][0][7] == 0.0
-    assert sec_calc.eigenvalues[0].occupations[1][0][4] == 1.0
-    assert sec_calc.multipoles[0].dipole.total == 0.0
+    assert sec_calc.eigenvalues[0].occupations[0][0][7] == approx(0.0)
+    assert sec_calc.eigenvalues[0].occupations[1][0][4] == approx(1.0)
+    assert sec_calc.multipoles[0].dipole.total == approx(0.0)
     assert sec_calc.charges[0].value[1].magnitude == approx(9.6130598e-19)
     assert sec_calc.charges[0].orbital_projected[3].value.magnitude == approx(
         1.64698951e-19
@@ -89,7 +89,7 @@ def test_non_spin_pol(parser):
     assert sec_calc.eigenvalues[0].energies[0][0][4].magnitude == approx(
         -3.35031637e-18
     )
-    assert sec_calc.eigenvalues[0].occupations[0][0][14] == 2.0
+    assert sec_calc.eigenvalues[0].occupations[0][0][14] == approx(2.0)
     assert sec_calc.charges[0].orbital_projected[24].orbital == 's'
     assert sec_calc.charges[0].orbital_projected[6].value.magnitude == approx(
         1.61840668e-19
