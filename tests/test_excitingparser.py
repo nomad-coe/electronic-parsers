@@ -52,7 +52,7 @@ def test_gs(parser):
 
     sec_method = sec_run.method[0]
     assert list(sec_method.k_mesh.grid) == [6] * 3
-    assert list(sec_method.k_mesh.offset) == [0.0] * 3
+    assert list(sec_method.k_mesh.offset) == approx([0.0] * 3)
     assert sec_method.electronic.n_spin_channels == 1
     assert sec_method.electronic.smearing.width == approx(4.35974472e-22)
     assert sec_method.dft.xc_functional.exchange[0].name == 'GGA_X_PBE_SOL'
@@ -74,7 +74,7 @@ def test_gs(parser):
 
     sec_scc = sec_run.calculation[0]
     assert sec_scc.energy.total.value.magnitude == approx(-3.30863556e-16)
-    assert np.mean(sec_scc.forces.total.value) == 0.0
+    assert np.mean(sec_scc.forces.total.value) == approx(0.0)
     assert sec_scc.charges[0].total.magnitude == approx(1.92261196e-18)
     assert sec_scc.energy.fermi.magnitude == approx(2.4422694e-18)
     assert len(sec_scc.scf_iteration) == 12
@@ -125,7 +125,7 @@ def test_strucopt(parser):
     sec_run = archive.run[0]
     sec_method = sec_run.method[0]
     assert list(sec_method.k_mesh.grid) == [6] * 3
-    assert list(sec_method.k_mesh.offset) == [0.0] * 3
+    assert list(sec_method.k_mesh.offset) == approx([0.0] * 3)
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 15
     assert len(sec_sccs[0].scf_iteration) == 19
@@ -153,7 +153,7 @@ def test_dos_spinpol(parser):
     sec_run = archive.run[0]
     sec_method = sec_run.method[0]
     assert list(sec_method.k_mesh.grid) == [8] * 3
-    assert list(sec_method.k_mesh.offset) == [0.0] * 3
+    assert list(sec_method.k_mesh.offset) == approx([0.0] * 3)
 
     sec_scc = sec_run.calculation[0]
     assert len(sec_scc.dos_electronic) == 2
@@ -195,7 +195,7 @@ def test_xs_tddft(parser):
     sec_run = archive.run[0]
     sec_method = sec_run.method[0]
     assert list(sec_method.k_mesh.grid) == [12] * 3
-    assert list(sec_method.k_mesh.offset) == [0.097, 0.273, 0.493]
+    assert list(sec_method.k_mesh.offset) == approx([0.097, 0.273, 0.493])
 
     sec_sccs = sec_run.calculation
     assert len(sec_sccs) == 2
@@ -284,7 +284,7 @@ def test_gw(silicon_gw):
     # assert sec_sccs[0].band_gap[0].value.magnitude == approx(3.42913865e-19)
     assert sec_sccs[0].band_gap[0].provenance.label == 'parser'
     assert np.shape(sec_sccs[0].eigenvalues[0].energies[0][2]) == (20,)
-    assert sec_sccs[0].eigenvalues[0].kpoints[-3][1] == 0.0
+    assert sec_sccs[0].eigenvalues[0].kpoints[-3][1] == approx(0.0)
     assert sec_sccs[0].eigenvalues[0].energies[0][2][9].magnitude == approx(
         1.769533187849446e-18, abs=1e-20
     )
@@ -366,7 +366,7 @@ def test_hybrids(parser):
 
     sec_method = archive.run[-1].method[0]
     assert list(sec_method.k_mesh.grid) == [6, 6, 4]
-    assert list(sec_method.k_mesh.offset) == [0.0] * 3
+    assert list(sec_method.k_mesh.offset) == approx([0.0] * 3)
     assert sec_method.dft.xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE03'
 
     calc = archive.run[-1].calculation[0]
