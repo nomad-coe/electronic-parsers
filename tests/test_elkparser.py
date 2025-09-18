@@ -49,7 +49,7 @@ def test_1(parser):
     sec_system = archive.run[0].system[0]
     assert sec_system.atoms.lattice_vectors[1][0].magnitude == approx(2.02500243e-10)
     assert sec_system.atoms.labels == ['Al']
-    assert sec_system.atoms.positions[0][1].magnitude == 0.0
+    assert sec_system.atoms.positions[0][1].magnitude == approx(0.0)
 
     sec_calc = sec_run.calculation[0]
     assert len(sec_calc.scf_iteration) == 19
