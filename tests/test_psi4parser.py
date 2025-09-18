@@ -58,7 +58,7 @@ def test_scf(parser):
     assert system.atoms.labels[2] == 'H'
     assert system.x_psi4_full_point_group == 'C2v'
     assert system.x_psi4_rotational_constants[2] == approx(9.50429)
-    assert system.x_psi4_nbeta == 5
+    assert system.x_psi4_nbeta == approx(5)
 
     calc = run.calculation[0]
     assert calc.energy.nuclear_repulsion.value.magnitude == approx(4.00382263e-17)
