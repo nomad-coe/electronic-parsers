@@ -70,7 +70,9 @@ def test_band(parser):
         sec_specie_basis_set[0].x_abacus_specie_basis_set_ln
         == [[0, 0], [0, 1], [1, 0], [1, 1], [2, 0]]
     ).all()
-    assert sec_specie_basis_set[0].x_abacus_specie_basis_set_rcutoff.magnitude == 8
+    assert sec_specie_basis_set[
+        0
+    ].x_abacus_specie_basis_set_rcutoff.magnitude == approx(8)
     assert sec_specie_basis_set[0].x_abacus_specie_basis_set_rmesh == 801
     assert sec_method.electronic.n_spin_channels == 1
     assert not sec_method.x_abacus_spin_orbit
@@ -173,7 +175,7 @@ def test_scf(parser):
     assert sec_system_sym.bravais_lattice == 'cF'
     assert sec_system_sym.x_abacus_point_group_schoenflies_name == 'T_d'
     assert sec_system.x_abacus_celldm[0] == approx(3.8166849)
-    assert sec_system.x_abacus_celldm[-1] == 60
+    assert sec_system.x_abacus_celldm[-1] == approx(60)
     assert sec_system_sym.x_abacus_number_of_rotation_matrices == 48
     assert sec_system_sym.x_abacus_number_of_point_group_operations == 24
     assert sec_system_sym.x_abacus_number_of_space_group_operations == 24
@@ -268,19 +270,16 @@ def test_hse(parser):
     parser.parse('tests/data/abacus/GaSb_hse/running_scf.log', archive, None)
 
     sec_run = archive.run[0]
-    assert sec_run.x_abacus_program_execution_time.magnitude == 8837
+    assert sec_run.x_abacus_program_execution_time.magnitude == approx(8837)
 
     sec_method = sec_run.method[0]
     assert sec_method.dft.xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE06'
     assert sec_method.dft.xc_functional.hybrid[0].parameters[
         '$\\omega$ in m^-1'
     ] == approx(2078698737.084507)
-    assert (
-        sec_method.dft.xc_functional.hybrid[0].parameters[
-            'hybrid coefficient $\\alpha$'
-        ]
-        == 0.25
-    )
+    assert sec_method.dft.xc_functional.hybrid[0].parameters[
+        'hybrid coefficient $\\alpha$'
+    ] == approx(0.25)
     assert sec_method.x_abacus_hse_omega.magnitude == approx(2078698737.084507)
     assert sec_method.x_abacus_hybrid_xc_coeff == approx(0.25)
     assert sec_method.x_abacus_mixing_method == 'pulay'
@@ -313,7 +312,7 @@ def test_spin2(parser):
     sec_scc = sec_run.calculation[0]
     # TODO fermi energy not set
     sec_k_band = sec_scc.band_structure_electronic[0]
-    assert sec_k_band.energy_fermi.magnitude == 0
+    assert sec_k_band.energy_fermi.magnitude == approx(0)
     sec_k_band_segment = sec_k_band.segment[0]
     assert sec_k_band_segment.energies.shape == (2, 1728, 8)
     assert sec_k_band_segment.energies[0][1][2].magnitude == approx(
@@ -341,7 +340,7 @@ def test_dftu(parser):
     assert sec_method.x_abacus_spin_orbit
     # TODO include  full relativistic
     # assert sec_method.electronic.relativity_method == 'full relativistic'
-    assert sec_method.x_abacus_initial_magnetization_total == 0.0
+    assert sec_method.x_abacus_initial_magnetization_total == approx(0.0)
     assert sec_method.x_abacus_diagonalization_algorithm == 'genelpa'
     assert sec_method.electronic.method == 'DFT+U'
 
