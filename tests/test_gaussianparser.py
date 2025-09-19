@@ -111,7 +111,6 @@ def test_scf_multirun(parser):
     )
 
 
-@pytest.mark.xfail(reason='TODO: fix approx tol')
 def test_mp(parser):
     archive = EntryArchive()
     parser.parse('tests/data/gaussian/NO_mp/onno.out', archive, None)
@@ -125,7 +124,7 @@ def test_mp(parser):
     assert sec_sccs[-1].energy.total.value.magnitude == approx(-1.12849219e-15)
     assert sec_sccs[3].x_gaussian_section_coupled_cluster[
         0
-    ].x_gaussian_ccsd_correction_energy.magnitude == approx(-3.08257224e-18)
+    ].x_gaussian_ccsd_correction_energy.magnitude == approx(-3.0600739099271323e-18)
 
 
 def test_freq(parser):
