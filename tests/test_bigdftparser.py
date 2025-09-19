@@ -46,7 +46,7 @@ def test_basic(parser):
     sec_system = sec_run.system[0]
     assert sec_system.atoms.positions[0][2].magnitude == approx(3.60977554e-10)
     assert sec_system.atoms.lattice_vectors[2][2].magnitude == approx(8.3345e-10)
-    assert True not in sec_system.atoms.periodic
+    assert not any(sec_system.atoms.periodic)
 
     sec_scc = sec_run.calculation[0]
     assert sec_scc.energy.total.value.magnitude == approx(-8.66869132e-17)

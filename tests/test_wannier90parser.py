@@ -44,7 +44,7 @@ def test_lco(parser):
     assert len(sec_run.system) == 1
     sec_system = sec_run.system[-1]
     assert sec_system.atoms.labels[-1] == 'O'
-    assert (sec_system.atoms.positions[2].magnitude == np.array([0.0, 0.0, 0.0])).all()
+    assert sec_system.atoms.positions[2].magnitude == approx([0.0, 0.0, 0.0])
     assert sec_system.atoms.lattice_vectors[0][0].magnitude == approx(-1.909145e-10)
     assert sec_system.atoms.periodic == [True, True, True]
     assert sec_system.m_xpath('atoms_group')
@@ -57,9 +57,7 @@ def test_lco(parser):
     assert len(sec_run.method) == 1
     sec_method = sec_run.method[-1]
     assert sec_method.k_mesh.n_points == 343
-    assert (
-        sec_method.k_mesh.points[303] == np.array([0.85714, 0.14286, 0.28571])
-    ).all()
+    assert sec_method.k_mesh.points[303] == approx([0.85714, 0.14286, 0.28571])
     assert (sec_method.k_mesh.grid == np.array([7, 7, 7])).all()
     sec_wannier = sec_method.tb.wannier
     assert sec_wannier.n_projected_orbitals == 1
@@ -76,7 +74,9 @@ def test_lco(parser):
     assert sec_scc.band_structure_electronic[0].segment[0].n_kpoints == len(
         sec_scc.band_structure_electronic[0].segment[0].energies[0]
     )
-    assert sec_scc.energy.fermi == sec_scc.band_structure_electronic[0].energy_fermi
+    assert sec_scc.energy.fermi.magnitude == approx(
+        sec_scc.band_structure_electronic[0].energy_fermi.magnitude
+    )
     assert sec_scc.band_structure_electronic[0].energy_fermi.to(
         'eV'
     ).magnitude == approx(12.895622)

@@ -70,7 +70,7 @@ def test_scf_spinpol(parser):
         0
     ].x_fhi_aims_section_controlIn_basis_func
     assert len(sec_basis_func) == 10
-    assert sec_basis_func[2].x_fhi_aims_controlIn_basis_func_radius == 6.0
+    assert sec_basis_func[2].x_fhi_aims_controlIn_basis_func_radius == approx(6.0)
     assert sec_basis_func[6].x_fhi_aims_controlIn_basis_func_type == 'hydro'
     sec_atom_type = archive.run[0].method[0].atom_parameters[0]
     assert sec_atom_type.mass.magnitude == approx(9.27328042e-26)
@@ -97,7 +97,7 @@ def test_scf_spinpol(parser):
     assert np.shape(sec_eig.kpoints) == (4, 3)
     assert np.shape(sec_eig.occupations[1][3]) == (19,)
     assert sec_eig.energies[1][2][4].magnitude == approx(-1.1221523e-16)
-    assert sec_eig.occupations[0][3][9] == 1.0
+    assert sec_eig.occupations[0][3][9] == approx(1.0)
 
 
 def test_geomopt(parser):
@@ -107,7 +107,9 @@ def test_geomopt(parser):
     sec_methods = archive.run[0].method
     assert len(sec_methods) == 1
     assert list(sec_methods[0].k_mesh.grid) == [8] * 3
-    assert sec_methods[0].scf.threshold_energy_change.magnitude == approx(1.602176634e-25)
+    assert sec_methods[0].scf.threshold_energy_change.magnitude == approx(
+        1.602176634e-25
+    )
     assert sec_methods[0].electronic.smearing.kind == 'gaussian'
     assert sec_methods[0].electronic.smearing.width == approx(1.602176633e-21)
 
@@ -123,7 +125,7 @@ def test_geomopt(parser):
     assert sec_sccs[2].energy.correlation.value.magnitude == approx(-9.34966824e-18)
     assert len(sec_sccs[3].scf_iteration) == 6
     assert np.max(sec_sccs[3].forces.free.value_raw.magnitude) == approx(2.4933233e-11)
-    assert np.max(sec_sccs[4].forces.free.value.magnitude) == 0.0
+    assert np.max(sec_sccs[4].forces.free.value.magnitude) == approx(0.0)
 
 
 def test_band_spinpol(parser):
@@ -161,11 +163,11 @@ def test_band_spinpol(parser):
     assert sec_dos_up.total[0].value[46].to('1 / eV').magnitude == approx(0.18127036)
     assert sec_dos_down.total[0].value[15].to('1 / eV').magnitude == approx(0.57150097)
     dos_integrated = integrate_dos(sec_dos, sec_scc.energy.fermi)
-    assert pytest.approx(dos_integrated, abs=1) == 8.0
+    assert dos_integrated == approx(8.0, abs=1)
 
     # v151211 test for the Fermi level
     assert sec_scc.energy.fermi.to('eV').magnitude == approx(-9.3842209)
-    assert sec_k_band.energy_fermi == sec_scc.energy.fermi
+    assert sec_k_band.energy_fermi.magnitude == approx(sec_scc.energy.fermi.magnitude)
 
 
 @pytest.mark.parametrize('version', silicon_versions)
@@ -202,9 +204,9 @@ def test_dos_silicon(silicon, version, normalization_factor):
     values = np.array([d.value.magnitude for d in dos[0].total])
     dos_integrated = integrate_dos(dos, scc.energy.fermi)
 
-    assert pytest.approx(dos_integrated, abs=5e-2) == 8
-    assert (
-        dos[0].total[0].x_fhi_aims_normalization_factor_raw_data == normalization_factor
+    assert dos_integrated == approx(8, abs=5e-2)
+    assert dos[0].total[0].x_fhi_aims_normalization_factor_raw_data == approx(
+        normalization_factor
     )
 
     # Check that an appropriately sized band gap is found at the given
@@ -237,7 +239,7 @@ def test_dos(parser):
     assert sec_dos[0].total[0].value[-1].to('1 / eV').magnitude == approx(0.49471595)
 
     dos_integrated = integrate_dos(sec_dos, sec_scc.energy.fermi)
-    assert pytest.approx(dos_integrated, abs=1) == 3.0  # 3rd valence shell
+    assert dos_integrated == approx(3.0, abs=1)  # 3rd valence shell
 
     # PDOS
     assert sec_dos[0].m_xpath('species_projected') and sec_dos[0].m_xpath(
@@ -318,9 +320,9 @@ def test_hybrid(parser):
     assert list(sec_method.k_mesh.grid) == [12] * 3
 
     sec_xc_functional = sec_method.dft.xc_functional
-    assert (
-        sec_xc_functional.hybrid[0].parameters['exact_exchange_mixing_factor'] == 0.25
-    )
+    assert sec_xc_functional.hybrid[0].parameters[
+        'exact_exchange_mixing_factor'
+    ] == approx(0.25)
     assert sec_xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE06'
 
 
@@ -335,7 +337,7 @@ def test_dftu(parser):
 
     sec_hubb = sec_method.atom_parameters[0].hubbard_kanamori_model
     assert sec_hubb.orbital == '4f'
-    assert approx(sec_hubb.u_effective.to('eV').magnitude) == 4.5
+    assert sec_hubb.u_effective.to('eV').magnitude == approx(4.5)
     assert sec_hubb.double_counting_correction == 'Dudarev'
 
 

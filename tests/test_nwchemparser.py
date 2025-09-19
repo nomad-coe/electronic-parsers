@@ -44,7 +44,7 @@ def test_single_point(parser):
     assert sec_method.scf.n_max_iteration == 50
     assert len(sec_method.dft.xc_functional.correlation) == 1
     assert sec_method.dft.xc_functional.correlation[0].name == 'MGGA_C_TPSS'
-    assert sec_method.dft.xc_functional.exchange[0].weight == 1.0
+    assert sec_method.dft.xc_functional.exchange[0].weight == approx(1.0)
 
     assert archive.workflow2.m_def.name == 'SinglePoint'
 
@@ -56,7 +56,7 @@ def test_single_point(parser):
     assert len(sec_scfs) == 6
     assert sec_scfs[2].energy.total.value.magnitude == approx(-3.33233301e-16)
     # uncomment this when time_physical def is updated
-    # assert sec_scfs[5].time_physical.magnitude == 0.3
+    # assert sec_scfs[5].time_physical.magnitude == approx(0.3)
     assert sec_scfs[4].energy.change.magnitude == approx(-7.45516347e-23)
 
     sec_system = archive.run[0].system[0]
