@@ -65,22 +65,6 @@ class x_yambo_io(MSection):
 
 class x_yambo_parameters(MSection):
     m_def = Section(validate=False)
-
-    x_yambo_simulation_cell = Quantity(
-        type=np.int32,
-        shape=[],
-        description="""
-        direct lattice vectors
-        """,
-    )
-
-    x_yambo_alat_factors = Quantity(
-        type=np.int32,
-        shape=[],
-        description="""
-        Alat factors
-        """,
-    )
     
     x_yambo_bands = Quantity(
         type=np.int32,
@@ -356,27 +340,6 @@ class x_yambo_bare_xc_bandenergies(runschema.calculation.BandEnergies):
         description="""
         """,
     )
-
-
-class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
-
-    x_yambo_alat_factors =  Quantity(
-            type=np.float64,
-            shape = [],
-            description="""
-            alat factors
-        """, 
-    ),
-    
-    x_yambo_simulation_cell = Quantity(
-            type=np.float64,
-            shape = [],
-            description="""
-            simulation cell
-        """,
-    ),
-
 
 
 class Calculation(runschema.calculation.Calculation):
