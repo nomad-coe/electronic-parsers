@@ -17,6 +17,12 @@
 #
 
 import numpy as np
+from importlib.metadata import version
+
+numpy_version = version('numpy')
+use_trapz = (
+    int(numpy_version.split('.')[0]) < 2
+)  # TODO: this can be removed once the numpy < 2 restriction from nomad-lab is gone
 
 
 def integrate_dos(dos, e_fermi=None):
@@ -39,5 +45,8 @@ def integrate_dos(dos, e_fermi=None):
         except IndexError:
             raise IndexError('Check the no. spin-channels')
         occ_value = [v.magnitude for v in spin_channel]
-        dos_integrated += np.trapz(x=occ_energy[ispin], y=occ_value)
+        if use_trapz:
+            dos_integrated += np.trapz(y=occ_value, x=occ_energy[ispin])
+        else:
+            dos_integrated += np.trapezoid(y=occ_value, x=occ_energy[ispin])
     return dos_integrated

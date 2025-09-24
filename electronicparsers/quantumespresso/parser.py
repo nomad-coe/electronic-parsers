@@ -40,6 +40,7 @@ from runschema.method import (
     BasisSetContainer,
     AtomParameters,
     KMesh,
+    Scf,
 )
 from runschema.system import System, Atoms
 from runschema.calculation import (
@@ -3334,6 +3335,9 @@ class QuantumEspressoParser:
         sec_kmesh.n_points = run.get_header('k_points', {}).get('nk', 1)
         sec_kmesh.points = run.get_header('k_points', {}).get('points', None)
 
+        if (threshold := run.get_header('scf_threshold_energy_change')) is not None:
+            sec_method.scf = Scf(threshold_energy_change = threshold)
+
         g_vector_sticks = run.get_header('g_vector_sticks', {}).get('Sum', None)
         if g_vector_sticks is not None:
             names = [
@@ -3404,7 +3408,6 @@ class QuantumEspressoParser:
 
         # other method variables
         names = [
-            'scf_threshold_energy_change',
             'x_qe_core_charge_realspace',
             'x_qe_exact_exchange_fraction',
             'x_qe_diagonalization_algorithm',

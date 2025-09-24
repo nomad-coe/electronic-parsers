@@ -62,7 +62,7 @@ def test_scf(parser):
     assert sec_system[0].atoms.labels == ['Si', 'Si']
     assert sec_system[0].atoms.positions[1][2].magnitude == approx(-6.97284111e-11)
     assert sec_system[0].x_fleur_parameters['lattice'] == 'any'
-    assert sec_system[0].x_fleur_parameters['the vacuum begins at z'] == 0.0
+    assert sec_system[0].x_fleur_parameters['the vacuum begins at z'] == approx(0.0)
     assert sec_system[0].x_fleur_unit_cell_volume.magnitude == approx(275.952900)
     assert sec_system[0].x_fleur_G_max == approx(11.14815)
     assert sec_system[0].x_fleur_vol_interstitial == approx(192.693364)
@@ -97,7 +97,7 @@ def test_xml(parser):
 
     sec_method = sec_run[0].method
     assert sec_method[0].x_fleur_parameters['Gmax'] == approx(11.07772533)
-    assert sec_method[0].x_fleur_parameters['kcrel'] == 0
+    assert sec_method[0].x_fleur_parameters['kcrel'] == approx(0)
     assert sec_method[0].dft.xc_functional.correlation[0].name == 'GGA_C_PBE'
     assert (
         sec_method[0].dft.xc_functional.x_fleur_xc_correction

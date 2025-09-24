@@ -64,8 +64,9 @@ def test_vasprunxml_static(parser):
     assert len(archive.run) == 1
 
     sec_run = archive.run[0]
+    assert sec_run.program.version == '4.6.35 3Apr08 complex parallel LinuxIFC'
 
-    assert sec_run.program.compilation_datetime.magnitude == 1366564273.0
+    assert sec_run.time_run.date_start.magnitude == approx(1366564273.0)
 
     sec_method = sec_run.method[0]
     assert len(sec_method.x_vasp_incar_in) == 27
@@ -132,8 +133,8 @@ def test_vasprunxml_static(parser):
     assert sec_dos[0].orbital_projected[0].value[-1].magnitude == approx(3.40162245e17)
     # test DOS integrated
     dos_integrated = integrate_dos(sec_dos, sec_scc.energy.fermi)
-    assert (
-        pytest.approx(dos_integrated, abs=1e-2) == 8.0 - 6.0
+    assert dos_integrated == approx(
+        8.0 - 6.0, abs=1e-2
     )  # dos starts from 6 electrons already
 
 
@@ -145,6 +146,8 @@ def test_vasprunxml_relax(parser):
     assert len(archive.run[0].method) == 1
 
     sec_run = archive.run[0]
+    assert sec_run.program.version == '5.3.2 13Sep12 complex serial LinuxIFC'
+    assert sec_run.program.compilation_datetime.magnitude == approx(1363689977.0)
     sec_systems = archive.run[0].system
     assert len(sec_systems) == 3
     assert sec_systems[1].atoms.positions[1][0].magnitude == approx(3.2771907e-10)
@@ -170,7 +173,7 @@ def test_vasprunxml_relax(parser):
     assert len(sec_sccs) == 3
     assert [len(scc.scf_iteration) for scc in sec_sccs] == [12, 10, 6]
     assert sec_sccs[0].energy.free.value.magnitude == approx(-1.14352735e-18)
-    assert np.mean(sec_sccs[1].forces.total.value.magnitude) == 0.0
+    assert np.mean(sec_sccs[1].forces.total.value.magnitude) == approx(0.0)
     assert sec_sccs[2].stress.total.value[2][2].magnitude == approx(-2.02429105e08)
     assert sec_sccs[2].energy.lowest_unoccupied.magnitude == approx(7.93718304e-19)
     assert sec_sccs[2].energy.highest_occupied.magnitude == approx(7.93702283e-19)
@@ -179,7 +182,7 @@ def test_vasprunxml_relax(parser):
     sec_dos = sec_sccs[-1].dos_electronic
     assert sec_dos[0].spin_channel == 0 and sec_dos[1].spin_channel == 1
     dos_integrated = integrate_dos(sec_dos, sec_sccs[-1].energy.fermi)
-    assert pytest.approx(dos_integrated, abs=1) == 22.0
+    assert dos_integrated == approx(22.0, abs=1)
     assert sec_sccs[1].time_calculation.magnitude == approx(438.32)
     assert sec_sccs[2].time_physical.magnitude == approx(1235.66)
     assert sec_sccs[0].scf_iteration[2].time_calculation.magnitude == approx(43.00)
@@ -199,7 +202,7 @@ def test_vasprunxml_bands(parser):
     assert len(sec_k_band.segment) == 6
     assert np.shape(sec_k_band.segment[0].energies[0][127].magnitude) == (37,)
     assert sec_k_band.segment[1].energies[0][1][1].magnitude == approx(-6.27128785e-18)
-    assert sec_k_band.segment[5].occupations[0][127][5] == 0.0
+    assert sec_k_band.segment[5].occupations[0][127][5] == approx(0.0)
 
 
 def test_band_silicon(silicon_band):
@@ -261,7 +264,7 @@ def test_dos_silicon(silicon_dos):
 
     # Check that the no. valence electrons is recovered
     dos_integrated = integrate_dos(dos, scc.energy.fermi)
-    assert pytest.approx(dos_integrated, abs=1e-2) == 8.0
+    assert dos_integrated == approx(8.0, abs=1e-2)
 
 
 def test_outcar(parser):
@@ -270,6 +273,8 @@ def test_outcar(parser):
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '5.3.2 13Sep12 complex serial LinuxIFC'
+    assert sec_run.program.compilation_datetime.magnitude == approx(1364808737.0)
+    assert sec_run.time_run.date_start.magnitude == approx(1378501941.0)
 
     sec_method = sec_run.method[0]
     # basis set
@@ -304,7 +309,7 @@ def test_outcar(parser):
 
     sec_scc = sec_run.calculation[0]
     assert sec_scc.energy.total.value.magnitude == approx(-1.11695443e-18)
-    assert sec_scc.forces.total.value[0][0].magnitude == 0.0
+    assert sec_scc.forces.total.value[0][0].magnitude == approx(0.0)
     assert sec_scc.stress.total.value[0][0].magnitude == approx(7.060258e09)
     assert sec_scc.energy.lowest_unoccupied.magnitude == approx(9.40461662e-19)
     assert sec_scc.energy.highest_occupied.magnitude == approx(9.51212268e-19)
@@ -339,9 +344,24 @@ def test_outcar(parser):
 #    BUG EMIN is stored in the fermi energy!!
 #    dos_integrated = integrate_dos(sec_dos, False, sec_scc.energy.fermi)
 #    try:
-#        assert pytest.approx(dos_integrated, abs=1) == 22.
+#        assert dos_integrated == approx(22, abs=1)
 #    except AssertionError:
 #        raise AssertionError(sec_scc.energy.fermi)
+
+
+def test_outcar_gamma(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/vasp/gamma/OUTCAR', archive, None)
+
+    sec_run = archive.run[0]
+    assert sec_run.program.version == '5.4.1 05Feb16 gamma-only parallel IFC91_ompi'
+    assert sec_run.program.compilation_datetime.magnitude == approx(1586575726.0)
+
+    sec_method = sec_run.method[0]
+    k_mesh = sec_method.k_mesh
+    assert np.all(k_mesh.points == np.array([[0.0, 0.0, 0.0]]))
+    assert np.all(k_mesh.multiplicities == np.array([1]))
+    assert np.all(k_mesh.weights == np.array([1.0]))
 
 
 @pytest.mark.parametrize(
@@ -349,6 +369,11 @@ def test_outcar(parser):
     [
         (
             'tests/data/vasp/alternative_pseudopotentials/AlN/vasprun.xml',
+            'PAW_PBE Al 04Jan2001',
+            240.3,
+        ),
+        (
+            'tests/data/vasp/alternative_pseudopotentials/AlN/OUTCAR',
             'PAW_PBE Al 04Jan2001',
             240.3,
         ),
@@ -370,6 +395,17 @@ def test_potcar(parser, filename, name, cutoff):
     assert sec_pseudo.xc_functional_name == ['GGA_X_PBE', 'GGA_C_PBE']
     assert sec_pseudo.cutoff.to('eV').magnitude == approx(cutoff)
 
+    # The AlN case has also somewhat special header with git tag for version
+    # so check the version parsing as well
+    if 'AlN' in filename:
+        assert (
+            archive.run[0].program.version
+            == '5.4.4 18Apr17-6-g9f103f2a35 complex parallel LINUX'
+        )
+        assert archive.run[0].program.compilation_datetime.magnitude == approx(
+            1553622472.0
+        )
+
 
 def test_broken_xml(parser):
     archive = EntryArchive()
@@ -389,9 +425,9 @@ def test_hybrid(parser):
     assert k_mesh.sampling_method == 'Gamma-centered'
 
     sec_xc_functional = sec_method.dft.xc_functional
-    assert (
-        sec_xc_functional.hybrid[0].parameters['exact_exchange_mixing_factor'] == 0.25
-    )
+    assert sec_xc_functional.hybrid[0].parameters[
+        'exact_exchange_mixing_factor'
+    ] == approx(0.25)
     assert sec_xc_functional.hybrid[0].name == 'HYB_GGA_XC_HSE06'
 
 
@@ -439,8 +475,16 @@ def test_dftu_static(parser, dir, slice, uref, jref):
         if hubb := param.hubbard_kanamori_model:
             assert hubb.double_counting_correction == 'Dudarev'
             assert hubb.orbital == 'd'
-            assert approx(hubb.u.to('eV').magnitude) == uref
-            assert approx(hubb.j.to('eV').magnitude) == jref
+            assert hubb.u.to('eV').magnitude == approx(uref)
+            assert hubb.j.to('eV').magnitude == approx(jref)
+
+        # This one has header without the build time info so double check
+        # we parse version correctly
+        if filename == 'tests/data/vasp/dftu/single_parameter/OUTCAR':
+            assert (
+                archive.run[-1].program.version
+                == '4.6.35 3Apr08 complex parallel LinuxIFC'
+            )
 
 
 def test_gw(silicon_gw):

@@ -77,7 +77,7 @@ def test_lanio2_u7_singlepoint(parser):
     assert sec_dmft.dmft.n_correlated_orbitals == [
         sec_init_model.atom_parameters[0].n_orbitals
     ]
-    assert sec_dmft.dmft.n_electrons == [8.0]
+    assert sec_dmft.dmft.n_electrons == approx([8.0])
     assert sec_dmft.dmft.magnetic_state == 'paramagnetic'
     assert sec_dmft.dmft.inverse_temperature.to('1/eV').magnitude == approx(23.2)
     # Calculation tests (testing last one)

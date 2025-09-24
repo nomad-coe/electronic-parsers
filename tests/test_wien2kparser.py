@@ -44,14 +44,16 @@ def test_single_point(parser, caplog):
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '12.1 22/7/2012'
-    assert sec_run.time_run.date_start.magnitude == 1397313280.0
+    assert sec_run.time_run.date_start.magnitude == approx(1397313280.0)
 
     sec_method = archive.run[0].method[0]
     assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_PBE_SOL'
     assert sec_method.x_wien2k_ifft[1] == 120
-    assert sec_method.electrons_representation[0].basis_set[0].cutoff_fractional == 7.0
+    assert sec_method.electrons_representation[0].basis_set[
+        0
+    ].cutoff_fractional == approx(7.0)
     assert sec_method.electronic.smearing.kind == 'tetrahedra'
-    assert sec_method.x_wien2k_in2_espermin == 0.50
+    assert sec_method.x_wien2k_in2_espermin == approx(0.50)
 
     sec_scc = archive.run[0].calculation[0]
     assert sec_scc.energy.total.value.magnitude == approx(-8.09654094e-15)
@@ -61,7 +63,7 @@ def test_single_point(parser, caplog):
     sec_scfs = sec_scc.scf_iteration
     assert len(sec_scfs) == 40
     assert sec_scfs[21].energy.total.value.magnitude == approx(-8.09654095e-15)
-    assert sec_scfs[6].x_wien2k_noe == 196.000
+    assert sec_scfs[6].x_wien2k_noe == approx(196.000)
     assert sec_scfs[17].x_wien2k_tot_diff_charge[9] == approx(0.0001539)
 
     sec_system = archive.run[0].system[0]
@@ -82,7 +84,7 @@ def test_eigenvalues(parser, caplog):
     assert np.shape(sec_eigenvalues.energies[0][7]) == (314,)
     assert np.shape(sec_eigenvalues.kpoints) == (8, 3)
     assert sec_eigenvalues.energies[0][2][31].magnitude == approx(-2.98121062e-18)
-    assert sec_eigenvalues.kpoints[7][0] == 0.375
+    assert sec_eigenvalues.kpoints[7][0] == approx(0.375)
     assert sec_eigenvalues.kpoints_multiplicities[6] == 8
 
     sec_dos = archive.run[0].calculation[0].dos_electronic[0]
@@ -134,9 +136,9 @@ def test_core_hole(parser, caplog):
     sec_method = archive.run[0].method[0]
     atom_par = sec_method.atom_parameters[0]
     assert atom_par.atom_index == 2
-    assert atom_par.core_hole.n_electrons_excited == 1.0
+    assert atom_par.core_hole.n_electrons_excited == approx(1.0)
     assert atom_par.core_hole.l_quantum_number == 1
-    assert atom_par.core_hole.j_quantum_number == 1.5
+    assert atom_par.core_hole.j_quantum_number == approx(1.5)
     assert atom_par.core_hole.n_quantum_number == 2
-    assert atom_par.core_hole.occupation == 3
+    assert atom_par.core_hole.occupation == approx(3)
     assert atom_par.core_hole.dscf_state == 'final'

@@ -46,7 +46,7 @@ from runschema.system import (
     Atoms,
     AtomsGroup,
 )
-from runschema.run import Run, Program
+from runschema.run import Run, Program, TimeRun
 from runschema.method import (
     Method,
     BasisSet,
@@ -380,17 +380,44 @@ class OutcarTextParser(TextParser):
             return stress
 
         def str_to_header(val_in):
-            (
-                version,
-                build_date,
+            values = val_in.split()
+            n = len(values)
+
+            if n == 11:
+                (
+                    version,
+                    version_date,
+                    build_month,
+                    build_day,
+                    build_year,
+                    build_time,
+                    build_type,
+                    platform,
+                    date,
+                    time,
+                    parallel,
+                ) = values
+            elif n == 7:
+                version, version_date, build_type, platform, date, time, parallel = (
+                    values
+                )
+                build_month, build_day, build_year, build_time = ['', '', '', '']
+            else:
+                logger.warning('Unexpected header')
+                return None
+
+            subversion = [
+                version_date,
+                '(build' if n == 11 else '',
+                build_month,
+                build_day,
+                build_year,
+                build_time,
                 build_type,
-                platform,
-                date,
-                time,
-                parallel,
-            ) = val_in.split()
-            parallel = 'parallel' if parallel == 'running' else parallel
-            subversion = '%s %s %s' % (build_date, build_type, parallel)
+                'parallel' if 'running' in parallel else parallel,
+            ]
+            subversion = ' '.join(filter(bool, subversion))
+
             date = date.replace('.', ' ')
             return dict(
                 version=version,
@@ -539,7 +566,7 @@ class OutcarTextParser(TextParser):
             ),
             Quantity(
                 'header',
-                r'vasp\.([\d\.]+)\s*(\w+)\s*[\s\S]+?\)\s*(\w+)\s*'
+                r'vasp\.(\d+\.\d+\.\d+)[\s\.]*([\w-]+)\s*(?:\(build ([\s\S]+?\)))?\s*([\w-]+)\s*'
                 r'executed on\s*(\w+)\s*date\s*([\d\.]+)\s*([\d\:]+)\s*(\w+)',
                 repeats=False,
                 str_operation=str_to_header,
@@ -690,6 +717,13 @@ class OutcarContentParser(ContentParser):
                 k_mults = kpts_occs[3].T
                 self._kpoints_info['multiplicities'] = k_mults
                 self._kpoints_info['weights'] = k_mults / np.sum(k_mults)
+            else:
+                # gamma VASP does not print the gamma point explicitly
+                header = self.parser.get('header')
+                if header is not None and 'gamma' in header['subversion']:
+                    self._kpoints_info['points'] = [[0.0, 0.0, 0.0]]
+                    self._kpoints_info['multiplicities'] = [1]
+                    self._kpoints_info['weights'] = [1.0]
         return self._kpoints_info
 
     @property
@@ -2340,8 +2374,13 @@ class VASPParser:
 
         version = ' '.join(
             [
-                self.parser.header.get(key, '')
-                for key in ['version', 'subversion', 'platform']
+                # Usually the version contains just the numbers like 5.4.2, but in some cases
+                # it will already include the release date and specific version, like
+                # 5.4.4.18Apr17-6-g9f103f2a35. This is handled during matching for OUTCARS
+                # but we need to fixup here when we deal with vasprun.xml
+                re.sub(r'^(\d+\.\d+\.\d+)\.', r'\1 ', self.parser.header.get('version', '')),
+                re.sub(r'\(build .+?\) ', '', self.parser.header.get('subversion', '')),
+                self.parser.header.get('platform', ''),
             ]
         ).strip()
         if version:
@@ -2349,10 +2388,25 @@ class VASPParser:
 
         date = self.parser.header.get('date')
         if date is not None:
+            # date and time in the header are not the compilation time but rather
+            # the execution time, compilaton date (and time for some VASP versions)
+            # are part of the subversion
             date = datetime.strptime(date.strip(), '%Y %m %d').date()
             time = self.parser.header.get('time', '0:0:0')
             time = datetime.strptime(time.strip(), '%H:%M:%S').timetz()
             dtime = datetime.combine(date, time) - datetime.utcfromtimestamp(0)
+            sec_run.time_run = TimeRun(date_start=dtime.total_seconds())
+        subversion = self.parser.header.get('subversion')
+        if subversion is not None and 'build' in subversion:
+            # the subversion is usually in the format like
+            # 05Feb16 (build Apr 11 2020 03:28:46) gamma-only parallel
+            # but sometimes it can miss the first date of the version
+            # which is then part of version.
+            shift = 0
+            if 'build' in subversion.split()[1]:
+                shift = 1
+            time = ' '.join(subversion.split()[1+shift:5+shift])
+            dtime = datetime.strptime(time, "%b %d %Y %H:%M:%S)") - datetime.utcfromtimestamp(0)
             sec_run.program.compilation_datetime = dtime.total_seconds()
 
         # TODO VASP>=6.3.0 can do DFT+GW calculations in one single step: with data we can extend

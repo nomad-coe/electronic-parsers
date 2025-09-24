@@ -38,12 +38,12 @@ def test_scf(parser):
 
     sec_run = archive.run[0]
     assert sec_run.program.version == '70630 2018-11-24'
-    assert sec_run.time_run.date_start.magnitude == 1550053118.0
+    assert sec_run.time_run.date_start.magnitude == approx(1550053118.0)
 
     sec_method = archive.run[0].method[0]
     assert sec_method.electronic.n_spin_channels == 2
     assert sec_method.electronic.relativity_method == 'scalar_relativistic_atomic_ZORA'
-    assert sec_method.electronic.charge == 0.0
+    assert sec_method.electronic.charge == approx(0.0)
     assert sec_method.scf.x_ams_diis_settings_dirac['Method'] == 'diis'
     assert sec_method.scf.x_ams_diis_settings_scf['Cond'] == approx(1.0e6)
     assert not sec_method.scf.x_ams_degenerate
@@ -58,7 +58,7 @@ def test_scf(parser):
     assert len(sec_atom) == 2
     assert sec_atom[0].x_ams_radial_points == 3000
     assert sec_atom[1].x_ams_nuclear_charge == approx(1.0)
-    assert sec_atom[0].n_valence_electrons == 4
+    assert sec_atom[0].n_valence_electrons == approx(4)
     assert sec_atom[1].charge == approx(0.0)
     assert sec_atom[0].orbitals[1] == '2S'
     assert sec_atom[1].x_ams_orbital_energies[0].magnitude == approx(-1.01788704e-18)
@@ -85,7 +85,7 @@ def test_scf(parser):
     assert sec_charges[0].analysis_method == 'Hirshfeld'
     assert sec_charges[2].value[3].magnitude == approx(-1.69830723e-20)
     assert sec_charges[1].spins[7] == approx(-0.011)
-    assert sec_charges[3].total.magnitude == 0.0
+    assert sec_charges[3].total.magnitude == approx(0.0)
     assert sec_charges[-1].analysis_method == 'Mulliken'
     assert len(sec_charges[-1].spin_projected) == 22
     assert sec_charges[-1].spin_projected[2].atom_index == 1
@@ -102,7 +102,7 @@ def test_scf(parser):
     assert sec_scc.eigenvalues[0].x_ams_energy_max[1][16].magnitude == approx(
         -2.32112809e-19
     )
-    assert sec_scc.eigenvalues[0].occupations[1][0][14] == 0.0
+    assert sec_scc.eigenvalues[0].occupations[1][0][14] == approx(0.0)
     assert sec_scc.eigenvalues[0].band_gap[0].value.magnitude == approx(4.22895238e-19)
     assert sec_scc.eigenvalues[0].band_gap[
         0
@@ -186,7 +186,7 @@ def test_dos(parser):
     archive = EntryArchive()
     parser.parse('tests/data/ams/dos/NiO-dos-restricted.out', archive, None)
     sec_scc = archive.run[0].calculation[0]
-    len(sec_scc.dos_electronic) == 1
+    assert len(sec_scc.dos_electronic) == 1
     sec_dos = sec_scc.dos_electronic[0]
     assert sec_dos.total[0].value.shape == (154,)
 

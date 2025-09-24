@@ -65,7 +65,7 @@ def test_dft(parser):
     assert len(sec_calc[5].energy.contributions) == 5
     assert sec_calc[5].energy.contributions[1].kind == 'nucleus-electron_potential'
     # assert sec_calc[5].multipoles[0].dipole.origin[1].magnitude == 0
-    assert sec_calc[5].multipoles[0].dipole.value[2][0] == 0
+    assert sec_calc[5].multipoles[0].dipole.value[2][0] == approx(0)
 
 
 def test_gamess_geometry_opt(parser):
@@ -92,7 +92,7 @@ def test_gamess_geometry_opt(parser):
     assert sec_calc[0].calculation_converged
     sec_eigs = sec_calc[0].eigenvalues[0]
     assert sec_eigs.energies[0][0][2].magnitude == approx(-2.24483256e-18)
-    assert sec_eigs.occupations[0][0][4] == 0
+    assert sec_eigs.occupations[0][0][4] == approx(0)
     assert sec_calc[2].forces.total.value[1][2].magnitude == approx(-1.04055078e-10)
     assert sec_calc[2].time_physical.magnitude == approx(0.2)
     assert sec_calc[6].time_calculation.magnitude == approx(0.0)

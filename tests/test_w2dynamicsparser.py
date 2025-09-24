@@ -73,10 +73,9 @@ def test_srvo3(parser):
     assert up == approx(u - 2 * jh)
     assert j == approx(jh)
     assert len(sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general) == 58
-    assert (
-        sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.get('beta')
-        == 60.0
-    )
+    assert sec_run.method[1].x_w2dynamics_config.x_w2dynamics_config_general.get(
+        'beta'
+    ) == approx(60.0)
     assert sec_run.method[1].starting_method_ref == sec_run.method[0]
     sec_dmft = sec_run.method[1].dmft
     assert sec_dmft.n_correlated_orbitals.shape == (1,)

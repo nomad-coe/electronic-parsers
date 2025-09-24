@@ -40,10 +40,12 @@ def test_scf(parser):
 
     sec_method = archive.run[0].method[0]
     assert sec_method.electronic.method == 'DFT'
-    assert sec_method.x_orca_nelectrons == 14.0
-    assert sec_method.scf.threshold_energy_change.to('hartree').magnitude == 1.0e-6
-    assert sec_method.scf.threshold_density_change == 1.0e-6
-    assert sec_method.scf.x_orca_last_max_density_change == 1e-5
+    assert sec_method.x_orca_nelectrons == approx(14.0)
+    assert sec_method.scf.threshold_energy_change.to('hartree').magnitude == approx(
+        1.0e-6
+    )
+    assert sec_method.scf.threshold_density_change == approx(1.0e-6)
+    assert sec_method.scf.x_orca_last_max_density_change == approx(1e-5)
     assert sec_method.x_orca_radial_grid_type == 'Gauss-Chebyshev'
     assert len(sec_method.dft.xc_functional.exchange) == 2
     assert sec_method.dft.xc_functional.correlation[0].name == 'GGA_C_LYP'
@@ -67,11 +69,11 @@ def test_scf(parser):
     )
     assert np.shape(sec_scc.eigenvalues[0].energies[0][0]) == (62,)
     assert sec_scc.eigenvalues[0].energies[0][0][28].magnitude == approx(6.53237991e-18)
-    assert sec_scc.eigenvalues[0].occupations[0][0][6] == 2.0
+    assert sec_scc.eigenvalues[0].occupations[0][0][6] == approx(2.0)
     assert len(sec_scc.charges[0].value) == 2
-    assert sec_scc.charges[0].value[0].magnitude == 0.131793
-    assert sec_scc.charges[0].orbital_projected[27].value.magnitude == 0.027488
-    assert sec_scc.x_orca_diis_solution == 0.003
+    assert sec_scc.charges[0].value[0].magnitude == approx(0.131793)
+    assert sec_scc.charges[0].orbital_projected[27].value.magnitude == approx(0.027488)
+    assert sec_scc.x_orca_diis_solution == approx(0.003)
 
 
 def test_geomopt(parser):
@@ -85,7 +87,7 @@ def test_geomopt(parser):
     assert len(sec_scc) == 6
 
     assert sec_run.method[2].x_orca_nb_grid_pts_after_weights_screening == 34298
-    assert sec_run.method[4].x_orca_integr_weight_cutoff == 1e-14
+    assert sec_run.method[4].x_orca_integr_weight_cutoff == approx(1e-14)
     assert sec_run.system[1].atoms.positions[2][1].magnitude == approx(9.54068e-11)
     assert len(sec_scc[0].scf_iteration) == 13
     assert sec_scc[-1].x_orca_elec_energy == approx(-6.34048432e-16)
@@ -101,10 +103,10 @@ def test_spinpol(parser):
     sec_eig = archive.run[0].calculation[0].eigenvalues[0]
     assert np.shape(sec_eig.energies[1][0]) == (28,)
     assert sec_eig.energies[1][0][22].magnitude == approx(7.57745431e-18)
-    assert sec_eig.occupations[0][0][2] == 1.0
+    assert sec_eig.occupations[0][0][2] == approx(1.0)
     sec_charges = archive.run[0].calculation[0].charges[0]
-    assert sec_charges.value[0].magnitude == -0.01143
-    assert sec_charges.orbital_projected[14].value.magnitude == 1.450488
+    assert sec_charges.value[0].magnitude == approx(-0.01143)
+    assert sec_charges.orbital_projected[14].value.magnitude == approx(1.450488)
 
 
 def test_ci(parser):

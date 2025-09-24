@@ -39,7 +39,7 @@ def test_single_point(parser):
     sec_run = archive.run[0]
     assert sec_run.program.version == '16.1'
     assert sec_run.x_castep_constants_reference == 'CODATA 2010'
-    assert sec_run.time_run.date_start.magnitude == 1455286325.0
+    assert sec_run.time_run.date_start.magnitude == approx(1455286325.0)
 
     sec_method = sec_run.method[0]
     assert sec_method.electrons_representation[0].basis_set[0].cutoff.to(
@@ -61,7 +61,7 @@ def test_single_point(parser):
     assert sec_scfs[3].energy.total.value.magnitude == approx(-2.21530505e-16)
     assert sec_scfs[8].energy.fermi.magnitude == approx(8.53007633e-19)
     # uncomment one time_physical def is updated
-    # assert sec_scfs[6].time_physical.magnitude == 12.70
+    # assert sec_scfs[6].time_physical.magnitude == approx(12.70)
 
     sec_system = sec_run.system[0]
     assert sec_system.atoms.positions[2][1].magnitude == approx(2.715e-10)
@@ -73,15 +73,12 @@ def test_single_point(parser):
 
     sec_mulliken = sec_scc.charges[0]
     assert len(sec_mulliken.value) == 8
-    assert sec_mulliken.orbital_projected[17].value.magnitude == 2.66
+    assert sec_mulliken.orbital_projected[17].value.magnitude == approx(2.66)
 
-    assert (
-        sec_run.x_castep_section_density_mixing_parameters[
-            0
-        ].x_castep_density_mixing_length
-        == 20
-    )
-    assert sec_run.x_castep_section_time[0].x_castep_finalisation_time == 0.01
+    assert sec_run.x_castep_section_density_mixing_parameters[
+        0
+    ].x_castep_density_mixing_length == approx(20)
+    assert sec_run.x_castep_section_time[0].x_castep_finalisation_time == approx(0.01)
 
 
 def test_dmd(parser):
@@ -108,7 +105,7 @@ def test_dmd(parser):
 
     sec_systems = archive.run[0].system
     assert sec_systems[12].atoms.positions[3][0].magnitude == approx(9.074282e-11)
-    assert sec_systems[0].x_castep_number_of_electrons == 32
+    assert sec_systems[0].x_castep_number_of_electrons == approx(32)
 
 
 def test_md(parser):
@@ -156,7 +153,7 @@ def test_eigenvalues(parser):
     sec_eigenvalues = archive.run[0].calculation[0].eigenvalues[0]
     assert np.shape(sec_eigenvalues.energies[1][117]) == (6,)
     assert sec_eigenvalues.energies[1][38][4].magnitude == approx(1.30819997e-18)
-    assert sec_eigenvalues.kpoints[22][1] == 0.289474
+    assert sec_eigenvalues.kpoints[22][1] == approx(0.289474)
 
 
 def test_bandstructure(parser):
@@ -169,7 +166,7 @@ def test_bandstructure(parser):
     assert len(sec_band_segment) == 5
     assert sec_band_segment[3].endpoints_labels == ['X', 'W']
     assert sec_band_segment[1].energies[0][-1][12].magnitude == approx(2.17418526e-18)
-    assert sec_band_segment[4].kpoints[2][1] == 0.300000
+    assert sec_band_segment[4].kpoints[2][1] == approx(0.300000)
 
     sec_method = archive.run[0].method[0]
     assert sec_method.electrons_representation[0].native_tier == 'MEDIUM'

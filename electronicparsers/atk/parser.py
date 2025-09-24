@@ -20,7 +20,7 @@ import os
 import numpy as np
 import re
 import logging
-from scipy.io.netcdf import netcdf_file
+from scipy.io import netcdf_file
 from ase.data import atomic_names
 from ase import lattice as aselattice, Atoms
 from ase.cell import Cell

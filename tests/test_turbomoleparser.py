@@ -37,7 +37,7 @@ def test_aoforce(parser):
     parser.parse('tests/data/turbomole/aoforce/vib.out', archive, None)
 
     assert archive.run[0].program.version == '7.2 ( 21285 )'
-    assert archive.run[0].time_run.date_start.magnitude == 1532973127.689
+    assert archive.run[0].time_run.date_start.magnitude == approx(1532973127.689)
 
     sec_method = archive.run[0].method[0]
     assert sec_method.electronic.method == 'DFT'
@@ -79,7 +79,7 @@ def test_ccsdf12(parser):
     sec_scfs = sec_sccs[0].scf_iteration
     assert len(sec_scfs) == 13
     assert sec_scfs[8].energy.total.value.magnitude == approx(-2.99844594e-15)
-    assert sec_sccs[0].time_calculation.magnitude == 40 * 60 + 7
+    assert sec_sccs[0].time_calculation.magnitude == approx(40 * 60 + 7)
     assert sec_sccs[0].scf_iteration[2].time_physical.magnitude == approx(5.89)
     assert sec_sccs[0].scf_iteration[4].time_calculation.magnitude == approx(1.89)
 
@@ -136,7 +136,7 @@ def test_escf(parser):
     sec_eigs_gw = sec_scc.eigenvalues[0]
     assert sec_eigs_gw.value_ks[0][0][9].magnitude == approx(-3.59608546e-18)
     assert sec_eigs_gw.value_exchange[0][0][1].magnitude == approx(-1.55874163e-17)
-    assert sec_eigs_gw.qp_linearization_prefactor[0][0][19] == 0.786
+    assert sec_eigs_gw.qp_linearization_prefactor[0][0][19] == approx(0.786)
 
 
 def test_freeh(parser):
@@ -152,7 +152,7 @@ def test_freeh(parser):
     assert sec_sccs[1].thermodynamics[0].heat_capacity_c_v.magnitude == approx(
         2.27860167e-22
     )
-    assert sec_sccs[1].thermodynamics[0].pressure.magnitude == 100000.0
+    assert sec_sccs[1].thermodynamics[0].pressure.magnitude == approx(100000.0)
 
 
 def test_pnoccsd(parser):
