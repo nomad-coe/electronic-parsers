@@ -471,14 +471,21 @@ class ElkParser:
             else 2
         )
         # TODO determine how eigenvalues are printed in spin polarized case
-        eigs_occs = np.reshape(
-            eigs_occs,
-            (self.eigenval_parser.n_kpoints, n_spin, self.eigenval_parser.n_states, 3),
-        )
-        eigs_occs = np.transpose(eigs_occs, axes=(3, 1, 0, 2))
-        # first column is state index
-        sec_eigenvalue.energies = eigs_occs[1] * ureg.hartree
-        sec_eigenvalue.occupancies = eigs_occs[2]
+        try:
+            eigs_occs = np.reshape(
+                eigs_occs,
+                (self.eigenval_parser.n_kpoints, n_spin, self.eigenval_parser.n_states, 3),
+            )
+            eigs_occs = np.transpose(eigs_occs, axes=(3, 1, 0, 2))
+            # first column is state index
+            sec_eigenvalue.energies = eigs_occs[1] * ureg.hartree
+            sec_eigenvalue.occupancies = eigs_occs[2]
+        except TypeError:
+            self.logger.warning(
+                'Could not reshape eigenvalues/occupancies, setting to None'
+            )
+            sec_eigenvalue.energies = None
+            sec_eigenvalue.occupancies = None
 
         # dos
         self.dos_parser.mainfile = os.path.join(self.maindir, 'TDOS.OUT')
