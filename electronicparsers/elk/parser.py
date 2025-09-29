@@ -475,8 +475,8 @@ class ElkParser:
                 else 2
             )
             # Check if the data size matches expected dimensions
-            expected_size = self.eigenval_parser.n_kpoints * n_spin * self.eigenval_parser.n_states
-            if len(eigenvalues_occupancies) == expected_size:
+            # eigenvalues_occupancies is grouped by k-point, so we expect n_kpoints groups
+            if len(eigenvalues_occupancies) == self.eigenval_parser.n_kpoints:
                 # TODO determine how eigenvalues are printed in spin polarized case
                 eigenvalues_occupancies = np.reshape(
                     eigenvalues_occupancies,
