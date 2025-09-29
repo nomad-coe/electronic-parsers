@@ -464,33 +464,28 @@ class ElkParser:
         sec_calc.eigenvalues.append(sec_eigenvalue)
         sec_eigenvalue.kpoints = self.eigenval_parser.get('kpoint')
         eigenvalues_occupancies = self.eigenval_parser.get('eigenvalue_occupancy', [])
-        n_spin = (
-            1
-            if self.mainfile_parser.get('spin_treatment', '').lower()
-            == 'spin-unpolarised'
-            else 2
-        )
-        # TODO determine how eigenvalues are printed in spin polarized case
-        try:
-            eigenvalues_occupancies = np.reshape(
-                eigenvalues_occupancies,
-                (self.eigenval_parser.n_kpoints, n_spin, self.eigenval_parser.n_states, 3),
+
+        if (eigenvalues_occupancies is not None and len(eigenvalues_occupancies) > 0 and
+            self.eigenval_parser.n_kpoints is not None and
+            self.eigenval_parser.n_states is not None):
+            n_spin = (
+                1
+                if self.mainfile_parser.get('spin_treatment', '').lower()
+                == 'spin-unpolarised'
+                else 2
             )
-            eigenvalues_occupancies = np.transpose(eigenvalues_occupancies, axes=(3, 1, 0, 2))
-            # first column is state index
-            sec_eigenvalue.energies = eigenvalues_occupancies[1] * ureg.hartree
-            sec_eigenvalue.occupancies = eigenvalues_occupancies[2]
-        except TypeError as error:
-            if "'NoneType' object cannot be interpreted as an integer" in str(error):
-                self.logger.warning(
-                    'Could not reshape eigenvalues/occupancies, setting to None'
+            # Check if the data size matches expected dimensions
+            expected_size = self.eigenval_parser.n_kpoints * n_spin * self.eigenval_parser.n_states
+            if len(eigenvalues_occupancies) == expected_size:
+                # TODO determine how eigenvalues are printed in spin polarized case
+                eigenvalues_occupancies = np.reshape(
+                    eigenvalues_occupancies,
+                    (self.eigenval_parser.n_kpoints, n_spin, self.eigenval_parser.n_states, 3),
                 )
-            else:
-                self.logger.warning(
-                    f'TypeError occurred during eigenvalue processing: {error}'
-                )
-            sec_eigenvalue.energies = None
-            sec_eigenvalue.occupancies = None
+                eigenvalues_occupancies = np.transpose(eigenvalues_occupancies, axes=(3, 1, 0, 2))
+                # first column is state index
+                sec_eigenvalue.energies = eigenvalues_occupancies[1] * ureg.hartree
+                sec_eigenvalue.occupancies = eigenvalues_occupancies[2]
 
         # dos
         self.dos_parser.mainfile = os.path.join(self.maindir, 'TDOS.OUT')
