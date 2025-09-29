@@ -463,7 +463,7 @@ class ElkParser:
         sec_eigenvalue = BandEnergies()
         sec_calc.eigenvalues.append(sec_eigenvalue)
         sec_eigenvalue.kpoints = self.eigenval_parser.get('kpoint')
-        eigs_occs = self.eigenval_parser.get('eigenvalue_occupancy', [])
+        eigenvalues_occupancies = self.eigenval_parser.get('eigenvalue_occupancy', [])
         n_spin = (
             1
             if self.mainfile_parser.get('spin_treatment', '').lower()
@@ -472,18 +472,23 @@ class ElkParser:
         )
         # TODO determine how eigenvalues are printed in spin polarized case
         try:
-            eigs_occs = np.reshape(
-                eigs_occs,
+            eigenvalues_occupancies = np.reshape(
+                eigenvalues_occupancies,
                 (self.eigenval_parser.n_kpoints, n_spin, self.eigenval_parser.n_states, 3),
             )
-            eigs_occs = np.transpose(eigs_occs, axes=(3, 1, 0, 2))
+            eigenvalues_occupancies = np.transpose(eigenvalues_occupancies, axes=(3, 1, 0, 2))
             # first column is state index
-            sec_eigenvalue.energies = eigs_occs[1] * ureg.hartree
-            sec_eigenvalue.occupancies = eigs_occs[2]
-        except TypeError:
-            self.logger.warning(
-                'Could not reshape eigenvalues/occupancies, setting to None'
-            )
+            sec_eigenvalue.energies = eigenvalues_occupancies[1] * ureg.hartree
+            sec_eigenvalue.occupancies = eigenvalues_occupancies[2]
+        except TypeError as error:
+            if "'NoneType' object cannot be interpreted as an integer" in str(error):
+                self.logger.warning(
+                    'Could not reshape eigenvalues/occupancies, setting to None'
+                )
+            else:
+                self.logger.warning(
+                    f'TypeError occurred during eigenvalue processing: {error}'
+                )
             sec_eigenvalue.energies = None
             sec_eigenvalue.occupancies = None
 
