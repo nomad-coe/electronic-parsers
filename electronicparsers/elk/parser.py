@@ -463,22 +463,29 @@ class ElkParser:
         sec_eigenvalue = BandEnergies()
         sec_calc.eigenvalues.append(sec_eigenvalue)
         sec_eigenvalue.kpoints = self.eigenval_parser.get('kpoint')
-        eigs_occs = self.eigenval_parser.get('eigenvalue_occupancy', [])
-        n_spin = (
-            1
-            if self.mainfile_parser.get('spin_treatment', '').lower()
-            == 'spin-unpolarised'
-            else 2
-        )
-        # TODO determine how eigenvalues are printed in spin polarized case
-        eigs_occs = np.reshape(
-            eigs_occs,
-            (self.eigenval_parser.n_kpoints, n_spin, self.eigenval_parser.n_states, 3),
-        )
-        eigs_occs = np.transpose(eigs_occs, axes=(3, 1, 0, 2))
-        # first column is state index
-        sec_eigenvalue.energies = eigs_occs[1] * ureg.hartree
-        sec_eigenvalue.occupancies = eigs_occs[2]
+        eigenvalues_occupancies = self.eigenval_parser.get('eigenvalue_occupancy', [])
+
+        if (eigenvalues_occupancies is not None and len(eigenvalues_occupancies) > 0 and
+            self.eigenval_parser.n_kpoints is not None and
+            self.eigenval_parser.n_states is not None):
+            n_spin = (
+                1
+                if self.mainfile_parser.get('spin_treatment', '').lower()
+                == 'spin-unpolarised'
+                else 2
+            )
+            # Check if the data size matches expected dimensions
+            # eigenvalues_occupancies is grouped by k-point, so we expect n_kpoints groups
+            if len(eigenvalues_occupancies) == self.eigenval_parser.n_kpoints:
+                # TODO determine how eigenvalues are printed in spin polarized case
+                eigenvalues_occupancies = np.reshape(
+                    eigenvalues_occupancies,
+                    (self.eigenval_parser.n_kpoints, n_spin, self.eigenval_parser.n_states, 3),
+                )
+                eigenvalues_occupancies = np.transpose(eigenvalues_occupancies, axes=(3, 1, 0, 2))
+                # first column is state index
+                sec_eigenvalue.energies = eigenvalues_occupancies[1] * ureg.hartree
+                sec_eigenvalue.occupancies = eigenvalues_occupancies[2]
 
         # dos
         self.dos_parser.mainfile = os.path.join(self.maindir, 'TDOS.OUT')
