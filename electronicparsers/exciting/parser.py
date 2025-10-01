@@ -1286,7 +1286,7 @@ class ExcitingInfoParser(TextParser):
             ),
             Quantity(
                 'forces',
-                r'Total atomic forces including IBS \(\w+\)\s*\:(\s*atom[\-\s\w\.\:]*?)\n *Atomic',
+                r'Total atomic forces including IBS \(\w+\)\s*\:(\s*(?:atom.+\s*)+)',
                 repeats=False,
                 str_operation=str_to_array,
                 dtype=float,
@@ -1306,7 +1306,7 @@ class ExcitingInfoParser(TextParser):
         optimization_quantities = [
             Quantity(
                 'atomic_positions',
-                r'(Atomic positions at this step\s*\([\s\S]+?)\n\n',
+                r'(Atomic positions at this step\s*\(.+\s*(?:atom.+\s*)+)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
@@ -1327,7 +1327,7 @@ class ExcitingInfoParser(TextParser):
             ),
             Quantity(
                 'forces',
-                r'Total atomic forces including IBS \(\w+\)\s*\:(\s*atom[\-\s\w\.\:]*?)\n *Time',
+                r'Total atomic forces including IBS \(\w+\)\s*\:(\s*(?:atom.+\s*)+)',
                 repeats=False,
                 str_operation=str_to_array,
                 convert=False,
@@ -1385,7 +1385,7 @@ class ExcitingInfoParser(TextParser):
                         ),
                         Quantity(
                             'atomic_positions',
-                            r'(imized atomic positions\s*\([\s\S]+?)\n\n',
+                            r'(imized atomic positions\s*\(.+\s*(?:atom.+\s*)+)',
                             sub_parser=TextParser(
                                 quantities=[
                                     Quantity(
@@ -1409,8 +1409,8 @@ class ExcitingInfoParser(TextParser):
                         ),
                         Quantity(
                             'forces',
-                            r'Total atomic forces including IBS \(\w+\)\s*\:(\s*atom[\-\s\w\.\:]*?)\n *Atomic',
-                            repeats=False,
+                            r'Total atomic forces including IBS \(\w+\)\s*\:(\s*(?:atom.+\s*)+)',
+                            repeats=True,
                             str_operation=str_to_array,
                             dtype=float,
                             unit=ureg.hartree / ureg.bohr,
@@ -3018,6 +3018,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # forces
         forces = section.get('forces')
         if forces is not None:
+            forces = forces[-1] if isinstance(forces, list) else forces
             sec_forces = Forces()
             sec_scc.forces = sec_forces
             sec_forces.total = ForcesEntry(
