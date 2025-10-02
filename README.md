@@ -4,7 +4,7 @@
 > This repository contains parsers based on NOMAD’s *legacy simulation schema*.  
 > Active development is now focused on a **new schema and parser suite**.  
 > We encourage continued reporting of issues. These will be carried over and addressed within the new suite. Reported bugs will generally **not** be fixed here unless critical.  
-> Please see [our pinned issue](#310) for details and follow progress in the new repository: [nomad-parser-plugins-simulation](https://github.com/FAIRmat-NFDI/nomad-parser-plugins-simulation).
+> Please see [our pinned issue](../../issues/310) for details and follow progress in the new repository: [nomad-parser-plugins-simulation](https://github.com/FAIRmat-NFDI/nomad-parser-plugins-simulation).
 
 This is a collection of the NOMAD parsers for the following electronic codes:
 
