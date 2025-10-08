@@ -734,9 +734,7 @@ class YamboParser:
             positions = np.array(positions)
             blocks = []
             selected = []
-
             positions = positions.reshape(-1, 3)
-
             n_points = positions.shape[0]
             n_blocks = int( int(n_points) // int(max_n_atoms) )
 
@@ -760,8 +758,6 @@ class YamboParser:
                 positions = positions * ureg.bohr,
                 labels=[chemical_symbols[int(n)] for n in atom_numbers],
             )
-
-
             if self.netcdf_parser.LATTICE_VECTORS is not None:
                 system.atoms.lattice_vectors = (
                     self.netcdf_parser.LATTICE_VECTORS * ureg.bohr
