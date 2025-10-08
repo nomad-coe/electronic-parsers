@@ -229,4 +229,3 @@ def test_5(parser):
     assert x_yambo_parameters[0].x_yambo_max_atoms_species[0] == 4
     assert x_yambo_parameters[0].x_yambo_n_atom_species[0] == 4
     assert x_yambo_parameters[0].x_yambo_n_atom_species[1] == 1
-    
