@@ -65,7 +65,7 @@ class x_yambo_io(MSection):
 
 class x_yambo_parameters(MSection):
     m_def = Section(validate=False)
-    
+
     x_yambo_bands = Quantity(
         type=np.int32,
         shape=[],
