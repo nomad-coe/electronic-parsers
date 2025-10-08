@@ -50,7 +50,7 @@ class MainfileParser(TextParser):
 
     def init_quantities(self):
         re_f = r'[-+]*\d*\.\d+[Ee]*[-+]*\d*'
-  
+
         io_quantities = [
 
             Quantity(
@@ -160,7 +160,7 @@ class MainfileParser(TextParser):
             ),
         ]
 
-                
+
         qp_properties_quantity = Quantity(
             'qp_properties',
             r'QP properties and I/O([\s\S]+? S/N \d+.+)',
@@ -606,9 +606,9 @@ class YamboParser:
             'valence_conduction',
             [source.get('valence', 0.0), source.get('conduction', 0.0)],
         )
-      
-           
-        
+
+
+
         calc.energy = Energy(
             fermi=source.get('fermi', 0.0),
             highest_occupied=valence_conduction[0],
@@ -732,53 +732,48 @@ class YamboParser:
                 ]
             )
 
-            def correct_position_array(positions, max_n_atoms, n_atoms): 
-                '''We split the positions array into blocks, each corresponding 
-                to a chemical species, then we extract the first n_atoms 
-                (value of n_atoms for each chemical species present in the system)
-                from each block, and finally we reassemble the modified blocks
-                into to corrected positions array'''
-                positions = np.array(positions)
-                blocks = []
-                selected = []
+            '''We split the positions array into blocks, each corresponding
+            to a chemical species, then we extract the first n_atoms
+            (value of n_atoms for each chemical species present in the system)
+            from each block, and finally we reassemble the modified blocks
+            into to corrected positions array'''
+            positions = np.array(positions)
+            blocks = []
+            selected = []
 
-                positions = positions.reshape(-1, 3)
-    
-                n_points = positions.shape[0] 
-                n_blocks = int( int(n_points) // int(max_n_atoms) )
+            positions = positions.reshape(-1, 3)
 
-                for i in range(n_blocks):
-                    start_idx = int(i) * int(max_n_atoms)
-                    end_idx = (int(i) + 1) * int(max_n_atoms)
-                    block = positions[start_idx:end_idx]
-                    blocks.append(block)
-    
-    
-                for i, block in enumerate(blocks):
-                    n_to_select = int(n_atoms[int(i)])
-                    selected_from_block = block[:n_to_select]
-                    for point in selected_from_block:
-                        selected.append(point)
-    
-                positions=np.array(selected)
+            n_points = positions.shape[0]
+            n_blocks = int( int(n_points) // int(max_n_atoms) )
 
-                return positions        
+            for i in range(n_blocks):
+                start_idx = int(i) * int(max_n_atoms)
+                end_idx = (int(i) + 1) * int(max_n_atoms)
+                block = positions[start_idx:end_idx]
+                blocks.append(block)
 
-            positions = correct_position_array(positions, max_n_atoms, n_atoms)    
-            
-        
+
+            for i, block in enumerate(blocks):
+                n_to_select = int(n_atoms[int(i)])
+                selected_from_block = block[:n_to_select]
+                for point in selected_from_block:
+                    selected.append(point)
+
+            positions=np.array(selected)
+
+
             system.atoms = Atoms(
                 positions = positions * ureg.bohr,
                 labels=[chemical_symbols[int(n)] for n in atom_numbers],
             )
-##########################            
+
 
             if self.netcdf_parser.LATTICE_VECTORS is not None:
                 system.atoms.lattice_vectors = (
                     self.netcdf_parser.LATTICE_VECTORS * ureg.bohr
                 )
 
-        
+
         # reference calculation
         energies_occupations = self.mainfile_parser.get('core_variables_setup', {}).get(
             'energies_occupations'
@@ -930,7 +925,7 @@ class YamboParser:
                 key = key.strip().replace('/', '').replace(' ', '_').lower()
                 val = val == 'yes' if val in ['yes', 'no'] else val
                 setattr(run, 'x_yambo_%s' % key, val)
-        
+
         def parse_module(module):
             self.parse_dipoles(module)
             self.parse_dynamic_dielectric_matrix(module)
