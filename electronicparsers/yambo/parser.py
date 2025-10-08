@@ -726,11 +726,11 @@ class YamboParser:
                 ]
             )
 
-            '''We split the positions array into blocks, each corresponding
-            to a chemical species, then we extract the first n_atoms
-            (value of n_atoms for each chemical species present in the system)
-            from each block, and finally we reassemble the modified blocks
-            into to corrected positions array'''
+            # We split the positions array into blocks, each corresponding
+            # to a chemical species, then we extract the first n_atoms
+            # (value of n_atoms for each chemical species present in the system)
+            # from each block, and finally we reassemble the modified blocks
+            # into to corrected positions array
             positions = np.array(positions)
             blocks = []
             selected = []
@@ -742,10 +742,6 @@ class YamboParser:
                 start_idx = int(i) * int(max_n_atoms)
                 end_idx = (int(i) + 1) * int(max_n_atoms)
                 block = positions[start_idx:end_idx]
-                blocks.append(block)
-
-
-            for i, block in enumerate(blocks):
                 n_to_select = int(n_atoms[int(i)])
                 selected_from_block = block[:n_to_select]
                 for point in selected_from_block:
