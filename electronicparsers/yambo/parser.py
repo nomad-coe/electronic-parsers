@@ -52,7 +52,6 @@ class MainfileParser(TextParser):
         re_f = r'[-+]*\d*\.\d+[Ee]*[-+]*\d*'
 
         io_quantities = [
-
             Quantity(
                 'key_value',
                 r'([A-Z\d].+?)(?:\(.+\)|\[.+\]| |)(:.+?)(?:\[|\n)',
