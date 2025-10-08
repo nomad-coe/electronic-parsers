@@ -159,7 +159,6 @@ class MainfileParser(TextParser):
             ),
         ]
 
-
         qp_properties_quantity = Quantity(
             'qp_properties',
             r'QP properties and I/O([\s\S]+? S/N \d+.+)',
@@ -486,7 +485,6 @@ class MainfileParser(TextParser):
         ]
 
 
-
 class NetCDFParser(FileParser):
     def __init__(self):
         super().__init__()
@@ -605,9 +603,6 @@ class YamboParser:
             'valence_conduction',
             [source.get('valence', 0.0), source.get('conduction', 0.0)],
         )
-
-
-
         calc.energy = Energy(
             fermi=source.get('fermi', 0.0),
             highest_occupied=valence_conduction[0],
@@ -771,7 +766,6 @@ class YamboParser:
                 system.atoms.lattice_vectors = (
                     self.netcdf_parser.LATTICE_VECTORS * ureg.bohr
                 )
-
 
         # reference calculation
         energies_occupations = self.mainfile_parser.get('core_variables_setup', {}).get(
