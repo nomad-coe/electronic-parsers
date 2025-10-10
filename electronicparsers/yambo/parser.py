@@ -732,7 +732,6 @@ class YamboParser:
             # from each block, and finally we reassemble the modified blocks
             # into to corrected positions array
             positions = np.array(positions)
-            blocks = []
             selected = []
             positions = positions.reshape(-1, 3)
             n_points = positions.shape[0]
