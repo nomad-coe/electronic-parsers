@@ -225,7 +225,7 @@ def test_5(parser):
     run = archive.run[-1]
     system = run.system
     assert run.x_yambo_input.x_yambo_file == './SAVE//ns.db1'
-    assert system[0].atoms.positions[0][0] == approx(0.67500)
+    assert system[0].atoms.positions[0][0].magnitude == approx(6.7500e-11)
     assert x_yambo_parameters[0].x_yambo_max_atoms_species[0] == 4
     assert x_yambo_parameters[0].x_yambo_n_atom_species[0] == 4
     assert x_yambo_parameters[0].x_yambo_n_atom_species[1] == 1
