@@ -718,6 +718,7 @@ class YamboParser:
             run.system.append(system)
             positions = self.netcdf_parser.get('ATOM_POS', [])
             max_n_atoms = self.netcdf_parser.get('MAX_ATOMS')
+            max_n_atoms_1 = max_n_atoms[0]
             n_atoms = self.netcdf_parser.N_ATOMS
             atom_numbers = np.hstack(
                 [
@@ -735,11 +736,11 @@ class YamboParser:
             selected = []
             positions = positions.reshape(-1, 3)
             n_points = positions.shape[0]
-            n_blocks = int( int(n_points) // int(max_n_atoms) )
+            n_blocks = int( int(n_points) // int(max_n_atoms_1) )
 
             for i in range(n_blocks):
-                start_idx = int(i) * int(max_n_atoms)
-                end_idx = (int(i) + 1) * int(max_n_atoms)
+                start_idx = int(i) * int(max_n_atoms_1)
+                end_idx = (int(i) + 1) * int(max_n_atoms_1)
                 block = positions[start_idx:end_idx]
                 n_to_select = int(n_atoms[int(i)])
                 selected_from_block = block[:n_to_select]
