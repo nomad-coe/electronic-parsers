@@ -774,7 +774,7 @@ class YamboParser:
                 if 'pp_fragment_' not in filename:
                     continue
                 self.netcdf_parser.mainfile = os.path.join(path, filename)
-                if self.netcdf_parser.mainfile is None:
+                if self.netcdf_parser.netcdf_file is None:
                     continue
                 fragment = x_yambo_dynamic_dielectric_matrix_fragment()
                 ddm.x_yambo_fragment.append(fragment)
@@ -862,6 +862,8 @@ class YamboParser:
                 self.netcdf_parser.mainfile = os.path.join(
                     self.maindir, output.get('file', '')
                 )
+                if self.netcdf_parser.netcdf_file is None:
+                    continue
                 self.netcdf_parser.parse()
                 self.parse_calculation(source.qp_properties)
                 self.netcdf_parser.close()
