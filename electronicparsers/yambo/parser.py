@@ -498,7 +498,7 @@ class NetCDFParser(FileParser):
             try:
                 self._file_handler = Dataset(self.mainfile)
             except Exception as e:
-                self.logger.warning(f'Error loading file. {e}')
+                self.logger.warning(f'Error loading file. {e} {self.mainfile}')
                 raise e
 
         return self._file_handler
