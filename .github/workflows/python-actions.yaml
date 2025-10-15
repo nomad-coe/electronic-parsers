@@ -1,8 +1,5 @@
 name: install-and-test-workflow
 on: [push, pull_request]
-permissions:
-  contents: read
-  id-token: write
 jobs:
   install-and-test:
     runs-on: ubuntu-latest

@@ -498,8 +498,7 @@ class NetCDFParser(FileParser):
             try:
                 self._file_handler = Dataset(self.mainfile)
             except Exception as e:
-                self.logger.warning(f'Error loading file. {e} {self.mainfile}')
-                raise e
+                self.logger.warning('Error loading file.')
 
         return self._file_handler
 
@@ -714,34 +713,33 @@ class YamboParser:
         self.netcdf_parser.mainfile = os.path.join(
             self.maindir, self.mainfile_parser.cpu_files_io.input.file
         )
-        if self.netcdf_parser.mainfile is None:
-            return
-
-        system = System()
-        run.system.append(system)
-        positions = self.netcdf_parser.get('ATOM_POS', [])
-        n_atoms = self.netcdf_parser.N_ATOMS
-        atom_numbers = np.hstack(
-            [
-                [self.netcdf_parser.atomic_numbers[int(n)]] * int(n_atoms[int(n)])
-                for n in range(len(n_atoms))
-            ]
-        )
-        system.atoms = Atoms(
-            positions=np.reshape(positions, (np.size(positions) // 3, 3))
-            * ureg.bohr,
-            labels=[chemical_symbols[int(n)] for n in atom_numbers],
-        )
-        if self.netcdf_parser.LATTICE_VECTORS is not None:
-            system.atoms.lattice_vectors = (
-                self.netcdf_parser.LATTICE_VECTORS * ureg.bohr
+        if self.netcdf_parser.mainfile is not None:
+            system = System()
+            run.system.append(system)
+            positions = self.netcdf_parser.get('ATOM_POS', [])
+            n_atoms = self.netcdf_parser.N_ATOMS
+            atom_numbers = np.hstack(
+                [
+                    [self.netcdf_parser.atomic_numbers[int(n)]] * int(n_atoms[int(n)])
+                    for n in range(len(n_atoms))
+                ]
             )
+            system.atoms = Atoms(
+                positions=np.reshape(positions, (np.size(positions) // 3, 3))
+                * ureg.bohr,
+                labels=[chemical_symbols[int(n)] for n in atom_numbers],
+            )
+            if self.netcdf_parser.LATTICE_VECTORS is not None:
+                system.atoms.lattice_vectors = (
+                    self.netcdf_parser.LATTICE_VECTORS * ureg.bohr
+                )
 
         # reference calculation
         energies_occupations = self.mainfile_parser.get('core_variables_setup', {}).get(
             'energies_occupations'
         )
         self.parse_calculation(energies_occupations)
+        self.netcdf_parser.close()
 
         # input parameters from mainfile
         input = x_yambo_io()
@@ -784,6 +782,7 @@ class YamboParser:
                         fragment.x_yambo_FREQ_sec_iq = val
                     elif key.startswith('X_Q'):
                         fragment.x_yambo_X_Q = val
+                self.netcdf_parser.close()
 
     def parse_local_xc_nonlocal_fock(self, module):
         source = module.local_xc_nonlocal_fock
@@ -860,6 +859,7 @@ class YamboParser:
                 )
                 self.netcdf_parser.parse()
                 self.parse_calculation(source.qp_properties)
+                self.netcdf_parser.close()
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
