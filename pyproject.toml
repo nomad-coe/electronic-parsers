@@ -12,11 +12,11 @@ license = { file = "LICENSE" }
 dependencies = [
     "h5py>=3.6.0",
     "lxml>=5.2",
-    "nomad-lab>=1.3.6.dev1",
+    "nomad-lab>=1.3.17",
     "nomad-schema-plugin-simulation-workflow>=1.0.1",
     "nomad-schema-plugin-run>=1.0.1",
     "nomad-parser-plugins-simulation>=1.0.2",
-    "netcdf4>=1.7.3",
+    "netcdf4==1.7.2",
     "pyyaml>=6.0",
     "pydantic>=1.10.8",
     "numpy",
