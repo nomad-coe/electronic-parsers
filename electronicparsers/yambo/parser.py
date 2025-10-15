@@ -718,7 +718,7 @@ class YamboParser:
         self.netcdf_parser.mainfile = os.path.join(
             self.maindir, self.mainfile_parser.cpu_files_io.input.file
         )
-        if self.netcdf_parser.mainfile is not None:
+        if self.netcdf_parser.netcdf_file is not None:
             system = System()
             run.system.append(system)
             positions = self.netcdf_parser.get('ATOM_POS', [])
