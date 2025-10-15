@@ -714,26 +714,28 @@ class YamboParser:
         self.netcdf_parser.mainfile = os.path.join(
             self.maindir, self.mainfile_parser.cpu_files_io.input.file
         )
-        if self.netcdf_parser.mainfile is not None:
-            system = System()
-            run.system.append(system)
-            positions = self.netcdf_parser.get('ATOM_POS', [])
-            n_atoms = self.netcdf_parser.N_ATOMS
-            atom_numbers = np.hstack(
-                [
-                    [self.netcdf_parser.atomic_numbers[int(n)]] * int(n_atoms[int(n)])
-                    for n in range(len(n_atoms))
-                ]
+        if self.netcdf_parser.mainfile is None:
+            return
+
+        system = System()
+        run.system.append(system)
+        positions = self.netcdf_parser.get('ATOM_POS', [])
+        n_atoms = self.netcdf_parser.N_ATOMS
+        atom_numbers = np.hstack(
+            [
+                [self.netcdf_parser.atomic_numbers[int(n)]] * int(n_atoms[int(n)])
+                for n in range(len(n_atoms))
+            ]
+        )
+        system.atoms = Atoms(
+            positions=np.reshape(positions, (np.size(positions) // 3, 3))
+            * ureg.bohr,
+            labels=[chemical_symbols[int(n)] for n in atom_numbers],
+        )
+        if self.netcdf_parser.LATTICE_VECTORS is not None:
+            system.atoms.lattice_vectors = (
+                self.netcdf_parser.LATTICE_VECTORS * ureg.bohr
             )
-            system.atoms = Atoms(
-                positions=np.reshape(positions, (np.size(positions) // 3, 3))
-                * ureg.bohr,
-                labels=[chemical_symbols[int(n)] for n in atom_numbers],
-            )
-            if self.netcdf_parser.LATTICE_VECTORS is not None:
-                system.atoms.lattice_vectors = (
-                    self.netcdf_parser.LATTICE_VECTORS * ureg.bohr
-                )
 
         # reference calculation
         energies_occupations = self.mainfile_parser.get('core_variables_setup', {}).get(
