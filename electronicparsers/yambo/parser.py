@@ -614,10 +614,7 @@ class YamboParser:
             calc.x_yambo_filled_bands = [int(s) for s in states[0]]
             calc.x_yambo_empty_bands = [int(s) for s in states[-1]]
 
-        if (
-            self.netcdf_parser.netcdf_file is not None
-            and self.netcdf_parser.EIGENVALUES is not None
-        ):
+        if self.netcdf_parser.EIGENVALUES is not None:
             eigenvalues = BandEnergies()
             calc.eigenvalues.append(eigenvalues)
             eigenvalues.kpoints = np.transpose(self.netcdf_parser.get('K-POINTS'))
@@ -679,9 +676,7 @@ class YamboParser:
                 energies[4].T, (1, *np.shape(qp_energy))
             )
 
-        if self.netcdf_parser.netcdf_file is not None and (
-            self.netcdf_parser.Sx_Vxc is not None or self.netcdf_parser.Sx is not None
-        ):
+        if self.netcdf_parser.Sx_Vxc is not None or self.netcdf_parser.Sx is not None:
             n_spin = self.netcdf_parser.QP_table.shape[1] // 2
             if calc.eigenvalues:
                 gw_band_energies = calc.eigenvalues[-1]
@@ -718,7 +713,7 @@ class YamboParser:
         self.netcdf_parser.mainfile = os.path.join(
             self.maindir, self.mainfile_parser.cpu_files_io.input.file
         )
-        if self.netcdf_parser.netcdf_file is not None:
+        if self.netcdf_parser.mainfile is not None:
             system = System()
             run.system.append(system)
             positions = self.netcdf_parser.get('ATOM_POS', [])
@@ -774,7 +769,7 @@ class YamboParser:
                 if 'pp_fragment_' not in filename:
                     continue
                 self.netcdf_parser.mainfile = os.path.join(path, filename)
-                if self.netcdf_parser.netcdf_file is None:
+                if self.netcdf_parser.mainfile is None:
                     continue
                 fragment = x_yambo_dynamic_dielectric_matrix_fragment()
                 ddm.x_yambo_fragment.append(fragment)
