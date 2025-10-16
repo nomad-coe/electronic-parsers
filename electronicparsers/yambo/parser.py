@@ -739,6 +739,7 @@ class YamboParser:
             'energies_occupations'
         )
         self.parse_calculation(energies_occupations)
+        self.netcdf_parser.close()
 
         # input parameters from mainfile
         input = x_yambo_io()
@@ -781,6 +782,7 @@ class YamboParser:
                         fragment.x_yambo_FREQ_sec_iq = val
                     elif key.startswith('X_Q'):
                         fragment.x_yambo_X_Q = val
+                self.netcdf_parser.close()
 
     def parse_local_xc_nonlocal_fock(self, module):
         source = module.local_xc_nonlocal_fock
@@ -857,6 +859,7 @@ class YamboParser:
                 )
                 self.netcdf_parser.parse()
                 self.parse_calculation(source.qp_properties)
+                self.netcdf_parser.close()
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)
