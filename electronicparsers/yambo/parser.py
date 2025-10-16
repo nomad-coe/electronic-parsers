@@ -857,8 +857,6 @@ class YamboParser:
                 self.netcdf_parser.mainfile = os.path.join(
                     self.maindir, output.get('file', '')
                 )
-                if self.netcdf_parser.netcdf_file is None:
-                    continue
                 self.netcdf_parser.parse()
                 self.parse_calculation(source.qp_properties)
                 self.netcdf_parser.close()
