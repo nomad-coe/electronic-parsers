@@ -639,7 +639,7 @@ class YamboParser:
                 * ureg.eV
             )
 
-        if self.netcdf_parser.netcdf_file is not None and (
+        if (
             self.netcdf_parser.QP_E_Eo_Z is not None
             or self.netcdf_parser.QP_E is not None
         ):
