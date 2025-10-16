@@ -403,7 +403,6 @@ class OutcarTextParser(TextParser):
                 )
                 build_month, build_day, build_year, build_time = ['', '', '', '']
             else:
-                logger.warning('Unexpected header')
                 return None
 
             subversion = [
@@ -1726,6 +1725,9 @@ class VASPParser:
         elem_ids = [
             int(x) for x in self.parser.atom_info['atomtypes'].get('atomspertype', [])
         ]
+        if elem_id >= len(elem_ids):
+            return (None, None, elem_id)
+
         lower_range = elem_ids[elem_id - 1] if elem_id > 1 else 0
         atom_ids = list(range(lower_range, elem_ids[elem_id]))
         return (
@@ -2025,21 +2027,37 @@ class VASPParser:
             sec_atoms.periodic = [True] * 3
             sec_atoms.labels = self.parser.atom_info.get('atoms', {}).get('element', [])
             # create a set of allowed species for faster lookup. The ase data starts with a vacancy labelled 'X', so start with the second entry.
-            unidentified_labels = [(idx, label) for idx, label in enumerate(sec_atoms.labels) if label not in self.allowed_species]
+            unidentified_labels = [
+                (idx, label)
+                for idx, label in enumerate(sec_atoms.labels)
+                if label not in self.allowed_species
+            ]
             if len(unidentified_labels) > 0:
-                self.logger.warning('Unidentified atom labels.', data=list(zip(*unidentified_labels))[1])
+                self.logger.warning(
+                    'Unidentified atom labels.', data=list(zip(*unidentified_labels))[1]
+                )
                 for idx, _label in unidentified_labels:
                     try:
                         # get the atom index of wrong species
-                        atom_index = self.parser.atom_info.get('atomtypes', {}).get('element', []).index(_label)
+                        atom_index = (
+                            self.parser.atom_info.get('atomtypes', {})
+                            .get('element', [])
+                            .index(_label)
+                        )
                         # get the label from the PP info. The second entry appears to be the chemical element.
-                        recovered_label = self.parser.atom_info.get('atomtypes', {}).get('pseudopotential')[atom_index][1]
+                        recovered_label = self.parser.atom_info.get(
+                            'atomtypes', {}
+                        ).get('pseudopotential')[atom_index][1]
                         # account for cases where PP names include underscores
                         recovered_label = recovered_label.split('_')[0]
-                        assert recovered_label in self.allowed_species, 'Recovered species label is also invalid'
+                        assert recovered_label in self.allowed_species, (
+                            'Recovered species label is also invalid'
+                        )
                         sec_atoms.labels[idx] = recovered_label
                     except Exception as e:
-                        self.logger.error('Unable to recover atom label.', data=_label, reason=str(e))
+                        self.logger.error(
+                            'Unable to recover atom label.', data=_label, reason=str(e)
+                        )
 
             positions = structure.get('positions', None)
             if positions is not None:
@@ -2058,7 +2076,7 @@ class VASPParser:
             ## note that this check should be added to `parse_core_hole` if other kinds of atom_parameters are set
             if self.parser.incar.get('ICORELEVEL', 0) == 2:
                 core_hole, core_hole_group, corehole_id = self.parse_core_hole()
-                if sec_method := sec_run.method:
+                if core_hole is not None and (sec_method := sec_run.method):
                     try:
                         sec_method[-1].atom_parameters[
                             corehole_id
@@ -2068,15 +2086,16 @@ class VASPParser:
                             f'Error setting core-hole: no atom_parameters with index {corehole_id}'
                         )
 
-                if sec_system.atoms_group is None:
-                    sec_system.atoms_group = []
-                sec_system.atoms_group.append(core_hole_group)
-                # add the reference from any core-hole to its matching atoms_group
-                for atom_parameter in sec_run.method[0].atom_parameters:
-                    if atom_parameter.core_hole is not None:
-                        atom_parameter.core_hole.atomsgroup_ref = (
-                            sec_system.atoms_group[-1]
-                        )
+                if core_hole_group is not None:
+                    if sec_system.atoms_group is None:
+                        sec_system.atoms_group = []
+                    sec_system.atoms_group.append(core_hole_group)
+                    # add the reference from any core-hole to its matching atoms_group
+                    for atom_parameter in sec_run.method[0].atom_parameters:
+                        if atom_parameter.core_hole is not None:
+                            atom_parameter.core_hole.atomsgroup_ref = (
+                                sec_system.atoms_group[-1]
+                            )
 
             return sec_system
 
@@ -2378,7 +2397,9 @@ class VASPParser:
                 # it will already include the release date and specific version, like
                 # 5.4.4.18Apr17-6-g9f103f2a35. This is handled during matching for OUTCARS
                 # but we need to fixup here when we deal with vasprun.xml
-                re.sub(r'^(\d+\.\d+\.\d+)\.', r'\1 ', self.parser.header.get('version', '')),
+                re.sub(
+                    r'^(\d+\.\d+\.\d+)\.', r'\1 ', self.parser.header.get('version', '')
+                ),
                 re.sub(r'\(build .+?\) ', '', self.parser.header.get('subversion', '')),
                 self.parser.header.get('platform', ''),
             ]
@@ -2405,8 +2426,10 @@ class VASPParser:
             shift = 0
             if 'build' in subversion.split()[1]:
                 shift = 1
-            time = ' '.join(subversion.split()[1+shift:5+shift])
-            dtime = datetime.strptime(time, "%b %d %Y %H:%M:%S)") - datetime.utcfromtimestamp(0)
+            time = ' '.join(subversion.split()[1 + shift : 5 + shift])
+            dtime = datetime.strptime(
+                time, '%b %d %Y %H:%M:%S)'
+            ) - datetime.utcfromtimestamp(0)
             sec_run.program.compilation_datetime = dtime.total_seconds()
 
         # TODO VASP>=6.3.0 can do DFT+GW calculations in one single step: with data we can extend
