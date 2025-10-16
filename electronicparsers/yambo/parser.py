@@ -497,7 +497,7 @@ class NetCDFParser(FileParser):
         if self._file_handler is None:
             try:
                 self._file_handler = Dataset(self.mainfile)
-            except Exception as e:
+            except Exception:
                 self.logger.warning('Error loading file.')
 
         return self._file_handler

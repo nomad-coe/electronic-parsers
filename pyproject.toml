@@ -16,7 +16,8 @@ dependencies = [
     "nomad-schema-plugin-simulation-workflow>=1.0.1",
     "nomad-schema-plugin-run>=1.0.1",
     "nomad-parser-plugins-simulation>=1.0.2",
-    "netcdf4>=1.7.3",
+    # issue with reading nc file in 1.7.3: https://github.com/Unidata/netcdf4-python/issues/1438
+    "netcdf4<=1.7.2",
     "pyyaml>=6.0",
     "pydantic>=1.10.8",
     "numpy",
