@@ -30,10 +30,10 @@ homepage = "https://github.com/nomad-coe/electronic-parsers"
 dev = [
     'astroid==2.11.7',
     'mypy>=1.15',
-    'pytest>= 5.3.0, <8',
-    'pytest-timeout>=1.4.2',
-    'pytest-cov>=2.7.1',
-    'ruff>=0.6',
+    'pytest',
+    'pytest-timeout',
+    'pytest-cov',
+    'ruff',
     'typing-extensions>=4.12',
 ]
 # these are extra deps for nomad infra as a result of using nomad.search
