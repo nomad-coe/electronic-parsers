@@ -28,7 +28,7 @@ homepage = "https://github.com/nomad-coe/electronic-parsers"
 
 [project.optional-dependencies]
 dev = [
-    'astroid==2.11.7',
+    'astroid>=2.11.7',
     'mypy>=1.15',
     'pytest',
     'pytest-timeout',
