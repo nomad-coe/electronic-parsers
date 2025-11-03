@@ -66,18 +66,11 @@ class QBallParser:
     def parse(self, mainfile, archive, logger=None):
         logger = logger if logger is not None else logging.getLogger('__name__')
 
-        if mainfile.endswith('.gz'):
-            open_file = gzip.open
-        elif mainfile.endswith('.bz2'):
-            open_file = bz2.open
-        elif mainfile.endswith('.xz'):
-            open_file = lzma.open
-
-        with open_file(mainfile, 'rt') as file:
-            contents = file.read()
-
         self.mainfile_parser.mainfile = mainfile
         self.mainfile_parser.parse()
+
+        with self.mainfile_parser.open(mainfile, 'rt') as file:
+            contents = file.read()
 
         run = Run()
         archive.run.append(run)

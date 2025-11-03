@@ -22,7 +22,7 @@ import re
 import logging
 from scipy.io import netcdf_file
 from ase.data import atomic_names
-from ase import lattice as aselattice, Atoms
+from ase import lattice as aselattice
 from ase.cell import Cell
 from ase import Atoms as aseAtoms
 

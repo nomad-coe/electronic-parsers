@@ -133,9 +133,7 @@ atk_parser_entry_point = EntryPoint(
     mainfile_mime_re='application/octet-stream',
     mainfile_name_re=r'^.*\.nc',
     mainfile_contents_dict={
-        'variables': {
-            '__has_key': r'(?:Bulk|Molecule)Configuration_gID\d+_calculator'
-        }
+        'variables': {'__has_key': r'(?:Bulk|Molecule)Configuration_gID\d+_calculator'}
     },
     parser_class_name='electronicparsers.atk.ATKParser',
     code_name='QuantumATK',
@@ -840,7 +838,7 @@ qball_parser_entry_point = EntryPoint(
     aliases=['parsers/qball'],
     description='NOMAD parser for QBALL.',
     python_package='electronicparsers.qball',
-    mainfile_contents_re=r'qball',
+    mainfile_contents_re=r'qball[\s\|\w\n]+Lawrence Livermore',
     supported_compressions=['gz', 'bz2', 'xz'],
     parser_class_name='electronicparsers.qball.QBallParser',
     code_name='Qball',

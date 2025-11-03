@@ -22,7 +22,7 @@ import logging
 import re
 from datetime import datetime
 from ase.io import read as ioread
-from ase import Atoms
+from ase import Atoms as ase_atoms
 
 from nomad.units import ureg
 from nomad.parsing.file_parser.file_parser import FileParser
@@ -199,7 +199,7 @@ class StructParser(TextParser):
                 scaled_positions.extend(positions)
                 numbers.extend([int(atom.get('Z', 0))] * len(positions))
 
-            return Atoms(
+            return ase_atoms(
                 cell=lattice_constants,
                 scaled_positions=scaled_positions,
                 numbers=numbers,
