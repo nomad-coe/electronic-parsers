@@ -2366,11 +2366,22 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         file_ending = path.split('EPSILON')[
             -1
         ]  # Identifying files with the same ending but different type of calculation
-        polarization_files = [
-            f
-            for f in get_files('*BSE*.OUT', self._xs_info_file, 'INFO.OUT')
-            if f.endswith(file_ending)
-        ]
+        # polarization_files = [
+        #     f
+        #     for f in get_files('*_BSE*.OUT', self._xs_info_file, 'INFO.OUT')
+        #     if f.endswith(file_ending)
+        # ]
+        polarization_files = []
+        for xs_type in self._xs_spectra_types:
+            polarization_files.extend(
+                [
+                    f
+                    for f in get_files(
+                        f'{xs_type}_BSE*.OUT', self._xs_info_file, 'INFO.OUT'
+                    )
+                    if f.endswith(file_ending)
+                ]
+            )
         for file in polarization_files:
             if sec_run.m_xpath('calculation'):
                 sec_scc = sec_run.calculation[-1]
@@ -2403,8 +2414,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 self.logger.error('Error setting BSE data.')
 
             # refs
-            sec_scc.system_ref = sec_run.system[-1]
-            sec_scc.method_ref = sec_run.method[-1]
+            if sec_run.system:
+                sec_scc.system_ref = sec_run.system[-1]
+            if sec_run.method:
+                sec_scc.method_ref = sec_run.method[-1]
 
     def _parse_xs_tddft(self):
         sec_run = self.archive.run[-1]
@@ -3302,7 +3315,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         xs_files = get_files('*INFOXS*.OUT*', filepath, 'INFO.OUT')
         # parse xs for screening files if ground state file is missing
         no_gs_file = len(get_files('INFO.OUT', filepath)) == 0
-        print('NNN', no_gs_file, basename)
         if (xs_files and gs_file) or ('INFOXS.OUT' in basename and no_gs_file):
             re_xs_mainfile = re.compile(r'.+\d\d\d\.OUT')
             spectra_files = []
@@ -3317,7 +3329,6 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                                 files.append(f)
                         else:
                             files.append(f)
-                    print('FFFF', files)
                     return files
         return True
 
