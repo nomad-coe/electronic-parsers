@@ -3291,30 +3291,33 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         filepath = kwargs.get('filename')
         basename = os.path.basename(filepath)
         gs_file = 'INFO.OUT' in basename
-        # parse xs for screening files if ground state file is missing
-        no_gs_file = re.match(r'INFO_SCR.OUT.*', basename) and not get_files(
-            'INFO.OUT', filepath
-        )
+        if re.match(r'INFO_SCR.OUT.*', basename):
+            # do not parse screening files
+            return False
 
         dirname = os.path.dirname(filepath)
-        if os.path.isfile(os.path.join(dirname, f'GW_{basename}')):
+        if os.path.isfile(os.path.join(dirname, f'GW_{basename}')) and gs_file:
             return ['GW', 'GW_workflow']
 
         xs_files = get_files('*INFOXS*.OUT*', filepath, 'INFO.OUT')
-        if xs_files and (gs_file or no_gs_file):
+        # parse xs for screening files if ground state file is missing
+        no_gs_file = len(get_files('INFO.OUT', filepath)) == 0
+        print('NNN', no_gs_file, basename)
+        if (xs_files and gs_file) or ('INFOXS.OUT' in basename and no_gs_file):
             re_xs_mainfile = re.compile(r'.+\d\d\d\.OUT')
             spectra_files = []
             for prefix in self._xs_spectra_types:
                 spectra_files = get_files(f'{prefix}_*.OUT', filepath, 'INFO.OUT')
                 if spectra_files:
                     # remove files for qpoints other than first
-                    files = ['XS_workflow'] + xs_files
+                    files = (['XS_workflow'] + xs_files) if gs_file else []
                     for f in spectra_files:
                         if re_xs_mainfile.match(f):
                             if '001' in f:
                                 files.append(f)
                         else:
                             files.append(f)
+                    print('FFFF', files)
                     return files
         return True
 
@@ -3407,5 +3410,5 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if xs_workflow_archive:
             try:
                 self.parse_xs_workflow(xs_archives, xs_workflow_archive)
-            except Exception:
-                self.logger.error('Error parsing the automatic XS workflow')
+            except Exception as e:
+                self.logger.error(f'Error parsing the automatic XS workflow {e}')

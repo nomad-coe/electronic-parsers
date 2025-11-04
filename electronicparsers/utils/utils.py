@@ -375,14 +375,17 @@ class BeyondDFTWorkflowsParser:
             index = 0
             for path, archive in self._child_archives.items():
                 if os.path.basename(path).split('_')[0] in self._xs_spectra_types:
-                    output_polarization = extract_section(archive, ['run', 'calculation'])
-                    output.append(
-                        Link(
-                            name=f'Output polarization {index + 1}',
-                            section=output_polarization,
-                        )
+                    output_polarization = extract_section(
+                        archive, ['run', 'calculation']
                     )
-                    index += 1
+                    if output_polarization:
+                        output.append(
+                            Link(
+                                name=f'Output polarization {index + 1}',
+                                section=output_polarization,
+                            )
+                        )
+                        index += 1
             return output
 
         workflow = XS(method=XSMethod())
