@@ -379,12 +379,7 @@ class BeyondDFTWorkflowsParser:
                         archive, ['run', 'calculation']
                     )
                     if output_polarization:
-                        output.append(
-                            Link(
-                                name=f'Output polarization {index + 1}',
-                                section=output_polarization,
-                            )
-                        )
+                        output.append(output_polarization)
                         index += 1
             return output
 
