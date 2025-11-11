@@ -41,7 +41,7 @@ m_package = Package()
 
 
 class Program(runschema.run.Program):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_name = Quantity(
         type=str,
@@ -59,7 +59,7 @@ class Program(runschema.run.Program):
 
 
 class BandEnergies(runschema.calculation.BandEnergies):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_energy_min = Quantity(
         type=np.float64,
@@ -87,7 +87,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
 
 class Energy(runschema.calculation.Energy):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_dispersion = SubSection(sub_section=runschema.calculation.EnergyEntry)
 
@@ -161,7 +161,7 @@ class Energy(runschema.calculation.Energy):
 
 
 class Forces(runschema.calculation.Forces):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_p_matrix = SubSection(sub_section=runschema.calculation.ForcesEntry)
 
@@ -181,7 +181,7 @@ class Forces(runschema.calculation.Forces):
 
 
 class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_optimization_coordinates = Quantity(
         type=str,
@@ -284,7 +284,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_dftb_resources_dir = Quantity(
         type=str,
@@ -450,7 +450,7 @@ class Method(runschema.method.Method):
 
 
 class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_basis_functions_confinement_radius = Quantity(
         type=np.float64,
@@ -468,7 +468,7 @@ class BasisSetAtomCentered(runschema.method.BasisSetAtomCentered):
 
 
 class AtomParameters(runschema.method.AtomParameters):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_radial_points = Quantity(
         type=np.int32,
@@ -597,7 +597,7 @@ class AtomParameters(runschema.method.AtomParameters):
 
 
 class BandGapDeprecated(runschema.calculation.BandGapDeprecated):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_n_valence_electrons = Quantity(
         type=np.int32,
@@ -636,7 +636,7 @@ class BandGapDeprecated(runschema.calculation.BandGapDeprecated):
 
 
 class Scf(runschema.method.Scf):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_diis_settings_dirac = Quantity(
         type=JSON,
@@ -717,7 +717,7 @@ class Scf(runschema.method.Scf):
 
 
 class KMesh(runschema.method.KMesh):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_ams_general_integration_parameter = Quantity(
         type=np.int32,
@@ -767,3 +767,6 @@ class KMesh(runschema.method.KMesh):
         description="""
         """,
     )
+
+
+m_package.__init_metainfo__()

@@ -199,7 +199,7 @@ class x_turbomole_section_functionals(MSection):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_turbomole_controlIn_atom_label = Quantity(
         type=str,
@@ -445,7 +445,7 @@ class Method(runschema.method.Method):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_turbomole_damping_scf_iteration = Quantity(
         type=np.float64,
@@ -525,7 +525,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class BandEnergies(runschema.calculation.BandEnergies):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_turbomole_eigenvalues_irreducible_representation = Quantity(
         type=np.int32,
@@ -545,7 +545,7 @@ class BandEnergies(runschema.calculation.BandEnergies):
 
 
 class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMethod):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_turbomole_geometry_optimization_geometry_change_rms = Quantity(
         type=np.float64,
@@ -594,7 +594,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_turbomole_module = Quantity(
         type=str,
@@ -679,7 +679,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_turbomole_nodename = Quantity(
         type=str,
@@ -691,7 +691,7 @@ class Run(runschema.run.Run):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_turbomole_pceem_charges = Quantity(
         type=np.float64,
@@ -725,3 +725,6 @@ class System(runschema.system.System):
         Multipole precision parameter for PCEEM embedding
         """,
     )
+
+
+m_package.__init_metainfo__()

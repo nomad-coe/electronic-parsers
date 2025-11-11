@@ -35,7 +35,7 @@ m_package = Package()
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_wannier90_n_atoms_proj = Quantity(
         type=np.int32,
@@ -54,3 +54,6 @@ class Run(runschema.run.Run):
         Bohr, respectively. The default value is Ang.
         """,
     )
+
+
+m_package.__init_metainfo__()

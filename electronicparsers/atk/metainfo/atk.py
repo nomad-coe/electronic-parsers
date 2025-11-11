@@ -36,7 +36,7 @@ m_package = Package()
 
 
 class Method(method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_atk_density_convergence_criterion = Quantity(
         type=np.float64,
@@ -69,3 +69,6 @@ class Method(method.Method):
         Monkhorstpack grid sampling
         """,
     )
+
+
+m_package.__init_metainfo__()

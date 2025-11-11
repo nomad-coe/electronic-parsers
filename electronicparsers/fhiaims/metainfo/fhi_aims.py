@@ -742,7 +742,7 @@ class x_fhi_aims_section_eigenvalues_spin_perturbativeGW(MSection):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_atom_forces_free_x = Quantity(
         type=np.float64,
@@ -809,7 +809,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class ScfIeration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_atom_forces_raw_x = Quantity(
         type=np.float64,
@@ -937,7 +937,7 @@ class ScfIeration(runschema.calculation.ScfIteration):
 
 
 class DosValues(runschema.calculation.DosValues):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_normalization_factor_raw_data = Quantity(
         type=np.float64,
@@ -950,7 +950,7 @@ class DosValues(runschema.calculation.DosValues):
 
 
 class BandStructure(runschema.calculation.BandStructure):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_band_k1 = Quantity(
         type=np.float64,
@@ -994,7 +994,7 @@ class BandStructure(runschema.calculation.BandStructure):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_controlIn_charge = Quantity(
         type=np.float64,
@@ -1338,7 +1338,7 @@ class Method(runschema.method.Method):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_controlIn_MD_time_step = Quantity(
         type=np.float64,
@@ -1405,7 +1405,7 @@ class Run(runschema.run.Run):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_geometry_atom_labels = Quantity(
         type=str,
@@ -1498,7 +1498,7 @@ class System(runschema.system.System):
 
 
 class AtomParameters(runschema.method.AtomParameters):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_section_controlInOut_atom_species = SubSection(
         sub_section=SectionProxy('x_fhi_aims_section_controlInOut_atom_species'),
@@ -1507,7 +1507,7 @@ class AtomParameters(runschema.method.AtomParameters):
 
 
 class HubbardKanamoriModel(runschema.method.HubbardKanamoriModel):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_projection_type = Quantity(
         type=str,
@@ -1527,7 +1527,7 @@ class HubbardKanamoriModel(runschema.method.HubbardKanamoriModel):
 
 
 class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fhi_aims_controlIn_md = Quantity(
         type=JSON,

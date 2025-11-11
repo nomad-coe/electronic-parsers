@@ -848,7 +848,7 @@ class x_cpmd_section_end_information(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cpmd_section_start_information = SubSection(
         sub_section=SectionProxy('x_cpmd_section_start_information'), repeats=True
@@ -885,7 +885,7 @@ class Run(runschema.run.Run):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cpmd_simulation_parameters = Quantity(
         type=JSON,
@@ -909,7 +909,7 @@ class Method(runschema.method.Method):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cpmd_section_supercell = SubSection(
         sub_section=SectionProxy('x_cpmd_section_supercell'), repeats=True
@@ -917,7 +917,7 @@ class System(runschema.system.System):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cpmd_total_number_of_scf_steps = Quantity(
         type=np.int32,
@@ -969,7 +969,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cpmd_section_geo_opt_initialization = SubSection(
         sub_section=SectionProxy('x_cpmd_section_geo_opt_initialization'), repeats=True
@@ -981,7 +981,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
 
 
 class MolecularDynamics(simulationworkflowschema.MolecularDynamics):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cpmd_section_md_averaged_quantities = SubSection(
         sub_section=SectionProxy('x_cpmd_section_md_averaged_quantities'), repeats=True

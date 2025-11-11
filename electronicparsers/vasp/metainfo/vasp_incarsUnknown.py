@@ -51,7 +51,7 @@ class x_vasp_incarUnknown_param(MCategory):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_vasp_incarOut_ENMAX = Quantity(
         type=np.float64,
@@ -84,3 +84,6 @@ class Method(runschema.method.Method):
         """,
         categories=[vasp_incarsOut.x_vasp_incarOut_param],
     )
+
+
+m_package.__init_metainfo__()

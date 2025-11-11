@@ -154,7 +154,7 @@ class x_wien2k_section_equiv_atoms(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_wien2k_header = SubSection(
         sub_section=SectionProxy('x_wien2k_header'), repeats=True
@@ -162,7 +162,7 @@ class Run(runschema.run.Run):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_wien2k_iteration_number = Quantity(
         type=np.int32,
@@ -574,7 +574,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_wien2k_nonequiv_atoms = Quantity(
         type=np.int32,
@@ -657,7 +657,7 @@ class System(runschema.system.System):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_wien2k_switch = Quantity(
         type=str,
@@ -781,3 +781,6 @@ class Method(runschema.method.Method):
     x_wien2k_section_XC = SubSection(
         sub_section=SectionProxy('x_wien2k_section_XC'), repeats=True
     )
+
+
+m_package.__init_metainfo__()

@@ -63,7 +63,7 @@ class x_gpaw_section_paw_method(MSection):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_gpaw_atomic_density_matrices = Quantity(
         type=np.float64,
@@ -127,7 +127,7 @@ class Calculation(runschema.calculation.Calculation):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_gpaw_density_convergence_criterion = Quantity(
         type=np.float64,
@@ -212,3 +212,6 @@ class Method(runschema.method.Method):
     x_gpaw_section_paw_method = SubSection(
         sub_section=SectionProxy('x_gpaw_section_paw_method'), repeats=True
     )
+
+
+m_package.__init_metainfo__()

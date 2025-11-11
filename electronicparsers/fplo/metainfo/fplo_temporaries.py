@@ -39,7 +39,7 @@ m_package = Package()
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fplo_t_program_version_main = Quantity(
         type=str,
@@ -67,7 +67,7 @@ class Run(runschema.run.Run):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fplo_t_vec_a_x = Quantity(
         type=np.dtype(np.float64),
@@ -175,7 +175,7 @@ class System(runschema.system.System):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fplo_t_relativity_method = Quantity(
         type=str,
@@ -307,7 +307,7 @@ class Method(runschema.method.Method):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fplo_t_energy_reference_fermi_iteration = Quantity(
         type=np.dtype(np.float64),
@@ -317,3 +317,6 @@ class ScfIteration(runschema.calculation.ScfIteration):
         Temporary storage for FPLO Fermi energy in iteration
         """,
     )
+
+
+m_package.__init_metainfo__()

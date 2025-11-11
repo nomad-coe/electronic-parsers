@@ -40,7 +40,7 @@ m_package = Package()
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     vasp_build_date = Quantity(
         type=str,
@@ -60,7 +60,7 @@ class Run(runschema.run.Run):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_vasp_incar_in = Quantity(
         type=JSON,
@@ -113,7 +113,7 @@ class Method(runschema.method.Method):
 
 
 class KMesh(runschema.method.KMesh):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_vasp_tetrahedrons_list = Quantity(
         type=np.dtype(np.int32),
@@ -134,7 +134,7 @@ class KMesh(runschema.method.KMesh):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_vasp_selective_dynamics = Quantity(
         type=np.dtype(bool),
@@ -146,7 +146,7 @@ class System(runschema.system.System):
 
 
 class HubbardKanamoriModel(runschema.method.HubbardKanamoriModel):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_vasp_projection_type = Quantity(
         type=str,
@@ -158,7 +158,7 @@ class HubbardKanamoriModel(runschema.method.HubbardKanamoriModel):
 
 
 class GW(runschema.method.GW):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_vasp_response_functions_incar = Quantity(
         type=JSON,
@@ -167,3 +167,6 @@ class GW(runschema.method.GW):
         Input parameters used in the "response functions".
         """,
     )
+
+
+m_package.__init_metainfo__()

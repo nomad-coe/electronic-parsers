@@ -175,7 +175,7 @@ class x_fleur_section_XC(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fleur_header = SubSection(
         sub_section=SectionProxy('x_fleur_header'), repeats=True
@@ -183,7 +183,7 @@ class Run(runschema.run.Run):
 
 
 class System(runschema.system.System):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fleur_lattice_vector_x = Quantity(
         type=np.float64,
@@ -373,7 +373,7 @@ class System(runschema.system.System):
 
 
 class ScfIteration(runschema.calculation.ScfIteration):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fleur_tot_for_x = Quantity(
         type=np.float64,
@@ -460,7 +460,7 @@ class ScfIteration(runschema.calculation.ScfIteration):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fleur_nkptd = Quantity(
         type=np.int32,
@@ -577,7 +577,7 @@ class OrbitalAPW(runschema.method.OrbitalAPW):
 
 
 class BasisSet(runschema.method.BasisSet):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fleur_coretail = Quantity(
         type=bool,
@@ -602,7 +602,7 @@ class BasisSet(runschema.method.BasisSet):
 
 
 class XCFunctional(runschema.method.XCFunctional):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fleur_xc_correction = Quantity(
         type=str,
@@ -613,7 +613,7 @@ class XCFunctional(runschema.method.XCFunctional):
 
 
 class BaseCalculation(runschema.calculation.BaseCalculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_fleur_n_occupied_states = Quantity(
         type=np.int32,
@@ -621,3 +621,6 @@ class BaseCalculation(runschema.calculation.BaseCalculation):
         description="""
         """,
     )
+
+
+m_package.__init_metainfo__()

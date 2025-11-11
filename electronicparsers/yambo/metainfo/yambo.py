@@ -174,7 +174,7 @@ class x_yambo_parameters(MSection):
 
 
 class Program(runschema.run.Program):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_yambo_build = Quantity(
         type=str,
@@ -192,7 +192,7 @@ class Program(runschema.run.Program):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_yambo_job_string = Quantity(
         type=str,
@@ -343,7 +343,7 @@ class x_yambo_bare_xc_bandenergies(runschema.calculation.BandEnergies):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_yambo_electronic_temperature = Quantity(
         type=np.float64,
@@ -556,7 +556,7 @@ class x_yambo_transferred_momenta(x_yambo_module):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_yambo_transferred_momenta = SubSection(
         sub_section=x_yambo_transferred_momenta.m_def, repeats=True
@@ -575,3 +575,6 @@ class Method(runschema.method.Method):
     x_yambo_dipoles = SubSection(sub_section=x_yambo_dipoles.m_def, repeats=True)
 
     x_yambo_dyson = SubSection(sub_section=x_yambo_dyson.m_def, repeats=True)
+
+
+m_package.__init_metainfo__()

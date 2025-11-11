@@ -47,7 +47,7 @@ class x_vasp_incarOut_param(MCategory):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_vasp_incarOut_ADDGRID = Quantity(
         type=bool,
@@ -3426,3 +3426,6 @@ class Method(runschema.method.Method):
         """,
         categories=[x_vasp_incarOut_param],
     )
+
+
+m_package.__init_metainfo__()

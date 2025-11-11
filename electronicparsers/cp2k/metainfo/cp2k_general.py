@@ -861,7 +861,7 @@ class x_cp2k_section_kind_basis_set(MSection):
 
 
 class Run(runschema.run.Run):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cp2k_section_restart_information = SubSection(
         sub_section=SectionProxy('x_cp2k_section_restart_information'), repeats=True
@@ -901,7 +901,7 @@ class Run(runschema.run.Run):
 
 
 class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cp2k_section_geometry_optimization = SubSection(
         sub_section=SectionProxy('x_cp2k_section_geometry_optimization'), repeats=True
@@ -909,7 +909,7 @@ class GeometryOptimization(simulationworkflowschema.GeometryOptimization):
 
 
 class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMethod):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cp2k_section_geometry_optimization = SubSection(
         sub_section=SectionProxy('x_cp2k_section_geometry_optimization'), repeats=True
@@ -917,7 +917,7 @@ class GeometryOptimizationMethod(simulationworkflowschema.GeometryOptimizationMe
 
 
 class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cp2k_section_md_settings = SubSection(
         sub_section=SectionProxy('x_cp2k_section_md_settings'), repeats=True
@@ -925,7 +925,7 @@ class MolecularDynamicsMethod(simulationworkflowschema.MolecularDynamicsMethod):
 
 
 class Method(runschema.method.Method):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cp2k_section_quickstep_settings = SubSection(
         sub_section=SectionProxy('x_cp2k_section_quickstep_settings'), repeats=True
@@ -1009,6 +1009,6 @@ class x_cp2k_pdos_histogram(MSection):
 
 
 class Calculation(runschema.calculation.Calculation):
-    m_def = Section(validate=False, extends_base_section=True)
+    m_def = Section(validate=False)
 
     x_cp2k_pdos = SubSection(sub_section=x_cp2k_pdos_histogram.m_def, repeats=True)

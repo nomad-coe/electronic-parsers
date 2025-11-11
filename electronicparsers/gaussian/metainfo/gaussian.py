@@ -1705,3 +1705,6 @@ class Method(runschema.method.Method):
         sub_section=SectionProxy('x_gaussian_section_elstruc_method'),
         repeats=True,
     )
+
+
+m_package.__init_metainfo__()
