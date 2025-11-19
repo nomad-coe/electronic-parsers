@@ -1494,9 +1494,10 @@ class RunContentParser(ContentParser):
         )
 
     def get_time_calc(self, n_calc):
-        return self._get_key_values(
+        time = self._get_key_values(
             f'/modeling[0]/calculation[{n_calc}]/time[@name="totalsc"]'
         ).get('totalsc', [None, None])
+        return time if isinstance(time, list) else [time]
 
     def get_time_scf(self, n_calc):
         time = self._get_key_values(
