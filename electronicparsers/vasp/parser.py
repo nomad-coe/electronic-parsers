@@ -1502,6 +1502,8 @@ class RunContentParser(ContentParser):
         time = self._get_key_values(
             f'/modeling[0]/calculation[{n_calc}]/scstep/time[@name="total"]'
         ).get('total', [])
+        # capture malformed time entries (typically `str`) where numbers are concatenated or illegible
+        time = [t if isinstance(t, list) and len(t) == 2 else [None, None] for t in time]
         if time and len(np.shape(time)) != 2:
             time = np.reshape(time, (np.size(time) // 2, 2))
         return time
@@ -2285,7 +2287,9 @@ class VASPParser:
                 else 0 * ureg.s
             )
             sec_scc = parse_energy(n, None)
-            time = self.parser.get_time_calc(n)[-1]
+            time = self.parser.get_time_calc(n)
+            if isinstance(time, (list, tuple)) and len(time) > 0:
+                time = time[-1]
             if time:
                 sec_scc.time_calculation = float(time)
                 sec_scc.time_physical = time_initial + sec_scc.time_calculation
