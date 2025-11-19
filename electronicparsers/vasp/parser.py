@@ -1497,7 +1497,21 @@ class RunContentParser(ContentParser):
         time = self._get_key_values(
             f'/modeling[0]/calculation[{n_calc}]/time[@name="totalsc"]'
         ).get('totalsc', [None, None])
-        return time if isinstance(time, list) else [time]
+        # Handle malformed or non-list values - ensure consistent return type
+        if not isinstance(time, list):
+            # Single malformed value (e.g., concatenated string) - return invalid
+            return [[None, None]]
+        # time is a list - could be [cpu, wall] or [[cpu1, wall1], [cpu2, wall2]]
+        if len(time) == 0:
+            return [[None, None]]
+        # Check if it's already a list of lists
+        if isinstance(time[0], list):
+            return time
+        # It's a flat list [cpu, wall] - wrap it
+        if len(time) == 2:
+            return [time]
+        # Malformed - return invalid
+        return [[None, None]]
 
     def get_time_scf(self, n_calc):
         time = self._get_key_values(
@@ -2312,9 +2326,27 @@ class VASPParser:
             time = self.parser.get_time_calc(n)
             if isinstance(time, (list, tuple)) and len(time) > 0:
                 time = time[-1]
-            if time:
-                sec_scc.time_calculation = float(time)
-                sec_scc.time_physical = time_initial + sec_scc.time_calculation
+            # Handle numpy arrays, lists, tuples, and scalars
+            if time is not None:
+                if isinstance(time, np.ndarray):
+                    # time is [cpu_time, wall_time] - prefer wall_time (index 1)
+                    if time.size > 1 and not np.isnan(time.flat[1]):
+                        sec_scc.time_calculation = float(time.flat[1])
+                        sec_scc.time_physical = time_initial + sec_scc.time_calculation
+                    elif time.size > 0 and not np.isnan(time.flat[0]):
+                        sec_scc.time_calculation = float(time.flat[0])
+                        sec_scc.time_physical = time_initial + sec_scc.time_calculation
+                elif isinstance(time, (list, tuple)):
+                    # time is [cpu_time, wall_time] - use wall_time (index 1) if available
+                    if len(time) > 1 and time[1] is not None:
+                        sec_scc.time_calculation = float(time[1])
+                        sec_scc.time_physical = time_initial + sec_scc.time_calculation
+                    elif len(time) > 0 and time[0] is not None:
+                        sec_scc.time_calculation = float(time[0])
+                        sec_scc.time_physical = time_initial + sec_scc.time_calculation
+                elif time is not None:
+                    sec_scc.time_calculation = float(time)
+                    sec_scc.time_physical = time_initial + sec_scc.time_calculation
 
             time_scf = self.parser.get_time_scf(n)
             for n_scf in range(self.parser.get_n_scf(n)):
