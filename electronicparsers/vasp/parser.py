@@ -1504,12 +1504,31 @@ class RunContentParser(ContentParser):
             f'/modeling[0]/calculation[{n_calc}]/scstep/time[@name="total"]'
         ).get('total', [])
         # capture malformed time entries (typically `str`) where numbers are concatenated or illegible
-        time = [
-            t if isinstance(t, list) and len(t) == 2 else [None, None] for t in time
+        # Use -1 as sentinel value for numpy operations, track indices for later conversion
+        invalid_indices = [
+            i for i, t in enumerate(time) if not (isinstance(t, list) and len(t) == 2)
         ]
-        if time and len(np.shape(time)) != 2:
-            time = np.reshape(time, (np.size(time) // 2, 2))
-        return time
+        sanitized_time = [
+            t if isinstance(t, list) and len(t) == 2 else [-1, -1] for t in time
+        ]
+
+        # Reshape if needed (safe with numeric sentinel values)
+        if sanitized_time and len(np.shape(sanitized_time)) != 2:
+            sanitized_time = np.reshape(
+                sanitized_time, (np.size(sanitized_time) // 2, 2)
+            )
+
+        # Convert sentinel values back to None
+        if invalid_indices:
+            sanitized_time = (
+                sanitized_time.tolist()
+                if isinstance(sanitized_time, np.ndarray)
+                else sanitized_time
+            )
+            for i in invalid_indices:
+                sanitized_time[i] = [None, None]
+
+        return sanitized_time
 
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
