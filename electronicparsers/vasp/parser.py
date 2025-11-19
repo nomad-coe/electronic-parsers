@@ -1504,7 +1504,9 @@ class RunContentParser(ContentParser):
             f'/modeling[0]/calculation[{n_calc}]/scstep/time[@name="total"]'
         ).get('total', [])
         # capture malformed time entries (typically `str`) where numbers are concatenated or illegible
-        time = [t if isinstance(t, list) and len(t) == 2 else [None, None] for t in time]
+        time = [
+            t if isinstance(t, list) and len(t) == 2 else [None, None] for t in time
+        ]
         if time and len(np.shape(time)) != 2:
             time = np.reshape(time, (np.size(time) // 2, 2))
         return time
