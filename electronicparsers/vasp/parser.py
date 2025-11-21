@@ -2326,26 +2326,31 @@ class VASPParser:
             time = self.parser.get_time_calc(n)
             if isinstance(time, (list, tuple)) and len(time) > 0:
                 time = time[-1]
-            # Handle numpy arrays, lists, tuples, and scalars
             if time is not None:
+                # Extract scalar from numpy array, list, or tuple (prefer wall_time at index 1)
                 if isinstance(time, np.ndarray):
-                    # time is [cpu_time, wall_time] - prefer wall_time (index 1)
-                    if time.size > 1 and not np.isnan(time.flat[1]):
-                        sec_scc.time_calculation = float(time.flat[1])
-                        sec_scc.time_physical = time_initial + sec_scc.time_calculation
-                    elif time.size > 0 and not np.isnan(time.flat[0]):
-                        sec_scc.time_calculation = float(time.flat[0])
-                        sec_scc.time_physical = time_initial + sec_scc.time_calculation
+                    time_val = (
+                        time.flat[1]
+                        if time.size > 1 and not np.isnan(time.flat[1])
+                        else (
+                            time.flat[0]
+                            if time.size > 0 and not np.isnan(time.flat[0])
+                            else None
+                        )
+                    )
                 elif isinstance(time, (list, tuple)):
-                    # time is [cpu_time, wall_time] - use wall_time (index 1) if available
-                    if len(time) > 1 and time[1] is not None:
-                        sec_scc.time_calculation = float(time[1])
-                        sec_scc.time_physical = time_initial + sec_scc.time_calculation
-                    elif len(time) > 0 and time[0] is not None:
-                        sec_scc.time_calculation = float(time[0])
-                        sec_scc.time_physical = time_initial + sec_scc.time_calculation
-                elif time is not None:
-                    sec_scc.time_calculation = float(time)
+                    time_val = (
+                        time[1]
+                        if len(time) > 1 and time[1] is not None
+                        else (
+                            time[0] if len(time) > 0 and time[0] is not None else None
+                        )
+                    )
+                else:
+                    time_val = time
+
+                if time_val is not None:
+                    sec_scc.time_calculation = float(time_val)
                     sec_scc.time_physical = time_initial + sec_scc.time_calculation
 
             time_scf = self.parser.get_time_scf(n)
