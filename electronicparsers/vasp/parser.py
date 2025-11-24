@@ -1494,17 +1494,55 @@ class RunContentParser(ContentParser):
         )
 
     def get_time_calc(self, n_calc):
-        return self._get_key_values(
+        time = self._get_key_values(
             f'/modeling[0]/calculation[{n_calc}]/time[@name="totalsc"]'
         ).get('totalsc', [None, None])
+        # Handle malformed or non-list values - ensure consistent return type
+        if not isinstance(time, list):
+            # Single malformed value (e.g., concatenated string) - return invalid
+            return [[None, None]]
+        # time is a list - could be [cpu, wall] or [[cpu1, wall1], [cpu2, wall2]]
+        if len(time) == 0:
+            return [[None, None]]
+        # Check if it's already a list of lists
+        if isinstance(time[0], list):
+            return time
+        # It's a flat list [cpu, wall] - wrap it
+        if len(time) == 2:
+            return [time]
+        # Malformed - return invalid
+        return [[None, None]]
 
     def get_time_scf(self, n_calc):
         time = self._get_key_values(
             f'/modeling[0]/calculation[{n_calc}]/scstep/time[@name="total"]'
         ).get('total', [])
-        if time and len(np.shape(time)) != 2:
-            time = np.reshape(time, (np.size(time) // 2, 2))
-        return time
+        # capture malformed time entries (typically `str`) where numbers are concatenated or illegible
+        # Use -1 as sentinel value for numpy operations, track indices for later conversion
+        invalid_indices = [
+            i for i, t in enumerate(time) if not (isinstance(t, list) and len(t) == 2)
+        ]
+        sanitized_time = [
+            t if isinstance(t, list) and len(t) == 2 else [-1, -1] for t in time
+        ]
+
+        # Reshape if needed (safe with numeric sentinel values)
+        if sanitized_time and len(np.shape(sanitized_time)) != 2:
+            sanitized_time = np.reshape(
+                sanitized_time, (np.size(sanitized_time) // 2, 2)
+            )
+
+        # Convert sentinel values back to None
+        if invalid_indices:
+            sanitized_time = (
+                sanitized_time.tolist()
+                if isinstance(sanitized_time, np.ndarray)
+                else sanitized_time
+            )
+            for i in invalid_indices:
+                sanitized_time[i] = [None, None]
+
+        return sanitized_time
 
     def get_n_scf(self, n_calc):
         if self._n_scf is None:
@@ -2285,10 +2323,35 @@ class VASPParser:
                 else 0 * ureg.s
             )
             sec_scc = parse_energy(n, None)
-            time = self.parser.get_time_calc(n)[-1]
-            if time:
-                sec_scc.time_calculation = float(time)
-                sec_scc.time_physical = time_initial + sec_scc.time_calculation
+            time = self.parser.get_time_calc(n)
+            if isinstance(time, (list, tuple)) and len(time) > 0:
+                time = time[-1]
+            if time is not None:
+                # Extract scalar from numpy array, list, or tuple (prefer wall_time at index 1)
+                if isinstance(time, np.ndarray):
+                    time_val = (
+                        time.flat[1]
+                        if time.size > 1 and not np.isnan(time.flat[1])
+                        else (
+                            time.flat[0]
+                            if time.size > 0 and not np.isnan(time.flat[0])
+                            else None
+                        )
+                    )
+                elif isinstance(time, (list, tuple)):
+                    time_val = (
+                        time[1]
+                        if len(time) > 1 and time[1] is not None
+                        else (
+                            time[0] if len(time) > 0 and time[0] is not None else None
+                        )
+                    )
+                else:
+                    time_val = time
+
+                if time_val is not None:
+                    sec_scc.time_calculation = float(time_val)
+                    sec_scc.time_physical = time_initial + sec_scc.time_calculation
 
             time_scf = self.parser.get_time_scf(n)
             for n_scf in range(self.parser.get_n_scf(n)):

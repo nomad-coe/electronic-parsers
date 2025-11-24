@@ -56,6 +56,13 @@ def silicon_gw(parser):
     return archive
 
 
+@pytest.fixture(scope='module')
+def malformed_time(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/vasp/malformed_time/vasprun.xml', archive, None)
+    return archive
+
+
 def test_vasprunxml_static(parser):
     """Test Mg1 system, computed in VASP 4.6.35"""
     archive = EntryArchive()
@@ -526,3 +533,27 @@ def test_booleans(filename, parser):
     parser.parse(f'tests/data/vasp/booleans/{filename}/OUTCAR', archive, None)
     lnbo = parser._outcar_parser._incar['incar']['LNBO']
     assert lnbo is True
+
+
+def test_malformed_time_entries(malformed_time):
+    """Tests that parser handles malformed time entries gracefully.
+
+    Addresses issue where concatenated time strings like '47994.1748588.04'
+    (which should be [cpu_time, wall_time]) caused TypeError when parser
+    tried to subscript a float. Parser should return [None, None] for
+    invalid time entries and continue parsing without crashing.
+    """
+    # Assert parser doesn't crash and produces valid archive
+    assert malformed_time.run is not None
+    assert len(malformed_time.run) > 0
+
+    # Assert calculations are present even with malformed time entries
+    sec_run = malformed_time.run[-1]
+    assert sec_run.calculation is not None
+    assert len(sec_run.calculation) > 0
+
+    # Time values may be None for malformed entries, but this shouldn't crash
+    for calc in sec_run.calculation:
+        if hasattr(calc, 'time_calculation') and calc.time_calculation is not None:
+            # If time_calculation exists, ensure it's a valid Quantity
+            assert hasattr(calc.time_calculation, 'magnitude')
