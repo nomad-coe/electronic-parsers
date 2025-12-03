@@ -390,7 +390,10 @@ def parse_structure(system, logger: logging.Logger):
                 # doesn't work.
                 atom_positions = (
                     np.array(
-                        [np.array(pos).dot(lattice_vectors.magnitude) for pos in atom_positions]
+                        [
+                            np.array(pos).dot(lattice_vectors.magnitude)
+                            for pos in atom_positions
+                        ]
                     )
                     * lattice_units
                 )
