@@ -1372,7 +1372,7 @@ class CP2KParser:
         try:
             return self.traj_parser.get_trajectory(frame)
         except Exception:
-            self.logger.error(
+            self.logger.warning(
                 'Error reading trajectory for the specific frame.',
                 data={'frame': frame},
             )
