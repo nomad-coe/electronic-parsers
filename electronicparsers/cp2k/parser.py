@@ -1260,9 +1260,12 @@ class CP2KParser:
             calculation = self.out_parser.get(self._calculation_type, '')
             if not calculation:
                 return calculation
-            return calculation.molecular_dynamics.md_step[frame - 1].get(
-                'ensemble_type', ''
-            )
+            md_steps = calculation.get('molecular_dynamics', {}).get('md_step', [])
+            # Return ensemble type from frame if available, otherwise fall back to settings
+            if md_steps and frame - 1 < len(md_steps):
+                return md_steps[frame - 1].get('ensemble_type', '')
+            # Fallback to settings for new format which doesn't store ensemble_type in each step
+            return self.settings['md'].get('ensemble_type', '')
 
     def get_time_step(self):
         return self.settings['md'].get('time_step')
