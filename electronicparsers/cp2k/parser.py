@@ -1975,6 +1975,13 @@ class CP2KParser:
             potential_energy = md_output.get('potential_energy_instantaneous')
             if potential_energy:
                 calc.energy.potential = EnergyEntry(value=potential_energy.to('joule'))
+
+            # Calculate total energy if both kinetic and potential are available
+            # and total is not already set (new CP2K format doesn't report it explicitly)
+            if energy_kinetic and potential_energy and not calc.energy.total:
+                total_energy = energy_kinetic + potential_energy
+                calc.energy.total = EnergyEntry(value=total_energy.to('joule'))
+
             step = md_output.get('step')
             if step:
                 calc.step = int(step)
