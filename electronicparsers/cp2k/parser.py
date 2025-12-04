@@ -1987,7 +1987,8 @@ class CP2KParser:
                 calc.step = int(step)
             time = md_output.get('time')
             if time:
-                calc.time = time.to('second')
+                # Handle both Quantity (new format) and float (old format from .ener file)
+                calc.time = time.to('second') if hasattr(time, 'to') else time
             volume = md_output.get('volume_instantaneous')
             if volume:
                 calc.volume = volume.to('m**3')
