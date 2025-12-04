@@ -265,3 +265,32 @@ def test_molecular_dynamics(parser):
     assert sec_systems[5].atoms.positions[4][0].to('angstrom').magnitude == approx(
         0.5824842170
     )
+
+
+def test_molecular_dynamics_new_format(parser):
+    """Test MD parsing for CP2K ≥8.1 (new output format)."""
+    archive = EntryArchive()
+    parser.parse('tests/data/cp2k/molecular_dynamics/H2O-32-2023.1.out', archive, None)
+
+    sec_workflow = archive.workflow2
+    assert sec_workflow.method.thermodynamic_ensemble == 'NVE'
+
+    sec_sccs = archive.run[0].calculation
+    # Should have 11 calculations: 1 initial SCF + 10 MD steps
+    assert len(sec_sccs) == 11
+
+    # Check that MD steps have energy data
+    assert sec_sccs[1].energy.potential is not None
+    assert sec_sccs[1].energy.kinetic is not None
+    assert sec_sccs[1].temperature is not None
+
+    # Check specific values from first MD step
+    assert sec_sccs[1].energy.potential.value.to('hartree').magnitude == approx(
+        -34.3297798065
+    )
+    # Kinetic energy should be positive and reasonable (around 0.006-0.007 hartree)
+    assert 0.006 < sec_sccs[1].energy.kinetic.value.to('hartree').magnitude < 0.008
+    # Temperature should be around 275 K (within 1%)
+    assert 270 < sec_sccs[1].temperature.magnitude < 280
+    # Time should be in seconds (0.5 fs = 5e-16 s)
+    assert sec_sccs[1].time is not None

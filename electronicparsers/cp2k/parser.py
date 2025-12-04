@@ -440,9 +440,14 @@ class CP2KOutParser(TextParser):
             return [val[0].strip().replace(' ', '_').lower(), val[-1].strip()]
 
         def md_extract(val_in):
+            # Match MD|, MD_PAR|, or MD_INI| lines (with or without leading space)
+            # Requires at least 2 spaces before the value to distinguish from header lines
             result = re.search(
-                r' MD\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)', val_in
+                r' ?(?:MD|MD_PAR|MD_INI)\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)', val_in
             )
+            if not result:
+                # Skip header lines that don't match the expected format
+                return ['_skip', None]
             value = result.group('value')
             unit = units_map.get(result.group('unit'))
             key = result.group('key').strip().replace(' ', '_').lower()
@@ -629,18 +634,36 @@ class CP2KOutParser(TextParser):
         ]
 
         molecular_dynamics_quantities = [
+            # Old format (CP2K ≤7.1)
             Quantity(
                 'initial',
                 r' INITIAL\| (.+? {2})=\s+(.+)',
                 str_operation=str_to_header,
                 repeats=True,
             ),
+            # New format (CP2K ≥8.1) MD parameters
+            Quantity(
+                'md_par',
+                r' (MD_PAR\| .+)',
+                str_operation=md_extract,
+                convert=False,
+                repeats=True,
+            ),
+            # New format (CP2K ≥8.1) MD initialization
+            Quantity(
+                'md_ini',
+                r' (MD_INI\| .+)',
+                str_operation=md_extract,
+                convert=False,
+                repeats=True,
+            ),
             Quantity(
                 'md_step',
-                r'(SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENSEMBLE TYPE[\s\S]+?\*{50})',
+                r'((?:SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENSEMBLE TYPE[\s\S]+?\*{50}|MD\| \*+[\s\S]+?MD\| \*+))',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
+                        # Old format (CP2K ≤7.1)
                         Quantity('ensemble_type', r'ENSEMBLE TYPE\s*=\s*(.+)'),
                         Quantity('step', r'STEP NUMBER\s*=\s*(\d+)', dtype=int),
                         Quantity(
@@ -724,6 +747,56 @@ class CP2KOutParser(TextParser):
                             sub_parser=TextParser(
                                 quantities=scf_wavefunction_optimization_quantities
                             ),
+                        ),
+                        # New format (CP2K ≥8.1) - captures instantaneous and average values
+                        Quantity('step', r'MD\| Step number\s+(\d+)', dtype=int),
+                        Quantity(
+                            'time', rf'MD\| Time \[fs\]\s+({re_float})', dtype=float, unit='fs'
+                        ),
+                        Quantity(
+                            'conserved_quantity',
+                            rf'MD\| Conserved quantity \[hartree\]\s+({re_float})',
+                            dtype=float,
+                            unit='hartree',
+                        ),
+                        Quantity(
+                            'cpu_time',
+                            rf'MD\| CPU time per MD step \[s\]\s+({re_float})',
+                            dtype=float,
+                        ),
+                        Quantity(
+                            'energy_drift',
+                            rf'MD\| Energy drift per atom \[K\]\s+({re_float})',
+                            dtype=float,
+                        ),
+                        Quantity(
+                            'potential_energy',
+                            rf'MD\| Potential energy \[hartree\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                            unit='hartree',
+                        ),
+                        Quantity(
+                            'kinetic_energy',
+                            rf'MD\| Kinetic energy \[hartree\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                            unit='hartree',
+                        ),
+                        Quantity(
+                            'temperature',
+                            rf'MD\| Temperature \[K\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                        ),
+                        Quantity(
+                            'pressure',
+                            rf'MD\| Pressure \[bar\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                            unit='bar',
+                        ),
+                        Quantity(
+                            'volume',
+                            rf'MD\| Cell volume \[bohr\^3\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                            unit='bohr**3',
                         ),
                     ]
                 ),
@@ -846,7 +919,7 @@ class CP2KOutParser(TextParser):
             # TODO add mp2, rpa, gw
             Quantity(
                 'single_point',
-                r'SCF WAVEFUNCTION OPTIMIZATION([\s\S]+?)(?:\-{50}\n\s*\-|MD_ENERGIES|\Z)',
+                r'SCF WAVEFUNCTION OPTIMIZATION([\s\S]+?)(?:\-{50}\n\s*\-|MD_ENERGIES|MD_PAR|MD_INI|\Z)',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=scf_wavefunction_optimization_quantities
@@ -859,7 +932,7 @@ class CP2KOutParser(TextParser):
             ),
             Quantity(
                 'molecular_dynamics',
-                r'(MD_ENERGIES\| Initialization proceeding[\s\S]+?\-{50}\n\s*\-)',
+                r'((?:MD_ENERGIES\| Initialization proceeding|MD_PAR\| Molecular dynamics protocol)[\s\S]+?\-{50}\n\s*\-)',
                 sub_parser=TextParser(quantities=molecular_dynamics_quantities),
             ),
         ]
@@ -1102,6 +1175,9 @@ class CP2KParser:
                 data_dict = dict()
                 for key, val in data:
                     name = self._metainfo_name_map.get(key, key)
+                    # Skip entries marked as _skip (e.g., MD header lines that don't parse)
+                    if name == '_skip':
+                        continue
                     if not repeats and name in data_dict:
                         continue
                     data_dict.setdefault(name, [])
@@ -1124,11 +1200,24 @@ class CP2KParser:
             self._settings['program'] = to_dict(self.out_parser.get('program', []))
             self._settings['cp2k'] = to_dict(self.out_parser.get('cp2k', []), False)
             self._settings['global'] = to_dict(self.out_parser.get('global', []), False)
-            self._settings['md'] = to_dict(
+            # Combine MD settings from old format (scf_parameters/md) and new format (molecular_dynamics/md_par+md_ini)
+            md_settings_old = to_dict(
                 self.out_parser.get(self._calculation_type, {})
                 .get('scf_parameters', {})
                 .get('md', [])
             )
+            md_settings_new_par = to_dict(
+                self.out_parser.get(self._calculation_type, {})
+                .get('molecular_dynamics', {})
+                .get('md_par', [])
+            )
+            md_settings_new_ini = to_dict(
+                self.out_parser.get(self._calculation_type, {})
+                .get('molecular_dynamics', {})
+                .get('md_ini', [])
+            )
+            # Merge settings, with old format taking precedence if both exist
+            self._settings['md'] = {**md_settings_new_par, **md_settings_new_ini, **md_settings_old}
             self._settings['md_setup'] = to_dict(
                 self.out_parser.get(self._calculation_type, {})
                 .get('scf_parameters', {})
@@ -1374,7 +1463,7 @@ class CP2KParser:
 
     def get_md_output(self, frame):
         if self.energy_parser.mainfile is None:
-            frequency, filename = self.settings['md'].get('energies', '0, none').split()
+            frequency, filename = self.settings['md'].get('energies', '0 none').split()
             frequency = int(frequency)
             if frequency == 0:
                 return dict()
