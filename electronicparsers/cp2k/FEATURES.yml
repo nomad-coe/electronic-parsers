@@ -1,0 +1,103 @@
+parser:
+  name: "CP2K"
+  description: "CP2K - Quantum chemistry and solid state physics software package"
+  homepage: "https://www.cp2k.org/"
+  mainfile_patterns:
+    - "**/*.out"
+    - "**/cp2k.out"
+  supported_file_formats:
+    - "CP2K text output files (.out)"
+    - "Input files (.in, .inp, .restart)"
+    - "PDOS files (projected density of states)"
+    - "Trajectory files (XYZ, PDB)"
+
+runschema_capabilities:
+  run:
+    - program  # CP2K name, version, SVN/Git revision
+    - time_run  # execution timing (cpu, wall clock)
+
+  method:
+    - electronic.method  # DFT, HF, hybrid DFT
+    - electronic.n_spin_channels  # UKS (unrestricted) or RKS (restricted)
+    - electronic.smearing  # Fermi-Dirac smearing
+    - dft.xc_functional  # PBE, BLYP, B3LYP, PBE0, PBESOL, etc.
+    - basis_set  # Gaussians, plane waves (GPW method), or mixed
+    - basis_set.type  # "gaussians" (MOLOPT, TZVP, DZVP), "plane waves" (auxiliary)
+    - basis_set.cutoff  # plane wave cutoff for GPW method
+    - k_mesh  # k-point grid for periodic systems
+    - scf  # SCF convergence thresholds (EPS_SCF)
+    - pseudopotential  # GTH pseudopotentials, ALL_ELECTRON
+
+  system:
+    - atoms  # atomic positions, species, lattice_vectors, periodic
+    - atoms.labels  # element symbols
+    - atoms.positions  # Cartesian coordinates
+    - atoms.lattice_vectors  # unit cell vectors (ABC format)
+    - atoms.periodic  # periodicity flags
+    - atoms.velocities  # atomic velocities (for MD trajectories)
+    - atoms_group  # subsystems and fragments (for QM/MM)
+
+  calculation:
+    # Energy components
+    - energy.total  # total energy
+    - energy.kinetic  # kinetic energy
+    - energy.potential  # potential energy
+    - energy.xc  # exchange-correlation energy
+    - energy.electrostatic  # Hartree/electrostatic energy
+    - energy.nuclear_repulsion  # core-core interaction
+    - energy.fermi  # Fermi energy
+
+    # Forces and stress
+    - forces.total  # atomic forces
+    - stress.total  # stress tensor (CELL_OPT, NPT_MD)
+
+    # SCF convergence
+    - scf_iteration  # SCF iteration history with energy convergence
+
+    # Electronic structure
+    - band_structure_electronic  # band energies/eigenvalues
+    - band_structure_electronic.energies  # [spin, kpoint, band]
+    - band_structure_electronic.kpoints  # k-point coordinates
+    - band_structure_electronic.occupations  # band occupations
+    - dos_electronic  # density of states from separate PDOS files
+    - dos_electronic.total  # total DOS
+    - dos_electronic.atom_projected  # atom-projected DOS
+    - dos_electronic.orbital_projected  # orbital-projected DOS
+
+    # Thermodynamics
+    - thermodynamics.temperature  # temperature (for MD)
+    - thermodynamics.pressure  # pressure (for NPT MD)
+
+    # Vibrational properties
+    - vibrational_frequencies  # vibrational frequencies from VIBRATIONAL_ANALYSIS
+
+  workflow:
+    - single_point  # single-point energy calculation (ENERGY)
+    - geometry_optimization  # structure optimization (GEO_OPT with BFGS, CG)
+    - molecular_dynamics  # MD simulation (MD with NVE, NVT, NPT ensembles)
+    - phonon  # vibrational analysis
+
+special_features:
+  - "Gaussian and Plane Wave (GPW) method combining Gaussians with auxiliary plane waves"
+  - "QM/MM calculations with subsystem definitions (QMMM, FORCE_EVAL)"
+  - "Multiple simulation cells and force evaluations (MULTIPLE_FORCE_EVALS)"
+  - "Hybrid functionals (B3LYP, PBE0) with exact exchange"
+  - "DFT+U for transition metals and f-electron systems"
+  - "Multiple MD ensembles (NVE, NVT with various thermostats, NPT with barostats)"
+  - "Cell optimization (CELL_OPT) for lattice parameter relaxation"
+  - "Trajectory parsing from multiple formats (XYZ, PDB)"
+  - "Fragment-based calculations and subsystem approaches"
+  - "Vibrational analysis with normal modes and frequencies"
+  - "Linear-scaling DFT methods"
+  - "Born-Oppenheimer molecular dynamics (BOMD)"
+  - "Support for both periodic and molecular systems"
+
+notes:
+  - "CP2K supports multiple calculation types (ENERGY, GEO_OPT, MD, CELL_OPT, etc.)"
+  - "GPW method uses Gaussian basis for wavefunctions and plane waves for density"
+  - "PDOS files must be present in same directory for DOS extraction"
+  - "Multiple FORCE_EVAL sections enable QM/MM and hybrid calculations"
+  - "GTH pseudopotentials are commonly used for efficiency"
+  - "ALL_ELECTRON calculations available for high accuracy"
+  - "Very flexible input structure with nested sections (KIND, &DFT, &QS, etc.)"
+  - "Supports both Quickstep (DFT) and FIST (force field) engines"

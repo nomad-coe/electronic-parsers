@@ -1,0 +1,117 @@
+parser:
+  name: "FHI-aims"
+  description: "Fritz Haber Institute ab initio molecular simulations - all-electron electronic structure code"
+  homepage: "https://fhi-aims.org/"
+  mainfile_patterns:
+    - "**/aims.out"
+    - "**/*aims*.out"
+  supported_file_formats:
+    - "FHI-aims text output files (.out)"
+    - "geometry.in (input structure)"
+    - "control.in (input parameters)"
+    - "BAND*.out (band structure files)"
+    - "DOS*.dat (density of states files)"
+
+runschema_capabilities:
+  run:
+    - program  # FHI-aims name, version, build date
+    - time_run  # execution timing (cpu, wall clock)
+
+  method:
+    - electronic.method  # DFT, HF, hybrid DFT, GW, MP2, RPA
+    - electronic.n_spin_channels  # spin-unpolarized, spin-polarized (collinear or non-collinear)
+    - electronic.smearing  # Gaussian, Fermi-Dirac, Methfessel-Paxton
+    - electronic.relativity_method  # scalar relativistic (ZORA, atomic ZORA), spin-orbit coupling
+    - electronic.van_der_waals_method  # TS, TS+SCS, MBD, vdW-DF
+    - dft.xc_functional  # LDA, PBE, PBEsol, PBE0, HSE06, B3LYP, BLYP, etc.
+    - basis_set  # numerical atomic orbitals (NAO)
+    - basis_set.type  # "numeric AOs"
+    - basis_set.native_tier  # basis set tiers: light, tight, really_tight (tier1, tier2, tier3, tier4)
+    - k_mesh  # k-point grid for periodic systems
+    - scf  # SCF convergence thresholds (charge, energy, eigenvalue)
+    - pseudopotential  # all-electron or pseudopotential (scalar relativistic)
+    - gw  # GW calculations (G0W0, scGW) for beyond-DFT band structures
+
+  system:
+    - atoms  # atomic positions, species, lattice_vectors, periodic
+    - atoms.labels  # element symbols
+    - atoms.positions  # Cartesian coordinates (Å)
+    - atoms.lattice_vectors  # unit cell vectors
+    - atoms.periodic  # periodicity flags
+    - atoms.velocities  # atomic velocities (for MD)
+
+  calculation:
+    # Energy components
+    - energy.total  # total energy
+    - energy.free  # free energy (at finite temperature)
+    - energy.kinetic  # kinetic energy
+    - energy.xc  # exchange-correlation energy
+    - energy.electrostatic  # Hartree energy
+    - energy.nuclear_repulsion  # ion-ion interaction
+    - energy.zero_point  # zero-point vibrational energy
+    - energy.fermi  # Fermi energy (chemical potential)
+    - energy.highest_occupied  # HOMO energy
+    - energy.lowest_unoccupied  # LUMO energy
+
+    # Forces and stress
+    - forces.total  # atomic forces (eV/Å)
+    - stress.total  # stress tensor (for periodic systems)
+
+    # SCF convergence
+    - scf_iteration  # SCF iteration history with energy, charge, and eigenvalue changes
+
+    # Electronic structure
+    - band_structure_electronic  # band energies/eigenvalues
+    - band_structure_electronic.energies  # [spin, kpoint, band]
+    - band_structure_electronic.kpoints  # k-point coordinates
+    - band_structure_electronic.occupations  # band occupations
+    - dos_electronic  # density of states
+    - dos_electronic.total  # total DOS
+    - dos_electronic.atom_projected  # atom-projected DOS (species-resolved)
+    - dos_electronic.orbital_projected  # orbital-projected DOS (s, p, d, f)
+    - band_gap  # electronic band gap
+
+    # Charge analysis
+    - charges  # Mulliken and Hirshfeld charge analysis
+
+    # Thermodynamics
+    - thermodynamics.temperature  # temperature (for MD)
+    - thermodynamics.pressure  # pressure
+
+    # Vibrational properties
+    - vibrational_frequencies  # vibrational frequencies from finite differences
+
+  workflow:
+    - single_point  # single-point energy calculation
+    - geometry_optimization  # structure relaxation (BFGS, trust radius methods)
+    - molecular_dynamics  # MD simulation (NVE, NVT with various thermostats)
+
+special_features:
+  - "All-electron calculations with no pseudopotential approximations"
+  - "Numerical atomic orbital (NAO) basis sets with hierarchical tiers"
+  - "Hybrid functionals (PBE0, HSE06, B3LYP) with efficient exact exchange"
+  - "GW calculations (G0W0, scGW) for accurate band structures and gaps"
+  - "Beyond-GW methods: RPA, MP2, coupled-cluster (CCSD)"
+  - "Multiple van der Waals correction schemes (TS, MBD, vdW-DF)"
+  - "Scalar relativistic effects (ZORA) and spin-orbit coupling"
+  - "Non-collinear magnetism for complex magnetic structures"
+  - "Tier-based basis set convergence (light to tier4 for completeness)"
+  - "Multiple DOS energy references (Fermi level, vacuum level, custom)"
+  - "Implicit solvation models (MERM, MPB, MPBE)"
+  - "NMR shielding tensor calculations"
+  - "Efficient handling of large systems with linear-scaling DFT"
+  - "Extensive molecular and periodic system support"
+  - "Advanced SCF convergence techniques (DIIS, Pulay mixing)"
+
+notes:
+  - "FHI-aims uses all-electron basis sets by default (no frozen core)"
+  - "Basis set quality controlled by tier system: light < tight < really_tight"
+  - "NAO basis functions optimized for different chemical environments"
+  - "Excellent for molecular systems and surfaces"
+  - "Band structure output in separate BAND*.out files with output band syntax"
+  - "DOS output in DOS*.dat files, can be species/atom/orbital-projected"
+  - "GW calculations require SCF ground state first"
+  - "control.in specifies computational parameters and basis set tiers"
+  - "geometry.in contains atomic structure and lattice vectors"
+  - "Very accurate for band gaps and excited state properties"
+  - "Recommended for systems requiring all-electron accuracy"

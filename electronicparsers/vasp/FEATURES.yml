@@ -1,0 +1,105 @@
+parser:
+  name: "VASP"
+  description: "Vienna Ab initio Simulation Package - plane-wave DFT code"
+  homepage: "https://www.vasp.at/"
+  mainfile_patterns:
+    - "**/vasprun.xml"
+    - "**/vasprun.xml.gz"
+    - "**/vasprun.xml.bz2"
+    - "**/OUTCAR"
+  supported_file_formats:
+    - "vasprun.xml (primary)"
+    - "OUTCAR (fallback)"
+    - "POTCAR (pseudopotential info)"
+    - "INCAR (input parameters)"
+    - "POSCAR/CONTCAR (structure)"
+
+runschema_capabilities:
+  run:
+    - program  # VASP name, version, build info
+    - time_run  # execution timing (cpu, wall clock)
+
+  method:
+    - electronic.method  # DFT, GW
+    - electronic.n_spin_channels  # spin-polarized or unpolarized
+    - electronic.smearing  # Gaussian, Fermi-Dirac, Methfessel-Paxton
+    - electronic.relativity_method  # scalar relativistic, spin-orbit
+    - electronic.van_der_waals_method  # DFT-D2, DFT-D3, vdW-DF
+    - dft.xc_functional  # LDA, PBE, PBE0, HSE06, B3LYP, SCAN, etc.
+    - basis_set  # plane waves with cutoff energy (ENCUT)
+    - k_mesh  # k-point grid (Gamma-centered, Monkhorst-Pack)
+    - scf  # SCF convergence thresholds
+    - pseudopotential  # PAW, USPP (from POTCAR)
+    - hubbard_kanamori_model  # DFT+U parameters (LDAU, LDAUTYPE, LDAUU, LDAUJ)
+    - gw  # GW calculations (ALGO=GW0, scGW)
+    - core_hole  # core-hole spectroscopy calculations
+
+  system:
+    - atoms  # atomic positions, species, lattice_vectors, periodic
+    - atoms.labels  # element symbols
+    - atoms.positions  # Cartesian coordinates
+    - atoms.lattice_vectors  # unit cell
+    - atoms.periodic  # periodicity [True, True, True] for bulk
+
+  calculation:
+    # Energy components
+    - energy.total  # total energy (e_0_energy or e_fr_energy)
+    - energy.free  # free energy (Helmholtz)
+    - energy.kinetic  # kinetic energy
+    - energy.xc  # exchange-correlation energy
+    - energy.electrostatic  # electrostatic/Hartree energy
+    - energy.ewald  # Ewald energy
+    - energy.zero_point  # zero-point energy
+    - energy.fermi  # Fermi energy
+    - energy.highest_occupied  # HOMO energy
+    - energy.lowest_unoccupied  # LUMO energy
+
+    # Forces and stress
+    - forces.total  # atomic forces (eV/Å)
+    - stress.total  # stress tensor (kBar)
+
+    # SCF convergence
+    - scf_iteration  # SCF iteration history with energies
+
+    # Electronic structure
+    - band_structure_electronic  # band energies/eigenvalues
+    - band_structure_electronic.energies  # [spin, kpoint, band]
+    - band_structure_electronic.kpoints  # k-point coordinates
+    - band_structure_electronic.occupations  # band occupations
+    - dos_electronic  # density of states
+    - dos_electronic.total  # total DOS
+    - dos_electronic.atom_projected  # atom-projected DOS
+    - dos_electronic.orbital_projected  # orbital-projected DOS (s, p, d, f)
+    - band_gap  # electronic band gap (direct/indirect)
+
+    # Thermodynamics
+    - thermodynamics.pressure  # pressure
+    - thermodynamics.temperature  # temperature (for MD)
+
+  workflow:
+    - single_point  # single-point energy calculation
+    - geometry_optimization  # structure relaxation (IBRION=1,2,3)
+    - molecular_dynamics  # MD simulation (IBRION=0, ISIF, ensemble)
+
+special_features:
+  - "Hybrid functionals (HSE06, PBE0, B3LYP) with exact exchange"
+  - "GW calculations for beyond-DFT band structures (ALGO=GW0, scGW)"
+  - "DFT+U for strongly correlated systems (Hubbard U corrections)"
+  - "Core-hole spectroscopy for X-ray absorption spectra"
+  - "Spin-orbit coupling for heavy elements"
+  - "van der Waals corrections (DFT-D2, DFT-D3, vdW-DF, TS)"
+  - "Non-collinear magnetism and spin spirals"
+  - "Meta-GGA functionals (SCAN, r2SCAN)"
+  - "Time-dependent DFT (for optical properties)"
+  - "Special handling of malformed time entries in vasprun.xml"
+  - "Automatic POTCAR analysis for pseudopotential identification"
+  - "Support for compressed vasprun.xml files (.gz, .bz2)"
+
+notes:
+  - "vasprun.xml is the preferred mainfile (structured XML format)"
+  - "OUTCAR used as fallback when vasprun.xml unavailable or malformed"
+  - "Parser handles both single calculations and multi-step workflows (relaxation + static)"
+  - "INCAR parameters are mapped to method metadata"
+  - "POTCAR files are analyzed to extract pseudopotential details"
+  - "Parser tested with 23 unit tests covering various scenarios"
+  - "Special robustness for handling time entry parsing errors (test_malformed_time_entries)"

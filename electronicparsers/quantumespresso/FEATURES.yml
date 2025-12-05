@@ -1,0 +1,113 @@
+parser:
+  name: "Quantum ESPRESSO"
+  description: "Quantum ESPRESSO - integrated suite of open-source codes for electronic structure and materials modeling"
+  homepage: "https://www.quantum-espresso.org/"
+  mainfile_patterns:
+    - "**/pw.*.out"
+    - "**/pwscf.out"
+    - "**/cp.*.out"
+    - "**/ph.*.out"
+  supported_file_formats:
+    - "pw.x output (DFT calculations)"
+    - "cp.x output (Car-Parrinello MD)"
+    - "ph.x output (phonon calculations)"
+    - "pp.x output (post-processing)"
+    - "XML data files (data-file-schema.xml)"
+
+runschema_capabilities:
+  run:
+    - program  # Quantum ESPRESSO program name (PWSCF, CP, etc.), version
+    - time_run  # execution timing (cpu, wall clock)
+
+  method:
+    - electronic.method  # DFT
+    - electronic.n_spin_channels  # spin-unpolarized, spin-polarized, non-collinear
+    - electronic.smearing  # Gaussian, Fermi-Dirac, Methfessel-Paxton, Marzari-Vanderbilt
+    - electronic.relativity_method  # scalar relativistic, full relativistic
+    - dft.xc_functional  # PBE, BLYP, PW91, PBEsol, etc.
+    - basis_set  # plane waves
+    - basis_set.type  # "plane waves"
+    - basis_set.cutoff  # wavefunction cutoff (ecutwfc), density cutoff (ecutrho)
+    - k_mesh  # k-point grid (automatic or manual)
+    - scf  # SCF convergence thresholds (conv_thr)
+    - pseudopotential  # ultrasoft (USPP), norm-conserving (NC), PAW
+    - pseudopotential.type  # from UPF files
+
+  system:
+    - atoms  # atomic positions, species, lattice_vectors, periodic
+    - atoms.labels  # element symbols
+    - atoms.positions  # Cartesian or crystal coordinates
+    - atoms.lattice_vectors  # unit cell (celldm or CELL_PARAMETERS)
+    - atoms.periodic  # periodicity [True, True, True] for 3D systems
+    - atoms.velocities  # atomic velocities (for CP MD)
+
+  calculation:
+    # Energy components
+    - energy.total  # total energy
+    - energy.free  # free energy (for finite temperature)
+    - energy.kinetic  # kinetic energy of electrons
+    - energy.xc  # exchange-correlation energy
+    - energy.electrostatic  # Hartree energy
+    - energy.ewald  # Ewald/ion-ion energy
+    - energy.zero_point  # zero-point contribution
+    - energy.fermi  # Fermi energy
+    - energy.highest_occupied  # highest occupied level
+    - energy.lowest_unoccupied  # lowest unoccupied level
+
+    # Forces and stress
+    - forces.total  # atomic forces (Ry/au or eV/Å)
+    - stress.total  # stress tensor (kbar)
+
+    # SCF convergence
+    - scf_iteration  # SCF iteration history with energy and accuracy
+
+    # Electronic structure
+    - band_structure_electronic  # band energies/eigenvalues
+    - band_structure_electronic.energies  # [spin, kpoint, band]
+    - band_structure_electronic.kpoints  # k-point coordinates
+    - band_structure_electronic.occupations  # band occupations
+    - dos_electronic  # density of states (from dos.x post-processing)
+    - dos_electronic.total  # total DOS
+    - dos_electronic.atom_projected  # atom-projected DOS (from projwfc.x)
+    - dos_electronic.orbital_projected  # orbital-projected DOS
+    - band_gap  # electronic band gap
+
+    # Thermodynamics
+    - thermodynamics.pressure  # pressure
+    - thermodynamics.temperature  # temperature (for CP MD)
+
+    # Vibrational properties
+    - vibrational_frequencies  # phonon frequencies (from ph.x calculations)
+
+  workflow:
+    - single_point  # single-point scf calculation (calculation='scf')
+    - geometry_optimization  # structure relaxation (calculation='relax' with BFGS, damped dynamics)
+    - molecular_dynamics  # MD simulation (cp.x with various ensembles)
+    - phonon  # phonon calculations via DFPT (ph.x)
+
+special_features:
+  - "Density Functional Perturbation Theory (DFPT) for phonons and response properties"
+  - "Non-collinear magnetism and spin-orbit coupling"
+  - "Car-Parrinello molecular dynamics (cp.x)"
+  - "Born-Oppenheimer molecular dynamics in pw.x"
+  - "Berry phase calculations for polarization"
+  - "Variable-cell relaxation (vc-relax) for lattice optimization"
+  - "Multiple optimization algorithms (BFGS, damped dynamics, FIRE)"
+  - "Extensive pseudopotential library (NC, USPP, PAW formats)"
+  - "Parallel execution with domain decomposition and k-point parallelization"
+  - "Integrated suite with multiple codes (pw.x, ph.x, pp.x, projwfc.x, etc.)"
+  - "Automatic workflow linking between pw.x and ph.x calculations"
+  - "Electric field calculations (sawtooth, homogeneous)"
+  - "Hubbard U corrections (DFT+U) for correlated systems"
+  - "Constrained DFT calculations"
+
+notes:
+  - "QE is a suite: pw.x (plane waves), cp.x (Car-Parrinello), ph.x (phonons), etc."
+  - "pw.x is the most commonly used program for DFT calculations"
+  - "Parser identifies program type from 'Program PWSCF.*starts' or similar patterns"
+  - "XML data files (data-file-schema.xml) provide structured output but text parsing is primary"
+  - "calculation parameter in input: 'scf', 'relax', 'vc-relax', 'md', 'vc-md'"
+  - "Phonon calculations produce separate output files with dynamical matrices"
+  - "Post-processing codes (dos.x, projwfc.x) generate additional data files"
+  - "Units: Rydberg atomic units in input/output, converted to eV in parser"
+  - "Very active development with regular releases and extensive user community"

@@ -1,0 +1,114 @@
+parser:
+  name: "CASTEP"
+  description: "CASTEP - plane-wave DFT code for materials science and solid-state physics"
+  homepage: "http://www.castep.org/"
+  mainfile_patterns:
+    - "**/*.castep"
+  supported_file_formats:
+    - "CASTEP output files (.castep)"
+    - "Cell files (.cell) for structure"
+    - "Param files (.param) for parameters"
+    - "Band structure files (.bands)"
+    - "Phonon files (.phonon)"
+
+runschema_capabilities:
+  run:
+    - program  # CASTEP name, version, compiler info
+    - time_run  # execution timing (cpu, wall clock)
+
+  method:
+    - electronic.method  # DFT, TDDFT
+    - electronic.n_spin_channels  # spin-unpolarized or spin-polarized
+    - electronic.smearing  # Gaussian smearing
+    - electronic.relativity_method  # Koelling-Harmon scalar relativistic
+    - electronic.van_der_waals_method  # DFT-D, TS corrections (SEDC schemes)
+    - dft.xc_functional  # LDA, PBE, PW91, PBEsol, RPBE, WC, etc.
+    - basis_set  # plane waves
+    - basis_set.type  # "plane waves"
+    - basis_set.cutoff  # energy cutoff (cut_off_energy)
+    - k_mesh  # k-point grid (Monkhorst-Pack)
+    - scf  # SCF convergence thresholds (elec_energy_tol)
+    - pseudopotential  # ultrasoft, norm-conserving, on-the-fly generated
+    - pseudopotential.type  # USPP, NC-PP, OTF
+
+  system:
+    - atoms  # atomic positions, species, lattice_vectors, periodic
+    - atoms.labels  # element symbols
+    - atoms.positions  # fractional or Cartesian coordinates
+    - atoms.lattice_vectors  # unit cell (from .cell file)
+    - atoms.periodic  # periodicity [True, True, True] for 3D
+
+  calculation:
+    # Energy components
+    - energy.total  # final energy
+    - energy.free  # final free energy
+    - energy.kinetic  # kinetic energy
+    - energy.xc  # exchange-correlation energy
+    - energy.electrostatic  # Hartree energy
+    - energy.zero_point  # zero-point energy (from phonons)
+    - energy.fermi  # Fermi energy
+
+    # Forces and stress
+    - forces.total  # atomic forces (eV/Å)
+    - stress.total  # stress tensor
+
+    # SCF convergence
+    - scf_iteration  # SCF iteration history with energy convergence
+
+    # Electronic structure
+    - band_structure_electronic  # band structure on high-symmetry paths
+    - band_structure_electronic.energies  # eigenvalues [spin, kpoint, band]
+    - band_structure_electronic.kpoints  # k-point coordinates
+    - band_structure_electronic.occupations  # band occupations
+    - band_gap  # electronic band gap
+
+    # Charge analysis
+    - charges  # Mulliken population analysis
+
+    # Thermodynamics
+    - thermodynamics.temperature  # temperature (for MD)
+    - thermodynamics.pressure  # pressure (for NPT MD or stress)
+
+    # Vibrational properties
+    - vibrational_frequencies  # phonon frequencies (from DFPT or finite displacement)
+    - vibrational_frequencies.value  # frequencies in cm⁻¹
+    - vibrational_frequencies.intensities  # IR intensities
+    - vibrational_frequencies.raman_intensities  # Raman intensities
+
+  workflow:
+    - single_point  # single-point energy calculation (task: singlepoint)
+    - geometry_optimization  # geometry optimization (task: geometryoptimisation with BFGS, LBFGS, damped MD)
+    - molecular_dynamics  # MD simulation (task: moleculardynamics with NVE, NVT, NPT)
+    - phonon  # phonon calculation (task: phonon via DFPT or finite displacement)
+
+special_features:
+  - "Density Functional Perturbation Theory (DFPT) for phonons and linear response"
+  - "Phonon calculations with IR and Raman intensities"
+  - "Raman tensor calculations for vibrational spectroscopy"
+  - "Time-Dependent DFT (TDDFT) for excited states and optical properties"
+  - "Transition state search algorithms (QST, LST/QST, NEB)"
+  - "Variable-cell optimization for lattice parameter relaxation"
+  - "Multiple optimization algorithms (BFGS, LBFGS, damped MD, FIRE)"
+  - "Molecular dynamics with NVE, NVT (Nose-Hoover, Langevin), NPT ensembles"
+  - "On-the-fly pseudopotential generation"
+  - "DFT-D dispersion corrections (various SEDC schemes)"
+  - "Core-level spectroscopy (XPS, EELS) calculations"
+  - "NMR chemical shift calculations (CASTEP-NMR variant)"
+  - "Electric field gradients and hyperfine parameters"
+  - "Basis set correction (BS_correction) for improved energy differences"
+  - "Extensive library of ultrasoft pseudopotentials"
+  - "Symmetry-adapted k-point sampling"
+
+notes:
+  - "CASTEP primarily uses .castep extension for output files"
+  - ".cell file contains structure and constraints"
+  - ".param file contains calculation parameters"
+  - "task parameter defines calculation type: singlepoint, geometryoptimisation, moleculardynamics, phonon, etc."
+  - "Band structure calculations require separate spectral_task: bandstructure"
+  - "Phonon calculations produce extensive output with normal modes, Born charges, dielectric constants"
+  - "Raman tensors computed from second derivatives via DFPT"
+  - "TDDFT available for optical absorption and excitation energies"
+  - "Transition state search via QST (Quadratic Synchronous Transit) or NEB (Nudged Elastic Band)"
+  - "Strong focus on solid-state and materials properties"
+  - "Efficient parallelization for large systems"
+  - "Integrated with Materials Studio GUI"
