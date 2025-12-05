@@ -383,7 +383,8 @@ class BeyondDFTWorkflowsParser:
                         index += 1
             return output
 
-        workflow = XS(method=XSMethod())
+        workflow = xs_workflow_archive.workflow2 or XS()
+        workflow.method = XSMethod()
         workflow.name = 'XS'
         xs_workflow_archive.workflow2 = workflow
 

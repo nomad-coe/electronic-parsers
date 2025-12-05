@@ -2959,7 +2959,7 @@ class XS(WorkflowXS):
             owner='visible',
             user_id=archive.metadata.main_author.user_id,
             query={'upload_id': upload_id},
-            required=MetadataRequired(include=['entry_id']),
+            required=MetadataRequired(include=['entry_id', 'mainfile_key']),
         ).data
         xs_archives = []
         photon_archives = {}
@@ -2981,7 +2981,9 @@ class XS(WorkflowXS):
                 entry['entry_id'], upload_id, None
             )
             mainfile_key = entry_archive.metadata.mainfile_key
-            if not mainfile_key or not mainfile_key.startswith(basedir):
+            if not mainfile_key:
+                continue
+            if not mainfile_key.split('raw/')[-1].startswith(basedir):
                 continue
             if dft_archive and dft_archive.run:
                 if dft_archive.run[0].system:
@@ -3000,11 +3002,12 @@ class XS(WorkflowXS):
         parser._child_archives = photon_archives
 
         try:
+            archive.workflow2 = self
             parser.parse_xs_workflow(xs_archives, archive)
         except Exception:
             pass
 
-        super().normalize(archive, logger)
+        super(XS, self).normalize(archive, logger)
 
 
 m_package.__init_metainfo__()
