@@ -1,3 +1,7 @@
+metadata:
+  last_updated: "2025-12-05"
+  updated_by: "Claude Sonnet 4.5"
+
 parser:
   name: "Quantum ESPRESSO"
   description: "Quantum ESPRESSO - integrated suite of open-source codes for electronic structure and materials modeling"
