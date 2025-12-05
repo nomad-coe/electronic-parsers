@@ -1968,35 +1968,72 @@ class CP2KParser:
             md_output = md_output if md_output else source
             calc = sec_run.calculation[-1]
 
+            def get_md_value(key_new, key_old=None):
+                """Get MD value from either new format (key_new) or old format (key_old).
+                New format returns arrays [instantaneous, average], take first element.
+                """
+                import numpy as np
+
+                # Try new format first (without _instantaneous suffix)
+                value = md_output.get(key_new)
+                # If not found and old key provided, try old format
+                if value is None and key_old:
+                    value = md_output.get(key_old)
+                if value is None:
+                    return None
+
+                # Handle pint Quantity objects that may have array magnitudes
+                if hasattr(value, 'magnitude'):
+                    mag = value.magnitude
+                    # Check if magnitude is array-like (tuple, list, ndarray)
+                    if hasattr(mag, '__len__') and not isinstance(mag, str):
+                        try:
+                            # Extract first element and create new Quantity with scalar magnitude
+                            if hasattr(value, 'units'):
+                                value = float(mag[0]) * value.units
+                            else:
+                                value = float(mag[0])
+                        except (TypeError, IndexError):
+                            pass
+                # If value is a plain list/tuple/ndarray, take first element
+                elif hasattr(value, '__len__') and not isinstance(value, str):
+                    try:
+                        if len(value) > 0:
+                            value = value[0]
+                    except (TypeError, IndexError):
+                        pass
+
+                return value
+
             # Store to common metainfo
-            energy_kinetic = md_output.get('kinetic_energy_instantaneous')
-            if energy_kinetic:
+            energy_kinetic = get_md_value('kinetic_energy', 'kinetic_energy_instantaneous')
+            if energy_kinetic is not None:
                 calc.energy.kinetic = EnergyEntry(value=energy_kinetic.to('joule'))
-            potential_energy = md_output.get('potential_energy_instantaneous')
-            if potential_energy:
+            potential_energy = get_md_value('potential_energy', 'potential_energy_instantaneous')
+            if potential_energy is not None:
                 calc.energy.potential = EnergyEntry(value=potential_energy.to('joule'))
 
             # Calculate total energy if both kinetic and potential are available
             # and total is not already set (new CP2K format doesn't report it explicitly)
-            if energy_kinetic and potential_energy and not calc.energy.total:
+            if energy_kinetic is not None and potential_energy is not None and not calc.energy.total:
                 total_energy = energy_kinetic + potential_energy
                 calc.energy.total = EnergyEntry(value=total_energy.to('joule'))
 
             step = md_output.get('step')
-            if step:
+            if step is not None:
                 calc.step = int(step)
             time = md_output.get('time')
-            if time:
+            if time is not None:
                 # Handle both Quantity (new format) and float (old format from .ener file)
                 calc.time = time.to('second') if hasattr(time, 'to') else time
-            volume = md_output.get('volume_instantaneous')
-            if volume:
+            volume = get_md_value('volume', 'volume_instantaneous')
+            if volume is not None:
                 calc.volume = volume.to('m**3')
-            pressure = md_output.get('pressure_instantaneous')
-            if pressure:
+            pressure = get_md_value('pressure', 'pressure_instantaneous')
+            if pressure is not None:
                 calc.pressure = pressure.to('m**3')
-            temperature = md_output.get('temperature_instantaneous')
-            if temperature:
+            temperature = get_md_value('temperature', 'temperature_instantaneous')
+            if temperature is not None:
                 calc.temperature = temperature
 
         def parse_calculations(calculations):
