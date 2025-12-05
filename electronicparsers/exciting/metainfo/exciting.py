@@ -33,6 +33,9 @@ import runschema.run  # pylint: disable=unused-import
 import runschema.calculation  # pylint: disable=unused-import
 import runschema.method  # pylint: disable=unused-import
 import runschema.system  # pylint: disable=unused-import
+from simulationworkflowschema import XS as WorkflowXS
+from nomad.datamodel.metainfo.workflow import Workflow
+import os
 
 
 m_package = Package()
@@ -2940,3 +2943,71 @@ class Run(runschema.run.Run):
         sub_section=SectionProxy('x_exciting_section_geometry_optimization'),
         repeats=True,
     )
+
+
+class XS(WorkflowXS):
+    dft_workflow_ref = Quantity(type=Reference(Workflow))
+
+    def normalize(self, archive, logger):
+        from electronicparsers.exciting.parser import ExcitingParser
+        from nomad.search import search
+        from nomad.app.v1.models import MetadataRequired
+        from simulationworkflowschema.photon_polarization import PhotonPolarization
+
+        upload_id = archive.metadata.upload_id
+        entries = search(
+            owner='visible',
+            user_id=archive.metadata.main_author.user_id,
+            query={'upload_id': upload_id},
+            required=MetadataRequired(include=['entry_id', 'mainfile_key']),
+        ).data
+        xs_archives = []
+        photon_archives = {}
+        if self.dft_workflow_ref is None:
+            return
+
+        dft_archive = self.dft_workflow_ref.m_root()
+        for entry in entries:
+            entry_archive = archive.m_context.load_archive(
+                entry['entry_id'], upload_id, None
+            )
+            if isinstance(entry_archive.workflow2, PhotonPolarization):
+                xs_archives.append(entry_archive)
+        basedir = (
+            os.path.dirname(xs_archives[0].metadata.mainfile) if xs_archives else ''
+        )
+        for entry in entries:
+            entry_archive = archive.m_context.load_archive(
+                entry['entry_id'], upload_id, None
+            )
+            mainfile_key = entry_archive.metadata.mainfile_key
+            if not mainfile_key:
+                continue
+            if not mainfile_key.split('raw/')[-1].startswith(basedir):
+                continue
+            if dft_archive and dft_archive.run:
+                if dft_archive.run[0].system:
+                    entry_archive.run[0].calculation[0].system_ref = dft_archive.run[
+                        0
+                    ].system[-1]
+                if dft_archive.run[0].method:
+                    entry_archive.run[0].calculation[0].method_ref = dft_archive.run[
+                        0
+                    ].method[-1]
+            photon_archives[mainfile_key] = entry_archive
+
+        parser = ExcitingParser()
+        parser._child_archives = {}
+        parser.archive = dft_archive
+        parser._child_archives = photon_archives
+
+        try:
+            archive.workflow2 = self
+            parser.parse_xs_workflow(xs_archives, archive)
+        except Exception:
+            pass
+
+        super(XS, self).normalize(archive, logger)
+
+
+m_package.__init_metainfo__()

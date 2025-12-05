@@ -62,6 +62,7 @@ from runschema.calculation import (
     ElectronicStructureProvenance,
 )
 from simulationworkflowschema import (
+    SimulationWorkflow,
     SinglePoint,
     GeometryOptimization,
     GeometryOptimizationMethod,
@@ -85,6 +86,7 @@ from .metainfo.exciting import (
 )
 from ..utils import get_files, BeyondDFTWorkflowsParser
 from typing import Any, Iterable
+from nomad.datamodel.metainfo.workflow import TaskReference, Link
 
 
 re_float = r'[-+]?\d+\.\d*(?:[Ee][-+]\d+)?'
@@ -2364,11 +2366,22 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         file_ending = path.split('EPSILON')[
             -1
         ]  # Identifying files with the same ending but different type of calculation
-        polarization_files = [
-            f
-            for f in get_files('*BSE*.OUT', self._xs_info_file, 'INFO.OUT')
-            if f.endswith(file_ending)
-        ]
+        # polarization_files = [
+        #     f
+        #     for f in get_files('*_BSE*.OUT', self._xs_info_file, 'INFO.OUT')
+        #     if f.endswith(file_ending)
+        # ]
+        polarization_files = []
+        for xs_type in self._xs_spectra_types:
+            polarization_files.extend(
+                [
+                    f
+                    for f in get_files(
+                        f'{xs_type}_BSE*.OUT', self._xs_info_file, 'INFO.OUT'
+                    )
+                    if f.endswith(file_ending)
+                ]
+            )
         for file in polarization_files:
             if sec_run.m_xpath('calculation'):
                 sec_scc = sec_run.calculation[-1]
@@ -2401,8 +2414,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                 self.logger.error('Error setting BSE data.')
 
             # refs
-            sec_scc.system_ref = sec_run.system[-1]
-            sec_scc.method_ref = sec_run.method[-1]
+            if sec_run.system:
+                sec_scc.system_ref = sec_run.system[-1]
+            if sec_run.method:
+                sec_scc.method_ref = sec_run.method[-1]
 
     def _parse_xs_tddft(self):
         sec_run = self.archive.run[-1]
@@ -2535,6 +2550,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         values = [
             freqs[0] + i * (freqs[-1] - freqs[0]) / n_freqs for i in range(n_freqs)
         ]
+        values = np.reshape([value.magnitude for value in values], (n_freqs, 1))
         sec_freq_mesh = FrequencyMesh(dimensionality=1, n_points=n_freqs, points=values)
         sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # Screening
@@ -3056,6 +3072,9 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         return sec_scc
 
     def parse_system(self, section):
+        if not section:
+            return
+
         sec_run = self.archive.run[-1]
 
         positions = self.info_parser.get_atom_positions(
@@ -3284,20 +3303,26 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
     def get_mainfile_keys(self, **kwargs):
         filepath = kwargs.get('filename')
         basename = os.path.basename(filepath)
+        gs_file = 'INFO.OUT' in basename
+        if re.match(r'INFO_SCR.OUT.*', basename):
+            # do not parse screening files
+            return False
+
         dirname = os.path.dirname(filepath)
-        if os.path.isfile(os.path.join(dirname, f'GW_{basename}')):
+        if os.path.isfile(os.path.join(dirname, f'GW_{basename}')) and gs_file:
             return ['GW', 'GW_workflow']
-        xs_files = get_files(
-            basename.replace('INFO.OUT', 'INFOXS.OUT'), filepath, 'INFO.OUT'
-        )
-        if xs_files:
+
+        xs_files = get_files('*INFOXS*.OUT*', filepath, 'INFO.OUT')
+        # parse xs for screening files if ground state file is missing
+        no_gs_file = len(get_files('INFO.OUT', filepath)) == 0
+        if (xs_files and gs_file) or ('INFOXS.OUT' in basename and no_gs_file):
             re_xs_mainfile = re.compile(r'.+\d\d\d\.OUT')
             spectra_files = []
             for prefix in self._xs_spectra_types:
                 spectra_files = get_files(f'{prefix}_*.OUT', filepath, 'INFO.OUT')
                 if spectra_files:
                     # remove files for qpoints other than first
-                    files = ['XS_workflow'] + xs_files
+                    files = (['XS_workflow'] + xs_files) if gs_file else []
                     for f in spectra_files:
                         if re_xs_mainfile.match(f):
                             if '001' in f:
@@ -3396,5 +3421,5 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         if xs_workflow_archive:
             try:
                 self.parse_xs_workflow(xs_archives, xs_workflow_archive)
-            except Exception:
-                self.logger.error('Error parsing the automatic XS workflow')
+            except Exception as e:
+                self.logger.error(f'Error parsing the automatic XS workflow {e}')
