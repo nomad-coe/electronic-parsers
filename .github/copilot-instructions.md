@@ -16,7 +16,28 @@ Each parser has a `FEATURES.yml` file in its directory that documents its capabi
 
 Parser feature files are located at:
 ```
-{parser_name}/FEATURES.yml
+electronicparsers/{parser_name}/FEATURES.yml
+```
+
+### Editing Guidelines
+
+**IMPORTANT**: When editing FEATURES.yml files:
+- Always add a `metadata` section at the top with:
+  - `last_updated`: Current timestamp (YYYY-MM-DD format)
+  - `updated_by`: The model that made the edit (e.g., "Claude Sonnet 4.5", "GPT-4", etc.)
+- The model name should be retained in the file to track which AI assisted with the documentation
+- Do NOT annotate every line with the model name, only include it in the metadata section
+- Update the timestamp each time the file is modified
+
+Example metadata section:
+```yaml
+metadata:
+  last_updated: "2025-12-05"
+  updated_by: "Claude Sonnet 4.5"
+
+parser:
+  name: "VASP"
+  ...
 ```
 
 ## NOMAD Runschema Terminology
@@ -244,6 +265,10 @@ Dynamical mean-field theory.
 ## YAML Schema for FEATURES.yml
 
 ```yaml
+metadata:
+  last_updated: "YYYY-MM-DD"
+  updated_by: "Model Name (e.g., Claude Sonnet 4.5)"
+
 parser:
   name: "Parser Name"
   description: "Brief description"
@@ -321,22 +346,24 @@ notes:
 ### When Adding New Parsers
 
 1. Create `FEATURES.yml` in the parser directory
-2. Analyze the parser implementation to identify:
+2. Add metadata section with current date and your model name
+3. Analyze the parser implementation to identify:
    - Which runschema sections are populated
    - What properties are extracted
    - Special capabilities or unique features
-3. Use the YAML schema above as a template
-4. Focus on runschema terminology, not code-specific names
+4. Use the YAML schema above as a template
+5. Focus on runschema terminology, not code-specific names
 
 ### When Updating Existing Parsers
 
-1. If a parser gains new capabilities, update its `FEATURES.yml`
+1. Update the `metadata` section with current date and your model name
 2. Add new runschema sections to `runschema_capabilities`
 3. Document new special features
 4. Keep descriptions concise and standardized
 
 ### Best Practices
 
+- Always update metadata when editing
 - Use runschema terminology consistently across all feature files
 - List only capabilities that are actually implemented
 - Group related capabilities logically
