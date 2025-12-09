@@ -24,7 +24,7 @@ electronicparsers/{parser_name}/FEATURES.yml
 **IMPORTANT**: When editing FEATURES.yml files:
 - Always add a `metadata` section at the top with:
   - `last_updated`: Current timestamp (YYYY-MM-DD format)
-  - `updated_by`: The model that made the edit (e.g., "Claude Sonnet 4.5", "GPT-4", etc.)
+  - `updated_by`: The model (i.e. YOU) that made the edits (e.g., "GitHub Copilot", "Claude Sonnet 4.5", "GPT-4", etc.)
 - The model name should be retained in the file to track which AI assisted with the documentation
 - Do NOT annotate every line with the model name, only include it in the metadata section
 - Update the timestamp each time the file is modified
