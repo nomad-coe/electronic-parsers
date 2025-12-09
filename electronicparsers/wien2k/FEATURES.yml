@@ -1,0 +1,97 @@
+metadata:
+  last_updated: "2025-12-09"
+  updated_by: "Claude Sonnet 4.5"
+
+parser:
+  name: "WIEN2k"
+  description: "WIEN2k - all-electron full-potential (linearized) augmented plane-wave + local orbitals (FP-LAPW+lo) DFT code"
+  homepage: "http://www.wien2k.at/"
+  mainfile_patterns:
+    - "*.scf"
+  supported_file_formats:
+    - "*.scf (primary output file)"
+    - "*.struct (structure file)"
+    - "*.in0 (density synthesis parameters)"
+    - "*.in1 (LAPW basis set parameters)"
+    - "*.in2 (SCF parameters)"
+    - "*.inc (additional case-specific parameters)"
+    - "*.klist (k-point list)"
+    - "*.energy* (eigenvalues)"
+    - "*.dos* (density of states)"
+
+runschema_capabilities:
+  run:
+    - program  # WIEN2k version
+    - time_run  # execution timing
+
+  method:
+    - electronic.method  # DFT
+    - electronic.n_spin_channels  # spin-polarized or unpolarized
+    - dft.xc_functional  # LDA, GGA (PBE, WC, PBEsol, PW91, BLYP), meta-GGA (TPSS, TB09/mBJ, SCAN, r2SCAN), hybrid (B3LYP, B3PW91)
+    - basis_set  # APW+lo (augmented plane wave + local orbitals)
+    - k_mesh  # k-point sampling
+    - scf  # SCF convergence parameters
+    - core_hole  # core-hole spectroscopy calculations
+    - atom_parameters  # per-atom basis set parameters (lmax, RKmax)
+
+  system:
+    - atoms  # atomic structure
+    - atoms.labels  # element symbols
+    - atoms.positions  # atomic positions (Cartesian or fractional)
+    - atoms.lattice_vectors  # unit cell vectors
+    - atoms.periodic  # periodicity flags
+
+  calculation:
+    # Energy components
+    - energy.total  # total energy
+    - energy.kinetic  # kinetic energy
+    - energy.xc  # exchange-correlation energy
+    - energy.electrostatic  # electrostatic/Hartree energy
+    - energy.ewald  # Madelung energy
+    - energy.nuclear_repulsion  # nuclear-nuclear interaction
+    - energy.fermi  # Fermi energy
+
+    # Forces
+    - forces.total  # atomic forces
+
+    # SCF convergence
+    - scf_iteration  # SCF iteration history with charge and energy convergence
+
+    # Electronic structure
+    - band_structure_electronic  # band energies/eigenvalues
+    - dos_electronic  # density of states
+    - dos_electronic.total  # total DOS
+    - dos_electronic.atom_projected  # atom-projected DOS
+
+  workflow:
+    - single_point  # single-point energy calculation
+
+special_features:
+  - "All-electron full-potential method (no pseudopotentials)"
+  - "Linearized augmented plane wave + local orbitals (LAPW+lo) basis set"
+  - "APW (augmented plane wave) basis with spherical harmonics inside muffin-tin spheres"
+  - "Local orbitals for improved treatment of semicore and high-lying states"
+  - "LDA: VWN, Perdew-Wang 92"
+  - "GGA: PBE, WC, PBEsol, PW91, BLYP, HTBS"
+  - "Meta-GGA: TPSS, TB09 (mBJ - modified Becke-Johnson for accurate band gaps), SCAN, r2SCAN, revTPSS"
+  - "Hybrid functionals: B3LYP, B3PW91"
+  - "Accurate band gaps via mBJ potential (MGGA_X_TB09)"
+  - "Spin-orbit coupling for heavy elements"
+  - "Spin-polarized calculations (SPINPOLARIZED/non-spinpolarized)"
+  - "Core-hole spectroscopy for X-ray absorption/emission spectra"
+  - "Equivalent atom grouping for efficiency"
+  - "RKmax parameter controls basis set size (rkmax * min(RMT))"
+  - "lmax, lvnsmax control angular momentum expansion"
+  - "Multiple k-point files (energy_1, energy_2, ...) for large calculations"
+  - "Projected DOS on atomic species"
+
+notes:
+  - "WIEN2k is known for high accuracy due to all-electron full-potential approach"
+  - "No pseudopotential approximation - treats core and valence electrons explicitly"
+  - "Parser handles multiple file formats (.scf, .struct, .in0, .in1, .in2, .inc, .energy*, .dos*)"
+  - "XC functional identified from .in0 file (numeric codes or string labels)"
+  - "Basis set parameters (RKmax, lmax) extracted from .in1 file"
+  - "K-points and eigenvalues read from .klist and .energy* files"
+  - "DOS extracted from .dos1, .dos2, ... files (total and projected)"
+  - "Handles both spin-polarized and non-spin-polarized calculations"
+  - "Particularly suited for strongly correlated systems and accurate band gap predictions with mBJ"
