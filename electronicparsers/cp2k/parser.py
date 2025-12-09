@@ -440,8 +440,6 @@ class CP2KOutParser(TextParser):
             return [val[0].strip().replace(' ', '_').lower(), val[-1].strip()]
 
         def md_extract(val_in):
-            # Match MD|, MD_PAR|, or MD_INI| lines (with or without leading space)
-            # Requires at least 2 spaces before the value to distinguish from header lines
             result = re.search(
                 r' ?(?:MD|MD_PAR|MD_INI)\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)', val_in
             )
@@ -635,6 +633,8 @@ class CP2KOutParser(TextParser):
 
         molecular_dynamics_quantities = [
             # Old format (CP2K ≤7.1)
+            # Matches: " INITIAL| <property_name>  = <value>"
+            # Captures simulation parameters like ensemble type, time step, temperature
             Quantity(
                 'initial',
                 r' INITIAL\| (.+? {2})=\s+(.+)',
@@ -642,6 +642,8 @@ class CP2KOutParser(TextParser):
                 repeats=True,
             ),
             # New format (CP2K ≥8.1) MD parameters
+            # Matches: " MD_PAR| <property_name> [unit]  <value>"
+            # Captures MD configuration parameters (ensemble, timestep, targets, etc.)
             Quantity(
                 'md_par',
                 r' (MD_PAR\| .+)',
@@ -650,6 +652,8 @@ class CP2KOutParser(TextParser):
                 repeats=True,
             ),
             # New format (CP2K ≥8.1) MD initialization
+            # Matches: " MD_INI| <property_name> [unit]  <value>"
+            # Captures initial state values at MD start
             Quantity(
                 'md_ini',
                 r' (MD_INI\| .+)',
@@ -657,6 +661,9 @@ class CP2KOutParser(TextParser):
                 convert=False,
                 repeats=True,
             ),
+            # Matches entire MD step block (old or new format)
+            # Old: "SCF WAVEFUNCTION OPTIMIZATION...ENSEMBLE TYPE..." to 50 asterisks
+            # New: "MD| ***...MD| ***" (asterisk-delimited blocks)
             Quantity(
                 'md_step',
                 r'((?:SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENSEMBLE TYPE[\s\S]+?\*{50}|MD\| \*+[\s\S]+?MD\| \*+))',
@@ -1373,7 +1380,7 @@ class CP2KParser:
             return self.traj_parser.get_trajectory(frame)
         except Exception:
             self.logger.warning(
-                'Error reading trajectory for the specific frame.',
+                'Issue reading trajectory for the specific frame.',
                 data={'frame': frame},
             )
 
