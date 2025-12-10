@@ -441,7 +441,8 @@ class CP2KOutParser(TextParser):
 
         def md_extract(val_in):
             result = re.search(
-                r' ?(?:MD|MD_PAR|MD_INI)\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)', val_in
+                r' ?(?:MD|MD_PAR|MD_INI)\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)',
+                val_in,
             )
             if not result:
                 # Skip header lines that don't match the expected format
@@ -759,7 +760,10 @@ class CP2KOutParser(TextParser):
                         # New format (CP2K ≥8.1)
                         Quantity('step', r'MD\| Step number\s+(\d+)', dtype=int),
                         Quantity(
-                            'time', rf'MD\| Time \[fs\]\s+({re_float})', dtype=float, unit='fs'
+                            'time',
+                            rf'MD\| Time \[fs\]\s+({re_float})',
+                            dtype=float,
+                            unit='fs',
                         ),
                         Quantity(
                             'conserved_quantity',
@@ -1226,7 +1230,11 @@ class CP2KParser:
                 .get('md_ini', [])
             )
             # Merge settings, with old format taking precedence if both exist
-            self._settings['md'] = {**md_settings_new_par, **md_settings_new_ini, **md_settings_old}
+            self._settings['md'] = {
+                **md_settings_new_par,
+                **md_settings_new_ini,
+                **md_settings_old,
+            }
             self._settings['md_setup'] = to_dict(
                 self.out_parser.get(self._calculation_type, {})
                 .get('scf_parameters', {})
@@ -1786,10 +1794,10 @@ class CP2KParser:
         if trajectory.positions is not None:
             sec_atoms.positions = trajectory.positions
         elif trajectory.scaled_positions is not None and lattice_vectors is not None:
-            sec_atoms.positions = np.dot(
-                trajectory.scaled_positions.magnitude, lattice_vectors.magnitude
-            ) * lattice_vectors.units
-
+            sec_atoms.positions = (
+                np.dot(trajectory.scaled_positions.magnitude, lattice_vectors.magnitude)
+                * lattice_vectors.units
+            )
 
         labels = (
             trajectory.labels
@@ -2027,7 +2035,11 @@ class CP2KParser:
 
             # Calculate total energy if both kinetic and potential are available
             # and total is not already set (new CP2K format doesn't report it explicitly)
-            if energy_kinetic is not None and potential_energy is not None and not calc.energy.total:
+            if (
+                energy_kinetic is not None
+                and potential_energy is not None
+                and not calc.energy.total
+            ):
                 total_energy = energy_kinetic + potential_energy
                 calc.energy.total = EnergyEntry(value=total_energy.to('joule'))
 
