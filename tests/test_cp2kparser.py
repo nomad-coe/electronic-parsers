@@ -285,11 +285,14 @@ def test_molecular_dynamics_new_format(parser):
     assert sec_sccs[1].temperature is not None
 
     # Check specific values from first MD step
+    # Note: Values come from H2O-32-1.ener file (separate energy file), not main .out file
+    # The .ener file has different precision than the MD| output in the main file
+    # Current parser reads from .ener when available; if this changes, update expected values
     assert sec_sccs[1].energy.potential.value.to('hartree').magnitude == approx(
-        -34.3297798065
+        -34.329778993
     )
     assert sec_sccs[1].energy.kinetic.value.to('hartree').magnitude == approx(
-        0.00653325396214
+        0.006533348
     )
-    assert sec_sccs[1].temperature.magnitude == approx(275.071463)
+    assert sec_sccs[1].temperature.magnitude == approx(275.075405378)
     assert sec_sccs[1].time.to('femtosecond').magnitude == approx(0.5)

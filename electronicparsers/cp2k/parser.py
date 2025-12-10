@@ -1501,11 +1501,11 @@ class CP2KParser:
             return dict(
                 step=data[0],
                 time=data[1] * ureg.femtosecond,
-                kinetic_energy_instantaneous=data[2] * ureg.hartree,
-                temperature_instantaneous=data[3],
-                potential_energy_instantaneous=data[4] * ureg.hartree,
+                kinetic_energy=data[2] * ureg.hartree,
+                temperature=data[3],
+                potential_energy=data[4] * ureg.hartree,
                 conserved_quantity=data[5] * ureg.hartree,
-                cpu_time_instantaneous=data[6],
+                cpu_time=data[6],
             )
 
         except Exception:
