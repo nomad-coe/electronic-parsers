@@ -237,7 +237,8 @@ def test_geometry_optimization(parser):
     )
 
 
-def test_molecular_dynamics(parser):
+def test_molecular_dynamics_old_format(parser):
+    """Test MD parsing for CP2K <= 7.1 (old output format)."""
     archive = EntryArchive()
     parser.parse('tests/data/cp2k/molecular_dynamics/H2O-32.out', archive, None)
 
@@ -265,3 +266,38 @@ def test_molecular_dynamics(parser):
     assert sec_systems[5].atoms.positions[4][0].to('angstrom').magnitude == approx(
         0.5824842170
     )
+
+
+def test_molecular_dynamics_new_format(parser):
+    """Test MD parsing for CP2K >= 2k8.1 (new output format)."""
+    archive = EntryArchive()
+    parser.parse('tests/data/cp2k/molecular_dynamics/H2O-32-2023.1.out', archive, None)
+
+    sec_workflow = archive.workflow2
+    assert sec_workflow.method.thermodynamic_ensemble == 'NVE'
+
+    sec_sccs = archive.run[0].calculation
+    # Should have 11 calculations: 1 initial SCF + 10 MD steps
+    assert len(sec_sccs) == 11
+
+    # Check that MD steps have SCF iteration data (verifies SCF convergence is parsed)
+    assert len(sec_sccs[1].scf_iteration) > 0
+    assert len(sec_sccs[6].scf_iteration) > 0
+
+    # Check that MD steps have energy data
+    assert sec_sccs[1].energy.potential is not None
+    assert sec_sccs[1].energy.kinetic is not None
+    assert sec_sccs[1].temperature is not None
+
+    # Check specific values from first MD step
+    # Note: Values come from H2O-32-1.ener file (separate energy file), not main .out file
+    # The .ener file has different precision than the MD| output in the main file
+    # Current parser reads from .ener when available; if this changes, update expected values
+    assert sec_sccs[1].energy.potential.value.to('hartree').magnitude == approx(
+        -34.329778993
+    )
+    assert sec_sccs[1].energy.kinetic.value.to('hartree').magnitude == approx(
+        0.006533348
+    )
+    assert sec_sccs[1].temperature.magnitude == approx(275.075405378)
+    assert sec_sccs[1].time.to('femtosecond').magnitude == approx(0.5)

@@ -441,8 +441,12 @@ class CP2KOutParser(TextParser):
 
         def md_extract(val_in):
             result = re.search(
-                r' MD\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)', val_in
+                r' ?(?:MD|MD_PAR|MD_INI)\| (?P<key>.+?)(?: \[(?P<unit>.+)\])? {2,}(?P<value>.+)',
+                val_in,
             )
+            if not result:
+                # Skip header lines that don't match the expected format
+                return ['_skip', None]
             value = result.group('value')
             unit = units_map.get(result.group('unit'))
             key = result.group('key').strip().replace(' ', '_').lower()
@@ -629,18 +633,45 @@ class CP2KOutParser(TextParser):
         ]
 
         molecular_dynamics_quantities = [
+            # Old format (CP2K ≤7.1)
+            # Matches: " INITIAL| <property_name>  = <value>"
+            # Captures simulation parameters like ensemble type, time step, temperature
             Quantity(
                 'initial',
                 r' INITIAL\| (.+? {2})=\s+(.+)',
                 str_operation=str_to_header,
                 repeats=True,
             ),
+            # New format (CP2K ≥8.1) MD parameters
+            # Matches: " MD_PAR| <property_name> [unit]  <value>"
+            # Captures MD configuration parameters (ensemble, timestep, targets, etc.)
+            Quantity(
+                'md_par',
+                r' (MD_PAR\| .+)',
+                str_operation=md_extract,
+                convert=False,
+                repeats=True,
+            ),
+            # New format (CP2K ≥8.1) MD initialization
+            # Matches: " MD_INI| <property_name> [unit]  <value>"
+            # Captures initial state values at MD start
+            Quantity(
+                'md_ini',
+                r' (MD_INI\| .+)',
+                str_operation=md_extract,
+                convert=False,
+                repeats=True,
+            ),
+            # Matches entire MD step block (old or new format)
+            # Old: "SCF WAVEFUNCTION OPTIMIZATION...ENSEMBLE TYPE..." to 50 asterisks
+            # New: "MD| ***...MD| ***" + all content after until next "MD| ***" (greedy)
             Quantity(
                 'md_step',
-                r'(SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENSEMBLE TYPE[\s\S]+?\*{50})',
+                r'((?:SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENSEMBLE TYPE[\s\S]+?\*{50}|MD\| \*+[\s\S]+?MD\| \*+(?:(?!MD\| \*+)[\s\S])*))',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
+                        # Old format (CP2K ≤7.1)
                         Quantity('ensemble_type', r'ENSEMBLE TYPE\s*=\s*(.+)'),
                         Quantity('step', r'STEP NUMBER\s*=\s*(\d+)', dtype=int),
                         Quantity(
@@ -657,6 +688,7 @@ class CP2KOutParser(TextParser):
                             rf'CPU TIME \[s\]\s*=\s*({re_float})\s*(re_float)',
                             dtype=float,
                         ),
+                        # Properties below capture [instantaneous, average] values
                         Quantity(
                             'energy_drift',
                             rf'ENERGY DRIFT PER ATOM \[K\]\s*=\s*({re_float})\s*({re_float})',
@@ -719,11 +751,65 @@ class CP2KOutParser(TextParser):
                         ),
                         Quantity(
                             'self_consistent',
-                            r'(SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?)\*{50}',
+                            r'(SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENERGY\| Total FORCE_EVAL[\s\S]+?)(?=\*{50}|\Z)',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=scf_wavefunction_optimization_quantities
                             ),
+                        ),
+                        # New format (CP2K ≥8.1)
+                        Quantity('step', r'MD\| Step number\s+(\d+)', dtype=int),
+                        Quantity(
+                            'time',
+                            rf'MD\| Time \[fs\]\s+({re_float})',
+                            dtype=float,
+                            unit='fs',
+                        ),
+                        Quantity(
+                            'conserved_quantity',
+                            rf'MD\| Conserved quantity \[hartree\]\s+({re_float})',
+                            dtype=float,
+                            unit='hartree',
+                        ),
+                        Quantity(
+                            'cpu_time',
+                            rf'MD\| CPU time per MD step \[s\]\s+({re_float})',
+                            dtype=float,
+                        ),
+                        Quantity(
+                            'energy_drift',
+                            rf'MD\| Energy drift per atom \[K\]\s+({re_float})',
+                            dtype=float,
+                        ),
+                        # Properties below capture [instantaneous, average] values
+                        Quantity(
+                            'potential_energy',
+                            rf'MD\| Potential energy \[hartree\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                            unit='hartree',
+                        ),
+                        Quantity(
+                            'kinetic_energy',
+                            rf'MD\| Kinetic energy \[hartree\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                            unit='hartree',
+                        ),
+                        Quantity(
+                            'temperature',
+                            rf'MD\| Temperature \[K\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                        ),
+                        Quantity(
+                            'pressure',
+                            rf'MD\| Pressure \[bar\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                            unit='bar',
+                        ),
+                        Quantity(
+                            'volume',
+                            rf'MD\| Cell volume \[bohr\^3\]\s+({re_float})\s+({re_float})',
+                            dtype=float,
+                            unit='bohr**3',
                         ),
                     ]
                 ),
@@ -846,7 +932,7 @@ class CP2KOutParser(TextParser):
             # TODO add mp2, rpa, gw
             Quantity(
                 'single_point',
-                r'SCF WAVEFUNCTION OPTIMIZATION([\s\S]+?)(?:\-{50}\n\s*\-|MD_ENERGIES|\Z)',
+                r'SCF WAVEFUNCTION OPTIMIZATION([\s\S]+?)(?:\-{50}\n\s*\-|MD_ENERGIES|MD_PAR|MD_INI|\Z)',
                 repeats=False,
                 sub_parser=TextParser(
                     quantities=scf_wavefunction_optimization_quantities
@@ -859,7 +945,7 @@ class CP2KOutParser(TextParser):
             ),
             Quantity(
                 'molecular_dynamics',
-                r'(MD_ENERGIES\| Initialization proceeding[\s\S]+?\-{50}\n\s*\-)',
+                r'((?:MD_ENERGIES\| Initialization proceeding|MD_PAR\| Molecular dynamics protocol)[\s\S]+?\-{50}\n\s*\-)',
                 sub_parser=TextParser(quantities=molecular_dynamics_quantities),
             ),
         ]
@@ -1102,6 +1188,9 @@ class CP2KParser:
                 data_dict = dict()
                 for key, val in data:
                     name = self._metainfo_name_map.get(key, key)
+                    # Skip entries marked as _skip (e.g., MD header lines that don't parse)
+                    if name == '_skip':
+                        continue
                     if not repeats and name in data_dict:
                         continue
                     data_dict.setdefault(name, [])
@@ -1124,11 +1213,28 @@ class CP2KParser:
             self._settings['program'] = to_dict(self.out_parser.get('program', []))
             self._settings['cp2k'] = to_dict(self.out_parser.get('cp2k', []), False)
             self._settings['global'] = to_dict(self.out_parser.get('global', []), False)
-            self._settings['md'] = to_dict(
+            # Combine MD settings from old format (scf_parameters/md) and new format (molecular_dynamics/md_par+md_ini)
+            md_settings_old = to_dict(
                 self.out_parser.get(self._calculation_type, {})
                 .get('scf_parameters', {})
                 .get('md', [])
             )
+            md_settings_new_par = to_dict(
+                self.out_parser.get(self._calculation_type, {})
+                .get('molecular_dynamics', {})
+                .get('md_par', [])
+            )
+            md_settings_new_ini = to_dict(
+                self.out_parser.get(self._calculation_type, {})
+                .get('molecular_dynamics', {})
+                .get('md_ini', [])
+            )
+            # Merge settings, with old format taking precedence if both exist
+            self._settings['md'] = {
+                **md_settings_new_par,
+                **md_settings_new_ini,
+                **md_settings_old,
+            }
             self._settings['md_setup'] = to_dict(
                 self.out_parser.get(self._calculation_type, {})
                 .get('scf_parameters', {})
@@ -1171,9 +1277,12 @@ class CP2KParser:
             calculation = self.out_parser.get(self._calculation_type, '')
             if not calculation:
                 return calculation
-            return calculation.molecular_dynamics.md_step[frame - 1].get(
-                'ensemble_type', ''
-            )
+            md_steps = calculation.get('molecular_dynamics', {}).get('md_step', [])
+            # Return ensemble type from frame if available, otherwise fall back to settings
+            if md_steps and frame - 1 < len(md_steps):
+                return md_steps[frame - 1].get('ensemble_type', '')
+            # Fallback to settings for new format which doesn't store ensemble_type in each step
+            return self.settings['md'].get('ensemble_type', '')
 
     def get_time_step(self):
         return self.settings['md'].get('time_step')
@@ -1280,8 +1389,8 @@ class CP2KParser:
         try:
             return self.traj_parser.get_trajectory(frame)
         except Exception:
-            self.logger.error(
-                'Error reading trajectory for the specific frame.',
+            self.logger.warning(
+                'Issue reading trajectory for the specific frame.',
                 data={'frame': frame},
             )
 
@@ -1374,7 +1483,7 @@ class CP2KParser:
 
     def get_md_output(self, frame):
         if self.energy_parser.mainfile is None:
-            frequency, filename = self.settings['md'].get('energies', '0, none').split()
+            frequency, filename = self.settings['md'].get('energies', '0 none').split()
             frequency = int(frequency)
             if frequency == 0:
                 return dict()
@@ -1400,11 +1509,11 @@ class CP2KParser:
             return dict(
                 step=data[0],
                 time=data[1] * ureg.femtosecond,
-                kinetic_energy_instantaneous=data[2] * ureg.hartree,
-                temperature_instantaneous=data[3],
-                potential_energy_instantaneous=data[4] * ureg.hartree,
+                kinetic_energy=data[2] * ureg.hartree,
+                temperature=data[3],
+                potential_energy=data[4] * ureg.hartree,
                 conserved_quantity=data[5] * ureg.hartree,
-                cpu_time_instantaneous=data[6],
+                cpu_time=data[6],
             )
 
         except Exception:
@@ -1685,10 +1794,10 @@ class CP2KParser:
         if trajectory.positions is not None:
             sec_atoms.positions = trajectory.positions
         elif trajectory.scaled_positions is not None and lattice_vectors is not None:
-            sec_atoms.positions = np.dot(
-                trajectory.scaled_positions.magnitude, lattice_vectors.magnitude
-            ) * lattice_vectors.units
-
+            sec_atoms.positions = (
+                np.dot(trajectory.scaled_positions.magnitude, lattice_vectors.magnitude)
+                * lattice_vectors.units
+            )
 
         labels = (
             trajectory.labels
@@ -1876,27 +1985,82 @@ class CP2KParser:
             md_output = md_output if md_output else source
             calc = sec_run.calculation[-1]
 
+            def get_md_value(key, column=0):
+                """Extract MD value from old or new format output.
+
+                Both old and new formats provide arrays [instantaneous, average] for most properties.
+
+                Args:
+                    key: Property name (e.g., 'kinetic_energy', 'temperature')
+                    column: Which value to extract (0=instantaneous, 1=average). Default: 0
+
+                Returns:
+                    Extracted value (instantaneous by default) or None if not found
+                """
+                value = md_output.get(key)
+                if value is None:
+                    return None
+
+                # Handle pint Quantity objects that may have array magnitudes
+                if hasattr(value, 'magnitude'):
+                    mag = value.magnitude
+                    # Check if magnitude is array-like (tuple, list, ndarray)
+                    if hasattr(mag, '__len__') and not isinstance(mag, str):
+                        try:
+                            # Extract specified column and create new Quantity with scalar magnitude
+                            if hasattr(value, 'units'):
+                                value = float(mag[column]) * value.units
+                            else:
+                                value = float(mag[column])
+                        except (TypeError, IndexError):
+                            pass
+                # If value is a plain list/tuple/ndarray, take specified column
+                elif hasattr(value, '__len__') and not isinstance(value, str):
+                    try:
+                        if len(value) > column:
+                            value = value[column]
+                    except (TypeError, IndexError):
+                        pass
+
+                return value
+
             # Store to common metainfo
-            energy_kinetic = md_output.get('kinetic_energy_instantaneous')
-            if energy_kinetic:
+            # Both old and new formats provide [instantaneous, average] - we extract instantaneous (column 0)
+            energy_kinetic = get_md_value('kinetic_energy')
+            if energy_kinetic is not None:
                 calc.energy.kinetic = EnergyEntry(value=energy_kinetic.to('joule'))
-            potential_energy = md_output.get('potential_energy_instantaneous')
-            if potential_energy:
+            potential_energy = get_md_value('potential_energy')
+            if potential_energy is not None:
                 calc.energy.potential = EnergyEntry(value=potential_energy.to('joule'))
+
+            # Calculate total energy if both kinetic and potential are available
+            # and total is not already set (new CP2K format doesn't report it explicitly)
+            if (
+                energy_kinetic is not None
+                and potential_energy is not None
+                and not calc.energy.total
+            ):
+                total_energy = energy_kinetic + potential_energy
+                calc.energy.total = EnergyEntry(value=total_energy.to('joule'))
+
             step = md_output.get('step')
-            if step:
+            if step is not None:
                 calc.step = int(step)
+            elif hasattr(md_output, '_frame'):
+                # For initial calculation, use frame number (0) as step
+                calc.step = md_output._frame
             time = md_output.get('time')
-            if time:
-                calc.time = time.to('second')
-            volume = md_output.get('volume_instantaneous')
-            if volume:
+            if time is not None:
+                # Handle both Quantity (new format) and float (old format from .ener file)
+                calc.time = time.to('second') if hasattr(time, 'to') else time
+            volume = get_md_value('volume')
+            if volume is not None:
                 calc.volume = volume.to('m**3')
-            pressure = md_output.get('pressure_instantaneous')
-            if pressure:
+            pressure = get_md_value('pressure')
+            if pressure is not None:
                 calc.pressure = pressure.to('m**3')
-            temperature = md_output.get('temperature_instantaneous')
-            if temperature:
+            temperature = get_md_value('temperature')
+            if temperature is not None:
                 calc.temperature = temperature
 
         def parse_calculations(calculations):
