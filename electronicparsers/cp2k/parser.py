@@ -664,10 +664,10 @@ class CP2KOutParser(TextParser):
             ),
             # Matches entire MD step block (old or new format)
             # Old: "SCF WAVEFUNCTION OPTIMIZATION...ENSEMBLE TYPE..." to 50 asterisks
-            # New: "MD| ***...MD| ***" (asterisk-delimited blocks)
+            # New: "MD| ***...MD| ***" + all content after until next "MD| ***" (greedy)
             Quantity(
                 'md_step',
-                r'((?:SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENSEMBLE TYPE[\s\S]+?\*{50}|MD\| \*+[\s\S]+?MD\| \*+))',
+                r'((?:SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENSEMBLE TYPE[\s\S]+?\*{50}|MD\| \*+[\s\S]+?MD\| \*+(?:(?!MD\| \*+)[\s\S])*))',
                 repeats=True,
                 sub_parser=TextParser(
                     quantities=[
@@ -751,7 +751,7 @@ class CP2KOutParser(TextParser):
                         ),
                         Quantity(
                             'self_consistent',
-                            r'(SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?)\*{50}',
+                            r'(SCF WAVEFUNCTION OPTIMIZATION[\s\S]+?ENERGY\| Total FORCE_EVAL[\s\S]+?)(?=\*{50}|\Z)',
                             repeats=True,
                             sub_parser=TextParser(
                                 quantities=scf_wavefunction_optimization_quantities

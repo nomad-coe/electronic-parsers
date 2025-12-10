@@ -1,0 +1,3864 @@
+{
+  "run": [
+    {
+      "x_cp2k_program_information": {
+        "program_version": "CP2K version 2.6.2",
+        "svn_revision": "svn:15893",
+        "is_freely_available_from": "http://www.cp2k.org/",
+        "program_compilation_datetime": "ke 4.11.2015 08.48.42 +0200",
+        "program_compilation_host": "lauri-Lenovo-Z50-70",
+        "program_compiled_for": "Linux-x86-64-gfortran_basic",
+        "input_filename": "H2O-32.inp"
+      },
+      "x_cp2k_dbcsr": {
+        "dbcsr_multiplication_driver": "SMM",
+        "dbcsr_multrec_recursion_limit": 512,
+        "dbcsr_multiplication_stack_size": 1000,
+        "dbcsr_multiplication_size_stacks": 3,
+        "dbcsr_use_subcommunicators": "T",
+        "dbcsr_use_mpi_combined_types": "F",
+        "dbcsr_use_mpi_memory_allocation": "T",
+        "dbcsr_use_communication_thread": "T",
+        "dbcsr_communication_thread_load": 87
+      },
+      "x_cp2k_global_settings": {
+        "force_environment_number": 1,
+        "basis_set_filename": "../../BASIS_SET",
+        "geminal_filename": "BASIS_GEMINAL",
+        "potential_filename": "../../GTH_POTENTIALS",
+        "mm_potential_filename": "MM_POTENTIAL",
+        "coordinate_filename": "__STD_INPUT__",
+        "method_name": "CP2K",
+        "project_name": "H2O-32",
+        "preferred_fft_library": "FFTW3",
+        "preferred_diagonalization_library": "SL",
+        "run_type": "MD",
+        "all-to-all_communication_in_single_precision": "F",
+        "ffts_using_library_dependent_lengths": "F",
+        "global_print_level": "MEDIUM",
+        "total_number_of_message_passing_processes": 1,
+        "number_of_threads_for_this_process": 1,
+        "this_output_is_from_process": 0
+      },
+      "x_cp2k_section_input": [
+        {
+          "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input",
+          "x_cp2k_section_input_FORCE_EVAL": [
+            {
+              "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL",
+              "x_cp2k_input_FORCE_EVAL_METHOD": "QS",
+              "x_cp2k_section_input_FORCE_EVAL_DFT": [
+                {
+                  "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT",
+                  "x_cp2k_input_FORCE_EVAL_DFT_BASIS_SET_FILE_NAME": "../../BASIS_SET",
+                  "x_cp2k_input_FORCE_EVAL_DFT_POTENTIAL_FILE_NAME": "../../GTH_POTENTIALS",
+                  "x_cp2k_section_input_FORCE_EVAL_DFT_MGRID": [
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_MGRID",
+                      "x_cp2k_input_FORCE_EVAL_DFT_MGRID_CUTOFF": "200",
+                      "x_cp2k_input_FORCE_EVAL_DFT_MGRID_REL_CUTOFF": "30"
+                    }
+                  ],
+                  "x_cp2k_section_input_FORCE_EVAL_DFT_QS": [
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_QS",
+                      "x_cp2k_input_FORCE_EVAL_DFT_QS_EPS_DEFAULT": "1.0E-12",
+                      "x_cp2k_input_FORCE_EVAL_DFT_QS_EXTRAPOLATION_ORDER": "3"
+                    }
+                  ],
+                  "x_cp2k_section_input_FORCE_EVAL_DFT_SCF": [
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_SCF",
+                      "x_cp2k_input_FORCE_EVAL_DFT_SCF_SCF_GUESS": "ATOMIC"
+                    }
+                  ],
+                  "x_cp2k_section_input_FORCE_EVAL_DFT_XC": [
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_XC",
+                      "x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL": [
+                        {
+                          "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL",
+                          "x_cp2k_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_SECTION_PARAMETERS": "Pade"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "x_cp2k_section_input_FORCE_EVAL_SUBSYS": [
+                {
+                  "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS",
+                  "x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL": [
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL",
+                      "x_cp2k_input_FORCE_EVAL_SUBSYS_CELL_ABC": "9.8528 9.8528 9.8528"
+                    }
+                  ],
+                  "x_cp2k_section_input_FORCE_EVAL_SUBSYS_COORD": [
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_COORD"
+                    }
+                  ],
+                  "x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND": [
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND",
+                      "x_cp2k_input_FORCE_EVAL_SUBSYS_KIND_BASIS_SET": "DZVP-GTH-PADE",
+                      "x_cp2k_input_FORCE_EVAL_SUBSYS_KIND_POTENTIAL": "GTH-PADE-q1",
+                      "x_cp2k_input_FORCE_EVAL_SUBSYS_KIND_SECTION_PARAMETERS": "H"
+                    },
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND",
+                      "x_cp2k_input_FORCE_EVAL_SUBSYS_KIND_BASIS_SET": "DZVP-GTH-PADE",
+                      "x_cp2k_input_FORCE_EVAL_SUBSYS_KIND_POTENTIAL": "GTH-PADE-q6",
+                      "x_cp2k_input_FORCE_EVAL_SUBSYS_KIND_SECTION_PARAMETERS": "O"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "x_cp2k_section_input_GLOBAL": [
+            {
+              "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_GLOBAL",
+              "x_cp2k_input_GLOBAL_PRINT_LEVEL": "MEDIUM",
+              "x_cp2k_input_GLOBAL_PROJECT_NAME": "H2O-32",
+              "x_cp2k_input_GLOBAL_RUN_TYPE": "MD"
+            }
+          ],
+          "x_cp2k_section_input_MOTION": [
+            {
+              "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_MOTION",
+              "x_cp2k_section_input_MOTION_MD": [
+                {
+                  "m_def": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_MOTION_MD",
+                  "x_cp2k_input_MOTION_MD_ENSEMBLE": "NVE",
+                  "x_cp2k_input_MOTION_MD_STEPS": "10",
+                  "x_cp2k_input_MOTION_MD_TEMPERATURE": "300.0",
+                  "x_cp2k_input_MOTION_MD_TIMESTEP": "0.5"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "x_cp2k_section_startinformation": [
+        {
+          "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_startinformation",
+          "x_cp2k_start_time": "2016-06-06 16:10:16.909",
+          "x_cp2k_start_host": "lauri-Lenovo-Z50-70",
+          "x_cp2k_start_user": "lauri",
+          "x_cp2k_start_id": 12281,
+          "x_cp2k_start_path": "/home/lauri/Dropbox/nomad-dev/nomad-lab-base/parsers/cp2k/test/unittests/cp2k_2.6.2/md/nve"
+        }
+      ],
+      "x_cp2k_section_end_information": [
+        {
+          "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_end_information",
+          "x_cp2k_end_time": "2016-06-06 16:10:41.500",
+          "x_cp2k_end_host": "lauri-Lenovo-Z50-70",
+          "x_cp2k_end_user": "lauri",
+          "x_cp2k_end_id": 12281,
+          "x_cp2k_end_path": "/home/lauri/Dropbox/nomad-dev/nomad-lab-base/parsers/cp2k/test/unittests/cp2k_2.6.2/md/nve"
+        }
+      ],
+      "program": {
+        "name": "CP2K",
+        "version": "CP2K version 2.6.2",
+        "compilation_host": "lauri-Lenovo-Z50-70"
+      },
+      "method": [
+        {
+          "x_cp2k_section_quickstep_settings": [
+            {
+              "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_quickstep_settings",
+              "x_cp2k_planewave_cutoff": 100.0,
+              "x_cp2k_quickstep_method": "GPW",
+              "x_cp2k_section_maximum_angular_momentum": [
+                {
+                  "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_maximum_angular_momentum",
+                  "x_cp2k_local_part_of_gth_pseudopotential": 2,
+                  "x_cp2k_non_local_part_of_gth_pseudopotential": 0,
+                  "x_cp2k_orbital_basis_functions": 2
+                }
+              ],
+              "x_cp2k_section_total_numbers": [
+                {
+                  "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_total_numbers",
+                  "x_cp2k_atomic_kinds": 2,
+                  "x_cp2k_atoms": 6,
+                  "x_cp2k_cartesian_basis_functions": 48,
+                  "x_cp2k_primitive_cartesian_functions": 30,
+                  "x_cp2k_shell_sets": 12,
+                  "x_cp2k_shells": 22,
+                  "x_cp2k_spherical_basis_functions": 46
+                }
+              ],
+              "x_cp2k_section_atomic_kinds": [
+                {
+                  "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_atomic_kinds",
+                  "x_cp2k_section_atomic_kind": [
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_atomic_kind",
+                      "x_cp2k_kind_label": "O",
+                      "x_cp2k_kind_number_of_atoms": "2",
+                      "x_cp2k_section_kind_basis_set": [
+                        {
+                          "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_kind_basis_set",
+                          "x_cp2k_kind_basis_set_name": "DZVP-GTH-PADE",
+                          "x_cp2k_basis_set_number_of_orbital_shell_sets": 2,
+                          "x_cp2k_basis_set_number_of_orbital_shells": 5,
+                          "x_cp2k_basis_set_number_of_primitive_cartesian_functions": 5,
+                          "x_cp2k_basis_set_number_of_cartesian_basis_functions": 14,
+                          "x_cp2k_basis_set_number_of_spherical_basis_functions": 13,
+                          "x_cp2k_basis_set_norm_type": 2
+                        }
+                      ]
+                    },
+                    {
+                      "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_atomic_kind",
+                      "x_cp2k_kind_label": "H",
+                      "x_cp2k_kind_number_of_atoms": "4",
+                      "x_cp2k_section_kind_basis_set": [
+                        {
+                          "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_kind_basis_set",
+                          "x_cp2k_kind_basis_set_name": "DZVP-GTH-PADE",
+                          "x_cp2k_basis_set_number_of_orbital_shell_sets": 2,
+                          "x_cp2k_basis_set_number_of_orbital_shells": 3,
+                          "x_cp2k_basis_set_number_of_primitive_cartesian_functions": 5,
+                          "x_cp2k_basis_set_number_of_cartesian_basis_functions": 5,
+                          "x_cp2k_basis_set_number_of_spherical_basis_functions": 5,
+                          "x_cp2k_basis_set_norm_type": 2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "dft": {
+            "xc_functional": {
+              "name": "LDA_XC_TETER93",
+              "contributions": [
+                {
+                  "name": "LDA_XC_TETER93"
+                }
+              ]
+            }
+          },
+          "electronic": {
+            "method": "DFT"
+          },
+          "scf": {
+            "n_max_iteration": 50,
+            "threshold_energy_change": 4.359744722205978e-23
+          },
+          "atom_parameters": [
+            {
+              "atom_number": 8,
+              "label": "O"
+            },
+            {
+              "atom_number": 1,
+              "label": "H"
+            }
+          ],
+          "electrons_representation": [
+            {
+              "type": "gaussians + plane waves",
+              "scope": [
+                "wavefunction"
+              ],
+              "basis_set": [
+                {
+                  "type": "gaussians",
+                  "scope": [
+                    "kinetic energy",
+                    "electron-core interaction"
+                  ],
+                  "atom_centered": [
+                    {
+                      "name": "DZVP-GTH-PADE",
+                      "atom_number": 8
+                    },
+                    {
+                      "name": "DZVP-GTH-PADE",
+                      "atom_number": 1
+                    }
+                  ]
+                },
+                {
+                  "type": "plane waves",
+                  "scope": [
+                    "Hartree energy",
+                    "electron-electron interaction"
+                  ],
+                  "cutoff": 4.3597447222071696e-16
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "system": [
+        {
+          "configuration_raw_gid": "MskkZ8cukvmmmP59xPf6mb1fQaiH",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.280398e-10,
+                9.146539000000001e-10,
+                5.088696e-10
+              ],
+              [
+                1.251703e-10,
+                2.406261e-10,
+                7.769908000000001e-10
+              ],
+              [
+                1.762019e-10,
+                9.820429000000002e-10,
+                5.528454e-10
+              ],
+              [
+                3.095987e-10,
+                9.107088e-10,
+                5.588186e-10
+              ],
+              [
+                5.54129e-11,
+                2.982634e-10,
+                8.082024000000001e-10
+              ],
+              [
+                1.771257e-10,
+                2.954779e-10,
+                7.182181e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "configuration_raw_gid": "7snOLtbtX_okoHxkG_BKzqjhkj8L",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.2807055575000002e-10,
+                9.1465838595e-10,
+                5.0883919888e-10
+              ],
+              [
+                1.2498929917e-10,
+                2.4074289284e-10,
+                7.7692382491e-10
+              ],
+              [
+                1.7550641677000002e-10,
+                9.817835884500002e-10,
+                5.5212255966e-10
+              ],
+              [
+                3.1112981302e-10,
+                9.0969170746e-10,
+                5.595614353100001e-10
+              ],
+              [
+                5.663993495000001e-11,
+                2.9792400173e-10,
+                8.0854791515e-10
+              ],
+              [
+                1.7745194198e-10,
+                2.9517247311000003e-10,
+                7.1939396477e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "configuration_raw_gid": "0cUNItZgsYER0WmNHuYl43swLphN",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.2810938851000003e-10,
+                9.146514373600001e-10,
+                5.088005732e-10
+              ],
+              [
+                1.2481430886e-10,
+                2.4083371258000003e-10,
+                7.7685912598e-10
+              ],
+              [
+                1.7468317341e-10,
+                9.816971064300001e-10,
+                5.515412782800001e-10
+              ],
+              [
+                3.126539879e-10,
+                9.086916131300001e-10,
+                5.603202866200001e-10
+              ],
+              [
+                5.7583443440000006e-11,
+                2.9781042647e-10,
+                8.090277326400001e-10
+              ],
+              [
+                1.7797622574000002e-10,
+                2.9504835298e-10,
+                7.2036786282e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "configuration_raw_gid": "8ihTTlTOj2AA8GPYhLxVLgzbqutQ",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.2816569948000001e-10,
+                9.1463220223e-10,
+                5.0875919643e-10
+              ],
+              [
+                1.246480825e-10,
+                2.4089259514e-10,
+                7.7679581102e-10
+              ],
+              [
+                1.737601791e-10,
+                9.8176768475e-10,
+                5.511070353400001e-10
+              ],
+              [
+                3.1398366791e-10,
+                9.0773366634e-10,
+                5.610067679300001e-10
+              ],
+              [
+                5.8167953390000006e-11,
+                2.9798971014000003e-10,
+                8.096843508499999e-10
+              ],
+              [
+                1.7872918494000002e-10,
+                2.9513202206e-10,
+                7.2111353246e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "configuration_raw_gid": "Q4q-yldFo5nxvPqvje_MAKRrqDbS",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.2824536844000001e-10,
+                9.146013971700001e-10,
+                5.0872014341e-10
+              ],
+              [
+                1.2449189507e-10,
+                2.409183038e-10,
+                7.767324503400001e-10
+              ],
+              [
+                1.7278297775e-10,
+                9.819558914900001e-10,
+                5.5080907122e-10
+              ],
+              [
+                3.1497224743e-10,
+                9.068415906300001e-10,
+                5.6155281103e-10
+              ],
+              [
+                5.837476503e-11,
+                2.9848496112e-10,
+                8.105339436999999e-10
+              ],
+              [
+                1.7970573968000003e-10,
+                2.9542015292000003e-10,
+                7.2164224211e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "configuration_raw_gid": "q3wvVzuGSOPCbKK2V-Fq6UhZHJYp",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.2835075421000001e-10,
+                9.1456102023e-10,
+                5.0868767781e-10
+              ],
+              [
+                1.243452458e-10,
+                2.4091462088000003e-10,
+                7.766675816100001e-10
+              ],
+              [
+                1.7181028654e-10,
+                9.8220570351e-10,
+                5.5062468114e-10
+              ],
+              [
+                3.1552105753e-10,
+                9.060365404600001e-10,
+                5.6191356782e-10
+              ],
+              [
+                5.82484217e-11,
+                2.9926888277e-10,
+                8.115613510899999e-10
+              ],
+              [
+                1.8086404408000001e-10,
+                2.9588109314e-10,
+                7.219984345000001e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "configuration_raw_gid": "vMwcebBeUqQNV3liOdmk67F-bVnv",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.2848116168e-10,
+                9.1451387997e-10,
+                5.086649451e-10
+              ],
+              [
+                1.2420611951e-10,
+                2.4088940254e-10,
+                7.766001155099999e-10
+              ],
+              [
+                1.709073216e-10,
+                9.8245375564e-10,
+                5.5052476019e-10
+              ],
+              [
+                3.1557721856000003e-10,
+                9.053359944700001e-10,
+                5.6206772705e-10
+              ],
+              [
+                5.788535575e-11,
+                3.0026992793e-10,
+                8.1272265032e-10
+              ],
+              [
+                1.8213326965000001e-10,
+                2.9646247282e-10,
+                7.222491795100001e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "configuration_raw_gid": "C64aVfhCA2dttBAETwABi2FlEug5",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.2863340532e-10,
+                9.144631051799999e-10,
+                5.086537092500001e-10
+              ],
+              [
+                1.2407164792000001e-10,
+                2.4085282817000004e-10,
+                7.7652951031e-10
+              ],
+              [
+                1.7013784598e-10,
+                9.826383226e-10,
+                5.504790684e-10
+              ],
+              [
+                3.1513029381000003e-10,
+                9.047524031800001e-10,
+                5.620171657400001e-10
+              ],
+              [
+                5.741065883000001e-11,
+                3.0138823014e-10,
+                8.139534767800001e-10
+              ],
+              [
+                1.8342810097e-10,
+                2.9710164962e-10,
+                7.2247109095e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "configuration_raw_gid": "FK5gSDJMusK9KFY6SFJxHt_Dk4a0",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.288022537e-10,
+                9.144117485200001e-10,
+                5.0865411149e-10
+              ],
+              [
+                1.2393883154000001e-10,
+                2.4081553744e-10,
+                7.7645574288e-10
+              ],
+              [
+                1.6955650581e-10,
+                9.8270646411e-10,
+                5.5046034983e-10
+              ],
+              [
+                3.1421140712e-10,
+                9.042916618199999e-10,
+                5.6178695663e-10
+              ],
+              [
+                5.6953200410000006e-11,
+                3.0251531775e-10,
+                8.1517995491e-10
+              ],
+              [
+                1.8466448643e-10,
+                2.9773546982e-10,
+                7.2273850117e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "configuration_raw_gid": "S_zdllEGR8WTAjWu7Mx1HlhoJJ0m",
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.2898069785000002e-10,
+                9.1436252146e-10,
+                5.0866444773e-10
+              ],
+              [
+                1.2380505706e-10,
+                2.4078718032e-10,
+                7.7637918013e-10
+              ],
+              [
+                1.6920290647e-10,
+                9.8261894866e-10,
+                5.504471574100001e-10
+              ],
+              [
+                3.1289538455e-10,
+                9.039516385500001e-10,
+                5.6142598682e-10
+              ],
+              [
+                5.6626957469999995e-11,
+                3.0355160242e-10,
+                8.163299284200002e-10
+              ],
+              [
+                1.8577079508000002e-10,
+                2.9830741256e-10,
+                7.2311516146e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          }
+        },
+        {
+          "type": "molecule / cluster",
+          "configuration_raw_gid": "bQinMadJAiX-et6X97-fwoDkI-0a",
+          "is_representative": true,
+          "chemical_composition": "OOHHHH",
+          "chemical_composition_hill": "H4O2",
+          "chemical_composition_reduced": "H2O",
+          "atoms": {
+            "species": [
+              8,
+              8,
+              1,
+              1,
+              1,
+              1
+            ],
+            "labels": [
+              "O",
+              "O",
+              "H",
+              "H",
+              "H",
+              "H"
+            ],
+            "positions": [
+              [
+                2.2916014875e-10,
+                9.143176326000001e-10,
+                5.0868100688e-10
+              ],
+              [
+                1.2366834078e-10,
+                2.4077552776000003e-10,
+                7.7630044423e-10
+              ],
+              [
+                1.6909790671000002e-10,
+                9.823533792399999e-10,
+                5.5042564094e-10
+              ],
+              [
+                3.1130341664e-10,
+                9.037211181e-10,
+                5.6100739746e-10
+              ],
+              [
+                5.6520704779999996e-11,
+                3.0441761067000003e-10,
+                8.1734257299e-10
+              ],
+              [
+                1.8669280879e-10,
+                2.9877213524e-10,
+                7.2364955946e-10
+              ]
+            ],
+            "lattice_vectors": [
+              [
+                9.853e-10,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                9.853e-10,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                9.853e-10
+              ]
+            ],
+            "lattice_vectors_reciprocal": [
+              [
+                6376926121.160646,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                6376926121.160646,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                6376926121.160646
+              ]
+            ],
+            "periodic": [
+              true,
+              true,
+              true
+            ]
+          },
+          "descriptors": {
+            "soap": {
+              "n_max": 8,
+              "l_max": 4,
+              "r_cut": 5.0,
+              "atom_sigma": 0.4
+            }
+          }
+        }
+      ],
+      "calculation": [
+        {
+          "system_ref": "#/run/0/system/0",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.8999999999999995,
+          "time_physical": 2.8999999999999995,
+          "temperature": 300.0,
+          "step": 0,
+          "time": 0.0,
+          "energy": {
+            "total": {
+              "value": -1.49671764825535e-16
+            },
+            "xc": {
+              "value": -3.613317646223215e-17
+            },
+            "kinetic": {
+              "value": 3.106464166020802e-20
+            },
+            "potential": {
+              "value": -1.496717648257219e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 0.2,
+              "energy": {
+                "change": -1.4823132055504377e-16,
+                "total": {
+                  "value": -1.4831367662680534e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 0.5,
+              "energy": {
+                "change": -5.536875797203105e-19,
+                "total": {
+                  "value": -1.4886709736050237e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 0.8,
+              "energy": {
+                "change": -3.2916072652664128e-19,
+                "total": {
+                  "value": -1.4919610517159874e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 1.1,
+              "energy": {
+                "change": -1.927007167215569e-19,
+                "total": {
+                  "value": -1.4938867892514242e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 1.4000000000000001,
+              "energy": {
+                "change": -1.1378933724960713e-19,
+                "total": {
+                  "value": -1.495026535872926e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 1.7000000000000002,
+              "energy": {
+                "change": -6.801201766643184e-20,
+                "total": {
+                  "value": -1.4957053794727384e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 2.0,
+              "energy": {
+                "change": -4.058922336374875e-20,
+                "total": {
+                  "value": -1.4961110720387873e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 2.3,
+              "energy": {
+                "change": -6.060045163867964e-20,
+                "total": {
+                  "value": -1.496717648204902e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 2.5999999999999996,
+              "energy": {
+                "change": -4.970108983316173e-27,
+                "total": {
+                  "value": -1.496717648252859e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 2.8999999999999995,
+              "energy": {
+                "change": -8.370709866637765e-29,
+                "total": {
+                  "value": -1.496717648252859e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/1",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.3,
+          "time_physical": 5.199999999999998,
+          "temperature": 275.075405378,
+          "step": 1,
+          "time": 5e-16,
+          "energy": {
+            "total": {
+              "value": -1.4966907277712676e-16
+            },
+            "xc": {
+              "value": -3.613945866110422e-17
+            },
+            "kinetic": {
+              "value": 2.848372946134276e-20
+            },
+            "potential": {
+              "value": -1.496690727792703e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 3.0999999999999996,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966834208736279e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 3.3999999999999995,
+              "energy": {
+                "change": -2.934108198045425e-22,
+                "total": {
+                  "value": -1.4966863571529787e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 3.6999999999999993,
+              "energy": {
+                "change": -1.7700563572161107e-22,
+                "total": {
+                  "value": -1.4966881251471765e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 3.999999999999999,
+              "energy": {
+                "change": -2.5940481097132657e-22,
+                "total": {
+                  "value": -1.4966907213315615e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 4.299999999999999,
+              "energy": {
+                "change": 1.6915809522163816e-24,
+                "total": {
+                  "value": -1.496690704415752e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 4.599999999999999,
+              "energy": {
+                "change": -1.543349631661338e-24,
+                "total": {
+                  "value": -1.4966907198623273e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 4.899999999999999,
+              "energy": {
+                "change": -7.891137947194976e-25,
+                "total": {
+                  "value": -1.4966907277621848e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 5.199999999999998,
+              "energy": {
+                "change": -7.498760922196331e-28,
+                "total": {
+                  "value": -1.4966907277709044e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/2",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.0,
+          "time_physical": 7.1999999999999975,
+          "temperature": 235.091633019,
+          "step": 2,
+          "time": 1e-15,
+          "energy": {
+            "total": {
+              "value": -1.4966476386804377e-16
+            },
+            "xc": {
+              "value": -3.612556071986794e-17
+            },
+            "kinetic": {
+              "value": 2.4343454288451504e-20
+            },
+            "potential": {
+              "value": -1.4966476386917155e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 5.399999999999999,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966471754819182e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 5.699999999999998,
+              "energy": {
+                "change": -1.857251251660254e-23,
+                "total": {
+                  "value": -1.4966473613073174e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 5.999999999999998,
+              "energy": {
+                "change": -1.1248141383294496e-23,
+                "total": {
+                  "value": -1.496647473775652e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 6.299999999999998,
+              "energy": {
+                "change": -1.6436237602721028e-23,
+                "total": {
+                  "value": -1.4966476381772657e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 6.599999999999998,
+              "energy": {
+                "change": 2.6420053016575447e-25,
+                "total": {
+                  "value": -1.4966476355352604e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 6.899999999999998,
+              "energy": {
+                "change": -2.489414236380294e-25,
+                "total": {
+                  "value": -1.4966476380246746e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 7.1999999999999975,
+              "energy": {
+                "change": -6.539617083310753e-26,
+                "total": {
+                  "value": -1.4966476386786364e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/3",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.0,
+          "time_physical": 9.2,
+          "temperature": 202.752506973,
+          "step": 3,
+          "time": 1.5000000000000001e-15,
+          "energy": {
+            "total": {
+              "value": -1.496613123687088e-16
+            },
+            "xc": {
+              "value": -3.6091996812920945e-17
+            },
+            "kinetic": {
+              "value": 2.09947779647714e-20
+            },
+            "potential": {
+              "value": -1.496613123682686e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 7.399999999999998,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966130482373037e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 7.6999999999999975,
+              "energy": {
+                "change": -2.986425134711911e-24,
+                "total": {
+                  "value": -1.4966130781059146e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 7.999999999999997,
+              "energy": {
+                "change": -1.8441720174936326e-24,
+                "total": {
+                  "value": -1.4966130965519944e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 8.299999999999997,
+              "energy": {
+                "change": -2.707401472490652e-24,
+                "total": {
+                  "value": -1.4966131236129302e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 8.599999999999998,
+              "energy": {
+                "change": 9.76582817774406e-27,
+                "total": {
+                  "value": -1.4966131235170158e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 8.899999999999999,
+              "energy": {
+                "change": -1.4735937161060232e-26,
+                "total": {
+                  "value": -1.496613123665247e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 9.2,
+              "energy": {
+                "change": -2.3281036816586286e-27,
+                "total": {
+                  "value": -1.4966131236870457e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/4",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.0,
+          "time_physical": 11.200000000000003,
+          "temperature": 192.266488819,
+          "step": 4,
+          "time": 2e-15,
+          "energy": {
+            "total": {
+              "value": -1.496602455927359e-16
+            },
+            "xc": {
+              "value": -3.6042283272764024e-17
+            },
+            "kinetic": {
+              "value": 1.9908966102726815e-20
+            },
+            "potential": {
+              "value": -1.4966024559105202e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 9.399999999999999,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966024340812783e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 9.7,
+              "energy": {
+                "change": -8.632294549970196e-25,
+                "total": {
+                  "value": -1.496602442691774e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 10.0,
+              "energy": {
+                "change": -5.362486008314818e-25,
+                "total": {
+                  "value": -1.4966024480455407e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 10.3,
+              "energy": {
+                "change": -7.847540499972904e-25,
+                "total": {
+                  "value": -1.4966024559061605e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 10.600000000000001,
+              "energy": {
+                "change": 1.1858505644403502e-26,
+                "total": {
+                  "value": -1.4966024557884474e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 10.900000000000002,
+              "energy": {
+                "change": -1.2556064799956648e-26,
+                "total": {
+                  "value": -1.49660245591488e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 11.200000000000003,
+              "energy": {
+                "change": -1.2599662247178718e-27,
+                "total": {
+                  "value": -1.4966024559279592e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/5",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.0,
+          "time_physical": 13.200000000000006,
+          "temperature": 201.629598676,
+          "step": 5,
+          "time": 2.5000000000000004e-15,
+          "energy": {
+            "total": {
+              "value": -1.4966130762339694e-16
+            },
+            "xc": {
+              "value": -3.598269950162556e-17
+            },
+            "kinetic": {
+              "value": 2.0878503573030133e-20
+            },
+            "potential": {
+              "value": -1.4966130762486634e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 11.400000000000002,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966130527234808e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 11.700000000000003,
+              "energy": {
+                "change": -9.155463916635056e-25,
+                "total": {
+                  "value": -1.4966130618963837e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 12.000000000000004,
+              "energy": {
+                "change": -5.798460480535536e-25,
+                "total": {
+                  "value": -1.4966130676904845e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 12.300000000000004,
+              "energy": {
+                "change": -8.50150220830398e-25,
+                "total": {
+                  "value": -1.4966130762137854e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 12.600000000000005,
+              "energy": {
+                "change": 1.2207285222180074e-26,
+                "total": {
+                  "value": -1.4966130760917126e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 12.900000000000006,
+              "energy": {
+                "change": -1.2817649483289079e-26,
+                "total": {
+                  "value": -1.4966130762181453e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 13.200000000000006,
+              "energy": {
+                "change": -1.4605144819394017e-27,
+                "total": {
+                  "value": -1.4966130762355843e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/6",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.0,
+          "time_physical": 15.20000000000001,
+          "temperature": 218.299664775,
+          "step": 6,
+          "time": 3.0000000000000002e-15,
+          "energy": {
+            "total": {
+              "value": -1.4966311475542248e-16
+            },
+            "xc": {
+              "value": -3.5921646682736527e-17
+            },
+            "kinetic": {
+              "value": 2.2604666020383065e-20
+            },
+            "potential": {
+              "value": -1.4966311475649267e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 13.400000000000006,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966311333652381e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 13.700000000000006,
+              "energy": {
+                "change": -5.536875797203106e-25,
+                "total": {
+                  "value": -1.4966311389151934e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 14.000000000000007,
+              "energy": {
+                "change": -3.4921555224879424e-25,
+                "total": {
+                  "value": -1.496631142407349e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 14.300000000000008,
+              "energy": {
+                "change": -5.1444987722044595e-25,
+                "total": {
+                  "value": -1.4966311475431283e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 14.600000000000009,
+              "energy": {
+                "change": 6.0164477166458935e-27,
+                "total": {
+                  "value": -1.4966311474820916e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 14.90000000000001,
+              "energy": {
+                "change": -6.365227294422467e-27,
+                "total": {
+                  "value": -1.4966311475431283e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 15.20000000000001,
+              "energy": {
+                "change": -9.504243494411629e-28,
+                "total": {
+                  "value": -1.4966311475562073e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/7",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 1.1,
+          "time_physical": 16.30000000000001,
+          "temperature": 230.324748558,
+          "step": 7,
+          "time": 3.5e-15,
+          "energy": {
+            "total": {
+              "value": -1.4966438631190623e-16
+            },
+            "xc": {
+              "value": -3.586789733075701e-17
+            },
+            "kinetic": {
+              "value": 2.3849852710492653e-20
+            },
+            "potential": {
+              "value": -1.4966438631091887e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 15.40000000000001,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966438582698722e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 15.70000000000001,
+              "energy": {
+                "change": -1.9488058908266048e-25,
+                "total": {
+                  "value": -1.496643860218678e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 16.00000000000001,
+              "energy": {
+                "change": -1.1771310749959356e-25,
+                "total": {
+                  "value": -1.496643861395809e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 16.30000000000001,
+              "energy": {
+                "change": -1.722099165271832e-25,
+                "total": {
+                  "value": -1.4966438631179083e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/8",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.0,
+          "time_physical": 18.300000000000015,
+          "temperature": 232.691881533,
+          "step": 8,
+          "time": 4e-15,
+          "energy": {
+            "total": {
+              "value": -1.4966461892504415e-16
+            },
+            "xc": {
+              "value": -3.582900193370972e-17
+            },
+            "kinetic": {
+              "value": 2.4094966278264585e-20
+            },
+            "potential": {
+              "value": -1.496646189250985e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 16.50000000000001,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966461866700163e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 16.80000000000001,
+              "energy": {
+                "change": -1.0158205202742704e-25,
+                "total": {
+                  "value": -1.4966461876858367e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 17.100000000000012,
+              "energy": {
+                "change": -6.321629847200396e-26,
+                "total": {
+                  "value": -1.4966461883179998e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 17.400000000000013,
+              "energy": {
+                "change": -9.28625625830127e-26,
+                "total": {
+                  "value": -1.4966461892466256e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 17.700000000000014,
+              "energy": {
+                "change": 9.373451152745415e-28,
+                "total": {
+                  "value": -1.496646189237906e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 18.000000000000014,
+              "energy": {
+                "change": -9.02467157496884e-28,
+                "total": {
+                  "value": -1.4966461892466256e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 18.300000000000015,
+              "energy": {
+                "change": -2.620206578046509e-28,
+                "total": {
+                  "value": -1.496646189250985e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/9",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.0,
+          "time_physical": 20.30000000000002,
+          "temperature": 226.146979313,
+          "step": 9,
+          "time": 4.5000000000000005e-15,
+          "energy": {
+            "total": {
+              "value": -1.4966392506512159e-16
+            },
+            "xc": {
+              "value": -3.5810119375743914e-17
+            },
+            "kinetic": {
+              "value": 2.3417248320942204e-20
+            },
+            "potential": {
+              "value": -1.496639250630065e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 18.500000000000014,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966392451367865e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 18.800000000000015,
+              "energy": {
+                "change": -2.1188359349926843e-25,
+                "total": {
+                  "value": -1.4966392472556225e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 19.100000000000016,
+              "energy": {
+                "change": -1.3733195874952581e-25,
+                "total": {
+                  "value": -1.4966392486245824e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 19.400000000000016,
+              "energy": {
+                "change": -2.0185618063819193e-25,
+                "total": {
+                  "value": -1.496639250647504e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 19.700000000000017,
+              "energy": {
+                "change": 1.6654224838831386e-27,
+                "total": {
+                  "value": -1.496639250630065e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 20.000000000000018,
+              "energy": {
+                "change": -1.6131055472166527e-27,
+                "total": {
+                  "value": -1.496639250643144e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 20.30000000000002,
+              "energy": {
+                "change": -6.408824741644539e-28,
+                "total": {
+                  "value": -1.4966392506518635e-16
+                }
+              }
+            }
+          ]
+        },
+        {
+          "system_ref": "#/run/0/system/10",
+          "method_ref": "#/run/0/method/0",
+          "time_calculation": 2.0,
+          "time_physical": 22.300000000000022,
+          "temperature": 213.165337396,
+          "step": 10,
+          "time": 5.000000000000001e-15,
+          "energy": {
+            "total": {
+              "value": -1.4966256823578726e-16
+            },
+            "xc": {
+              "value": -3.581340305371527e-17
+            },
+            "kinetic": {
+              "value": 2.207301259048879e-20
+            },
+            "potential": {
+              "value": -1.4966256823633328e-16
+            }
+          },
+          "scf_iteration": [
+            {
+              "time_calculation": 0.2,
+              "time_physical": 20.500000000000018,
+              "energy": {
+                "change": -1.495392439717059e-16,
+                "total": {
+                  "value": -1.4966256744809143e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 20.80000000000002,
+              "energy": {
+                "change": -3.00386411360074e-25,
+                "total": {
+                  "value": -1.4966256774847783e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 21.10000000000002,
+              "energy": {
+                "change": -1.9662448697154333e-25,
+                "total": {
+                  "value": -1.4966256794510235e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 21.40000000000002,
+              "energy": {
+                "change": -2.899230240267768e-25,
+                "total": {
+                  "value": -1.4966256823502537e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 21.70000000000002,
+              "energy": {
+                "change": 2.5591701519356087e-27,
+                "total": {
+                  "value": -1.496625682324095e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 22.00000000000002,
+              "energy": {
+                "change": -3.112857731655919e-27,
+                "total": {
+                  "value": -1.4966256823546134e-16
+                }
+              }
+            },
+            {
+              "time_calculation": 0.3,
+              "time_physical": 22.300000000000022,
+              "energy": {
+                "change": -1.4605144819394018e-28,
+                "total": {
+                  "value": -1.4966256823589728e-16
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "workflow2": {
+    "m_def": "simulationworkflowschema.molecular_dynamics.MolecularDynamics",
+    "inputs": [
+      {
+        "name": "Input system",
+        "section": "#/run/0/system/0"
+      },
+      {
+        "name": "Workflow method",
+        "section": "#/workflow2/method"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "Output calculation",
+        "section": "#/run/0/calculation/10"
+      },
+      {
+        "name": "Output calculation",
+        "section": "#/run/0/calculation/10"
+      },
+      {
+        "name": "Output system",
+        "section": "#/run/0/system/10"
+      },
+      {
+        "name": "Workflow results",
+        "section": "#/workflow2/results"
+      }
+    ],
+    "tasks": [
+      {
+        "name": "Step 1",
+        "inputs": [
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          },
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/0"
+          },
+          {
+            "name": "Workflow method",
+            "section": "#/workflow2/method"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/0"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/0"
+          }
+        ]
+      },
+      {
+        "name": "Step 2",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/0"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/1"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/1"
+          }
+        ]
+      },
+      {
+        "name": "Step 3",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/1"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/2"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/2"
+          }
+        ]
+      },
+      {
+        "name": "Step 4",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/2"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/3"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/3"
+          }
+        ]
+      },
+      {
+        "name": "Step 5",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/3"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/4"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/4"
+          }
+        ]
+      },
+      {
+        "name": "Step 6",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/4"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/5"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/5"
+          }
+        ]
+      },
+      {
+        "name": "Step 7",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/5"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/6"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/6"
+          }
+        ]
+      },
+      {
+        "name": "Step 8",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/6"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/7"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/7"
+          }
+        ]
+      },
+      {
+        "name": "Step 9",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/7"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/8"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/8"
+          }
+        ]
+      },
+      {
+        "name": "Step 10",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/8"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/9"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/9"
+          }
+        ]
+      },
+      {
+        "name": "Step 11",
+        "inputs": [
+          {
+            "name": "Input system",
+            "section": "#/run/0/system/9"
+          },
+          {
+            "name": "Input method",
+            "section": "#/run/0/method/0"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "Output calculation",
+            "section": "#/run/0/calculation/10"
+          },
+          {
+            "name": "Output system",
+            "section": "#/run/0/system/10"
+          }
+        ]
+      }
+    ],
+    "method": {
+      "thermodynamic_ensemble": "NVE",
+      "integration_timestep": 5e-16,
+      "x_cp2k_section_md_settings": [
+        {
+          "m_def": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_md_settings",
+          "x_cp2k_md_target_temperature": 300.0,
+          "x_cp2k_md_target_temperature_tolerance": 0.0,
+          "x_cp2k_md_print_frequency": 1,
+          "x_cp2k_md_coordinates_print_frequency": 1,
+          "x_cp2k_md_coordinates_filename": "H2O-32-pos-1.xyz",
+          "x_cp2k_md_velocities_print_frequency": 1,
+          "x_cp2k_md_velocities_filename": "H2O-32-vel-1.xyz",
+          "x_cp2k_md_energies_print_frequency": 1,
+          "x_cp2k_md_energies_filename": "H2O-32-1.ener",
+          "x_cp2k_md_dump_print_frequency": 20,
+          "x_cp2k_md_dump_filename": "H2O-32-1.restart",
+          "x_cp2k_md_number_of_time_steps": 10
+        }
+      ]
+    },
+    "results": {
+      "calculation_result_ref": "#/run/0/calculation/10",
+      "calculations_ref": [
+        "#/run/0/calculation/0",
+        "#/run/0/calculation/1",
+        "#/run/0/calculation/2",
+        "#/run/0/calculation/3",
+        "#/run/0/calculation/4",
+        "#/run/0/calculation/5",
+        "#/run/0/calculation/6",
+        "#/run/0/calculation/7",
+        "#/run/0/calculation/8",
+        "#/run/0/calculation/9",
+        "#/run/0/calculation/10"
+      ],
+      "trajectory": [
+        "#/run/0/system/0",
+        "#/run/0/system/1",
+        "#/run/0/system/2",
+        "#/run/0/system/3",
+        "#/run/0/system/4",
+        "#/run/0/system/5",
+        "#/run/0/system/6",
+        "#/run/0/system/7",
+        "#/run/0/system/8",
+        "#/run/0/system/9",
+        "#/run/0/system/10"
+      ]
+    }
+  },
+  "metadata": {
+    "entry_name": "H2O CP2K MolecularDynamics simulation",
+    "entry_type": "CP2K MolecularDynamics",
+    "mainfile": "/home/nathan/Documents/nomad-distro-legacy/packages/nomad-parser-plugins-electronic/tests/data/cp2k/molecular_dynamics/H2O-32.out",
+    "text_search_contents": [],
+    "domain": "dft",
+    "n_quantities": 1313,
+    "quantities": [
+      "",
+      "metadata",
+      "metadata.domain",
+      "metadata.entry_name",
+      "metadata.entry_type",
+      "metadata.mainfile",
+      "metadata.optimade",
+      "metadata.optimade.cartesian_site_positions",
+      "metadata.optimade.chemical_formula_anonymous",
+      "metadata.optimade.chemical_formula_descriptive",
+      "metadata.optimade.chemical_formula_hill",
+      "metadata.optimade.chemical_formula_reduced",
+      "metadata.optimade.dimension_types",
+      "metadata.optimade.elements",
+      "metadata.optimade.elements_ratios",
+      "metadata.optimade.lattice_vectors",
+      "metadata.optimade.nelements",
+      "metadata.optimade.nsites",
+      "metadata.optimade.species",
+      "metadata.optimade.species.chemical_symbols",
+      "metadata.optimade.species.concentration",
+      "metadata.optimade.species.name",
+      "metadata.optimade.species_at_sites",
+      "metadata.optimade.structure_features",
+      "metadata.quantities",
+      "metadata.section_defs",
+      "metadata.section_defs.definition_id",
+      "metadata.section_defs.definition_qualified_name",
+      "metadata.section_defs.used_directly",
+      "metadata.sections",
+      "results",
+      "results.material",
+      "results.material.chemical_formula_anonymous",
+      "results.material.chemical_formula_descriptive",
+      "results.material.chemical_formula_hill",
+      "results.material.chemical_formula_iupac",
+      "results.material.chemical_formula_reduced",
+      "results.material.chemical_formula_reduced_fragments",
+      "results.material.dimensionality",
+      "results.material.elemental_composition",
+      "results.material.elemental_composition.atomic_fraction",
+      "results.material.elemental_composition.element",
+      "results.material.elemental_composition.mass",
+      "results.material.elemental_composition.mass_fraction",
+      "results.material.elements",
+      "results.material.structural_type",
+      "results.material.topology",
+      "results.material.topology.atoms_ref",
+      "results.material.topology.cell",
+      "results.material.topology.cell.a",
+      "results.material.topology.cell.alpha",
+      "results.material.topology.cell.atomic_density",
+      "results.material.topology.cell.b",
+      "results.material.topology.cell.beta",
+      "results.material.topology.cell.c",
+      "results.material.topology.cell.gamma",
+      "results.material.topology.cell.mass_density",
+      "results.material.topology.cell.volume",
+      "results.material.topology.chemical_formula_anonymous",
+      "results.material.topology.chemical_formula_descriptive",
+      "results.material.topology.chemical_formula_hill",
+      "results.material.topology.chemical_formula_iupac",
+      "results.material.topology.chemical_formula_reduced",
+      "results.material.topology.description",
+      "results.material.topology.dimensionality",
+      "results.material.topology.elemental_composition",
+      "results.material.topology.elemental_composition.atomic_fraction",
+      "results.material.topology.elemental_composition.element",
+      "results.material.topology.elemental_composition.mass",
+      "results.material.topology.elemental_composition.mass_fraction",
+      "results.material.topology.elements",
+      "results.material.topology.label",
+      "results.material.topology.method",
+      "results.material.topology.n_atoms",
+      "results.material.topology.system_id",
+      "results.material.topology.system_relation",
+      "results.material.topology.system_relation.type",
+      "results.method",
+      "results.method.method_name",
+      "results.method.simulation",
+      "results.method.simulation.dft",
+      "results.method.simulation.dft.basis_set_type",
+      "results.method.simulation.dft.core_electron_treatment",
+      "results.method.simulation.dft.jacobs_ladder",
+      "results.method.simulation.dft.scf_threshold_energy_change",
+      "results.method.simulation.dft.xc_functional_names",
+      "results.method.simulation.dft.xc_functional_type",
+      "results.method.simulation.precision",
+      "results.method.simulation.precision.basis_set",
+      "results.method.simulation.program_name",
+      "results.method.simulation.program_version",
+      "results.method.workflow_name",
+      "results.properties",
+      "results.properties.n_calculations",
+      "results.properties.thermodynamic",
+      "results.properties.thermodynamic.trajectory",
+      "results.properties.thermodynamic.trajectory.available_properties",
+      "results.properties.thermodynamic.trajectory.energy_potential",
+      "results.properties.thermodynamic.trajectory.energy_potential.time",
+      "results.properties.thermodynamic.trajectory.energy_potential.value",
+      "results.properties.thermodynamic.trajectory.provenance",
+      "results.properties.thermodynamic.trajectory.provenance.molecular_dynamics",
+      "results.properties.thermodynamic.trajectory.provenance.molecular_dynamics.ensemble_type",
+      "results.properties.thermodynamic.trajectory.provenance.molecular_dynamics.time_step",
+      "results.properties.thermodynamic.trajectory.temperature",
+      "results.properties.thermodynamic.trajectory.temperature.time",
+      "results.properties.thermodynamic.trajectory.temperature.value",
+      "run",
+      "run.calculation",
+      "run.calculation.energy",
+      "run.calculation.energy.kinetic",
+      "run.calculation.energy.kinetic.value",
+      "run.calculation.energy.potential",
+      "run.calculation.energy.potential.value",
+      "run.calculation.energy.total",
+      "run.calculation.energy.total.value",
+      "run.calculation.energy.xc",
+      "run.calculation.energy.xc.value",
+      "run.calculation.method_ref",
+      "run.calculation.scf_iteration",
+      "run.calculation.scf_iteration.energy",
+      "run.calculation.scf_iteration.energy.change",
+      "run.calculation.scf_iteration.energy.total",
+      "run.calculation.scf_iteration.energy.total.value",
+      "run.calculation.scf_iteration.time_calculation",
+      "run.calculation.scf_iteration.time_physical",
+      "run.calculation.step",
+      "run.calculation.system_ref",
+      "run.calculation.temperature",
+      "run.calculation.time",
+      "run.calculation.time_calculation",
+      "run.calculation.time_physical",
+      "run.method",
+      "run.method.atom_parameters",
+      "run.method.atom_parameters.atom_number",
+      "run.method.atom_parameters.label",
+      "run.method.dft",
+      "run.method.dft.xc_functional",
+      "run.method.dft.xc_functional.contributions",
+      "run.method.dft.xc_functional.contributions.name",
+      "run.method.dft.xc_functional.name",
+      "run.method.electronic",
+      "run.method.electronic.method",
+      "run.method.electrons_representation",
+      "run.method.electrons_representation.basis_set",
+      "run.method.electrons_representation.basis_set.atom_centered",
+      "run.method.electrons_representation.basis_set.atom_centered.atom_number",
+      "run.method.electrons_representation.basis_set.atom_centered.name",
+      "run.method.electrons_representation.basis_set.cutoff",
+      "run.method.electrons_representation.basis_set.scope",
+      "run.method.electrons_representation.basis_set.type",
+      "run.method.electrons_representation.scope",
+      "run.method.electrons_representation.type",
+      "run.method.scf",
+      "run.method.scf.n_max_iteration",
+      "run.method.scf.threshold_energy_change",
+      "run.method.x_cp2k_section_quickstep_settings",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_planewave_cutoff",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_quickstep_method",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_kind_label",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_kind_number_of_atoms",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_section_kind_basis_set",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_section_kind_basis_set.x_cp2k_basis_set_norm_type",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_section_kind_basis_set.x_cp2k_basis_set_number_of_cartesian_basis_functions",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_section_kind_basis_set.x_cp2k_basis_set_number_of_orbital_shell_sets",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_section_kind_basis_set.x_cp2k_basis_set_number_of_orbital_shells",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_section_kind_basis_set.x_cp2k_basis_set_number_of_primitive_cartesian_functions",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_section_kind_basis_set.x_cp2k_basis_set_number_of_spherical_basis_functions",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_atomic_kinds.x_cp2k_section_atomic_kind.x_cp2k_section_kind_basis_set.x_cp2k_kind_basis_set_name",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_maximum_angular_momentum",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_maximum_angular_momentum.x_cp2k_local_part_of_gth_pseudopotential",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_maximum_angular_momentum.x_cp2k_non_local_part_of_gth_pseudopotential",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_maximum_angular_momentum.x_cp2k_orbital_basis_functions",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_total_numbers",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_total_numbers.x_cp2k_atomic_kinds",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_total_numbers.x_cp2k_atoms",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_total_numbers.x_cp2k_cartesian_basis_functions",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_total_numbers.x_cp2k_primitive_cartesian_functions",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_total_numbers.x_cp2k_shell_sets",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_total_numbers.x_cp2k_shells",
+      "run.method.x_cp2k_section_quickstep_settings.x_cp2k_section_total_numbers.x_cp2k_spherical_basis_functions",
+      "run.program",
+      "run.program.compilation_host",
+      "run.program.name",
+      "run.program.version",
+      "run.system",
+      "run.system.atoms",
+      "run.system.atoms.labels",
+      "run.system.atoms.lattice_vectors",
+      "run.system.atoms.lattice_vectors_reciprocal",
+      "run.system.atoms.periodic",
+      "run.system.atoms.positions",
+      "run.system.atoms.species",
+      "run.system.chemical_composition",
+      "run.system.chemical_composition_hill",
+      "run.system.chemical_composition_reduced",
+      "run.system.configuration_raw_gid",
+      "run.system.descriptors",
+      "run.system.descriptors.soap",
+      "run.system.descriptors.soap.atom_sigma",
+      "run.system.descriptors.soap.l_max",
+      "run.system.descriptors.soap.n_max",
+      "run.system.descriptors.soap.r_cut",
+      "run.system.is_representative",
+      "run.system.type",
+      "run.x_cp2k_dbcsr",
+      "run.x_cp2k_global_settings",
+      "run.x_cp2k_program_information",
+      "run.x_cp2k_section_end_information",
+      "run.x_cp2k_section_end_information.x_cp2k_end_host",
+      "run.x_cp2k_section_end_information.x_cp2k_end_id",
+      "run.x_cp2k_section_end_information.x_cp2k_end_path",
+      "run.x_cp2k_section_end_information.x_cp2k_end_time",
+      "run.x_cp2k_section_end_information.x_cp2k_end_user",
+      "run.x_cp2k_section_input",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_input_FORCE_EVAL_METHOD",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_input_FORCE_EVAL_DFT_BASIS_SET_FILE_NAME",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_input_FORCE_EVAL_DFT_POTENTIAL_FILE_NAME",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_MGRID",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_MGRID.x_cp2k_input_FORCE_EVAL_DFT_MGRID_CUTOFF",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_MGRID.x_cp2k_input_FORCE_EVAL_DFT_MGRID_REL_CUTOFF",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_QS",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_QS.x_cp2k_input_FORCE_EVAL_DFT_QS_EPS_DEFAULT",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_QS.x_cp2k_input_FORCE_EVAL_DFT_QS_EXTRAPOLATION_ORDER",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_SCF",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_SCF.x_cp2k_input_FORCE_EVAL_DFT_SCF_SCF_GUESS",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_XC",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_XC.x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_DFT.x_cp2k_section_input_FORCE_EVAL_DFT_XC.x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL.x_cp2k_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL_SECTION_PARAMETERS",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_SUBSYS",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_SUBSYS.x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_SUBSYS.x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL.x_cp2k_input_FORCE_EVAL_SUBSYS_CELL_ABC",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_SUBSYS.x_cp2k_section_input_FORCE_EVAL_SUBSYS_COORD",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_SUBSYS.x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_SUBSYS.x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND.x_cp2k_input_FORCE_EVAL_SUBSYS_KIND_BASIS_SET",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_SUBSYS.x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND.x_cp2k_input_FORCE_EVAL_SUBSYS_KIND_POTENTIAL",
+      "run.x_cp2k_section_input.x_cp2k_section_input_FORCE_EVAL.x_cp2k_section_input_FORCE_EVAL_SUBSYS.x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND.x_cp2k_input_FORCE_EVAL_SUBSYS_KIND_SECTION_PARAMETERS",
+      "run.x_cp2k_section_input.x_cp2k_section_input_GLOBAL",
+      "run.x_cp2k_section_input.x_cp2k_section_input_GLOBAL.x_cp2k_input_GLOBAL_PRINT_LEVEL",
+      "run.x_cp2k_section_input.x_cp2k_section_input_GLOBAL.x_cp2k_input_GLOBAL_PROJECT_NAME",
+      "run.x_cp2k_section_input.x_cp2k_section_input_GLOBAL.x_cp2k_input_GLOBAL_RUN_TYPE",
+      "run.x_cp2k_section_input.x_cp2k_section_input_MOTION",
+      "run.x_cp2k_section_input.x_cp2k_section_input_MOTION.x_cp2k_section_input_MOTION_MD",
+      "run.x_cp2k_section_input.x_cp2k_section_input_MOTION.x_cp2k_section_input_MOTION_MD.x_cp2k_input_MOTION_MD_ENSEMBLE",
+      "run.x_cp2k_section_input.x_cp2k_section_input_MOTION.x_cp2k_section_input_MOTION_MD.x_cp2k_input_MOTION_MD_STEPS",
+      "run.x_cp2k_section_input.x_cp2k_section_input_MOTION.x_cp2k_section_input_MOTION_MD.x_cp2k_input_MOTION_MD_TEMPERATURE",
+      "run.x_cp2k_section_input.x_cp2k_section_input_MOTION.x_cp2k_section_input_MOTION_MD.x_cp2k_input_MOTION_MD_TIMESTEP",
+      "run.x_cp2k_section_startinformation",
+      "run.x_cp2k_section_startinformation.x_cp2k_start_host",
+      "run.x_cp2k_section_startinformation.x_cp2k_start_id",
+      "run.x_cp2k_section_startinformation.x_cp2k_start_path",
+      "run.x_cp2k_section_startinformation.x_cp2k_start_time",
+      "run.x_cp2k_section_startinformation.x_cp2k_start_user",
+      "workflow2",
+      "workflow2.inputs",
+      "workflow2.method",
+      "workflow2.method.integration_timestep",
+      "workflow2.method.thermodynamic_ensemble",
+      "workflow2.method.x_cp2k_section_md_settings",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_coordinates_filename",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_coordinates_print_frequency",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_dump_filename",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_dump_print_frequency",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_energies_filename",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_energies_print_frequency",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_number_of_time_steps",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_print_frequency",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_target_temperature",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_target_temperature_tolerance",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_velocities_filename",
+      "workflow2.method.x_cp2k_section_md_settings.x_cp2k_md_velocities_print_frequency",
+      "workflow2.outputs",
+      "workflow2.outputs.name",
+      "workflow2.outputs.section",
+      "workflow2.results",
+      "workflow2.results.calculation_result_ref",
+      "workflow2.results.calculations_ref",
+      "workflow2.results.trajectory",
+      "workflow2.tasks",
+      "workflow2.tasks.inputs",
+      "workflow2.tasks.inputs.name",
+      "workflow2.tasks.inputs.section",
+      "workflow2.tasks.name",
+      "workflow2.tasks.outputs",
+      "workflow2.tasks.outputs.name",
+      "workflow2.tasks.outputs.section"
+    ],
+    "sections": [
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_MGRID",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_QS",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_SCF",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_XC",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_COORD",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_GLOBAL",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_MOTION",
+      "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_MOTION_MD",
+      "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_atomic_kind",
+      "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_atomic_kinds",
+      "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_end_information",
+      "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_kind_basis_set",
+      "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_maximum_angular_momentum",
+      "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_md_settings",
+      "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_quickstep_settings",
+      "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_startinformation",
+      "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_total_numbers",
+      "nomad.datamodel.datamodel.EntryArchive",
+      "nomad.datamodel.datamodel.EntryMetadata",
+      "nomad.datamodel.metainfo.workflow.Link",
+      "nomad.datamodel.metainfo.workflow.Task",
+      "nomad.datamodel.optimade.OptimadeEntry",
+      "nomad.datamodel.optimade.Species",
+      "nomad.datamodel.results.Cell",
+      "nomad.datamodel.results.DFT",
+      "nomad.datamodel.results.ElementalComposition",
+      "nomad.datamodel.results.EnergyDynamic",
+      "nomad.datamodel.results.MDProvenance",
+      "nomad.datamodel.results.Material",
+      "nomad.datamodel.results.Method",
+      "nomad.datamodel.results.MolecularDynamics",
+      "nomad.datamodel.results.Precision",
+      "nomad.datamodel.results.Properties",
+      "nomad.datamodel.results.Relation",
+      "nomad.datamodel.results.Results",
+      "nomad.datamodel.results.Simulation",
+      "nomad.datamodel.results.System",
+      "nomad.datamodel.results.TemperatureDynamic",
+      "nomad.datamodel.results.ThermodynamicProperties",
+      "nomad.datamodel.results.Trajectory",
+      "runschema.calculation.Calculation",
+      "runschema.calculation.Energy",
+      "runschema.calculation.EnergyEntry",
+      "runschema.calculation.ScfIteration",
+      "runschema.method.AtomParameters",
+      "runschema.method.BasisSet",
+      "runschema.method.BasisSetAtomCentered",
+      "runschema.method.BasisSetContainer",
+      "runschema.method.DFT",
+      "runschema.method.Electronic",
+      "runschema.method.Functional",
+      "runschema.method.Method",
+      "runschema.method.Scf",
+      "runschema.method.XCFunctional",
+      "runschema.run.Program",
+      "runschema.run.Run",
+      "runschema.system.Atoms",
+      "runschema.system.Descriptors",
+      "runschema.system.SOAP",
+      "runschema.system.System",
+      "simulationworkflowschema.molecular_dynamics.MolecularDynamics",
+      "simulationworkflowschema.molecular_dynamics.MolecularDynamicsMethod",
+      "simulationworkflowschema.molecular_dynamics.MolecularDynamicsResults"
+    ],
+    "optimade": {
+      "elements": [
+        "H",
+        "O"
+      ],
+      "nelements": 2,
+      "elements_ratios": [
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "chemical_formula_descriptive": "H4O2",
+      "chemical_formula_reduced": "H2O",
+      "chemical_formula_hill": "H4O2",
+      "chemical_formula_anonymous": "A2B",
+      "dimension_types": [
+        1,
+        1,
+        1
+      ],
+      "lattice_vectors": [
+        [
+          9.853000000000002,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          9.853000000000002,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          9.853000000000002
+        ]
+      ],
+      "cartesian_site_positions": [
+        [
+          2.2916014875,
+          9.143176326,
+          5.0868100688
+        ],
+        [
+          1.2366834078000002,
+          2.4077552776,
+          7.763004442300001
+        ],
+        [
+          1.6909790671000002,
+          9.8235337924,
+          5.5042564094
+        ],
+        [
+          3.1130341664,
+          9.037211181,
+          5.6100739746
+        ],
+        [
+          0.5652070478,
+          3.0441761067,
+          8.1734257299
+        ],
+        [
+          1.8669280879,
+          2.9877213524,
+          7.2364955946
+        ]
+      ],
+      "nsites": 6,
+      "species_at_sites": [
+        "O",
+        "O",
+        "H",
+        "H",
+        "H",
+        "H"
+      ],
+      "structure_features": [],
+      "species": [
+        {
+          "name": "O",
+          "chemical_symbols": [
+            "O"
+          ],
+          "concentration": [
+            1.0
+          ]
+        },
+        {
+          "name": "H",
+          "chemical_symbols": [
+            "H"
+          ],
+          "concentration": [
+            1.0
+          ]
+        }
+      ]
+    },
+    "section_defs": [
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.Run",
+        "definition_id": "6e9c68bee59cbaa19447586198244a02ccc74495",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input",
+        "definition_id": "4b457cfcf5ab0d3edf57d7a3c7e49109a03ff691",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL",
+        "definition_id": "d75cd4399ff28dae2f2c946d8b697b109a5991f1",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT",
+        "definition_id": "ada3b4a542692921044bcf01e756a70577c004e1",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_MGRID",
+        "definition_id": "5c9ed619b7659c697991ff91324f0749790b3197",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_QS",
+        "definition_id": "a43938c06cb14d50d2f0e7a68543d74170ba16ee",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_SCF",
+        "definition_id": "4aefe67df517b8d0af559b152a39eaae23d0ca06",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_XC",
+        "definition_id": "f2324784064e58d6494861c999e406f045eb9036",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_DFT_XC_XC_FUNCTIONAL",
+        "definition_id": "ae87e5712d657075aa3446eb3b974e280695b6d9",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS",
+        "definition_id": "d065940e840db9fb5989147228372e283195dd90",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_CELL",
+        "definition_id": "7595d0f721825e2c70db2098f48d4aebb1d1666a",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_COORD",
+        "definition_id": "c7b957222e8c6cc6013618ceb1ebaa12b80281ca",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_FORCE_EVAL_SUBSYS_KIND",
+        "definition_id": "29200498adf0430cacc87110038ec83ec046cb72",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_GLOBAL",
+        "definition_id": "c89cc74bd531bf8e6a32d45f0d7e2845ee5c5237",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_MOTION",
+        "definition_id": "0f6cb7a0421e17a2e0f2d6a18b9665bb27a04e74",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k.x_cp2k_section_input_MOTION_MD",
+        "definition_id": "7c2cd96f5319febba705958420c265b282028499",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.Calculation",
+        "definition_id": "f5908c66b56939f3fc3336dad4b8923bc238da81",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.Method",
+        "definition_id": "5c6f81da8db7c14d2a8bc5e4019bb90bf96a6750",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.MolecularDynamicsMethod",
+        "definition_id": "91b77c0bd8b0143edacb3cb69f8283acdc410620",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.Run",
+        "definition_id": "8bac32c5f9ffa6ea2a2e6f6b4ecc876cd904d5f3",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_atomic_kind",
+        "definition_id": "d1e42a410ffa09bd7fddae5d245bfcfe132b7236",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_atomic_kinds",
+        "definition_id": "ee59f3d3c4f98627e0045c8025b11cf578366006",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_end_information",
+        "definition_id": "a1cb5113cca017bcac5a7fd56df46f541952e015",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_kind_basis_set",
+        "definition_id": "aae2a588dda37940f55b4fd75d62e603545ab5c1",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_maximum_angular_momentum",
+        "definition_id": "2196b1d61dae165176ef8515776a3f3826e899e1",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_md_settings",
+        "definition_id": "b4bd7c9b8e89a8824a0cdfb26b2b7b6f8b476196",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_quickstep_settings",
+        "definition_id": "5a365d6dc894c00584f04edad69df18a85c3790c",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_startinformation",
+        "definition_id": "62ca16c364f6bd204d9d355b0af0f8e6dba2ec88",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "electronicparsers.cp2k.metainfo.cp2k_general.x_cp2k_section_total_numbers",
+        "definition_id": "4361b718a5f0aea19f9142fd9768c2b131a1f0aa",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.data.ArchiveSection",
+        "definition_id": "a4fc26727b8b3b1711ff8cea9896ac1910987509",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.data.EntryData",
+        "definition_id": "486f476f18785f5f4bcbac10db7304d7de35636b",
+        "used_directly": false
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.datamodel.EntryArchive",
+        "definition_id": "46df7596703b14a66cca1d7d2d252e0c364af956",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.datamodel.EntryMetadata",
+        "definition_id": "3bc8fd852aefbe94cb73c72d421244ebd23d3e14",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.metainfo.common.PropertySection",
+        "definition_id": "ef186cbb424aab1191ef1bd5b8d26140ecdebe08",
+        "used_directly": false
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.metainfo.common.ProvenanceTracker",
+        "definition_id": "f9c0465ac1c2fc21424c016cfb2c302b078fd236",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.metainfo.workflow.Link",
+        "definition_id": "7d9e1fa57f588525bd075187f97f743b01af1d68",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.metainfo.workflow.Task",
+        "definition_id": "0aff7a298df5dcb6da4e05879103e52180302870",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.metainfo.workflow.Workflow",
+        "definition_id": "81151ff3ce7e4f6807a047c9e2775d9a7514b334",
+        "used_directly": false
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.optimade.OptimadeEntry",
+        "definition_id": "01c4563c28ebfbf8cd9252e1b06cb0269e3c16fa",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.optimade.Species",
+        "definition_id": "0f2b8d4b559406178063c4838bd16e5cb8eb298e",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.Cell",
+        "definition_id": "631d089ad72adf893fee2bea32df8e7340278a00",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.DFT",
+        "definition_id": "3858395ddf70e3bd973ea37ce47656df8daeeb46",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.ElementalComposition",
+        "definition_id": "61f8380dd6dc37f9ff49d9ec2a5d254cbbb3d5af",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.EnergyDynamic",
+        "definition_id": "c6d3eab167fdb1c9acfd67becfdd139b151cd5d0",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.MDPropertySection",
+        "definition_id": "d2574d68d421031ee7fa4c47e420b343f8f4cda7",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.MDProvenance",
+        "definition_id": "bcfc60762372f24af1c2d53f826691e817808b41",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.Material",
+        "definition_id": "c42263dc2c5fcb455a85f3fbaa818a39285514b7",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.Method",
+        "definition_id": "13692b3320e88d58e0b8ab58b98a4b36b63ac8e3",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.MolecularDynamics",
+        "definition_id": "022aae798ca1dca7a5279b7abbaf6e87f09aa124",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.Precision",
+        "definition_id": "fc0850548b6abfdaaddfe3edd60209d239537210",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.Properties",
+        "definition_id": "0c07391238cf25ac1e6bdc2fea220cff66a8a350",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.QuantityDynamic",
+        "definition_id": "b37688b243267653fa02d27a308be6ae5e036886",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.Relation",
+        "definition_id": "5e71a2ae6e60c4cf6144475dad0dcd2b55f85dbb",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.Results",
+        "definition_id": "1c20cefadcf10cab672aae434168de685180574a",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.Simulation",
+        "definition_id": "22a418d225e6ef032e3187228e0eb6c68acfa6cc",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.System",
+        "definition_id": "802d9aab5b9b0e87b3af9e7cdc0a62f8d6cc3f44",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.TemperatureDynamic",
+        "definition_id": "8f90c515e63d3603fc1efcb4221ae572b3cc877b",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.ThermodynamicProperties",
+        "definition_id": "e07ebf9101df2e17920aedeb886647fe4dcde43a",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "nomad.datamodel.results.Trajectory",
+        "definition_id": "efd2954e2795ceef00eef2bec134555276e2d4c8",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.calculation.Atomic",
+        "definition_id": "2ed4594d17a8af131a5a470fb61faef0ca06355a",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.calculation.BaseCalculation",
+        "definition_id": "935f9eef6d3440a494a5130c1ac11794439e2fb3",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.calculation.Calculation",
+        "definition_id": "ae2e97073c24c3e4daa65c899d60f5baf8ea4a42",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.calculation.Energy",
+        "definition_id": "7ee898778b321a527db5f4e801c01b9c6855400f",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.calculation.EnergyEntry",
+        "definition_id": "ade895be80f5c2ba358f8638a442df6799049395",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.calculation.ScfIteration",
+        "definition_id": "d3ab81c9d06784ddcca77134f06e1786dd060ba1",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.AtomParameters",
+        "definition_id": "b5f416a11f60040b4daf1becb784281945a1ae81",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.BasisSet",
+        "definition_id": "a2be7f377369d58a7ef3736077c51425b616b247",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.BasisSetAtomCentered",
+        "definition_id": "a0e8c845600fbe6746f7053d45d72031455ca7d2",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.BasisSetContainer",
+        "definition_id": "24e10f66682677f926b56e8c58c13bf86539fd7c",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.BasisSetMesh",
+        "definition_id": "7b575e5fcce0fc0b6daff1602b1735933ad748cb",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.DFT",
+        "definition_id": "2a0472233286530e3d6fd7bda60e7962d260fd7f",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.Electronic",
+        "definition_id": "60d0ab33723fa1ceb3dd1a7e26af4e6196d4fb68",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.Functional",
+        "definition_id": "84478ffb365c0231ecbc795f4558e33ba39fa701",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.Method",
+        "definition_id": "a6fc9e4980fe284b3da3c86f4e6a46214f31b080",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.Model",
+        "definition_id": "16630d7232613720a17e649461a240f9314dcff9",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.Scf",
+        "definition_id": "83a29836ef088e06c728b8cc661d037d2eef3f01",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.method.XCFunctional",
+        "definition_id": "131a6d0e5f4cddf90f1e2b5ab1afb3920501dbaf",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.run.Program",
+        "definition_id": "1660412ed5083cfcff1faac36faa127fd56ff216",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.run.Run",
+        "definition_id": "580c338eb3b6abbb7f49b68050933dde9c9f1b68",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.system.Atoms",
+        "definition_id": "ed7f1904d581fcdd9abcbc62642dbfa2323ee010",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.system.Descriptors",
+        "definition_id": "9d79c4b2ffcd0da1fceb67e88d2a971ebcefaf49",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.system.SOAP",
+        "definition_id": "e9031fffc61a32b57b946a92609a0e592070d942",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "runschema.system.System",
+        "definition_id": "d5806c4ddc45a55c6f398c6120ee4d789a2cf81c",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "simulationworkflowschema.general.SerialSimulation",
+        "definition_id": "2c12b0a990eac68559e4e303824831638b0f0fa1",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "simulationworkflowschema.general.SimulationWorkflow",
+        "definition_id": "9abc1c9f7d94cca804ff00bfc000113a7fb8f3f2",
+        "used_directly": false
+      },
+      {
+        "definition_qualified_name": "simulationworkflowschema.general.SimulationWorkflowMethod",
+        "definition_id": "550a2007806901ae062e4f226c494f68a170bbcb",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "simulationworkflowschema.general.SimulationWorkflowResults",
+        "definition_id": "ba50357ef8d0a6baf4208fd31fd340f5c6ded330",
+        "used_directly": false
+      },
+      {
+        "definition_qualified_name": "simulationworkflowschema.molecular_dynamics.MolecularDynamics",
+        "definition_id": "a055b3ddf6115ef6895ba55d33d8f2e406b07411",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "simulationworkflowschema.molecular_dynamics.MolecularDynamicsMethod",
+        "definition_id": "78fa540a8176a34ffcb8d9a92f7babc3102e47a7",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "simulationworkflowschema.molecular_dynamics.MolecularDynamicsResults",
+        "definition_id": "ad3901a5570ea878fbb878364fc47706d61b2ed7",
+        "used_directly": true
+      },
+      {
+        "definition_qualified_name": "simulationworkflowschema.thermodynamics.ThermodynamicsResults",
+        "definition_id": "7f95254827f4c2daeba0fd88127d365ef84e8c75",
+        "used_directly": true
+      }
+    ]
+  },
+  "results": {
+    "material": {
+      "structural_type": "molecule / cluster",
+      "dimensionality": "0D",
+      "elements": [
+        "H",
+        "O"
+      ],
+      "chemical_formula_descriptive": "H2O",
+      "chemical_formula_reduced": "H2O",
+      "chemical_formula_hill": "H4O2",
+      "chemical_formula_iupac": "H2O",
+      "chemical_formula_anonymous": "A2B",
+      "chemical_formula_reduced_fragments": [
+        "H2",
+        "O"
+      ],
+      "elemental_composition": [
+        {
+          "element": "H",
+          "mass": 1.6737237491272248e-27,
+          "atomic_fraction": 0.6666666666666666,
+          "mass_fraction": 0.11189834407236525
+        },
+        {
+          "element": "O",
+          "mass": 2.656762877927865e-26,
+          "atomic_fraction": 0.3333333333333333,
+          "mass_fraction": 0.8881016559276348
+        }
+      ],
+      "topology": [
+        {
+          "system_id": "results/material/topology/0",
+          "label": "original",
+          "method": "parser",
+          "description": "A representative system chosen from the original simulation.",
+          "dimensionality": "0D",
+          "elements": [
+            "H",
+            "O"
+          ],
+          "chemical_formula_descriptive": "H2O",
+          "chemical_formula_reduced": "H2O",
+          "chemical_formula_hill": "H4O2",
+          "chemical_formula_iupac": "H2O",
+          "chemical_formula_anonymous": "A2B",
+          "atoms_ref": "#/run/0/system/10/atoms",
+          "n_atoms": 6,
+          "elemental_composition": [
+            {
+              "element": "O",
+              "mass": 2.656762877927865e-26,
+              "atomic_fraction": 0.3333333333333333,
+              "mass_fraction": 0.8881016559276348
+            },
+            {
+              "element": "H",
+              "mass": 1.6737237491272248e-27,
+              "atomic_fraction": 0.6666666666666666,
+              "mass_fraction": 0.11189834407236525
+            }
+          ],
+          "system_relation": {
+            "type": "root"
+          },
+          "cell": {
+            "a": 9.853e-10,
+            "b": 9.853e-10,
+            "c": 9.853e-10,
+            "alpha": 1.5707963267948966,
+            "beta": 1.5707963267948966,
+            "gamma": 1.5707963267948966,
+            "volume": 9.56545093477e-28,
+            "atomic_density": 6.272574122136009e+27,
+            "mass_density": 62.548177773393
+          }
+        }
+      ]
+    },
+    "method": {
+      "method_name": "DFT",
+      "workflow_name": "MolecularDynamics",
+      "simulation": {
+        "program_name": "CP2K",
+        "program_version": "CP2K version 2.6.2",
+        "dft": {
+          "basis_set_type": "plane waves",
+          "core_electron_treatment": "unavailable",
+          "scf_threshold_energy_change": 4.359744722205978e-23,
+          "jacobs_ladder": "LDA",
+          "xc_functional_type": "LDA",
+          "xc_functional_names": [
+            "LDA_XC_TETER93"
+          ]
+        },
+        "precision": {
+          "basis_set": "gaussians + plane waves"
+        }
+      }
+    },
+    "properties": {
+      "n_calculations": 11,
+      "thermodynamic": {
+        "trajectory": [
+          {
+            "available_properties": [
+              "temperature",
+              "energy_potential"
+            ],
+            "provenance": {
+              "molecular_dynamics": {
+                "time_step": 5e-16,
+                "ensemble_type": "NVE"
+              }
+            },
+            "temperature": {
+              "time": [
+                0.0,
+                5e-16,
+                1e-15,
+                1.5000000000000001e-15,
+                2e-15,
+                2.5000000000000004e-15,
+                3.0000000000000002e-15,
+                3.5e-15,
+                4e-15,
+                4.5000000000000005e-15,
+                5.000000000000001e-15
+              ],
+              "value": [
+                300.0,
+                275.075405378,
+                235.091633019,
+                202.752506973,
+                192.266488819,
+                201.629598676,
+                218.299664775,
+                230.324748558,
+                232.691881533,
+                226.146979313,
+                213.165337396
+              ]
+            },
+            "energy_potential": {
+              "time": [
+                0.0,
+                5e-16,
+                1e-15,
+                1.5000000000000001e-15,
+                2e-15,
+                2.5000000000000004e-15,
+                3.0000000000000002e-15,
+                3.5e-15,
+                4e-15,
+                4.5000000000000005e-15,
+                5.000000000000001e-15
+              ],
+              "value": [
+                -1.496717648257219e-16,
+                -1.496690727792703e-16,
+                -1.4966476386917155e-16,
+                -1.496613123682686e-16,
+                -1.4966024559105202e-16,
+                -1.4966130762486634e-16,
+                -1.4966311475649267e-16,
+                -1.4966438631091887e-16,
+                -1.496646189250985e-16,
+                -1.496639250630065e-16,
+                -1.4966256823633328e-16
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

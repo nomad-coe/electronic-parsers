@@ -269,7 +269,7 @@ def test_molecular_dynamics_old_format(parser):
 
 
 def test_molecular_dynamics_new_format(parser):
-    """Test MD parsing for CP2K >= 8.1 (new output format)."""
+    """Test MD parsing for CP2K >= 2k8.1 (new output format)."""
     archive = EntryArchive()
     parser.parse('tests/data/cp2k/molecular_dynamics/H2O-32-2023.1.out', archive, None)
 
@@ -279,6 +279,10 @@ def test_molecular_dynamics_new_format(parser):
     sec_sccs = archive.run[0].calculation
     # Should have 11 calculations: 1 initial SCF + 10 MD steps
     assert len(sec_sccs) == 11
+
+    # Check that MD steps have SCF iteration data (verifies SCF convergence is parsed)
+    assert len(sec_sccs[1].scf_iteration) > 0
+    assert len(sec_sccs[6].scf_iteration) > 0
 
     # Check that MD steps have energy data
     assert sec_sccs[1].energy.potential is not None
