@@ -142,6 +142,44 @@ MD| Potential energy [hartree]         -0.343297798065E+02  -0.343297798065E+02
 
 ## Parser Implementation
 
+### Handling Instantaneous vs. Average Values
+
+**Both old and new formats** provide **two values** for most MD properties:
+
+**Old format (CP2K ≤7.1):**
+```
+                                             INSTANTANEOUS             AVERAGES
+ POTENTIAL ENERGY[hartree]    =         -0.343297789925E+02  -0.343297789925E+02
+ KINETIC ENERGY [hartree]     =          0.653334760734E-02   0.653334760734E-02
+ TEMPERATURE [K]              =                     275.075              275.075
+```
+
+**New format (CP2K ≥8.1):**
+```
+MD|                                          Instantaneous             Averages
+MD| Potential energy [hartree]         -0.343297798065E+02  -0.343297798065E+02
+MD| Kinetic energy [hartree]            0.653325396214E-02   0.653325396214E-02
+MD| Temperature [K]                             275.071463           275.071463
+```
+
+The parser **extracts the instantaneous value** (first element, column 0) because:
+
+1. **Represents current state**: It's the actual property value at that specific MD timestep, which is what most analyses need
+
+2. **Preserves dynamics**: You can see how properties evolve over time - averaging would smooth out important fluctuations
+
+3. **Matches expectations**: Most MD analysis tools expect per-step values, not running averages
+
+4. **Averages can be recomputed**: If you have all instantaneous values, you can always compute averages later if needed
+
+5. **Consistency**: Both formats use the same data structure `[instantaneous, average]`
+
+**Implementation:** The `get_md_value(key, column=0)` function extracts values from either format, with `column=0` for instantaneous (default) and `column=1` for average.
+
+**Example:** At MD step 1 (0.5 fs), temperature is 275.071463 K (both instantaneous and average). At step 10, you might see instantaneous = 285 K and average = 278 K. The parser stores the instantaneous value (285 K) to preserve the full dynamics.
+
+### Format Merging
+
 The parser handles both formats (parser.py:1201-1218):
 
 ```python

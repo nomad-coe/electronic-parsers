@@ -288,9 +288,8 @@ def test_molecular_dynamics_new_format(parser):
     assert sec_sccs[1].energy.potential.value.to('hartree').magnitude == approx(
         -34.3297798065
     )
-    # Kinetic energy should be positive and reasonable (around 0.006-0.007 hartree)
-    assert 0.006 < sec_sccs[1].energy.kinetic.value.to('hartree').magnitude < 0.008
-    # Temperature should be around 275 K (within 1%)
-    assert 270 < sec_sccs[1].temperature.magnitude < 280
-    # Time should be in seconds (0.5 fs = 5e-16 s)
-    assert sec_sccs[1].time is not None
+    assert sec_sccs[1].energy.kinetic.value.to('hartree').magnitude == approx(
+        0.00653325396214
+    )
+    assert sec_sccs[1].temperature.magnitude == approx(275.071463)
+    assert sec_sccs[1].time.to('femtosecond').magnitude == approx(0.5)

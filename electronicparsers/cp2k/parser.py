@@ -687,6 +687,7 @@ class CP2KOutParser(TextParser):
                             rf'CPU TIME \[s\]\s*=\s*({re_float})\s*(re_float)',
                             dtype=float,
                         ),
+                        # Properties below capture [instantaneous, average] values
                         Quantity(
                             'energy_drift',
                             rf'ENERGY DRIFT PER ATOM \[K\]\s*=\s*({re_float})\s*({re_float})',
@@ -755,7 +756,7 @@ class CP2KOutParser(TextParser):
                                 quantities=scf_wavefunction_optimization_quantities
                             ),
                         ),
-                        # New format (CP2K ≥8.1) - captures instantaneous and average values
+                        # New format (CP2K ≥8.1)
                         Quantity('step', r'MD\| Step number\s+(\d+)', dtype=int),
                         Quantity(
                             'time', rf'MD\| Time \[fs\]\s+({re_float})', dtype=float, unit='fs'
@@ -776,6 +777,7 @@ class CP2KOutParser(TextParser):
                             rf'MD\| Energy drift per atom \[K\]\s+({re_float})',
                             dtype=float,
                         ),
+                        # Properties below capture [instantaneous, average] values
                         Quantity(
                             'potential_energy',
                             rf'MD\| Potential energy \[hartree\]\s+({re_float})\s+({re_float})',
@@ -1975,17 +1977,19 @@ class CP2KParser:
             md_output = md_output if md_output else source
             calc = sec_run.calculation[-1]
 
-            def get_md_value(key_new, key_old=None):
-                """Get MD value from either new format (key_new) or old format (key_old).
-                New format returns arrays [instantaneous, average], take first element.
-                """
-                import numpy as np
+            def get_md_value(key, column=0):
+                """Extract MD value from old or new format output.
 
-                # Try new format first (without _instantaneous suffix)
-                value = md_output.get(key_new)
-                # If not found and old key provided, try old format
-                if value is None and key_old:
-                    value = md_output.get(key_old)
+                Both old and new formats provide arrays [instantaneous, average] for most properties.
+
+                Args:
+                    key: Property name (e.g., 'kinetic_energy', 'temperature')
+                    column: Which value to extract (0=instantaneous, 1=average). Default: 0
+
+                Returns:
+                    Extracted value (instantaneous by default) or None if not found
+                """
+                value = md_output.get(key)
                 if value is None:
                     return None
 
@@ -1995,28 +1999,29 @@ class CP2KParser:
                     # Check if magnitude is array-like (tuple, list, ndarray)
                     if hasattr(mag, '__len__') and not isinstance(mag, str):
                         try:
-                            # Extract first element and create new Quantity with scalar magnitude
+                            # Extract specified column and create new Quantity with scalar magnitude
                             if hasattr(value, 'units'):
-                                value = float(mag[0]) * value.units
+                                value = float(mag[column]) * value.units
                             else:
-                                value = float(mag[0])
+                                value = float(mag[column])
                         except (TypeError, IndexError):
                             pass
-                # If value is a plain list/tuple/ndarray, take first element
+                # If value is a plain list/tuple/ndarray, take specified column
                 elif hasattr(value, '__len__') and not isinstance(value, str):
                     try:
-                        if len(value) > 0:
-                            value = value[0]
+                        if len(value) > column:
+                            value = value[column]
                     except (TypeError, IndexError):
                         pass
 
                 return value
 
             # Store to common metainfo
-            energy_kinetic = get_md_value('kinetic_energy', 'kinetic_energy_instantaneous')
+            # Both old and new formats provide [instantaneous, average] - we extract instantaneous (column 0)
+            energy_kinetic = get_md_value('kinetic_energy')
             if energy_kinetic is not None:
                 calc.energy.kinetic = EnergyEntry(value=energy_kinetic.to('joule'))
-            potential_energy = get_md_value('potential_energy', 'potential_energy_instantaneous')
+            potential_energy = get_md_value('potential_energy')
             if potential_energy is not None:
                 calc.energy.potential = EnergyEntry(value=potential_energy.to('joule'))
 
@@ -2033,13 +2038,13 @@ class CP2KParser:
             if time is not None:
                 # Handle both Quantity (new format) and float (old format from .ener file)
                 calc.time = time.to('second') if hasattr(time, 'to') else time
-            volume = get_md_value('volume', 'volume_instantaneous')
+            volume = get_md_value('volume')
             if volume is not None:
                 calc.volume = volume.to('m**3')
-            pressure = get_md_value('pressure', 'pressure_instantaneous')
+            pressure = get_md_value('pressure')
             if pressure is not None:
                 calc.pressure = pressure.to('m**3')
-            temperature = get_md_value('temperature', 'temperature_instantaneous')
+            temperature = get_md_value('temperature')
             if temperature is not None:
                 calc.temperature = temperature
 
