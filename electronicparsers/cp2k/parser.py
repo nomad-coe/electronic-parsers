@@ -2046,6 +2046,9 @@ class CP2KParser:
             step = md_output.get('step')
             if step is not None:
                 calc.step = int(step)
+            elif hasattr(md_output, '_frame'):
+                # For initial calculation, use frame number (0) as step
+                calc.step = md_output._frame
             time = md_output.get('time')
             if time is not None:
                 # Handle both Quantity (new format) and float (old format from .ener file)
