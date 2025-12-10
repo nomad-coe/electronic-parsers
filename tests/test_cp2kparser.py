@@ -237,7 +237,8 @@ def test_geometry_optimization(parser):
     )
 
 
-def test_molecular_dynamics(parser):
+def test_molecular_dynamics_old_format(parser):
+    """Test MD parsing for CP2K <= 7.1 (old output format)."""
     archive = EntryArchive()
     parser.parse('tests/data/cp2k/molecular_dynamics/H2O-32.out', archive, None)
 
@@ -268,7 +269,7 @@ def test_molecular_dynamics(parser):
 
 
 def test_molecular_dynamics_new_format(parser):
-    """Test MD parsing for CP2K ≥8.1 (new output format)."""
+    """Test MD parsing for CP2K >= 8.1 (new output format)."""
     archive = EntryArchive()
     parser.parse('tests/data/cp2k/molecular_dynamics/H2O-32-2023.1.out', archive, None)
 
