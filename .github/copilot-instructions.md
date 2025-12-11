@@ -281,63 +281,73 @@ parser:
   supported_file_formats:
     # NOTE: This section lists ALL possible file formats the code MAY produce,
     # not necessarily all formats that are currently supported by the parser.
-    # Each format MUST include a support annotation:
+    # Each format MUST include:
     #   - supported: true/false (whether the parser can handle this format)
-    - name: "format1"
+    #   - source: filepath:class.method pointing to the implementation
+    #            (filepath from project root, specify the lowest level: method if possible)
+    # The source is required for:
+    #   1. Traceability: Easy verification of documented capabilities
+    #   2. Catching hallucinations: Prevents documenting non-existent features
+    - name: "vasprun.xml"
       supported: true
       notes: "Fully supported"
-    - name: "format2"
-      supported: false
+      source: "electronicparsers/vasp/parser.py:VASPParser.init_parser"
+    - name: "OUTCAR"
+      supported: true
+      notes: "Fully supported"
+      source: "electronicparsers/vasp/parser.py:VASPParser.init_parser"
 
 runschema_capabilities:
+  # NOTE: Every claimed capability MUST include a source reference pointing to
+  # the implementation: filepath:class.method (from project root, lowest level possible)
+  # The source is required for:
+  #   1. Traceability: Easy verification of documented capabilities
+  #   2. Catching hallucinations: Prevents documenting non-existent features
+
   run:
-    - program  # name, version
-    - time_run  # timing information
+    - capability: program  # name, version
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse"
+    - capability: time_run  # timing information
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse"
 
   method:
-    - electronic.method  # DFT, HF, GW, etc.
-    - dft.xc_functional  # XC functional for DFT codes
-    - basis_set  # type, cutoff
-    - k_mesh  # k-point sampling
-    - scf  # SCF parameters
-    - smearing  # occupation smearing
-    - pseudopotential  # pseudopotential info
-    # Add other method components as applicable
+    - capability: electronic.method  # DFT, HF, GW, etc.
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: dft.xc_functional  # XC functional for DFT codes
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: basis_set  # type, cutoff
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: k_mesh  # k-point sampling
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_kpoints"
+    - capability: gw  # GW approximation
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_gw"
+    # Add other method components as applicable with sources
 
   system:
-    - atoms  # positions, species, lattice_vectors, periodic
-    - symmetry  # optional: space group
+    - capability: atoms  # positions, species, lattice_vectors, periodic
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
 
   calculation:
     # Energy components (list what the parser extracts)
-    - energy.total
-    - energy.free
-    - energy.kinetic
-    # Add other energy components as applicable
-
-    # Forces and stress
-    - forces.total  # if parser extracts forces
-    - stress.total  # if parser extracts stress
-
-    # Convergence
-    - scf_iteration  # if parser tracks SCF
+    - capability: energy.total
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.free
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
 
     # Electronic structure
-    - band_structure_electronic  # if parser extracts band structure
-    - dos_electronic  # if parser extracts DOS
-    - eigenvalues  # band energies
-
-    # Other properties
-    - charges  # if charge analysis available
-    - vibrational_frequencies  # if phonons/vibrations
-    - thermodynamics  # temperature, pressure
+    - capability: eigenvalues
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: dos_electronic
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
 
   workflow:
-    - single_point  # all parsers
-    - geometry_optimization  # if supported
-    - molecular_dynamics  # if supported
-    - phonon  # if supported
-    # Add other workflow types as applicable
+    - capability: single_point
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_workflow"
+    - capability: geometry_optimization
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_workflow"
+    - capability: molecular_dynamics
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_workflow"
+    # Add other workflow types as applicable with sources
 
 special_features:
   # List parser-specific advanced capabilities
