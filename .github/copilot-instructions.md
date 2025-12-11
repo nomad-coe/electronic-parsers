@@ -279,8 +279,15 @@ parser:
     - "pattern1"
     - "pattern2"
   supported_file_formats:
-    - "format1"
-    - "format2"
+    # NOTE: This section lists ALL possible file formats the code MAY produce,
+    # not necessarily all formats that are currently supported by the parser.
+    # Each format MUST include a support annotation:
+    #   - supported: true/false (whether the parser can handle this format)
+    - name: "format1"
+      supported: true
+      notes: "Fully supported"
+    - name: "format2"
+      supported: false
 
 runschema_capabilities:
   run:
