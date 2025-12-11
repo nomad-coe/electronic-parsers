@@ -4,6 +4,8 @@
 
 This document provides guidance for GitHub Copilot when working with NOMAD electronic structure parsers. Each parser extracts computational results from simulation output files and maps them to NOMAD's unified runschema.
 
+**IMPORTANT**: Before merging any parser changes (especially new features), ensure the parser's `FEATURES.yml` file is updated to reflect new capabilities and that these changes are reviewed. The exact `FEATURES.yml` requirements to be enforced are stated below.
+
 ## Parser Feature Documentation
 
 Each parser has a `FEATURES.yml` file in its directory that documents its capabilities using standardized runschema terminology. These files serve as a reference for:
