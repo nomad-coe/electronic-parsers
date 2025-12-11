@@ -1,0 +1,88 @@
+metadata:
+  last_updated: "2025-12-09"
+  updated_by: "GitHub Copilot"
+
+parser:
+  name: "Gaussian"
+  description: "Gaussian - comprehensive quantum chemistry package for molecular systems"
+  homepage: "http://gaussian.com"
+  mainfile_patterns:
+    - "*.log"
+    - "*.out"
+  supported_file_formats:
+    - "*.log (primary output file)"
+    - "*.out (output file)"
+
+runschema_capabilities:
+  run:
+    - program  # Gaussian version
+    - time_run  # execution timing
+
+  method:
+    - electronic.method  # DFT, HF, MP2, CCSD, CI, etc.
+    - electronic.n_spin_channels  # spin-restricted or unrestricted
+    - dft.xc_functional  # extensive XC functional support
+    - basis_set  # Gaussian-type basis sets (atom-centered)
+    - scf  # SCF convergence parameters
+
+  system:
+    - atoms  # molecular structure
+    - atoms.labels  # element symbols
+    - atoms.positions  # atomic coordinates (Cartesian)
+    - atoms.periodic  # periodicity (typically [False, False, False] for molecules)
+
+  calculation:
+    # Energy components
+    - energy.total  # total electronic energy
+    - energy.nuclear_repulsion  # nuclear-nuclear repulsion
+    - energy.kinetic  # kinetic energy
+    - energy.potential  # potential energy
+    - energy.xc  # exchange-correlation energy
+    - energy.exchange  # exchange energy
+    - energy.correlation  # correlation energy
+    - energy.highest_occupied  # HOMO energy
+    - energy.lowest_unoccupied  # LUMO energy
+    - energy.zero_point  # zero-point vibrational energy
+
+    # Forces
+    - forces.total  # atomic forces (gradients)
+
+    # SCF convergence
+    - scf_iteration  # SCF iteration history
+
+    # Electronic structure
+    - band_structure_electronic  # eigenvalues/molecular orbitals
+    - eigenvalues  # orbital energies
+    - occupations  # orbital occupations
+
+    # Molecular properties
+    - charges  # atomic charges (Mulliken, NPA, etc.)
+    - vibrational_frequencies  # normal mode frequencies
+    - thermodynamics  # thermochemical properties (enthalpy, entropy, free energy)
+
+  workflow:
+    - single_point  # single-point energy calculation
+    - geometry_optimization  # molecular geometry optimization
+
+special_features:
+  - "Comprehensive DFT functional library (LDA, GGA, meta-GGA, hybrid, double-hybrid)"
+  - "Post-Hartree-Fock methods: MP2, MP3, MP4, MP5, CCSD, CCSD(T), CI, QCISD"
+  - "Hybrid functionals: B3LYP, B3PW91, PBE0, HSE06, M06, M11, etc."
+  - "Range-separated functionals: LC-ωPBE, CAM-B3LYP, ωB97, ωB97X, ωB97X-D"
+  - "Double-hybrid functionals: B2PLYP, MPW2PLYP"
+  - "Semiempirical methods: AM1, PM3, PM6, PM7"
+  - "Composite methods: G1, G2, G3, CBS-4, CBS-Q, CBS-QB3"
+  - "Gaussian-type orbital (GTO) basis sets with extensive library"
+  - "Vibrational frequency analysis with IR and Raman intensities"
+  - "Thermochemistry calculations (ZPE, enthalpy, entropy, Gibbs free energy)"
+  - "Molecular multipole moments (dipole, quadrupole)"
+  - "Orbital symmetry analysis"
+  - "Excited state calculations (TD-DFT, CIS, CASSCF)"
+  - "Charge analysis: Mulliken, NPA, Hirshfeld, APT"
+
+notes:
+  - "Gaussian is primarily used for molecular (non-periodic) systems"
+  - "Parser handles single-point and geometry optimization calculations"
+  - "Extensive support for correlated wavefunction methods beyond DFT"
+  - "Vibrational analysis includes normal modes, frequencies, and intensities"
+  - "Parser extracts thermochemical properties when available"

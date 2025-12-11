@@ -1,0 +1,62 @@
+metadata:
+  last_updated: "2025-12-09"
+  updated_by: "GitHub Copilot"
+
+parser:
+  name: "Wannier90"
+  description: "Wannier90 - maximally-localized Wannier functions and tight-binding model construction"
+  homepage: "http://www.wannier.org/"
+  mainfile_patterns:
+    - "*.wout"
+  supported_file_formats:
+    - "*.wout (primary output file)"
+    - "*.win (input file)"
+    - "*band.dat (band structure data)"
+    - "*dos.dat (DOS data)"
+    - "*_hr.dat (hopping matrices)"
+
+runschema_capabilities:
+  run:
+    - program  # Wannier90 version
+
+  method:
+    - k_mesh  # k-point sampling for Wannierization
+    - tb.wannier  # Wannier function parameters and settings
+    - atom_parameters  # per-atom projection settings
+
+  system:
+    - atoms  # atomic structure
+    - atoms.labels  # element symbols
+    - atoms.positions  # atomic positions (Cartesian)
+    - atoms.lattice_vectors  # real-space lattice vectors
+    - atoms.lattice_vectors_reciprocal  # reciprocal lattice vectors
+    - atoms.periodic  # periodicity flags
+
+  calculation:
+    # Electronic structure from Wannier interpolation
+    - band_structure_electronic  # band structure along high-symmetry paths
+    - dos_electronic  # density of states from Wannier interpolation
+
+    # Tight-binding Hamiltonian
+    - hopping_matrix  # real-space hopping matrix elements
+
+  workflow:
+    - single_point  # Wannierization calculation
+
+special_features:
+  - "Maximally-localized Wannier function (MLWF) construction"
+  - "Tight-binding Hamiltonian generation from DFT"
+  - "Real-space hopping matrix extraction (*_hr.dat)"
+  - "Band structure interpolation from Wannier functions"
+  - "DOS calculation from Wannier interpolation"
+  - "Disentanglement of energy windows (inner/outer windows)"
+  - "Support for multiple projection orbital types (s, p, d, f, sp, sp2, sp3, sp3d, sp3d2)"
+  - "Compatible with multiple DFT codes: Quantum ESPRESSO, ABINIT, VASP, SIESTA, Wien2k, FLEUR, OpenMX, GPAW"
+  - "Orbital projection mapping (angular momentum to orbital names)"
+
+notes:
+  - "Wannier90 is a post-processing tool for generating Wannier functions from DFT calculations"
+  - "The parser extracts the Wannierization results and interpolated electronic structure"
+  - "Hopping matrices are extracted when write_hr is enabled in the input"
+  - "Band structure and DOS are calculated via Wannier interpolation, not direct DFT"
+  - "System structure is taken from the DFT calculation output embedded in .wout"

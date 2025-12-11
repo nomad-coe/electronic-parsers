@@ -1,0 +1,96 @@
+metadata:
+  last_updated: "2025-12-09"
+  updated_by: "GitHub Copilot"
+
+parser:
+  name: "ABINIT"
+  description: "ABINIT - plane-wave DFT code with extensive beyond-DFT capabilities (GW, BSE, DMFT)"
+  homepage: "https://www.abinit.org/"
+  mainfile_patterns:
+    - "*.*o*"
+    - "log"
+  supported_file_formats:
+    - "*.*o* (primary text output with user-defined name)"
+    - "*.files (user-defined filenames)"
+    - "*.*i* (input parameters)"
+    - "*_o_DDB (netCDF Derivative DataBases)"
+    - "*_o_DEN (netCDF charge density)"
+    - "*_o_EIG (eigenvalues text file)"
+    - "*_o_WFK (netCDF wavefunction)"
+    - "*o_SCR (netCDF RPA inverse dielectric screening)"
+    - "*o_SIGRES (netCDF GW self-energy corrections)"
+    - "log (stdout redirection)"
+
+runschema_capabilities:
+  run:
+    - program  # ABINIT version
+    - time_run  # execution timing
+
+  method:
+    - electronic.method  # DFT, GW
+    - electronic.n_spin_channels  # spin-polarized or unpolarized
+    - electronic.smearing  # Fermi-Dirac, Gaussian, Methfessel-Paxton, Marzari-Vanderbilt
+    - dft.xc_functional  # LDA, GGA, meta-GGA via native or libxc
+    - basis_set  # plane waves with cutoff energy (ecut)
+    - k_mesh  # k-point sampling (Monkhorst-Pack, kptrlatt)
+    - scf  # SCF convergence parameters (nstep, toldfe)
+    - gw  # GW approximation (G0W0, ev-scGW, qp-scGW)
+    - screening  # RPA screening for GW/BSE
+    - frequency_mesh  # frequency grid for GW
+
+  system:
+    - atoms  # atomic structure
+    - atoms.labels  # element symbols
+    - atoms.positions  # atomic positions (Cartesian or reduced)
+    - atoms.lattice_vectors  # unit cell vectors
+    - atoms.periodic  # periodicity flags
+
+  calculation:
+    # Energy components
+    - energy.total  # total energy
+    - energy.kinetic  # kinetic energy
+    - energy.xc  # exchange-correlation energy
+    - energy.electrostatic  # electrostatic/Hartree energy
+    - energy.ewald  # Ewald energy
+    - energy.fermi  # Fermi energy
+
+    # Forces and stress
+    - forces.total  # atomic forces
+    - stress.total  # stress tensor
+
+    # SCF convergence
+    - scf_iteration  # SCF convergence history
+
+    # Electronic structure
+    - band_structure_electronic  # band energies/eigenvalues
+    - dos_electronic  # density of states
+    - band_gap  # electronic band gap
+
+  workflow:
+    - single_point  # single-point energy calculation
+    - geometry_optimization  # structure relaxation
+    - molecular_dynamics  # MD simulation
+
+special_features:
+  - "Plane-wave basis set with norm-conserving and PAW pseudopotentials"
+  - "Extensive XC functional library via native ABINIT functionals and libxc"
+  - "GW approximation: G0W0, eigenvalue self-consistent GW (ev-scGW), quasi-particle self-consistent GW (qp-scGW)"
+  - "Bethe-Salpeter equation (BSE) for optical spectra and excitons"
+  - "DMFT for strongly correlated systems"
+  - "Time-dependent DFT (TDFPT) for excited states and response functions"
+  - "Phonons via density-functional perturbation theory (DFPT)"
+  - "Spin-orbit coupling"
+  - "Non-linear response properties (second harmonic generation, electro-optic effect)"
+  - "Multi-dataset calculations (sequential calculations with different parameters)"
+  - "Band structure calculations along high-symmetry paths (kptopt < 0)"
+  - "Support for both text output and netCDF binary files"
+  - "RPA dielectric screening for beyond-DFT calculations"
+  - "GW band gap corrections and quasi-particle energies"
+
+notes:
+  - "ABINIT uses plane waves and is particularly suited for periodic systems"
+  - "Parser handles multi-dataset calculations (DATASET 1, 2, 3, ...)"
+  - "Beyond-DFT workflows (GW, BSE) are parsed via BeyondDFTWorkflowsParser"
+  - "XC functional specified via ixc parameter (native) or via libxc (negative ixc)"
+  - "Parser extracts k-mesh from ngkpt (Monkhorst-Pack) or kptrlatt"
+  - "Supports both text-based output files and netCDF binary files for density, wavefunctions, screening, and GW results"
