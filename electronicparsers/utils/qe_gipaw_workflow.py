@@ -95,6 +95,74 @@ class EFGQE(SerialSimulation):
         super().normalize(archive, logger)
 
 
+class EPRHyperfineQEResults(SimulationWorkflowResults):
+    """
+    Groups the EPR Hyperfine QE outputs.
+    """
+
+    pass
+
+
+class EPRHyperfineQEMethod(SimulationWorkflowMethod):
+    """
+    References the EPR Hyperfine input model method.
+    """
+
+    nmr_method_ref = Quantity(
+        type=Reference(ModelMethod),
+        description="""
+        Reference to the EFG model method.
+        """,
+    )
+
+
+class EPRHyperfineQE(SerialSimulation):
+    """
+    EPR Hyperfine QE workflow
+    """
+
+    method = SubSection(sub_section=EPRHyperfineQEMethod)
+
+    results = SubSection(sub_section=EPRHyperfineQEResults)
+
+    def normalize(self, archive, logger):
+        super().normalize(archive, logger)
+
+
+class EPRGtensorQEResults(SimulationWorkflowResults):
+    """
+    Groups the EPR Hyperfine QE outputs.
+    """
+
+    pass
+
+
+class EPRGtensorQEMethod(SimulationWorkflowMethod):
+    """
+    References the EPR Hyperfine input model method.
+    """
+
+    nmr_method_ref = Quantity(
+        type=Reference(ModelMethod),
+        description="""
+        Reference to the EFG model method.
+        """,
+    )
+
+
+class EPRGtensorQE(SerialSimulation):
+    """
+    EPR Hyperfine QE workflow
+    """
+
+    method = SubSection(sub_section=EPRGtensorQEMethod)
+
+    results = SubSection(sub_section=EPRGtensorQEResults)
+
+    def normalize(self, archive, logger):
+        super().normalize(archive, logger)
+
+
 
 class GIPAWQE(SerialSimulation):
     """
