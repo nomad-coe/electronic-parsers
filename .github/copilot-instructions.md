@@ -266,6 +266,34 @@ Dynamical mean-field theory.
 
 ## YAML Schema for FEATURES.yml
 
+### Supported File Formats
+
+**IMPORTANT**: The `supported_file_formats` section lists ALL possible file formats the simulation code MAY produce, not necessarily all formats that are currently supported by the parser.
+
+Each format MUST include:
+- `name`: The file format name
+- `supported`: true/false (whether the parser can handle this format)
+- `source`: filepath:class.method pointing to the implementation (filepath from project root, specify the lowest level: method if possible)
+- `notes`: Optional brief explanation (e.g., "Fully supported", "Format exists but not parsed")
+
+**Why source is required:**
+1. **Traceability**: Easy verification of documented capabilities
+2. **Catching hallucinations**: Prevents documenting non-existent features
+
+### Runschema Capabilities
+
+**IMPORTANT**: Every claimed capability MUST include a source reference pointing to the implementation: filepath:class.method (from project root, lowest level possible).
+
+Each capability entry includes:
+- `capability`: The runschema section/property name
+- `source`: filepath:class.method pointing to the implementation
+
+**Why source is required:**
+1. **Traceability**: Easy verification of documented capabilities
+2. **Catching hallucinations**: Prevents documenting non-existent features
+
+### YAML Template
+
 ```yaml
 metadata:
   last_updated: "YYYY-MM-DD"
@@ -279,15 +307,6 @@ parser:
     - "pattern1"
     - "pattern2"
   supported_file_formats:
-    # NOTE: This section lists ALL possible file formats the code MAY produce,
-    # not necessarily all formats that are currently supported by the parser.
-    # Each format MUST include:
-    #   - supported: true/false (whether the parser can handle this format)
-    #   - source: filepath:class.method pointing to the implementation
-    #            (filepath from project root, specify the lowest level: method if possible)
-    # The source is required for:
-    #   1. Traceability: Easy verification of documented capabilities
-    #   2. Catching hallucinations: Prevents documenting non-existent features
     - name: "vasprun.xml"
       supported: true
       notes: "Fully supported"
@@ -298,12 +317,6 @@ parser:
       source: "electronicparsers/vasp/parser.py:VASPParser.init_parser"
 
 runschema_capabilities:
-  # NOTE: Every claimed capability MUST include a source reference pointing to
-  # the implementation: filepath:class.method (from project root, lowest level possible)
-  # The source is required for:
-  #   1. Traceability: Easy verification of documented capabilities
-  #   2. Catching hallucinations: Prevents documenting non-existent features
-
   run:
     - capability: program  # name, version
       source: "electronicparsers/vasp/parser.py:VASPParser.parse"
