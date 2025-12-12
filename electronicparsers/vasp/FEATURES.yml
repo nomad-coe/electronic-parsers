@@ -28,14 +28,6 @@ parser:
       supported: true
       notes: "Input parameters"
       source: "electronicparsers/vasp/parser.py:RunContentParser.get_incar"
-    - name: "POSCAR"
-      supported: false
-      notes: "Structure file, not directly parsed"
-      source: "N/A"
-    - name: "CONTCAR"
-      supported: false
-      notes: "Output structure file, not directly parsed"
-      source: "N/A"
 
 runschema_capabilities:
   run:
