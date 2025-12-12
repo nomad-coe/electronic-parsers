@@ -226,6 +226,6 @@ def test_5(parser):
     system = run.system
     assert run.x_yambo_input.x_yambo_file == './SAVE//ns.db1'
     assert system[0].atoms.positions.to('angstrom')[0][0].magnitude == approx(0.675)
-    assert x_yambo_parameters[0].x_yambo_max_atoms_species[0] == 4
-    assert x_yambo_parameters[0].x_yambo_n_atom_species[0] == 4
-    assert x_yambo_parameters[0].x_yambo_n_atom_species[1] == 1
+    assert run.x_yambo_input.x_yambo_parameters['Max atoms/species'] == 4
+    assert run.x_yambo_input.x_yambo_parameters['No. of atom species'] == 2
+    assert system[0].atoms.positions.shape == (5, 3)
