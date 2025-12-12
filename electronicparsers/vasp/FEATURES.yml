@@ -1,6 +1,6 @@
 metadata:
-  last_updated: "2025-12-05"
-  updated_by: "Claude Sonnet 4.5"
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 
 parser:
   name: "VASP"
@@ -12,78 +12,127 @@ parser:
     - "**/vasprun.xml.bz2"
     - "**/OUTCAR"
   supported_file_formats:
-    - "vasprun.xml (primary)"
-    - "OUTCAR (fallback)"
-    - "POTCAR (pseudopotential info)"
-    - "INCAR (input parameters)"
-    - "POSCAR/CONTCAR (structure)"
+    - name: "vasprun.xml"
+      supported: true
+      notes: "Primary XML output format"
+      source: "electronicparsers/vasp/parser.py:VASPParser.init_parser"
+    - name: "OUTCAR"
+      supported: true
+      notes: "Fallback text output format"
+      source: "electronicparsers/vasp/parser.py:VASPParser.init_parser"
+    - name: "POTCAR"
+      supported: true
+      notes: "Pseudopotential information"
+      source: "electronicparsers/vasp/parser.py:RunContentParser.get_pseudopotential"
+    - name: "INCAR"
+      supported: true
+      notes: "Input parameters"
+      source: "electronicparsers/vasp/parser.py:RunContentParser.get_incar"
 
 runschema_capabilities:
   run:
-    - program  # VASP name, version, build info
-    - time_run  # execution timing (cpu, wall clock)
+    - capability: program
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse"
+    - capability: time_run
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse"
 
   method:
-    - electronic.method  # DFT, GW
-    - electronic.n_spin_channels  # spin-polarized or unpolarized
-    - electronic.smearing  # Gaussian, Fermi-Dirac, Methfessel-Paxton
-    - electronic.relativity_method  # scalar relativistic, spin-orbit
-    - electronic.van_der_waals_method  # DFT-D2, DFT-D3, vdW-DF
-    - dft.xc_functional  # LDA, PBE, PBE0, HSE06, B3LYP, SCAN, etc.
-    - basis_set  # plane waves with cutoff energy (ENCUT)
-    - k_mesh  # k-point grid (Gamma-centered, Monkhorst-Pack)
-    - scf  # SCF convergence thresholds
-    - pseudopotential  # PAW, USPP (from POTCAR)
-    - hubbard_kanamori_model  # DFT+U parameters (LDAU, LDAUTYPE, LDAUU, LDAUJ)
-    - gw  # GW calculations (ALGO=GW0, scGW)
-    - core_hole  # core-hole spectroscopy calculations
+    - capability: electronic.method
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: electronic.n_spin_channels
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: electronic.smearing
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: electronic.relativity_method
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: electronic.van_der_waals_method
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: dft.xc_functional
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: basis_set
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: k_mesh
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_kpoints"
+    - capability: scf
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: pseudopotential
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: hubbard_kanamori_model
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
+    - capability: gw
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_gw"
+    - capability: core_hole
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_core_hole"
 
   system:
-    - atoms  # atomic positions, species, lattice_vectors, periodic
-    - atoms.labels  # element symbols
-    - atoms.positions  # Cartesian coordinates
-    - atoms.lattice_vectors  # unit cell
-    - atoms.periodic  # periodicity [True, True, True] for bulk
+    - capability: atoms
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: atoms.labels
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: atoms.positions
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: atoms.lattice_vectors
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: atoms.periodic
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
 
   calculation:
-    # Energy components
-    - energy.total  # total energy (e_0_energy or e_fr_energy)
-    - energy.free  # free energy (Helmholtz)
-    - energy.kinetic  # kinetic energy
-    - energy.xc  # exchange-correlation energy
-    - energy.electrostatic  # electrostatic/Hartree energy
-    - energy.ewald  # Ewald energy
-    - energy.zero_point  # zero-point energy
-    - energy.fermi  # Fermi energy
-    - energy.highest_occupied  # HOMO energy
-    - energy.lowest_unoccupied  # LUMO energy
-
-    # Forces and stress
-    - forces.total  # atomic forces (eV/Å)
-    - stress.total  # stress tensor (kBar)
-
-    # SCF convergence
-    - scf_iteration  # SCF iteration history with energies
-
-    # Electronic structure
-    - band_structure_electronic  # band energies/eigenvalues
-    - band_structure_electronic.energies  # [spin, kpoint, band]
-    - band_structure_electronic.kpoints  # k-point coordinates
-    - band_structure_electronic.occupations  # band occupations
-    - dos_electronic  # density of states
-    - dos_electronic.total  # total DOS
-    - dos_electronic.atom_projected  # atom-projected DOS
-    - dos_electronic.orbital_projected  # orbital-projected DOS (s, p, d, f)
-    - band_gap  # electronic band gap (direct/indirect)
-
-    # Thermodynamics
-    - thermodynamics.pressure  # pressure
-    - thermodynamics.temperature  # temperature (for MD)
+    - capability: energy.total
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.free
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.kinetic
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.xc
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.electrostatic
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.ewald
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.zero_point
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.fermi
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.highest_occupied
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: energy.lowest_unoccupied
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: forces.total
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: stress.total
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: scf_iteration
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: band_structure_electronic
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: band_structure_electronic.energies
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: band_structure_electronic.kpoints
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: band_structure_electronic.occupations
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: dos_electronic
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: dos_electronic.total
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: dos_electronic.atom_projected
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: dos_electronic.orbital_projected
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: band_gap
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: thermodynamics.pressure
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
+    - capability: thermodynamics.temperature
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
 
   workflow:
-    - single_point  # single-point energy calculation
-    - geometry_optimization  # structure relaxation (IBRION=1,2,3)
-    - molecular_dynamics  # MD simulation (IBRION=0, ISIF, ensemble)
+    - capability: single_point
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_workflow"
+    - capability: geometry_optimization
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_workflow"
+    - capability: molecular_dynamics
+      source: "electronicparsers/vasp/parser.py:VASPParser.parse_workflow"
 
 special_features:
   - "Hybrid functionals (HSE06, PBE0, B3LYP) with exact exchange"

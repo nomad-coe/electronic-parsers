@@ -1,107 +1,144 @@
 metadata:
-  last_updated: "2025-12-05"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
   name: "CP2K"
   description: "CP2K - Quantum chemistry and solid state physics software package"
   homepage: "https://www.cp2k.org/"
   mainfile_patterns:
-    - "**/*.out"
-    - "**/cp2k.out"
+  - "**/*.out"
+  - "**/cp2k.out"
   supported_file_formats:
-    - "CP2K text output files (.out)"
-    - "Input files (.in, .inp, .restart)"
-    - "PDOS files (projected density of states)"
-    - "Trajectory files (XYZ, PDB)"
-
+  - name: "CP2K text output files"
+    supported: true
+    notes: "CP2K text output files (.out)"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.init_parser"
+  - name: "Input files"
+    supported: true
+    notes: "Input files (.in, .inp, .restart)"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.init_parser"
+  - name: "PDOS files"
+    supported: true
+    notes: "PDOS files (projected density of states)"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.init_parser"
+  - name: "Trajectory files"
+    supported: true
+    notes: "Trajectory files (XYZ, PDB)"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.init_parser"
 runschema_capabilities:
   run:
-    - program  # CP2K name, version, SVN/Git revision
-    - time_run  # execution timing (cpu, wall clock)
-
+  - capability: "program"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "time_run"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
   method:
-    - electronic.method  # DFT, HF, hybrid DFT
-    - electronic.n_spin_channels  # UKS (unrestricted) or RKS (restricted)
-    - electronic.smearing  # Fermi-Dirac smearing
-    - dft.xc_functional  # PBE, BLYP, B3LYP, PBE0, PBESOL, etc.
-    - basis_set  # Gaussians, plane waves (GPW method), or mixed
-    - basis_set.type  # "gaussians" (MOLOPT, TZVP, DZVP), "plane waves" (auxiliary)
-    - basis_set.cutoff  # plane wave cutoff for GPW method
-    - k_mesh  # k-point grid for periodic systems
-    - scf  # SCF convergence thresholds (EPS_SCF)
-    - pseudopotential  # GTH pseudopotentials, ALL_ELECTRON
-
+  - capability: "electronic.method"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "electronic.n_spin_channels"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "electronic.smearing"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "dft.xc_functional"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "basis_set"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "basis_set.type"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "basis_set.cutoff"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "k_mesh"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "scf"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "pseudopotential"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
   system:
-    - atoms  # atomic positions, species, lattice_vectors, periodic
-    - atoms.labels  # element symbols
-    - atoms.positions  # Cartesian coordinates
-    - atoms.lattice_vectors  # unit cell vectors (ABC format)
-    - atoms.periodic  # periodicity flags
-    - atoms.velocities  # atomic velocities (for MD trajectories)
-    - atoms_group  # subsystems and fragments (for QM/MM)
-
+  - capability: "atoms"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_system"
+  - capability: "atoms.labels"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_system"
+  - capability: "atoms.positions"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_system"
+  - capability: "atoms.lattice_vectors"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_system"
+  - capability: "atoms.periodic"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_system"
+  - capability: "atoms.velocities"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_system"
+  - capability: "atoms_group"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_system"
   calculation:
-    # Energy components
-    - energy.total  # total energy
-    - energy.kinetic  # kinetic energy
-    - energy.potential  # potential energy
-    - energy.xc  # exchange-correlation energy
-    - energy.electrostatic  # Hartree/electrostatic energy
-    - energy.nuclear_repulsion  # core-core interaction
-    - energy.fermi  # Fermi energy
-
-    # Forces and stress
-    - forces.total  # atomic forces
-    - stress.total  # stress tensor (CELL_OPT, NPT_MD)
-
-    # SCF convergence
-    - scf_iteration  # SCF iteration history with energy convergence
-
-    # Electronic structure
-    - band_structure_electronic  # band energies/eigenvalues
-    - band_structure_electronic.energies  # [spin, kpoint, band]
-    - band_structure_electronic.kpoints  # k-point coordinates
-    - band_structure_electronic.occupations  # band occupations
-    - dos_electronic  # density of states from separate PDOS files
-    - dos_electronic.total  # total DOS
-    - dos_electronic.atom_projected  # atom-projected DOS
-    - dos_electronic.orbital_projected  # orbital-projected DOS
-
-    # Thermodynamics
-    - thermodynamics.temperature  # temperature (for MD)
-    - thermodynamics.pressure  # pressure (for NPT MD)
-
-    # Vibrational properties
-    - vibrational_frequencies  # vibrational frequencies from VIBRATIONAL_ANALYSIS
-
+  - capability: "energy.total"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "energy.kinetic"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "energy.potential"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "energy.xc"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "energy.electrostatic"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "energy.nuclear_repulsion"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "energy.fermi"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "forces.total"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "stress.total"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "scf_iteration"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "band_structure_electronic"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "band_structure_electronic.energies"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "band_structure_electronic.kpoints"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "band_structure_electronic.occupations"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "dos_electronic"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "dos_electronic.total"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "dos_electronic.atom_projected"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "dos_electronic.orbital_projected"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "thermodynamics.temperature"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "thermodynamics.pressure"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
+  - capability: "vibrational_frequencies"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse"
   workflow:
-    - single_point  # single-point energy calculation (ENERGY)
-    - geometry_optimization  # structure optimization (GEO_OPT with BFGS, CG)
-    - molecular_dynamics  # MD simulation (MD with NVE, NVT, NPT ensembles)
-    - phonon  # vibrational analysis
-
+  - capability: "single_point"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_workflow"
+  - capability: "geometry_optimization"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_workflow"
+  - capability: "molecular_dynamics"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_workflow"
+  - capability: "phonon"
+    source: "electronicparsers/cp2k/parser.py:XYZTrajParser.parse_workflow"
 special_features:
-  - "Gaussian and Plane Wave (GPW) method combining Gaussians with auxiliary plane waves"
-  - "QM/MM calculations with subsystem definitions (QMMM, FORCE_EVAL)"
-  - "Multiple simulation cells and force evaluations (MULTIPLE_FORCE_EVALS)"
-  - "Hybrid functionals (B3LYP, PBE0) with exact exchange"
-  - "DFT+U for transition metals and f-electron systems"
-  - "Multiple MD ensembles (NVE, NVT with various thermostats, NPT with barostats)"
-  - "Cell optimization (CELL_OPT) for lattice parameter relaxation"
-  - "Trajectory parsing from multiple formats (XYZ, PDB)"
-  - "Fragment-based calculations and subsystem approaches"
-  - "Vibrational analysis with normal modes and frequencies"
-  - "Linear-scaling DFT methods"
-  - "Born-Oppenheimer molecular dynamics (BOMD)"
-  - "Support for both periodic and molecular systems"
-
+- "Gaussian and Plane Wave (GPW) method combining Gaussians with auxiliary plane waves"
+- "QM/MM calculations with subsystem definitions (QMMM, FORCE_EVAL)"
+- "Multiple simulation cells and force evaluations (MULTIPLE_FORCE_EVALS)"
+- "Hybrid functionals (B3LYP, PBE0) with exact exchange"
+- "DFT+U for transition metals and f-electron systems"
+- "Multiple MD ensembles (NVE, NVT with various thermostats, NPT with barostats)"
+- "Cell optimization (CELL_OPT) for lattice parameter relaxation"
+- "Trajectory parsing from multiple formats (XYZ, PDB)"
+- "Fragment-based calculations and subsystem approaches"
+- "Vibrational analysis with normal modes and frequencies"
+- "Linear-scaling DFT methods"
+- "Born-Oppenheimer molecular dynamics (BOMD)"
+- "Support for both periodic and molecular systems"
 notes:
-  - "CP2K supports multiple calculation types (ENERGY, GEO_OPT, MD, CELL_OPT, etc.)"
-  - "GPW method uses Gaussian basis for wavefunctions and plane waves for density"
-  - "PDOS files must be present in same directory for DOS extraction"
-  - "Multiple FORCE_EVAL sections enable QM/MM and hybrid calculations"
-  - "GTH pseudopotentials are commonly used for efficiency"
-  - "ALL_ELECTRON calculations available for high accuracy"
-  - "Very flexible input structure with nested sections (KIND, &DFT, &QS, etc.)"
-  - "Supports both Quickstep (DFT) and FIST (force field) engines"
+- "CP2K supports multiple calculation types (ENERGY, GEO_OPT, MD, CELL_OPT, etc.)"
+- "GPW method uses Gaussian basis for wavefunctions and plane waves for density"
+- "PDOS files must be present in same directory for DOS extraction"
+- "Multiple FORCE_EVAL sections enable QM/MM and hybrid calculations"
+- "GTH pseudopotentials are commonly used for efficiency"
+- "ALL_ELECTRON calculations available for high accuracy"
+- "Very flexible input structure with nested sections (KIND, &DFT, &QS, etc.)"
+- "Supports both Quickstep (DFT) and FIST (force field) engines"

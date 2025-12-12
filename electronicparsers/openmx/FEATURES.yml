@@ -1,58 +1,50 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
   name: "OpenMX"
   description: "Open source package for Material eXplorer - DFT with localized basis functions"
   homepage: "http://www.openmx-square.org/"
   mainfile_patterns:
-    - "*.out"
+  - "*.out"
   supported_file_formats:
-    - name: "*.out"
-      supported: true
-      notes: "Primary output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-
+  - name: "*.out"
+    supported: true
+    notes: "Primary output file"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
   method:
-    - capability: electronic.method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-    - capability: electronic.n_spin_channels
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-    - capability: dft.xc_functional
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-    - capability: basis_set
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-    - capability: k_mesh
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-
+  - capability: "electronic.method"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
+  - capability: "electronic.n_spin_channels"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
+  - capability: "dft.xc_functional"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
+  - capability: "basis_set"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
+  - capability: "k_mesh"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-    - capability: forces.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-    - capability: eigenvalues
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
+  - capability: "forces.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
+  - capability: "eigenvalues"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
   workflow:
-    - capability: single_point
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
-
+  - capability: "single_point"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/openmx/parser.py:OpenmxParser.parse"
 special_features:
-  - "Localized pseudo-atomic orbitals"
-  - "O(N) methods for large systems"
-  - "Non-collinear magnetism"
-  - "Spin-orbit coupling"
-
+- "Localized pseudo-atomic orbitals"
+- "O(N) methods for large systems"
+- "Non-collinear magnetism"
+- "Spin-orbit coupling"
 notes:
-  - "Efficient for large-scale calculations"
-  - "Localized basis functions"
+- "Efficient for large-scale calculations"
+- "Localized basis functions"

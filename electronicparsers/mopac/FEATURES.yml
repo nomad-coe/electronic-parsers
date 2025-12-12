@@ -1,50 +1,42 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
   name: "MOPAC"
   description: "Molecular Orbital PACkage - semiempirical quantum chemistry methods"
   homepage: "http://openmopac.net/"
   mainfile_patterns:
-    - "*.out"
-    - "*.aux"
+  - "*.out"
+  - "*.aux"
   supported_file_formats:
-    - name: "*.out"
-      supported: true
-      notes: "Primary output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
-
+  - name: "*.out"
+    supported: true
+    notes: "Primary output file"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
-
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
   method:
-    - capability: electronic.method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
-
+  - capability: "electronic.method"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
-
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
-    - capability: forces.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
-
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
+  - capability: "forces.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
   workflow:
-    - capability: single_point
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
-    - capability: geometry_optimization
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
-
+  - capability: "single_point"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
+  - capability: "geometry_optimization"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/mopac/parser.py:MopacParser.parse"
 special_features:
-  - "Semiempirical methods (AM1, PM3, PM6, PM7)"
-  - "Fast calculations for large molecules"
-  - "Molecular properties and thermochemistry"
-
+- "Semiempirical methods (AM1, PM3, PM6, PM7)"
+- "Fast calculations for large molecules"
+- "Molecular properties and thermochemistry"
 notes:
-  - "Semiempirical quantum chemistry"
-  - "Computationally efficient for large systems"
+- "Semiempirical quantum chemistry"
+- "Computationally efficient for large systems"

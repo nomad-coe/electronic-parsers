@@ -1,121 +1,165 @@
 metadata:
-  last_updated: "2025-12-05"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
   name: "FHI-aims"
   description: "Fritz Haber Institute ab initio molecular simulations - all-electron electronic structure code"
   homepage: "https://fhi-aims.org/"
   mainfile_patterns:
-    - "**/aims.out"
-    - "**/*aims*.out"
+  - "**/aims.out"
+  - "**/*aims*.out"
   supported_file_formats:
-    - "FHI-aims text output files (.out)"
-    - "geometry.in (input structure)"
-    - "control.in (input parameters)"
-    - "BAND*.out (band structure files)"
-    - "DOS*.dat (density of states files)"
-
+  - name: "FHI-aims text output files"
+    supported: true
+    notes: "FHI-aims text output files (.out)"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.init_parser"
+  - name: "geometry.in"
+    supported: true
+    notes: "geometry.in (input structure)"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.init_parser"
+  - name: "control.in"
+    supported: true
+    notes: "control.in (input parameters)"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.init_parser"
+  - name: "BAND*.out"
+    supported: true
+    notes: "BAND*.out (band structure files)"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.init_parser"
+  - name: "DOS*.dat"
+    supported: true
+    notes: "DOS*.dat (density of states files)"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.init_parser"
 runschema_capabilities:
   run:
-    - program  # FHI-aims name, version, build date
-    - time_run  # execution timing (cpu, wall clock)
-
+  - capability: "program"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse"
+  - capability: "time_run"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse"
   method:
-    - electronic.method  # DFT, HF, hybrid DFT, GW, MP2, RPA
-    - electronic.n_spin_channels  # spin-unpolarized, spin-polarized (collinear or non-collinear)
-    - electronic.smearing  # Gaussian, Fermi-Dirac, Methfessel-Paxton
-    - electronic.relativity_method  # scalar relativistic (ZORA, atomic ZORA), spin-orbit coupling
-    - electronic.van_der_waals_method  # TS, TS+SCS, MBD, vdW-DF
-    - dft.xc_functional  # LDA, PBE, PBEsol, PBE0, HSE06, B3LYP, BLYP, etc.
-    - basis_set  # numerical atomic orbitals (NAO)
-    - basis_set.type  # "numeric AOs"
-    - basis_set.native_tier  # basis set tiers: light, tight, really_tight (tier1, tier2, tier3, tier4)
-    - k_mesh  # k-point grid for periodic systems
-    - scf  # SCF convergence thresholds (charge, energy, eigenvalue)
-    - pseudopotential  # all-electron or pseudopotential (scalar relativistic)
-    - gw  # GW calculations (G0W0, scGW) for beyond-DFT band structures
-
+  - capability: "electronic.method"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "electronic.n_spin_channels"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "electronic.smearing"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "electronic.relativity_method"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "electronic.van_der_waals_method"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "dft.xc_functional"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "basis_set"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "basis_set.type"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "basis_set.native_tier"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "k_mesh"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "scf"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "pseudopotential"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
+  - capability: "gw"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_method"
   system:
-    - atoms  # atomic positions, species, lattice_vectors, periodic
-    - atoms.labels  # element symbols
-    - atoms.positions  # Cartesian coordinates (Å)
-    - atoms.lattice_vectors  # unit cell vectors
-    - atoms.periodic  # periodicity flags
-    - atoms.velocities  # atomic velocities (for MD)
-
+  - capability: "atoms"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_system"
+  - capability: "atoms.labels"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_system"
+  - capability: "atoms.positions"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_system"
+  - capability: "atoms.lattice_vectors"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_system"
+  - capability: "atoms.periodic"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_system"
+  - capability: "atoms.velocities"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_system"
   calculation:
-    # Energy components
-    - energy.total  # total energy
-    - energy.free  # free energy (at finite temperature)
-    - energy.kinetic  # kinetic energy
-    - energy.xc  # exchange-correlation energy
-    - energy.electrostatic  # Hartree energy
-    - energy.nuclear_repulsion  # ion-ion interaction
-    - energy.zero_point  # zero-point vibrational energy
-    - energy.fermi  # Fermi energy (chemical potential)
-    - energy.highest_occupied  # HOMO energy
-    - energy.lowest_unoccupied  # LUMO energy
-
-    # Forces and stress
-    - forces.total  # atomic forces (eV/Å)
-    - stress.total  # stress tensor (for periodic systems)
-
-    # SCF convergence
-    - scf_iteration  # SCF iteration history with energy, charge, and eigenvalue changes
-
-    # Electronic structure
-    - band_structure_electronic  # band energies/eigenvalues
-    - band_structure_electronic.energies  # [spin, kpoint, band]
-    - band_structure_electronic.kpoints  # k-point coordinates
-    - band_structure_electronic.occupations  # band occupations
-    - dos_electronic  # density of states
-    - dos_electronic.total  # total DOS
-    - dos_electronic.atom_projected  # atom-projected DOS (species-resolved)
-    - dos_electronic.orbital_projected  # orbital-projected DOS (s, p, d, f)
-    - band_gap  # electronic band gap
-
-    # Charge analysis
-    - charges  # Mulliken and Hirshfeld charge analysis
-
-    # Thermodynamics
-    - thermodynamics.temperature  # temperature (for MD)
-    - thermodynamics.pressure  # pressure
-
-    # Vibrational properties
-    - vibrational_frequencies  # vibrational frequencies from finite differences
-
+  - capability: "energy.total"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "energy.free"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "energy.kinetic"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "energy.xc"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "energy.electrostatic"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "energy.nuclear_repulsion"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "energy.zero_point"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "energy.fermi"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "energy.highest_occupied"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "energy.lowest_unoccupied"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "forces.total"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "stress.total"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "scf_iteration"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "band_structure_electronic"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "band_structure_electronic.energies"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "band_structure_electronic.kpoints"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "band_structure_electronic.occupations"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "dos_electronic"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "dos_electronic.total"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "dos_electronic.atom_projected"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "dos_electronic.orbital_projected"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "band_gap"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "charges"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "thermodynamics.temperature"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "thermodynamics.pressure"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
+  - capability: "vibrational_frequencies"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_configurations"
   workflow:
-    - single_point  # single-point energy calculation
-    - geometry_optimization  # structure relaxation (BFGS, trust radius methods)
-    - molecular_dynamics  # MD simulation (NVE, NVT with various thermostats)
-
+  - capability: "single_point"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_workflow"
+  - capability: "geometry_optimization"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_workflow"
+  - capability: "molecular_dynamics"
+    source: "electronicparsers/fhiaims/parser.py:FHIAimsControlParser.parse_workflow"
 special_features:
-  - "All-electron calculations with no pseudopotential approximations"
-  - "Numerical atomic orbital (NAO) basis sets with hierarchical tiers"
-  - "Hybrid functionals (PBE0, HSE06, B3LYP) with efficient exact exchange"
-  - "GW calculations (G0W0, scGW) for accurate band structures and gaps"
-  - "Beyond-GW methods: RPA, MP2, coupled-cluster (CCSD)"
-  - "Multiple van der Waals correction schemes (TS, MBD, vdW-DF)"
-  - "Scalar relativistic effects (ZORA) and spin-orbit coupling"
-  - "Non-collinear magnetism for complex magnetic structures"
-  - "Tier-based basis set convergence (light to tier4 for completeness)"
-  - "Multiple DOS energy references (Fermi level, vacuum level, custom)"
-  - "Implicit solvation models (MERM, MPB, MPBE)"
-  - "NMR shielding tensor calculations"
-  - "Efficient handling of large systems with linear-scaling DFT"
-  - "Extensive molecular and periodic system support"
-  - "Advanced SCF convergence techniques (DIIS, Pulay mixing)"
-
+- "All-electron calculations with no pseudopotential approximations"
+- "Numerical atomic orbital (NAO) basis sets with hierarchical tiers"
+- "Hybrid functionals (PBE0, HSE06, B3LYP) with efficient exact exchange"
+- "GW calculations (G0W0, scGW) for accurate band structures and gaps"
+- Beyond-GW methods: "RPA, MP2, coupled-cluster (CCSD)'"
+- "Multiple van der Waals correction schemes (TS, MBD, vdW-DF)"
+- "Scalar relativistic effects (ZORA) and spin-orbit coupling"
+- "Non-collinear magnetism for complex magnetic structures"
+- "Tier-based basis set convergence (light to tier4 for completeness)"
+- "Multiple DOS energy references (Fermi level, vacuum level, custom)"
+- "Implicit solvation models (MERM, MPB, MPBE)"
+- "NMR shielding tensor calculations"
+- "Efficient handling of large systems with linear-scaling DFT"
+- "Extensive molecular and periodic system support"
+- "Advanced SCF convergence techniques (DIIS, Pulay mixing)"
 notes:
-  - "FHI-aims uses all-electron basis sets by default (no frozen core)"
-  - "Basis set quality controlled by tier system: light < tight < really_tight"
-  - "NAO basis functions optimized for different chemical environments"
-  - "Excellent for molecular systems and surfaces"
-  - "Band structure output in separate BAND*.out files with output band syntax"
-  - "DOS output in DOS*.dat files, can be species/atom/orbital-projected"
-  - "GW calculations require SCF ground state first"
-  - "control.in specifies computational parameters and basis set tiers"
-  - "geometry.in contains atomic structure and lattice vectors"
-  - "Very accurate for band gaps and excited state properties"
-  - "Recommended for systems requiring all-electron accuracy"
+- "FHI-aims uses all-electron basis sets by default (no frozen core)"
+- Basis set quality controlled by tier system: "light < tight < really_tight'"
+- "NAO basis functions optimized for different chemical environments"
+- "Excellent for molecular systems and surfaces"
+- "Band structure output in separate BAND*.out files with output band syntax"
+- "DOS output in DOS*.dat files, can be species/atom/orbital-projected"
+- "GW calculations require SCF ground state first"
+- "control.in specifies computational parameters and basis set tiers"
+- "geometry.in contains atomic structure and lattice vectors"
+- "Very accurate for band gaps and excited state properties"
+- "Recommended for systems requiring all-electron accuracy"

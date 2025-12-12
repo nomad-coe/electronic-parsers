@@ -1,57 +1,49 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
   name: "GAMESS"
   description: "General Atomic and Molecular Electronic Structure System - quantum chemistry package"
   homepage: "https://www.msg.chem.iastate.edu/gamess/"
   mainfile_patterns:
-    - "*.out"
-    - "*.log"
+  - "*.out"
+  - "*.log"
   supported_file_formats:
-    - name: "*.out"
-      supported: true
-      notes: "Primary output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-
+  - name: "*.out"
+    supported: true
+    notes: "Primary output file"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
   method:
-    - capability: electronic.method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-    - capability: dft.xc_functional
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-    - capability: basis_set
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-
+  - capability: "electronic.method"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
+  - capability: "dft.xc_functional"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
+  - capability: "basis_set"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-    - capability: forces.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-    - capability: eigenvalues
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
+  - capability: "forces.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
+  - capability: "eigenvalues"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
   workflow:
-    - capability: single_point
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-    - capability: geometry_optimization
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
-
+  - capability: "single_point"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
+  - capability: "geometry_optimization"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gamess/parser.py:GamessParser.parse"
 special_features:
-  - "Comprehensive quantum chemistry methods (HF, DFT, MCSCF, CI, CC)"
-  - "Gaussian-type basis sets"
-  - "Molecular properties and excited states"
-  - "Solvation models"
-
+- "Comprehensive quantum chemistry methods (HF, DFT, MCSCF, CI, CC)"
+- "Gaussian-type basis sets"
+- "Molecular properties and excited states"
+- "Solvation models"
 notes:
-  - "Molecular quantum chemistry package"
-  - "Wide range of ab initio methods"
+- "Molecular quantum chemistry package"
+- "Wide range of ab initio methods"

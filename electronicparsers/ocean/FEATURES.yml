@@ -1,43 +1,36 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
   name: "OCEAN"
   description: "Obtaining Core Excitations from Ab initio Electronic structure and NRIXS - X-ray spectroscopy code"
   homepage: "https://feff.phys.washington.edu/OCEAN/index.html"
   mainfile_patterns:
-    - "*.h5"
-    - "*.hdf5"
+  - "*.h5"
+  - "*.hdf5"
   supported_file_formats:
-    - name: "*.h5"
-      supported: true
-      notes: "HDF5 output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
-
+  - name: "*.h5"
+    supported: true
+    notes: "HDF5 output file"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
-
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
-
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
-
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
   workflow:
-    - capability: xas
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
-
+  - capability: "xas"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/ocean/parser.py:OceanParser.parse"
 special_features:
-  - "X-ray absorption spectroscopy (XAS)"
-  - "X-ray emission spectroscopy (XES)"
-  - "Core-level excitations"
-  - "Bethe-Salpeter equation (BSE)"
-
+- "X-ray absorption spectroscopy (XAS)"
+- "X-ray emission spectroscopy (XES)"
+- "Core-level excitations"
+- "Bethe-Salpeter equation (BSE)"
 notes:
-  - "Specialized for X-ray spectroscopy"
-  - "HDF5-based output format"
+- "Specialized for X-ray spectroscopy"
+- "HDF5-based output format"

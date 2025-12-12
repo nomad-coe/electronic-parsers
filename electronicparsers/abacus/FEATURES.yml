@@ -1,122 +1,114 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
   name: "ABACUS"
   description: "Atomic-orbital Based Ab-initio Computation at UStc - DFT code with plane-wave and numeric atomic orbital basis sets"
   homepage: "http://abacus.ustc.edu.cn/"
   mainfile_patterns:
-    - "running_*.log"
+  - "running_*.log"
   supported_file_formats:
-    - name: "running_*.log"
-      supported: true
-      notes: "Primary output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.init_parser"
-    - name: "INPUT"
-      supported: true
-      notes: "Input parameters file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - name: "STRU"
-      supported: true
-      notes: "Structure file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - name: "KPT"
-      supported: true
-      notes: "K-points file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - name: "TDOS"
-      supported: true
-      notes: "Total density of states"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-
+  - name: "running_*.log"
+    supported: true
+    notes: "Primary output file"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.init_parser"
+  - name: "INPUT"
+    supported: true
+    notes: "Input parameters file"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - name: "STRU"
+    supported: true
+    notes: "Structure file"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - name: "KPT"
+    supported: true
+    notes: "K-points file"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - name: "TDOS"
+    supported: true
+    notes: "Total density of states"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse"
-    - capability: time_run
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse"
-
+  - capability: "program"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse"
+  - capability: "time_run"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse"
   method:
-    - capability: electronic.method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - capability: electronic.n_spin_channels
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - capability: electronic.smearing
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - capability: electronic.relativity_method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - capability: electronic.van_der_waals_method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: dft.xc_functional
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - capability: basis_set
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - capability: k_mesh
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - capability: scf
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-    - capability: atom_parameters
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
-
+  - capability: "electronic.method"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - capability: "electronic.n_spin_channels"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - capability: "electronic.smearing"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - capability: "electronic.relativity_method"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - capability: "electronic.van_der_waals_method"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "dft.xc_functional"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - capability: "basis_set"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - capability: "k_mesh"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - capability: "scf"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
+  - capability: "atom_parameters"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_method"
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: symmetry
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-
+  - capability: "atoms"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "symmetry"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: energy.fermi
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: energy.xc
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: energy.electrostatic
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: energy.van_der_waals
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: forces.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: stress.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: pressure
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: scf_iteration
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: eigenvalues
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: band_structure_electronic
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: dos_electronic
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: temperature
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-
+  - capability: "energy.total"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "energy.fermi"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "energy.xc"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "energy.electrostatic"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "energy.van_der_waals"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "forces.total"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "stress.total"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "pressure"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "scf_iteration"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "eigenvalues"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "band_structure_electronic"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "dos_electronic"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
+  - capability: "temperature"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
   workflow:
-    - capability: single_point
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse"
-    - capability: geometry_optimization
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse"
-    - capability: molecular_dynamics
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse"
-
+  - capability: "single_point"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse"
+  - capability: "geometry_optimization"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse"
+  - capability: "molecular_dynamics"
+    source: "electronicparsers/abacus/parser.py:ABACUSParser.parse"
 special_features:
-  - "Supports both plane-wave and numeric atomic orbital (NAO) basis sets"
-  - "Hybrid functionals (HSE, PBE0) with exact exchange"
-  - "DFT+U for strongly correlated systems"
-  - "Spin-orbit coupling for heavy elements"
-  - "van der Waals corrections (D2, D3 variants)"
-  - "Non-collinear magnetism support"
-  - "Comprehensive SCF convergence tracking with energy components"
-  - "Band structure and DOS calculations (TDOS file)"
-  - "Geometry optimization with force and stress convergence"
-  - "Molecular dynamics (NVE, NVT ensembles)"
-
+- "Supports both plane-wave and numeric atomic orbital (NAO) basis sets"
+- "Hybrid functionals (HSE, PBE0) with exact exchange"
+- "DFT+U for strongly correlated systems"
+- "Spin-orbit coupling for heavy elements"
+- "van der Waals corrections (D2, D3 variants)"
+- "Non-collinear magnetism support"
+- "Comprehensive SCF convergence tracking with energy components"
+- "Band structure and DOS calculations (TDOS file)"
+- "Geometry optimization with force and stress convergence"
+- "Molecular dynamics (NVE, NVT ensembles)"
 notes:
-  - "Parser supports plane-wave and numeric atomic orbital basis sets"
-  - "XC functional mapping includes LDA, GGA (PBE, RPBE, etc.), meta-GGA (SCAN), and hybrid functionals (HSE, PBE0)"
-  - "K-point sampling supports Gamma-centered and Monkhorst-Pack grids"
-  - "Spin-polarized (nspin=2) and non-collinear (nspin=4) calculations supported"
-  - "SCF iteration tracking includes detailed energy component decomposition"
-  - "Symmetry information includes Bravais lattice and space group operations"
+- "Parser supports plane-wave and numeric atomic orbital basis sets"
+- "XC functional mapping includes LDA, GGA (PBE, RPBE, etc.), meta-GGA (SCAN), and hybrid functionals (HSE, PBE0)"
+- "K-point sampling supports Gamma-centered and Monkhorst-Pack grids"
+- "Spin-polarized (nspin=2) and non-collinear (nspin=4) calculations supported"
+- "SCF iteration tracking includes detailed energy component decomposition"
+- "Symmetry information includes Bravais lattice and space group operations"
