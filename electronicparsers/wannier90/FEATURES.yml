@@ -1,80 +1,80 @@
 metadata:
-  last_updated: '2025-12-12'
-  updated_by: GitHub Copilot
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
-  name: Wannier90
-  description: Wannier90 - maximally-localized Wannier functions and tight-binding model construction
-  homepage: http://www.wannier.org/
+  name: "Wannier90"
+  description: "Wannier90 - maximally-localized Wannier functions and tight-binding model construction"
+  homepage: "http://www.wannier.org/"
   mainfile_patterns:
-  - '*.wout'
+  - "*.wout"
   supported_file_formats:
-  - name: '*.wout'
+  - name: "*.wout"
     supported: true
-    notes: '*.wout (primary output file)'
-    source: electronicparsers/wannier90/parser.py:WOutParser.init_parser
-  - name: '*.win'
+    notes: "*.wout (primary output file)"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.init_parser"
+  - name: "*.win"
     supported: true
-    notes: '*.win (input file)'
-    source: electronicparsers/wannier90/parser.py:WOutParser.init_parser
-  - name: '*band.dat'
+    notes: "*.win (input file)"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.init_parser"
+  - name: "*band.dat"
     supported: true
-    notes: '*band.dat (band structure data)'
-    source: electronicparsers/wannier90/parser.py:WOutParser.init_parser
-  - name: '*dos.dat'
+    notes: "*band.dat (band structure data)"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.init_parser"
+  - name: "*dos.dat"
     supported: true
-    notes: '*dos.dat (DOS data)'
-    source: electronicparsers/wannier90/parser.py:WOutParser.init_parser
-  - name: '*_hr.dat'
+    notes: "*dos.dat (DOS data)"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.init_parser"
+  - name: "*_hr.dat"
     supported: true
-    notes: '*_hr.dat (hopping matrices)'
-    source: electronicparsers/wannier90/parser.py:WOutParser.init_parser
+    notes: "*_hr.dat (hopping matrices)"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.init_parser"
 runschema_capabilities:
   run:
-  - capability: program
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse
+  - capability: "program"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse"
   method:
-  - capability: k_mesh
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse_method
-  - capability: tb.wannier
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse_method
-  - capability: atom_parameters
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse_method
+  - capability: "k_mesh"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse_method"
+  - capability: "tb.wannier"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse_method"
+  - capability: "atom_parameters"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse_method"
   system:
-  - capability: atoms
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse_system
-  - capability: atoms.labels
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse_system
-  - capability: atoms.positions
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse_system
-  - capability: atoms.lattice_vectors
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse_system
-  - capability: atoms.lattice_vectors_reciprocal
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse_system
-  - capability: atoms.periodic
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse_system
+  - capability: "atoms"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse_system"
+  - capability: "atoms.labels"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse_system"
+  - capability: "atoms.positions"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse_system"
+  - capability: "atoms.lattice_vectors"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse_system"
+  - capability: "atoms.lattice_vectors_reciprocal"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse_system"
+  - capability: "atoms.periodic"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse_system"
   calculation:
-  - capability: band_structure_electronic
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse
-  - capability: dos_electronic
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse
-  - capability: hopping_matrix
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse
+  - capability: "band_structure_electronic"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse"
+  - capability: "dos_electronic"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse"
+  - capability: "hopping_matrix"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse"
   workflow:
-  - capability: single_point
-    source: electronicparsers/wannier90/parser.py:WOutParser.parse
+  - capability: "single_point"
+    source: "electronicparsers/wannier90/parser.py:WOutParser.parse"
 special_features:
-- Maximally-localized Wannier function (MLWF) construction
-- Tight-binding Hamiltonian generation from DFT
-- Real-space hopping matrix extraction (*_hr.dat)
-- Band structure interpolation from Wannier functions
-- DOS calculation from Wannier interpolation
-- Disentanglement of energy windows (inner/outer windows)
-- Support for multiple projection orbital types (s, p, d, f, sp, sp2, sp3, sp3d, sp3d2)
-- 'Compatible with multiple DFT codes: Quantum ESPRESSO, ABINIT, VASP, SIESTA, Wien2k, FLEUR, OpenMX, GPAW'
-- Orbital projection mapping (angular momentum to orbital names)
+- "Maximally-localized Wannier function (MLWF) construction"
+- "Tight-binding Hamiltonian generation from DFT"
+- "Real-space hopping matrix extraction (*_hr.dat)"
+- "Band structure interpolation from Wannier functions"
+- "DOS calculation from Wannier interpolation"
+- "Disentanglement of energy windows (inner/outer windows)"
+- "Support for multiple projection orbital types (s, p, d, f, sp, sp2, sp3, sp3d, sp3d2)"
+- Compatible with multiple DFT codes: "Quantum ESPRESSO, ABINIT, VASP, SIESTA, Wien2k, FLEUR, OpenMX, GPAW'"
+- "Orbital projection mapping (angular momentum to orbital names)"
 notes:
-- Wannier90 is a post-processing tool for generating Wannier functions from DFT calculations
-- The parser extracts the Wannierization results and interpolated electronic structure
-- Hopping matrices are extracted when write_hr is enabled in the input
-- Band structure and DOS are calculated via Wannier interpolation, not direct DFT
-- System structure is taken from the DFT calculation output embedded in .wout
+- "Wannier90 is a post-processing tool for generating Wannier functions from DFT calculations"
+- "The parser extracts the Wannierization results and interpolated electronic structure"
+- "Hopping matrices are extracted when write_hr is enabled in the input"
+- "Band structure and DOS are calculated via Wannier interpolation, not direct DFT"
+- "System structure is taken from the DFT calculation output embedded in .wout"

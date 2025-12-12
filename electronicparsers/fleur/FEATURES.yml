@@ -1,46 +1,46 @@
 metadata:
-  last_updated: '2025-12-12'
-  updated_by: GitHub Copilot
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
-  name: FLEUR
-  description: Full-potential linearized augmented plane-wave (FLAPW) DFT code
-  homepage: https://www.flapw.de/
+  name: "FLEUR"
+  description: "Full-potential linearized augmented plane-wave (FLAPW) DFT code"
+  homepage: "https://www.flapw.de/"
   mainfile_patterns:
-  - '*.xml'
-  - out.xml
+  - "*.xml"
+  - "out.xml"
   supported_file_formats:
-  - name: '*.xml'
+  - name: "*.xml"
     supported: true
-    notes: XML-based output file
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
+    notes: "XML-based output file"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
 runschema_capabilities:
   run:
-  - capability: program
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
   method:
-  - capability: electronic.method
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
-  - capability: dft.xc_functional
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
-  - capability: basis_set
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
-  - capability: k_mesh
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
+  - capability: "electronic.method"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
+  - capability: "dft.xc_functional"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
+  - capability: "basis_set"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
+  - capability: "k_mesh"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
   system:
-  - capability: atoms
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
   calculation:
-  - capability: energy.total
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
-  - capability: eigenvalues
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
+  - capability: "eigenvalues"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
   workflow:
-  - capability: single_point
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse
+  - capability: "single_point"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/fleur/parser.py:FleurParser.parse"
 special_features:
-- Full-potential LAPW method
-- XML-based structured output
-- All-electron calculations
+- "Full-potential LAPW method"
+- "XML-based structured output"
+- "All-electron calculations"
 notes:
-- Uses XML format for structured data
-- Full-potential all-electron method
+- "Uses XML format for structured data"
+- "Full-potential all-electron method"

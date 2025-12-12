@@ -1,58 +1,58 @@
 metadata:
-  last_updated: '2025-12-12'
-  updated_by: GitHub Copilot
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
-  name: Octopus
-  description: Real-space, real-time TDDFT code for quantum dynamics
-  homepage: https://octopus-code.org/
+  name: "Octopus"
+  description: "Real-space, real-time TDDFT code for quantum dynamics"
+  homepage: "https://octopus-code.org/"
   mainfile_patterns:
-  - '*.out'
-  - exec/messages
+  - "*.out"
+  - "exec/messages"
   supported_file_formats:
-  - name: '*.out'
+  - name: "*.out"
     supported: true
-    notes: Primary output file
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
+    notes: "Primary output file"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
 runschema_capabilities:
   run:
-  - capability: program
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
-  - capability: time_run
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
+  - capability: "time_run"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
   method:
-  - capability: electronic.method
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
-  - capability: electronic.n_spin_channels
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
-  - capability: dft.xc_functional
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
-  - capability: basis_set
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
-  - capability: scf
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
+  - capability: "electronic.method"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
+  - capability: "electronic.n_spin_channels"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
+  - capability: "dft.xc_functional"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
+  - capability: "basis_set"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
+  - capability: "scf"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
   system:
-  - capability: atoms
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
   calculation:
-  - capability: energy.total
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
-  - capability: energy.fermi
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
-  - capability: forces.total
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
-  - capability: eigenvalues
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
+  - capability: "energy.fermi"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
+  - capability: "forces.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
+  - capability: "eigenvalues"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
   workflow:
-  - capability: single_point
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
-  - capability: tddft
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse
+  - capability: "single_point"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
+  - capability: "tddft"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/octopus/parser.py:OctopusParser.parse"
 special_features:
-- Real-space grid representation
-- Time-dependent DFT (TDDFT)
-- Real-time electron dynamics
-- Optical spectroscopy
-- Strong-field physics
+- "Real-space grid representation"
+- "Time-dependent DFT (TDDFT)"
+- "Real-time electron dynamics"
+- "Optical spectroscopy"
+- "Strong-field physics"
 notes:
-- Specialized for time-dependent phenomena
-- Real-space grids for wavefunction representation
+- "Specialized for time-dependent phenomena"
+- "Real-space grids for wavefunction representation"

@@ -1,108 +1,108 @@
 metadata:
-  last_updated: '2025-12-12'
-  updated_by: GitHub Copilot
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
-  name: Gaussian
-  description: Gaussian - comprehensive quantum chemistry package for molecular systems
-  homepage: http://gaussian.com
+  name: "Gaussian"
+  description: "Gaussian - comprehensive quantum chemistry package for molecular systems"
+  homepage: "http://gaussian.com"
   mainfile_patterns:
-  - '*.log'
-  - '*.out'
+  - "*.log"
+  - "*.out"
   supported_file_formats:
-  - name: '*.log'
+  - name: "*.log"
     supported: true
-    notes: '*.log (primary output file)'
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.init_parser
-  - name: '*.out'
+    notes: "*.log (primary output file)"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.init_parser"
+  - name: "*.out"
     supported: true
-    notes: '*.out (output file)'
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.init_parser
+    notes: "*.out (output file)"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.init_parser"
 runschema_capabilities:
   run:
-  - capability: program
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse
-  - capability: time_run
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse
+  - capability: "program"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse"
+  - capability: "time_run"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse"
   method:
-  - capability: electronic.method
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method
-  - capability: electronic.n_spin_channels
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method
-  - capability: dft.xc_functional
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method
-  - capability: basis_set
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method
-  - capability: scf
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method
+  - capability: "electronic.method"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method"
+  - capability: "electronic.n_spin_channels"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method"
+  - capability: "dft.xc_functional"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method"
+  - capability: "basis_set"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method"
+  - capability: "scf"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_method"
   system:
-  - capability: atoms
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_system
-  - capability: atoms.labels
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_system
-  - capability: atoms.positions
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_system
-  - capability: atoms.periodic
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_system
+  - capability: "atoms"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_system"
+  - capability: "atoms.labels"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_system"
+  - capability: "atoms.positions"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_system"
+  - capability: "atoms.periodic"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_system"
   calculation:
-  - capability: energy.total
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: energy.nuclear_repulsion
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: energy.kinetic
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: energy.potential
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: energy.xc
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: energy.exchange
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: energy.correlation
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: energy.highest_occupied
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: energy.lowest_unoccupied
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: energy.zero_point
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: forces.total
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: scf_iteration
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: band_structure_electronic
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: eigenvalues
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: occupations
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: charges
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: vibrational_frequencies
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
-  - capability: thermodynamics
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations
+  - capability: "energy.total"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "energy.nuclear_repulsion"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "energy.kinetic"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "energy.potential"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "energy.xc"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "energy.exchange"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "energy.correlation"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "energy.highest_occupied"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "energy.lowest_unoccupied"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "energy.zero_point"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "forces.total"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "scf_iteration"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "band_structure_electronic"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "eigenvalues"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "occupations"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "charges"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "vibrational_frequencies"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
+  - capability: "thermodynamics"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse_configurations"
   workflow:
-  - capability: single_point
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse
-  - capability: geometry_optimization
-    source: electronicparsers/gaussian/parser.py:GaussianOutParser.parse
+  - capability: "single_point"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse"
+  - capability: "geometry_optimization"
+    source: "electronicparsers/gaussian/parser.py:GaussianOutParser.parse"
 special_features:
-- Comprehensive DFT functional library (LDA, GGA, meta-GGA, hybrid, double-hybrid)
-- 'Post-Hartree-Fock methods: MP2, MP3, MP4, MP5, CCSD, CCSD(T), CI, QCISD'
-- 'Hybrid functionals: B3LYP, B3PW91, PBE0, HSE06, M06, M11, etc.'
-- 'Range-separated functionals: LC-ωPBE, CAM-B3LYP, ωB97, ωB97X, ωB97X-D'
-- 'Double-hybrid functionals: B2PLYP, MPW2PLYP'
-- 'Semiempirical methods: AM1, PM3, PM6, PM7'
-- 'Composite methods: G1, G2, G3, CBS-4, CBS-Q, CBS-QB3'
-- Gaussian-type orbital (GTO) basis sets with extensive library
-- Vibrational frequency analysis with IR and Raman intensities
-- Thermochemistry calculations (ZPE, enthalpy, entropy, Gibbs free energy)
-- Molecular multipole moments (dipole, quadrupole)
-- Orbital symmetry analysis
-- Excited state calculations (TD-DFT, CIS, CASSCF)
-- 'Charge analysis: Mulliken, NPA, Hirshfeld, APT'
+- "Comprehensive DFT functional library (LDA, GGA, meta-GGA, hybrid, double-hybrid)"
+- Post-Hartree-Fock methods: "MP2, MP3, MP4, MP5, CCSD, CCSD(T), CI, QCISD'"
+- Hybrid functionals: "B3LYP, B3PW91, PBE0, HSE06, M06, M11, etc.'"
+- Range-separated functionals: "LC-ωPBE, CAM-B3LYP, ωB97, ωB97X, ωB97X-D'"
+- Double-hybrid functionals: "B2PLYP, MPW2PLYP'"
+- Semiempirical methods: "AM1, PM3, PM6, PM7'"
+- Composite methods: "G1, G2, G3, CBS-4, CBS-Q, CBS-QB3'"
+- "Gaussian-type orbital (GTO) basis sets with extensive library"
+- "Vibrational frequency analysis with IR and Raman intensities"
+- "Thermochemistry calculations (ZPE, enthalpy, entropy, Gibbs free energy)"
+- "Molecular multipole moments (dipole, quadrupole)"
+- "Orbital symmetry analysis"
+- "Excited state calculations (TD-DFT, CIS, CASSCF)"
+- Charge analysis: "Mulliken, NPA, Hirshfeld, APT'"
 notes:
-- Gaussian is primarily used for molecular (non-periodic) systems
-- Parser handles single-point and geometry optimization calculations
-- Extensive support for correlated wavefunction methods beyond DFT
-- Vibrational analysis includes normal modes, frequencies, and intensities
-- Parser extracts thermochemical properties when available
+- "Gaussian is primarily used for molecular (non-periodic) systems"
+- "Parser handles single-point and geometry optimization calculations"
+- "Extensive support for correlated wavefunction methods beyond DFT"
+- "Vibrational analysis includes normal modes, frequencies, and intensities"
+- "Parser extracts thermochemical properties when available"

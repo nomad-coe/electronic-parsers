@@ -1,143 +1,143 @@
 metadata:
-  last_updated: '2025-12-12'
-  updated_by: GitHub Copilot
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
-  name: ABINIT
-  description: ABINIT - plane-wave DFT code with extensive beyond-DFT capabilities (GW, BSE, DMFT)
-  homepage: https://www.abinit.org/
+  name: "ABINIT"
+  description: "ABINIT - plane-wave DFT code with extensive beyond-DFT capabilities (GW, BSE, DMFT)"
+  homepage: "https://www.abinit.org/"
   mainfile_patterns:
-  - '*.*o*'
-  - log
+  - "*.*o*"
+  - "log"
   supported_file_formats:
-  - name: '*.*o*'
+  - name: "*.*o*"
     supported: true
-    notes: '*.*o* (primary text output with user-defined name)'
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
-  - name: '*.files'
+    notes: "*.*o* (primary text output with user-defined name)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
+  - name: "*.files"
     supported: true
-    notes: '*.files (user-defined filenames)'
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
-  - name: '*.*i*'
+    notes: "*.files (user-defined filenames)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
+  - name: "*.*i*"
     supported: true
-    notes: '*.*i* (input parameters)'
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
-  - name: '*_o_DDB'
+    notes: "*.*i* (input parameters)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
+  - name: "*_o_DDB"
     supported: true
-    notes: '*_o_DDB (netCDF Derivative DataBases)'
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
-  - name: '*_o_DEN'
+    notes: "*_o_DDB (netCDF Derivative DataBases)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
+  - name: "*_o_DEN"
     supported: true
-    notes: '*_o_DEN (netCDF charge density)'
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
-  - name: '*_o_EIG'
+    notes: "*_o_DEN (netCDF charge density)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
+  - name: "*_o_EIG"
     supported: true
-    notes: '*_o_EIG (eigenvalues text file)'
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
-  - name: '*_o_WFK'
+    notes: "*_o_EIG (eigenvalues text file)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
+  - name: "*_o_WFK"
     supported: true
-    notes: '*_o_WFK (netCDF wavefunction)'
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
-  - name: '*o_SCR'
+    notes: "*_o_WFK (netCDF wavefunction)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
+  - name: "*o_SCR"
     supported: true
-    notes: '*o_SCR (netCDF RPA inverse dielectric screening)'
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
-  - name: '*o_SIGRES'
+    notes: "*o_SCR (netCDF RPA inverse dielectric screening)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
+  - name: "*o_SIGRES"
     supported: true
-    notes: '*o_SIGRES (netCDF GW self-energy corrections)'
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
-  - name: log
+    notes: "*o_SIGRES (netCDF GW self-energy corrections)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
+  - name: "log"
     supported: true
-    notes: log (stdout redirection)
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.init_parser
+    notes: "log (stdout redirection)"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.init_parser"
 runschema_capabilities:
   run:
-  - capability: program
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse
-  - capability: time_run
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse
+  - capability: "program"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse"
+  - capability: "time_run"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse"
   method:
-  - capability: electronic.method
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
-  - capability: electronic.n_spin_channels
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
-  - capability: electronic.smearing
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
-  - capability: dft.xc_functional
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
-  - capability: basis_set
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
-  - capability: k_mesh
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
-  - capability: scf
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
-  - capability: gw
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
-  - capability: screening
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
-  - capability: frequency_mesh
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_method
+  - capability: "electronic.method"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
+  - capability: "electronic.n_spin_channels"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
+  - capability: "electronic.smearing"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
+  - capability: "dft.xc_functional"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
+  - capability: "basis_set"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
+  - capability: "k_mesh"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
+  - capability: "scf"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
+  - capability: "gw"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
+  - capability: "screening"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
+  - capability: "frequency_mesh"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_method"
   system:
-  - capability: atoms
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_system
-  - capability: atoms.labels
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_system
-  - capability: atoms.positions
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_system
-  - capability: atoms.lattice_vectors
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_system
-  - capability: atoms.periodic
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_system
+  - capability: "atoms"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_system"
+  - capability: "atoms.labels"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_system"
+  - capability: "atoms.positions"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_system"
+  - capability: "atoms.lattice_vectors"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_system"
+  - capability: "atoms.periodic"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_system"
   calculation:
-  - capability: energy.total
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: energy.kinetic
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: energy.xc
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: energy.electrostatic
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: energy.ewald
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: energy.fermi
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: forces.total
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: stress.total
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: scf_iteration
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: band_structure_electronic
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: dos_electronic
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
-  - capability: band_gap
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations
+  - capability: "energy.total"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "energy.kinetic"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "energy.xc"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "energy.electrostatic"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "energy.ewald"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "energy.fermi"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "forces.total"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "stress.total"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "scf_iteration"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "band_structure_electronic"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "dos_electronic"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
+  - capability: "band_gap"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_configurations"
   workflow:
-  - capability: single_point
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_workflow
-  - capability: geometry_optimization
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_workflow
-  - capability: molecular_dynamics
-    source: electronicparsers/abinit/parser.py:AbinitOutParser.parse_workflow
+  - capability: "single_point"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_workflow"
+  - capability: "geometry_optimization"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_workflow"
+  - capability: "molecular_dynamics"
+    source: "electronicparsers/abinit/parser.py:AbinitOutParser.parse_workflow"
 special_features:
-- Plane-wave basis set with norm-conserving and PAW pseudopotentials
-- Extensive XC functional library via native ABINIT functionals and libxc
-- 'GW approximation: G0W0, eigenvalue self-consistent GW (ev-scGW), quasi-particle self-consistent GW (qp-scGW)'
-- Bethe-Salpeter equation (BSE) for optical spectra and excitons
-- DMFT for strongly correlated systems
-- Time-dependent DFT (TDFPT) for excited states and response functions
-- Phonons via density-functional perturbation theory (DFPT)
-- Spin-orbit coupling
-- Non-linear response properties (second harmonic generation, electro-optic effect)
-- Multi-dataset calculations (sequential calculations with different parameters)
-- Band structure calculations along high-symmetry paths (kptopt < 0)
-- Support for both text output and netCDF binary files
-- RPA dielectric screening for beyond-DFT calculations
-- GW band gap corrections and quasi-particle energies
+- "Plane-wave basis set with norm-conserving and PAW pseudopotentials"
+- "Extensive XC functional library via native ABINIT functionals and libxc"
+- GW approximation: "G0W0, eigenvalue self-consistent GW (ev-scGW), quasi-particle self-consistent GW (qp-scGW)'"
+- "Bethe-Salpeter equation (BSE) for optical spectra and excitons"
+- "DMFT for strongly correlated systems"
+- "Time-dependent DFT (TDFPT) for excited states and response functions"
+- "Phonons via density-functional perturbation theory (DFPT)"
+- "Spin-orbit coupling"
+- "Non-linear response properties (second harmonic generation, electro-optic effect)"
+- "Multi-dataset calculations (sequential calculations with different parameters)"
+- "Band structure calculations along high-symmetry paths (kptopt < 0)"
+- "Support for both text output and netCDF binary files"
+- "RPA dielectric screening for beyond-DFT calculations"
+- "GW band gap corrections and quasi-particle energies"
 notes:
-- ABINIT uses plane waves and is particularly suited for periodic systems
-- Parser handles multi-dataset calculations (DATASET 1, 2, 3, ...)
-- Beyond-DFT workflows (GW, BSE) are parsed via BeyondDFTWorkflowsParser
-- XC functional specified via ixc parameter (native) or via libxc (negative ixc)
-- Parser extracts k-mesh from ngkpt (Monkhorst-Pack) or kptrlatt
-- Supports both text-based output files and netCDF binary files for density, wavefunctions, screening, and GW results
+- "ABINIT uses plane waves and is particularly suited for periodic systems"
+- "Parser handles multi-dataset calculations (DATASET 1, 2, 3, ...)"
+- "Beyond-DFT workflows (GW, BSE) are parsed via BeyondDFTWorkflowsParser"
+- "XC functional specified via ixc parameter (native) or via libxc (negative ixc)"
+- "Parser extracts k-mesh from ngkpt (Monkhorst-Pack) or kptrlatt"
+- "Supports both text-based output files and netCDF binary files for density, wavefunctions, screening, and GW results"

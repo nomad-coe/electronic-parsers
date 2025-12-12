@@ -1,41 +1,41 @@
 metadata:
-  last_updated: '2025-12-12'
-  updated_by: GitHub Copilot
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
 parser:
-  name: DMol3
-  description: Materials Studio DMol3 - numeric atomic orbital DFT code for molecules and clusters
-  homepage: http://dmol3.web.psi.ch/
+  name: "DMol3"
+  description: "Materials Studio DMol3 - numeric atomic orbital DFT code for molecules and clusters"
+  homepage: "http://dmol3.web.psi.ch/"
   mainfile_patterns:
-  - '*.outmol'
+  - "*.outmol"
   supported_file_formats:
-  - name: '*.outmol'
+  - name: "*.outmol"
     supported: true
-    notes: Primary output file
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse
+    notes: "Primary output file"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse"
 runschema_capabilities:
   run:
-  - capability: program
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse"
   method:
-  - capability: electronic.method
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse
-  - capability: dft.xc_functional
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse
-  - capability: basis_set
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse
+  - capability: "electronic.method"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse"
+  - capability: "dft.xc_functional"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse"
+  - capability: "basis_set"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse"
   system:
-  - capability: atoms
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse"
   calculation:
-  - capability: energy.total
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse"
   workflow:
-  - capability: single_point
-    source: packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse
+  - capability: "single_point"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/dmol3/parser.py:Dmol3Parser.parse"
 special_features:
-- Numeric atomic orbitals (NAOs)
-- Molecular and cluster calculations
-- Materials Studio integration
+- "Numeric atomic orbitals (NAOs)"
+- "Molecular and cluster calculations"
+- "Materials Studio integration"
 notes:
-- Numeric atomic orbital basis sets
-- Optimized for molecular systems
+- "Numeric atomic orbital basis sets"
+- "Optimized for molecular systems"
