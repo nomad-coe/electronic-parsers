@@ -74,7 +74,7 @@ runschema_capabilities:
       source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
     - capability: energy.electrostatic
       source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
-    - capability: energy.van_der_walls
+    - capability: energy.van_der_waals
       source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
     - capability: forces.total
       source: "packages/nomad-parser-plugins-electronic/electronicparsers/abacus/parser.py:ABACUSParser.parse_configurations"
