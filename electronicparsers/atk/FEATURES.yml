@@ -1,67 +1,59 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: '2025-12-12'
+  updated_by: GitHub Copilot
 parser:
-  name: "ATK"
-  description: "QuantumATK (formerly Atomistix ToolKit) - DFT package for atomic-scale modeling"
-  homepage: "https://www.synopsys.com/silicon/quantumatk.html"
+  name: ATK
+  description: QuantumATK (formerly Atomistix ToolKit) - DFT package for atomic-scale modeling
+  homepage: https://www.synopsys.com/silicon/quantumatk.html
   mainfile_patterns:
-    - "*.nc"
+  - '*.nc'
   supported_file_formats:
-    - name: "*.nc"
-      supported: true
-      notes: "NetCDF format with molecular/bulk configurations"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:NCParser.parse"
-
+  - name: '*.nc'
+    supported: true
+    notes: NetCDF format with molecular/bulk configurations
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:NCParser.parse
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse"
-
+  - capability: program
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse
   method:
-    - capability: electronic.method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-    - capability: electronic.charge
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-    - capability: electronic.smearing
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-    - capability: electronic.relativity_method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-    - capability: dft.xc_functional
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-
+  - capability: electronic.method
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
+  - capability: electronic.charge
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
+  - capability: electronic.smearing
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
+  - capability: electronic.relativity_method
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
+  - capability: dft.xc_functional
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-
+  - capability: atoms
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-    - capability: energy.xc
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-    - capability: energy.kinetic_electronic
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-    - capability: energy.electrostatic
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-    - capability: forces.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-
+  - capability: energy.total
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
+  - capability: energy.xc
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
+  - capability: energy.kinetic_electronic
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
+  - capability: energy.electrostatic
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
+  - capability: forces.total
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
   workflow:
-    - capability: single_point
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations"
-
+  - capability: single_point
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/atk/parser.py:ATKParser.parse_configurations
 special_features:
-  - "NetCDF-based file format for structured data storage"
-  - "Support for molecular and bulk configurations"
-  - "Fermi smearing for metallic systems"
-  - "Pseudo-scalar relativistic corrections"
-  - "XC functionals: LDA (RPA, PZ, PW), GGA (PW91, PBE, RPBE, BLYP, WC, AM05), meta-GGA (mBEEF)"
-  - "Energy decomposition into kinetic, XC, and electrostatic components"
-  - "Velocity information for molecular dynamics"
-
+- NetCDF-based file format for structured data storage
+- Support for molecular and bulk configurations
+- Fermi smearing for metallic systems
+- Pseudo-scalar relativistic corrections
+- 'XC functionals: LDA (RPA, PZ, PW), GGA (PW91, PBE, RPBE, BLYP, WC, AM05), meta-GGA (mBEEF)'
+- Energy decomposition into kinetic, XC, and electrostatic components
+- Velocity information for molecular dynamics
 notes:
-  - "Parser reads NetCDF files with configuration fingerprints"
-  - "Supports both periodic and molecular systems"
-  - "XC functional mapping covers common LDA and GGA variants"
-  - "Basis sets can be either numeric AOs or plane waves"
+- Parser reads NetCDF files with configuration fingerprints
+- Supports both periodic and molecular systems
+- XC functional mapping covers common LDA and GGA variants
+- Basis sets can be either numeric AOs or plane waves

@@ -1,57 +1,49 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: '2025-12-12'
+  updated_by: GitHub Copilot
 parser:
-  name: "TURBOMOLE"
-  description: "Fast and efficient quantum chemistry package for molecules"
-  homepage: "https://www.turbomole.org/"
+  name: TURBOMOLE
+  description: Fast and efficient quantum chemistry package for molecules
+  homepage: https://www.turbomole.org/
   mainfile_patterns:
-    - "*.out"
+  - '*.out'
   supported_file_formats:
-    - name: "*.out"
-      supported: true
-      notes: "Primary output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-
+  - name: '*.out'
+    supported: true
+    notes: Primary output file
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-
+  - capability: program
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
   method:
-    - capability: electronic.method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-    - capability: dft.xc_functional
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-    - capability: basis_set
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-
+  - capability: electronic.method
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
+  - capability: dft.xc_functional
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
+  - capability: basis_set
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-
+  - capability: atoms
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-    - capability: forces.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-    - capability: eigenvalues
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-
+  - capability: energy.total
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
+  - capability: forces.total
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
+  - capability: eigenvalues
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
   workflow:
-    - capability: single_point
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-    - capability: geometry_optimization
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse"
-
+  - capability: single_point
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
+  - capability: geometry_optimization
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/turbomole/parser.py:TurbomoleParser.parse
 special_features:
-  - "Efficient DFT and wavefunction methods"
-  - "Resolution of identity (RI) approximations"
-  - "Time-dependent DFT (TDDFT)"
-  - "Excited state calculations"
-  - "Modular program structure"
-
+- Efficient DFT and wavefunction methods
+- Resolution of identity (RI) approximations
+- Time-dependent DFT (TDDFT)
+- Excited state calculations
+- Modular program structure
 notes:
-  - "Commercial package with high computational efficiency"
-  - "Modular design with separate executables for different tasks"
+- Commercial package with high computational efficiency
+- Modular design with separate executables for different tasks

@@ -1,63 +1,55 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: '2025-12-12'
+  updated_by: GitHub Copilot
 parser:
-  name: "CPMD"
-  description: "Car-Parrinello Molecular Dynamics - plane-wave DFT code for ab initio MD"
-  homepage: "https://www.cpmd.org/"
+  name: CPMD
+  description: Car-Parrinello Molecular Dynamics - plane-wave DFT code for ab initio MD
+  homepage: https://www.cpmd.org/
   mainfile_patterns:
-    - "*.out"
+  - '*.out'
   supported_file_formats:
-    - name: "*.out"
-      supported: true
-      notes: "Primary output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-
+  - name: '*.out'
+    supported: true
+    notes: Primary output file
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-    - capability: time_run
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-
+  - capability: program
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
+  - capability: time_run
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
   method:
-    - capability: electronic.method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-    - capability: electronic.n_spin_channels
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-    - capability: dft.xc_functional
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-    - capability: basis_set
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-    - capability: scf
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-
+  - capability: electronic.method
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
+  - capability: electronic.n_spin_channels
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
+  - capability: dft.xc_functional
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
+  - capability: basis_set
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
+  - capability: scf
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-
+  - capability: atoms
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-    - capability: forces.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-    - capability: temperature
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-
+  - capability: energy.total
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
+  - capability: forces.total
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
+  - capability: temperature
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
   workflow:
-    - capability: single_point
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-    - capability: molecular_dynamics
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse"
-
+  - capability: single_point
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
+  - capability: molecular_dynamics
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/cpmd/parser.py:CPMDParser.parse
 special_features:
-  - "Car-Parrinello molecular dynamics methodology"
-  - "Plane-wave basis set"
-  - "Pseudopotential methods"
-  - "Born-Oppenheimer and Car-Parrinello MD"
-  - "NVE, NVT, and NPT ensembles"
-
+- Car-Parrinello molecular dynamics methodology
+- Plane-wave basis set
+- Pseudopotential methods
+- Born-Oppenheimer and Car-Parrinello MD
+- NVE, NVT, and NPT ensembles
 notes:
-  - "Specialized in ab initio molecular dynamics"
-  - "Plane-wave DFT implementation"
+- Specialized in ab initio molecular dynamics
+- Plane-wave DFT implementation

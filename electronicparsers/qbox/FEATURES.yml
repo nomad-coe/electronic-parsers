@@ -1,59 +1,51 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: '2025-12-12'
+  updated_by: GitHub Copilot
 parser:
-  name: "Qbox"
-  description: "First-principles molecular dynamics code using plane-wave basis"
-  homepage: "http://qboxcode.org/"
+  name: Qbox
+  description: First-principles molecular dynamics code using plane-wave basis
+  homepage: http://qboxcode.org/
   mainfile_patterns:
-    - "*.xml"
-    - "*.out"
+  - '*.xml'
+  - '*.out'
   supported_file_formats:
-    - name: "*.xml"
-      supported: true
-      notes: "XML output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-    - name: "*.out"
-      supported: true
-      notes: "Text output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-
+  - name: '*.xml'
+    supported: true
+    notes: XML output file
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
+  - name: '*.out'
+    supported: true
+    notes: Text output file
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-
+  - capability: program
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
   method:
-    - capability: electronic.method
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-    - capability: dft.xc_functional
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-    - capability: basis_set
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-
+  - capability: electronic.method
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
+  - capability: dft.xc_functional
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
+  - capability: basis_set
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-
+  - capability: atoms
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-    - capability: forces.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-
+  - capability: energy.total
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
+  - capability: forces.total
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
   workflow:
-    - capability: single_point
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-    - capability: molecular_dynamics
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse"
-
+  - capability: single_point
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
+  - capability: molecular_dynamics
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/qbox/parser.py:QboxParser.parse
 special_features:
-  - "Plane-wave DFT"
-  - "First-principles molecular dynamics"
-  - "XML-based output format"
-  - "Massively parallel scalability"
-
+- Plane-wave DFT
+- First-principles molecular dynamics
+- XML-based output format
+- Massively parallel scalability
 notes:
-  - "Optimized for large-scale parallel calculations"
-  - "XML format for structured output"
+- Optimized for large-scale parallel calculations
+- XML format for structured output

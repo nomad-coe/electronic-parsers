@@ -1,41 +1,34 @@
 metadata:
-  last_updated: "2025-12-11"
-  updated_by: "Claude Sonnet 4.5"
-
+  last_updated: '2025-12-12'
+  updated_by: GitHub Copilot
 parser:
-  name: "CHARMM"
-  description: "Chemistry at HARvard Macromolecular Mechanics - molecular mechanics and dynamics package"
-  homepage: "https://www.charmm.org"
+  name: CHARMM
+  description: Chemistry at HARvard Macromolecular Mechanics - molecular mechanics and dynamics package
+  homepage: https://www.charmm.org
   mainfile_patterns:
-    - "*.out"
+  - '*.out'
   supported_file_formats:
-    - name: "*.out"
-      supported: true
-      notes: "Text output file"
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse"
-
+  - name: '*.out'
+    supported: true
+    notes: Text output file
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse
 runschema_capabilities:
   run:
-    - capability: program
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse"
-
+  - capability: program
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse
   system:
-    - capability: atoms
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse"
-
+  - capability: atoms
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse
   calculation:
-    - capability: energy.total
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse"
-
+  - capability: energy.total
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse
   workflow:
-    - capability: molecular_dynamics
-      source: "packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse"
-
+  - capability: molecular_dynamics
+    source: packages/nomad-parser-plugins-electronic/electronicparsers/charmm/parser.py:CharmmParser.parse
 special_features:
-  - "Molecular mechanics force fields"
-  - "Molecular dynamics simulations"
-  - "Macromolecular modeling"
-
+- Molecular mechanics force fields
+- Molecular dynamics simulations
+- Macromolecular modeling
 notes:
-  - "CHARMM is primarily a molecular mechanics code, not a quantum chemistry package"
-  - "Focus on MD trajectories and force field calculations"
+- CHARMM is primarily a molecular mechanics code, not a quantum chemistry package
+- Focus on MD trajectories and force field calculations
