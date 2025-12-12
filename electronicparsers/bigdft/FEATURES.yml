@@ -1,0 +1,77 @@
+metadata:
+  last_updated: "2025-12-11"
+  updated_by: "Claude Sonnet 4.5"
+
+parser:
+  name: "BigDFT"
+  description: "Massively parallel DFT code using Daubechies wavelets"
+  homepage: "http://bigdft.org/"
+  mainfile_patterns:
+    - "*.yaml"
+    - "log-*.yaml"
+  supported_file_formats:
+    - name: "*.yaml"
+      supported: true
+      notes: "YAML format output file"
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse"
+
+runschema_capabilities:
+  run:
+    - capability: program
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse"
+
+  method:
+    - capability: electronic.method
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_method"
+    - capability: electronic.n_spin_channels
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_method"
+    - capability: electronic.charge
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_method"
+    - capability: dft.xc_functional
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_method"
+    - capability: basis_set
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_method"
+    - capability: scf
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_method"
+
+  system:
+    - capability: atoms
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_system"
+
+  calculation:
+    - capability: energy.total
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_scc"
+    - capability: energy.xc
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_scc"
+    - capability: energy.xc_potential
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_scc"
+    - capability: energy.kinetic_electronic
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_scc"
+    - capability: energy.correction_hartree
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_scc"
+    - capability: forces.total
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_scc"
+    - capability: scf_iteration
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse_scc"
+
+  workflow:
+    - capability: single_point
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/bigdft/parser.py:BigDFTParser.parse"
+
+special_features:
+  - "Daubechies wavelet basis functions (real-space grid representation)"
+  - "Massively parallel implementation"
+  - "Extensive XC functional library via LibXC integration"
+  - "Support for LDA, GGA, meta-GGA, and hybrid functionals"
+  - "Hartree-Fock exchange (HF_X)"
+  - "Hybrid functionals (B3PW91, B3LYP, B3P86, O3LYP, PBEH, etc.)"
+  - "Subspace and wavefunction optimization tracking"
+  - "Free, periodic, and surface boundary conditions"
+  - "YAML-based structured output format"
+
+notes:
+  - "Parser processes YAML output files"
+  - "XC functional identification via LibXC codes (both positive and negative IDs)"
+  - "Real-space grid basis set type"
+  - "SCF iterations tracked through wavefunction optimization"
+  - "Energy decomposition includes XC, kinetic, and Hartree contributions"

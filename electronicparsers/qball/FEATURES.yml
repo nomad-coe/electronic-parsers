@@ -1,0 +1,51 @@
+metadata:
+  last_updated: "2025-12-11"
+  updated_by: "Claude Sonnet 4.5"
+
+parser:
+  name: "Qball"
+  description: "Plane-wave DFT code for first-principles molecular dynamics"
+  homepage: "https://github.com/LLNL/qball"
+  mainfile_patterns:
+    - "*.out"
+  supported_file_formats:
+    - name: "*.out"
+      supported: true
+      notes: "Primary output file"
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qball/parser.py:QBallParser.parse"
+
+runschema_capabilities:
+  run:
+    - capability: program
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qball/parser.py:QBallParser.parse"
+
+  method:
+    - capability: electronic.method
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qball/parser.py:QBallParser.parse"
+    - capability: dft.xc_functional
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qball/parser.py:QBallParser.parse"
+    - capability: basis_set
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qball/parser.py:QBallParser.parse"
+
+  system:
+    - capability: atoms
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qball/parser.py:QBallParser.parse"
+
+  calculation:
+    - capability: energy.total
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qball/parser.py:QBallParser.parse"
+
+  workflow:
+    - capability: single_point
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qball/parser.py:QBallParser.parse"
+    - capability: molecular_dynamics
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/qball/parser.py:QBallParser.parse"
+
+special_features:
+  - "Plane-wave basis set"
+  - "First-principles molecular dynamics"
+  - "Optimized for HPC systems"
+
+notes:
+  - "Based on Qbox, developed at Lawrence Livermore National Laboratory"
+  - "Plane-wave DFT with pseudopotentials"

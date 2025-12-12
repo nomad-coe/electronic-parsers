@@ -1,0 +1,48 @@
+metadata:
+  last_updated: "2025-12-11"
+  updated_by: "Claude Sonnet 4.5"
+
+parser:
+  name: "TBStudio"
+  description: "Tight Binding Studio - graphical tool for tight-binding calculations"
+  homepage: "http://www.tbstudio.org/"
+  mainfile_patterns:
+    - "*.tbm"
+  supported_file_formats:
+    - name: "*.tbm"
+      supported: true
+      notes: "JSON-based tight-binding model file"
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/tbstudio/parser.py:TBStudioParser.parse"
+
+runschema_capabilities:
+  run:
+    - capability: program
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/tbstudio/parser.py:TBStudioParser.parse"
+
+  method:
+    - capability: electronic.method
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/tbstudio/parser.py:TBStudioParser.parse"
+
+  system:
+    - capability: atoms
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/tbstudio/parser.py:TBStudioParser.parse"
+
+  calculation:
+    - capability: eigenvalues
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/tbstudio/parser.py:TBStudioParser.parse"
+    - capability: band_structure_electronic
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/tbstudio/parser.py:TBStudioParser.parse"
+
+  workflow:
+    - capability: single_point
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/tbstudio/parser.py:TBStudioParser.parse"
+
+special_features:
+  - "Tight-binding model Hamiltonians"
+  - "Band structure calculations"
+  - "JSON-based model format"
+  - "Graphical model building"
+
+notes:
+  - "Tight-binding method (not DFT)"
+  - "Suitable for efficient electronic structure with empirical models"

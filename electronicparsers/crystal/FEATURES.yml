@@ -1,0 +1,72 @@
+metadata:
+  last_updated: "2025-12-11"
+  updated_by: "Claude Sonnet 4.5"
+
+parser:
+  name: "CRYSTAL"
+  description: "CRYSTAL - Gaussian-type orbital DFT and Hartree-Fock code for periodic systems"
+  homepage: "https://www.crystal.unito.it/"
+  mainfile_patterns:
+    - "*.out"
+  supported_file_formats:
+    - name: "*.out"
+      supported: true
+      notes: "Primary output file"
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+
+runschema_capabilities:
+  run:
+    - capability: program
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: time_run
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+
+  method:
+    - capability: electronic.method
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: electronic.n_spin_channels
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: dft.xc_functional
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: basis_set
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: k_mesh
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: scf
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+
+  system:
+    - capability: atoms
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: symmetry
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+
+  calculation:
+    - capability: energy.total
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: energy.fermi
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: eigenvalues
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: band_structure_electronic
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: dos_electronic
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+
+  workflow:
+    - capability: single_point
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+    - capability: geometry_optimization
+      source: "packages/nomad-parser-plugins-electronic/electronicparsers/crystal/parser.py:CrystalParser.parse"
+
+special_features:
+  - "Gaussian-type orbital basis sets for periodic systems"
+  - "Hartree-Fock and DFT methods"
+  - "Hybrid functionals (B3LYP, PBE0, etc.)"
+  - "Extensive symmetry exploitation"
+  - "Band structure and DOS calculations"
+  - "Periodic boundary conditions (1D, 2D, 3D)"
+
+notes:
+  - "Specialized in periodic systems with Gaussian basis sets"
+  - "Strong symmetry analysis capabilities"
