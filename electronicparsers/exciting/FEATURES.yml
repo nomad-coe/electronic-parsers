@@ -1,0 +1,70 @@
+metadata:
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
+parser:
+  name: "exciting"
+  description: "All-electron full-potential linearized augmented plane-wave (FP-LAPW) code"
+  homepage: "http://exciting-code.org/"
+  mainfile_patterns:
+  - "*.OUT*"
+  - "INFO.OUT"
+  supported_file_formats:
+  - name: "*.OUT"
+    supported: true
+    notes: "Primary output file"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+runschema_capabilities:
+  run:
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "time_run"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  method:
+  - capability: "electronic.method"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "electronic.n_spin_channels"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "dft.xc_functional"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "basis_set"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "k_mesh"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "scf"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  system:
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "symmetry"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  calculation:
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "energy.fermi"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "forces.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "scf_iteration"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "eigenvalues"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "band_structure_electronic"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "dos_electronic"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  workflow:
+  - capability: "single_point"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+  - capability: "geometry_optimization"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/exciting/parser.py:ExcitingParser.parse"
+special_features:
+- "Full-potential LAPW method"
+- "All-electron calculations"
+- "GW and BSE calculations for excited states"
+- "Time-dependent DFT (TDDFT)"
+- "Comprehensive band structure and DOS"
+- "Spin-orbit coupling"
+notes:
+- "All-electron full-potential method"
+- "Focus on excited-state properties"
+- "Large parser implementation (~3400 lines)"

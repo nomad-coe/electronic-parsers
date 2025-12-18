@@ -1,0 +1,59 @@
+metadata:
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
+parser:
+  name: "GPAW"
+  description: "Grid-based Projector Augmented Wave method - DFT code with real-space grids"
+  homepage: "https://wiki.fysik.dtu.dk/gpaw/"
+  mainfile_patterns:
+  - "*.gpw"
+  - "*.gpw2"
+  supported_file_formats:
+  - name: "*.gpw"
+    supported: true
+    notes: "GPAW restart file (binary)"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  - name: "*.gpw2"
+    supported: true
+    notes: "GPAW restart file v2 (binary)"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+runschema_capabilities:
+  run:
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  method:
+  - capability: "electronic.method"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  - capability: "electronic.n_spin_channels"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  - capability: "dft.xc_functional"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  - capability: "basis_set"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  - capability: "k_mesh"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  system:
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  calculation:
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  - capability: "energy.fermi"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  - capability: "forces.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  - capability: "eigenvalues"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+  workflow:
+  - capability: "single_point"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/gpaw/parser.py:GPAWParser.parse"
+special_features:
+- "Projector Augmented Wave (PAW) method"
+- "Real-space grid representation"
+- "Efficient parallelization"
+- "Python-based interface (ASE integration)"
+- "TDDFT for excited states"
+notes:
+- "Uses real-space grids instead of plane waves"
+- "PAW method for efficient all-electron accuracy"
+- "Binary restart file format"

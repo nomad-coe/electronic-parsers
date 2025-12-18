@@ -1,0 +1,40 @@
+metadata:
+  last_updated: "2025-12-12"
+  updated_by: "GitHub Copilot"
+parser:
+  name: "solid_dmft"
+  description: "Ab initio DMFT package for strongly correlated materials integrated with DFT codes"
+  homepage: "https://triqs.github.io/solid_dmft/"
+  mainfile_patterns:
+  - "*.h5"
+  - "*.hdf5"
+  supported_file_formats:
+  - name: "*.h5"
+    supported: true
+    notes: "HDF5 output file"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/soliddmft/parser.py:SolidDMFTParser.parse"
+runschema_capabilities:
+  run:
+  - capability: "program"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/soliddmft/parser.py:SolidDMFTParser.parse"
+  method:
+  - capability: "electronic.method"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/soliddmft/parser.py:SolidDMFTParser.parse"
+  system:
+  - capability: "atoms"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/soliddmft/parser.py:SolidDMFTParser.parse"
+  calculation:
+  - capability: "energy.total"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/soliddmft/parser.py:SolidDMFTParser.parse"
+  workflow:
+  - capability: "dmft"
+    source: "packages/nomad-parser-plugins-electronic/electronicparsers/soliddmft/parser.py:SolidDMFTParser.parse"
+special_features:
+- "DFT+DMFT approach for strongly correlated materials"
+- "Integration with DFT codes (VASP, Quantum ESPRESSO, etc.)"
+- "TRIQS library for many-body calculations"
+- "Treatment of Hubbard-like correlations"
+notes:
+- "Combines DFT with Dynamical Mean Field Theory"
+- "HDF5-based output format"
+- "Built on TRIQS library"
