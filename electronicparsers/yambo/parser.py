@@ -23,12 +23,12 @@ from datetime import datetime
 from netCDF4 import Dataset  # pylint: disable=no-name-in-module
 from ase.data import chemical_symbols
 
-from nomad.parsing.file_parser import TextParser, Quantity, FileParser
+from nomad.parsing.file_parser import TextParser, Quantity, FileParser, DataTextParser #add DataTextParser
 from nomad.units import ureg
 from runschema.run import Run, Program, TimeRun
 from runschema.system import System, Atoms
 from runschema.method import Method
-from runschema.calculation import Calculation, Energy, EnergyEntry, BandEnergies
+from runschema.calculation import Calculation, Energy, EnergyEntry, BandEnergies, Spectra #add Spectra
 from .metainfo.yambo import (
     x_yambo_dipoles,
     x_yambo_dynamic_dielectric_matrix_fragment,
@@ -48,10 +48,14 @@ class MainfileParser(TextParser):
     def __init__(self):
         super().__init__()
 
+
+
+
     def init_quantities(self):
         re_f = r'[-+]*\d*\.\d+[Ee]*[-+]*\d*'
 
         io_quantities = [
+
             Quantity(
                 'key_value',
                 r'([A-Z\d].+?)(?:\(.+\)|\[.+\]| |)(:.+?)(?:\[|\n)',
@@ -159,6 +163,8 @@ class MainfileParser(TextParser):
             ),
         ]
 
+        
+        
         qp_properties_quantity = Quantity(
             'qp_properties',
             r'QP properties and I/O([\s\S]+? S/N \d+.+)',
@@ -482,7 +488,23 @@ class MainfileParser(TextParser):
                 repeats=True,
                 sub_parser=TextParser(quantities=module_quantities),
             ),
-        ]
+            Quantity(
+                'io',
+                r'(Version [\s\S]+?)(Unit cells [\s\S]+?)',
+                repeats=False,
+                sub_parser=TextParser(quantities=io_quantities),
+            ),
+###
+
+            Quantity(
+                'sp_type',
+                r'(EELS|Polarizability|Absorption)',
+                repeats=False,
+            ),
+
+            ]
+
+###
 
 
 class NetCDFParser(FileParser):
@@ -535,6 +557,7 @@ class InputParser(TextParser):
                 str_operation=str_to_key_block,
             ),
         ]
+
 
 
 class YamboParser:
@@ -603,6 +626,9 @@ class YamboParser:
             'valence_conduction',
             [source.get('valence', 0.0), source.get('conduction', 0.0)],
         )
+      
+           
+        
         calc.energy = Energy(
             fermi=source.get('fermi', 0.0),
             highest_occupied=valence_conduction[0],
@@ -701,7 +727,56 @@ class YamboParser:
             if key.startswith('x_yambo') and val is not None:
                 setattr(calc, key, val)
 
+    ###
+
+        original_input = self.mainfile_parser.cpu_files_io.input
+
+
+        def to_values(block):
+            values = []
+            names = []
+            for line in block.strip().splitlines():
+
+                if line.startswith('#    E/ev[1]'):
+                    names = [k.strip() for k in line.split() if k != '#']
+                    continue
+                if names and not line.startswith('#'):
+                    values.append(line.split())
+            values = np.array(values, dtype=np.float64)
+            return values
+
+
+        spectra_files = [ sp_file for sp_file in os.listdir(self.mainfile_parser.maindir) if sp_file.startswith('o')] 
+
+        for spectra_file in spectra_files:
+            self.mainfile_parser.mainfile = os.path.join(self.mainfile_parser.maindir,spectra_file)
+            if self.mainfile_parser.sp_type is not None:
+
+
+                spectra = Spectra()
+
+                calc.spectra.append(spectra)
+
+                if self.mainfile_parser.get('sp_type') == 'Absorption':
+                    spectra.type = 'Dielectric function'
+                else:
+                    spectra.type = self.mainfile_parser.get('sp_type')
+                with open(self.mainfile_parser.mainfile) as f:    
+                    spectra_file_content = f.read()
+
+                output_spectra_values = to_values(spectra_file_content)
+
+                spectra.n_energies =  output_spectra_values.shape[0]
+                spectra.excitation_energies = output_spectra_values[:, 0] * ureg.eV
+                spectra.intensities = output_spectra_values[:, 1]
+
+        self.mainfile_parser.mainfile = self.filepath
+        self.mainfile_parser.cpu_files_io.input = original_input
+
+    ###
+
         return calc
+
 
     def parse_input(self):
         if self.mainfile_parser.cpu_files_io.input is None:
@@ -717,6 +792,7 @@ class YamboParser:
             system = System()
             run.system.append(system)
             positions = self.netcdf_parser.get('ATOM_POS', [])
+        #    max_n_atoms = self.netcdf_parser.get('MAX_ATOMS', 0)
             n_atoms = self.netcdf_parser.N_ATOMS
             atom_numbers = np.hstack(
                 [
@@ -724,16 +800,51 @@ class YamboParser:
                     for n in range(len(n_atoms))
                 ]
             )
+
+
+         #   def process_and_select(positions, max_n_atoms, n_atoms): 
+          #      try:
+           #         positions = np.array(positions)
+            #        blocks = []
+             #       selected = []
+              #      positions = positions.reshape(-1, 3)
+    
+               #     n_points = positions.shape[0] 
+                #    n_blocks = int( int(n_points) // int(max_n_atoms) )
+
+                 #   for i in range(n_blocks):
+                  #      start_idx = int(i) * int(max_n_atoms)
+                   #     end_idx = (int(i) + 1) * int(max_n_atoms)
+                    #    block = positions[start_idx:end_idx]
+                     #   blocks.append(block)
+                   # for i, block in enumerate(blocks):
+                    #    n_to_select = int(n_atoms[int(i)])
+                     #   selected_from_block = block[:n_to_select]
+                      #  for point in selected_from_block:
+                       #     selected.append(point)
+    
+                #    positions=np.array(selected)
+                 #   return positions        
+                    
+             #   except Exception as e:
+                #    raise e
+
+       #     positions = process_and_select(positions, max_n_atoms, n_atoms)
+            
             system.atoms = Atoms(
                 positions=np.reshape(positions, (np.size(positions) // 3, 3))
                 * ureg.bohr,
+               # positions = positions * ureg.bohr,
                 labels=[chemical_symbols[int(n)] for n in atom_numbers],
             )
+##########################            
+
             if self.netcdf_parser.LATTICE_VECTORS is not None:
                 system.atoms.lattice_vectors = (
                     self.netcdf_parser.LATTICE_VECTORS * ureg.bohr
                 )
 
+        
         # reference calculation
         energies_occupations = self.mainfile_parser.get('core_variables_setup', {}).get(
             'energies_occupations'
@@ -792,7 +903,6 @@ class YamboParser:
         self._module = x_yambo_local_xc_nonlocal_fock
         self.parse_method(source)
         calc = self.parse_calculation(source.hf_occupations)
-
         if source.corrections is not None:
             if calc is None:
                 calc = Calculation()
@@ -812,7 +922,7 @@ class YamboParser:
                 band_energy.x_yambo_vxc = vxc.transpose(1, 2, 0) * ureg.eV
 
         if source.energy_xc is not None:
-            calc.energy = Energy(xc=EnergyEntry(value=source.energy_xc))
+            calg.energy = Energy(xc=EnergyEntry(value=source.energy_xc))
 
     def parse_bare_xc(self, module):
         source = module.bare_xc
@@ -860,6 +970,8 @@ class YamboParser:
                 self.netcdf_parser.parse()
                 self.parse_calculation(source.qp_properties)
                 self.netcdf_parser.close()
+
+    
 
     def parse(self, filepath, archive, logger):
         self.filepath = os.path.abspath(filepath)

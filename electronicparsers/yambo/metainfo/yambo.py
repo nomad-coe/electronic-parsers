@@ -33,13 +33,14 @@ import runschema.run  # pylint: disable=unused-import
 import runschema.calculation  # pylint: disable=unused-import
 import runschema.method  # pylint: disable=unused-import
 import runschema.system  # pylint: disable=unused-import
-
+from nomad.datamodel.results import Properties 
 
 m_package = Package()
 
 
 class x_yambo_io(MSection):
     m_def = Section(validate=False)
+
 
     x_yambo_parameters = Quantity(
         type=JSON,
@@ -65,6 +66,23 @@ class x_yambo_io(MSection):
 
 class x_yambo_parameters(MSection):
     m_def = Section(validate=False)
+
+
+    x_yambo_simulation_cell = Quantity(
+        type=np.int32,
+        shape=[],
+        description="""
+        direct lattice vectors
+        """,
+    )
+
+    x_yambo_alat_factors = Quantity(
+        type=np.int32,
+        shape=[],
+        description="""
+        Alat factors
+        """,
+    )
 
     x_yambo_bands = Quantity(
         type=np.int32,
@@ -342,6 +360,12 @@ class x_yambo_bare_xc_bandenergies(runschema.calculation.BandEnergies):
     )
 
 
+
+    
+
+
+
+
 class Calculation(runschema.calculation.Calculation):
     m_def = Section(validate=False, extends_base_section=True)
 
@@ -436,6 +460,15 @@ class Calculation(runschema.calculation.Calculation):
         """,
     )
 
+
+    x_yambo_sp_type =  Quantity(
+        type=str,
+        shape=[],
+        description="""
+        """,
+    )
+
+
     x_yambo_local_xc_nonlocal_fock_bandenergies = SubSection(
         sub_section=x_yambo_local_xc_nonlocal_fock_bandenergies.m_def, repeats=True
     )
@@ -443,6 +476,8 @@ class Calculation(runschema.calculation.Calculation):
     x_yambo_bare_xc_bandenergies = SubSection(
         sub_section=x_yambo_bare_xc_bandenergies.m_def, repeats=True
     )
+
+
 
 
 class x_yambo_dynamic_dielectric_matrix_fragment(MSection):
