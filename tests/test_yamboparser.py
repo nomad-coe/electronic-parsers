@@ -216,3 +216,16 @@ def test_4(parser):
     assert calc[2].eigenvalues[0].qp_linearization_prefactor[0][2][2] == approx(0.89)
     assert calc[2].eigenvalues[0].value_qp[0][5][1].magnitude == approx(-5.68772705e-19)
     assert calc[2].eigenvalues[0].value_ks[0][-1][3].magnitude == approx(2.36641489e-18)
+
+def test_5(parser):
+    archive = EntryArchive()
+    parser.parse(
+        'tests/data/yambo/CH4_db_minimal/r_setup', archive, None
+    )
+    run = archive.run[-1]
+    system = run.system
+    assert run.x_yambo_input.x_yambo_file == './SAVE//ns.db1'
+    assert system[0].atoms.positions.to('angstrom')[0][0].magnitude == approx(0.675)
+    assert run.x_yambo_input.x_yambo_parameters['Max atoms/species'] == 4
+    assert run.x_yambo_input.x_yambo_parameters['No. of atom species'] == 2
+    assert system[0].atoms.positions.shape == (5, 3)
