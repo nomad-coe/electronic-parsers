@@ -25,6 +25,7 @@ from datetime import datetime
 import re
 import io
 from os import path, listdir
+from ase.data import atomic_numbers
 
 from nomad.datamodel import EntryArchive
 from nomad.units import ureg as units
@@ -103,6 +104,7 @@ def _j_mapping() -> dict[tuple[int, int], tuple[float, float]]:
 
 
 element = '[A-Z][a-z]?'
+l_quantum = '[spdf]'
 xc_functional_dictionary = {
     'GGA-PBE': ['GGA_C_PBE', 'GGA_X_PBE'],
     'LDA': ['LDA_X', 'LDA_C_PZ'],
@@ -136,7 +138,7 @@ species_and_coordinates_parser = TextParser(
     quantities=[
         Quantity(
             'atom',
-            rf'\s*\d+\s*({element}\d*)\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\s+[\d\.]+\s*[\d\.]+\s*',
+            rf'\s*\d+\s*(\w+)\s*([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\s+[\d\.]+\s*[\d\.]+\s*',
             repeats=True,
         )
     ]
@@ -144,14 +146,18 @@ species_and_coordinates_parser = TextParser(
 
 species_definition_parser = TextParser(
     quantities=[
-        Quantity('species', rf'({element}\d*)\s+([-\w\.]+)\s+(\w+)', repeats=True),
+        Quantity('species',
+                 rf'(\w+)\s+([-\w\.]+)\s+(\w+)',
+                 repeats=True,
+                 str_operation=lambda s: dict(zip(("label", "basis", "pseudo"), s.split()))
+        )
     ]
 )
 
 core_hole_parser = TextParser(
     quantities=[
         Quantity(
-            'core_hole', rf'(\d+)\s+({element})\s+(\d+)', repeats=False
+            'core_hole', rf'(\d+)\s+({l_quantum})\s+(\d+)', repeats=False
         ),  # TODO: consider `repeats = True` case
     ]
 )
@@ -218,7 +224,7 @@ mainfile_parser = TextParser(
         ),
         Quantity(
             'core_hole',
-            r'<Definition\.of\.Core\.Hole([\s\S]+)Definition\.of\.Core\.Hole>',
+            r'<core\.hole\.state([\s\S]+)core\.hole\.state>',
             sub_parser=core_hole_parser,
         ),
         Quantity(
@@ -465,46 +471,51 @@ class OpenmxParser:
         return result
 
     def parse_species(
-        self, definitions: list[str]
-    ) -> tuple[Pseudopotential, Optional[CoreHole]]:
+        self, definitions: dict[str, str]
+    ) -> tuple[Pseudopotential, str, int, Optional[CoreHole]]:
         """
         Extract `Pseudopotential` and `CoreHole` (if present) from the atomic species definition.
         An explanation of the format can be found at https://www.openmx-square.org/openmx_man3.9/node32.html
         For an overview of all conventional potentials and partial atomic orbitals, see https://www.openmx-square.org/vps_pao2019/
         and https://www.openmx-square.org/vps_pao_core2019/ for core-holes.
         """
-        l_quantum = '[spdf]'
         remove_extension = lambda x: re.sub(r'(\.pao|\.vps)', '', x)
-        extract_method = lambda x: re.search(r'_([A-Z]+)19', x)
+        extract_method = lambda x: re.search(r'_([A-Z]+)\d{2}', x)
+        extract_species = lambda x: re.search(rf'({element})_[A-Z]+\d{{2}}', x)
         #  extract_orbital = lambda x: re.search(rf'_(\d)({l_quantum})$', x)
-        extract_core_hole = lambda x: re.search(rf'_(\d)({l_quantum})_CH', x)
+        extract_core_hole = lambda x: re.search(rf'_(\d)({l_quantum})(_CH)?', x)
 
         definitions = deepcopy(definitions)
         try:
-            definitions[1] = remove_extension(definitions[1])
-            definitions[2] = remove_extension(definitions[2])
+            if str(definitions['pseudo']) == 'E':
+                # Ghost/empty atom: basis only, no pseudopotential.
+                return None, definitions['label'], 0, None
+            definitions['basis'] = remove_extension(definitions['basis'])
+            definitions['pseudo'] = remove_extension(definitions['pseudo'])
         except IndexError:
-            self.logger.error(f'Species definition must be of length 3: {definitions}')
-            return None, None
+            self.logger.error(f'Species definition must contain label, basis and pseudopotential: {definitions}')
+            return None, None, None, None
+
+        species = atomic_numbers[extract_species(definitions['pseudo']).group(1)]
 
         # evaluate pseudopotential
         pseudopotential, core_hole = (
             Pseudopotential(type='US MBK', norm_conserving=True),
             None,
         )  # TODO: add basis set
-        pseudopotential.name = definitions[2]
+        pseudopotential.name = definitions['pseudo']
         try:
             pseudopotential.xc_functional_name = xc_functional_dictionary[
-                extract_method(definitions[2]).group(1)
+                extract_method(definitions['pseudo']).group(1)
             ]
         except KeyError:
             self.logger.error(
-                f'Unknown exchange-correlation functional: {definitions[2]}'
+                f"Unknown exchange-correlation functional: {definitions['pseudo']}"
             )
 
         # evaluate core_hole
         quantum_nums_flag = extract_core_hole(
-            definitions[1]
+            definitions['basis']
         )  # this checks the PAO, the PP is only necessary for the final state
         if quantum_nums_flag:
             quantum_nums = quantum_nums_flag.groups()
@@ -516,10 +527,10 @@ class OpenmxParser:
                 )
             except KeyError:
                 self.logger.error(f'Unknown l-quantum symbol: {quantum_nums[1]}')
-                return pseudopotential, None
+                return pseudopotential, definitions['label'], species, None
 
             core_hole_flags = mainfile_parser.results.get('core_hole')
-            if core_hole_flags:
+            if core_hole_flags and quantum_nums[2] is not None:
                 core_hole.dscf_state = 'final'
                 spinpol = mainfile_parser.get('scf.SpinPolarization', '').lower()
                 if spinpol == 'on':
@@ -550,7 +561,8 @@ class OpenmxParser:
             else:
                 core_hole.dscf_state = 'initial'  # this will be a hook in $\Delta$-SCF
 
-        return pseudopotential, core_hole
+
+        return pseudopotential, definitions['label'], species, core_hole
 
     def parse_workflow(self):
         md_type = mainfile_parser.get('MD.Type')
@@ -630,10 +642,13 @@ class OpenmxParser:
         sec_method.atom_parameters = []
 
         for species in mainfile_parser.results['species'].results['species']:
+            print(species)
             # add atom parameters
-            atom_parameters = AtomParameters(label=species[0])
+            atom_parameters = AtomParameters(label=species['label'])
             (
                 atom_parameters.pseudopotential,
+                atom_parameters.label,
+                atom_parameters.atom_number,
                 atom_parameters.core_hole,
             ) = self.parse_species(species)
             sec_method.atom_parameters.append(atom_parameters)
