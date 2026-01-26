@@ -403,3 +403,36 @@ def test_graphite_no_stdout(parser):
     calculation = run.calculation[0]
     calc_stress = calculation.stress
     assert calc_stress is None
+
+
+def test_TiC(parser):
+    """
+    Single point core-hole calculation with empty atom basis set in a vacancy.
+    Also has some unused species definitions.
+    """
+    archive = EntryArchive()
+    parser.parse('tests/data/openmx/TiC-corehole/TiC-corehole.out', archive, logging)
+
+    run = archive.run[0]
+
+    method = run.method[0]
+    assert method.electronic.n_spin_channels == 2
+    assert len(method.atom_parameters) == 4
+    assert method.atom_parameters[0].atom_number == 6
+    assert method.atom_parameters[0].label == 'C'
+    assert method.atom_parameters[0].pseudopotential.name == 'C_PBE19_1s'
+    assert method.atom_parameters[0].pseudopotential.xc_functional_name == ['GGA_C_PBE','GGA_X_PBE']
+    assert method.atom_parameters[0].core_hole.dscf_state == 'initial'
+    assert method.atom_parameters[1].atom_number == 22
+    assert method.atom_parameters[1].label == 'Ti'
+    assert method.atom_parameters[1].core_hole is None
+    assert method.atom_parameters[2].atom_number == 0
+    assert method.atom_parameters[2].label == 'ETi'
+    assert method.atom_parameters[2].pseudopotential is None
+    assert method.atom_parameters[3].atom_number == 6
+    assert method.atom_parameters[3].label == 'C1'
+    assert method.atom_parameters[3].pseudopotential.name == 'C_PBE19_1s'
+    assert method.atom_parameters[3].core_hole.dscf_state == 'final'
+    assert method.atom_parameters[3].core_hole.n_quantum_number == 1
+    assert method.atom_parameters[3].core_hole.l_quantum_number == 0
+    assert method.atom_parameters[3].core_hole.n_electrons_excited == 1
