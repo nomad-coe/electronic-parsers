@@ -164,6 +164,12 @@ def test_AlN(parser):
         method.k_mesh.multiplicities[0], np.array([2, 2, 2]).astype(complex), rtol=0.0
     )
     assert method.k_mesh.multiplicities[73] == [1]
+    assert len(method.atom_parameters) == 2
+    assert method.atom_parameters[0].pseudopotential.name == 'N_PBE19'
+    assert method.atom_parameters[1].pseudopotential.name == 'Al_PBE19'
+    assert method.atom_parameters[1].pseudopotential.norm_conserving
+    assert method.atom_parameters[1].pseudopotential.type == 'US MBK'
+    assert method.atom_parameters[1].pseudopotential.xc_functional_name == ['GGA_C_PBE','GGA_X_PBE']
 
     workflow = archive.workflow2
     assert workflow.method.method == 'steepest_descent'

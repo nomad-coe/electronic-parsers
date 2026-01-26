@@ -478,8 +478,6 @@ class OpenmxParser:
         extract_method = lambda x: re.search(r'_([A-Z]+)19', x)
         #  extract_orbital = lambda x: re.search(rf'_(\d)({l_quantum})$', x)
         extract_core_hole = lambda x: re.search(rf'_(\d)({l_quantum})_CH', x)
-        extract_elem_cutoff = lambda x: re.match(rf'({element})([\d\.]+)[_-]', x)
-        extract_lmax = lambda x: re.search(rf'({l_quantum})\d$', x)
 
         definitions = deepcopy(definitions)
         try:
@@ -494,16 +492,7 @@ class OpenmxParser:
             Pseudopotential(type='US MBK', norm_conserving=True),
             None,
         )  # TODO: add basis set
-        pseudopotential.name = f'{definitions[1]} {definitions[2]}'
-        pseudopotential.cutoff = (
-            float(extract_elem_cutoff(definitions[1]).group(2)) * units.hartree
-        )
-        try:
-            pseudopotential.l_max = CoreHole.l_quantum_numbers[
-                extract_lmax(definitions[1]).group(1)
-            ]
-        except KeyError:
-            self.logger.error(f'Unknown l-quantum symbol: {definitions[1]}')
+        pseudopotential.name = definitions[2]
         try:
             pseudopotential.xc_functional_name = xc_functional_dictionary[
                 extract_method(definitions[2]).group(1)
