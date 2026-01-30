@@ -2219,7 +2219,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     if len(val) > 2:
                         sec_method.x_fhi_aims_controlIn_occupation_order = int(val[2])
                 except Exception as e:
-                    logger.warning(f"Failed to parse smearing info from val={val}: {e}")
+                    logger.warning(f'Failed to parse smearing info from val={val}: {e}')
             elif key == 'relativistic':
                 if isinstance(val, str):
                     val = [val]
