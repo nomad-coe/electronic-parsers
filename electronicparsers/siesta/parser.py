@@ -500,7 +500,7 @@ class SiestaParser:
                             np.dot(positions, lattice_vectors.magnitude)
                             * lattice_vectors.units
                         )
-            if source.get('species') is not None:
+            if source.get('species') is not None and self.fdf_parser.labels:
                 labels = [
                     self.fdf_parser.labels[int(s) - 1]
                     for s in source.get('species', [])

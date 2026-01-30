@@ -647,7 +647,11 @@ class GaussianOutParser(TextParser):
                 r'%[Nn][Pp]roc=([A-Za-z0-9.]*)',
                 dtype=str,
             ),
-            Quantity('calc_type', r'\s-+\n\sGaussian ([\w\s]+)\n', convert=lambda x: ' '.join(x)),
+            Quantity(
+                'calc_type',
+                r'\s-+\n\sGaussian ([\w\s]+)\n',
+                convert=lambda x: ' '.join(x),
+            ),
             Quantity(
                 'run',
                 r'(-{10}\s*#[\s\S]+?Normal termination.*\n)',

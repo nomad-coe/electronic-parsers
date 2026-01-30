@@ -394,9 +394,8 @@ class ElkParser:
         )
         sec_system.atoms = Atoms(
             labels=labels,
-            positions=np.dot(
-                positions, lattice_vectors.magnitude
-            ) * lattice_vectors.units,
+            positions=np.dot(positions, lattice_vectors.magnitude)
+            * lattice_vectors.units,
             lattice_vectors=lattice_vectors,
         )
 
@@ -465,9 +464,12 @@ class ElkParser:
         sec_eigenvalue.kpoints = self.eigenval_parser.get('kpoint')
         eigenvalues_occupancies = self.eigenval_parser.get('eigenvalue_occupancy', [])
 
-        if (eigenvalues_occupancies is not None and len(eigenvalues_occupancies) > 0 and
-            self.eigenval_parser.n_kpoints is not None and
-            self.eigenval_parser.n_states is not None):
+        if (
+            eigenvalues_occupancies is not None
+            and len(eigenvalues_occupancies) > 0
+            and self.eigenval_parser.n_kpoints is not None
+            and self.eigenval_parser.n_states is not None
+        ):
             n_spin = (
                 1
                 if self.mainfile_parser.get('spin_treatment', '').lower()
@@ -480,9 +482,16 @@ class ElkParser:
                 # TODO determine how eigenvalues are printed in spin polarized case
                 eigenvalues_occupancies = np.reshape(
                     eigenvalues_occupancies,
-                    (self.eigenval_parser.n_kpoints, n_spin, self.eigenval_parser.n_states, 3),
+                    (
+                        self.eigenval_parser.n_kpoints,
+                        n_spin,
+                        self.eigenval_parser.n_states,
+                        3,
+                    ),
                 )
-                eigenvalues_occupancies = np.transpose(eigenvalues_occupancies, axes=(3, 1, 0, 2))
+                eigenvalues_occupancies = np.transpose(
+                    eigenvalues_occupancies, axes=(3, 1, 0, 2)
+                )
                 # first column is state index
                 sec_eigenvalue.energies = eigenvalues_occupancies[1] * ureg.hartree
                 sec_eigenvalue.occupancies = eigenvalues_occupancies[2]

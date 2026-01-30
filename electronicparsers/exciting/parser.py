@@ -2531,7 +2531,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
         # BSE
         sec_bse = BSE()
         sec_method.bse = sec_bse
-        sec_bse.type = self._bse_type_map[sec_run.method[-1].x_exciting_xs_bse_type]
+        sec_bse.type = self._bse_type_map.get(sec_run.method[-1].x_exciting_xs_bse_type)
         sec_bse.solver = 'Full-diagonalization'
         sec_bse.n_empty_states = sec_run.method[-1].x_exciting_xs_number_of_empty_states
         sec_bse.broadening = sec_run.method[-1].x_exciting_xs_broadening
@@ -2690,30 +2690,33 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
                             'Could not find the analytical continuation method.'
                         )
         # FrequencyMesh
-        n_freqs = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
-        freqmax = sec_gw.x_exciting_freqgrid.x_exciting_freqmax
-        freqmin = sec_gw.x_exciting_freqgrid.x_exciting_freqmin
-        freq_points = [
-            freqmin + i * (freqmax - freqmin) / n_freqs for i in range(n_freqs)
-        ] * ureg.hartree
-        smearing = (
-            sec_gw.x_exciting_freqgrid.x_exciting_eta
-            if sec_gw.x_exciting_qdepw == 'sum'
-            else None
-        )
-        sec_freq_mesh = FrequencyMesh(
-            dimensionality=1,
-            sampling_method=self._freq_grid_map.get(
-                sec_gw.x_exciting_freqgrid.x_exciting_fgrid
-            ),
-            n_points=n_freqs,
-            points=[freq_points],
-            smearing=smearing,
-        )
-        sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
+        if sec_gw.x_exciting_freqgrid or True:
+            n_freqs = sec_gw.x_exciting_freqgrid.x_exciting_nomeg
+            freqmax = sec_gw.x_exciting_freqgrid.x_exciting_freqmax
+            freqmin = sec_gw.x_exciting_freqgrid.x_exciting_freqmin
+            freq_points = [
+                freqmin + i * (freqmax - freqmin) / n_freqs for i in range(n_freqs)
+            ] * ureg.hartree
+            smearing = (
+                sec_gw.x_exciting_freqgrid.x_exciting_eta
+                if sec_gw.x_exciting_qdepw == 'sum'
+                else None
+            )
+            sec_freq_mesh = FrequencyMesh(
+                dimensionality=1,
+                sampling_method=self._freq_grid_map.get(
+                    sec_gw.x_exciting_freqgrid.x_exciting_fgrid
+                ),
+                n_points=n_freqs,
+                points=[freq_points],
+                smearing=smearing,
+            )
+            sec_method.m_add_sub_section(Method.frequency_mesh, sec_freq_mesh)
         # Screening
         sec_screening = Screening(
-            type=sec_gw.x_exciting_scrcoul.x_exciting_scrtype,
+            type=sec_gw.x_exciting_scrcoul.x_exciting_scrtype
+            if sec_gw.x_exciting_scrcoul
+            else None,
             n_empty_states=sec_gw.x_exciting_nempty,
             k_mesh=sec_k_mesh,
             q_mesh=sec_k_mesh,
@@ -2725,7 +2728,7 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_gw.x_exciting_ibgw,
             sec_gw.x_exciting_nbgw,
         ]
-        if sec_screening.n_empty_states == 0:
+        if sec_screening.n_empty_states == 0 and sec_gw.x_exciting_selfenergy:
             sec_gw.n_empty_states = sec_gw.x_exciting_selfenergy.x_exciting_nempty
         else:
             sec_gw.n_empty_states = sec_screening.n_empty_states
@@ -2766,7 +2769,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
 
         sec_scc.method_ref = sec_method
         self.parse_system(self.info_parser.get('groundstate'))
-        sec_scc.system_ref = sec_run.system[-1]
+        if sec_run.system:
+            sec_scc.system_ref = sec_run.system[-1]
 
     def parse_workflow(self):
         workflow = SinglePoint()

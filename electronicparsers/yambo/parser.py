@@ -717,9 +717,9 @@ class YamboParser:
             system = System()
             run.system.append(system)
             positions = self.netcdf_parser.get('ATOM_POS', [])
-            max_n_atoms = self.netcdf_parser.get('MAX_ATOMS',[0])[0]
+            max_n_atoms = self.netcdf_parser.get('MAX_ATOMS', [0])[0]
             if not max_n_atoms:
-             return
+                return
             n_atoms = self.netcdf_parser.N_ATOMS
             atom_numbers = np.hstack(
                 [
@@ -737,7 +737,7 @@ class YamboParser:
             selected = []
             positions = positions.reshape(-1, 3)
             n_points = positions.shape[0]
-            n_blocks = int( n_points / max_n_atoms )
+            n_blocks = int(n_points / max_n_atoms)
 
             for i in range(n_blocks):
                 start_idx = int(i * max_n_atoms)
@@ -747,10 +747,10 @@ class YamboParser:
                 selected_from_block = block[:n_to_select]
                 for point in selected_from_block:
                     selected.append(point)
-            positions=np.array(selected)
+            positions = np.array(selected)
 
             system.atoms = Atoms(
-                positions = positions * ureg.bohr,
+                positions=positions * ureg.bohr,
                 labels=[chemical_symbols[int(n)] for n in atom_numbers],
             )
             if self.netcdf_parser.LATTICE_VECTORS is not None:
