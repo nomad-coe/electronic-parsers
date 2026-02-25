@@ -556,10 +556,12 @@ class CP2KOutParser(TextParser):
                 'atom_forces',
                 rf'ATOMIC FORCES in \[a\.u\.\]\s*.+([\s\S]+?)SUM',
                 convert=False,
-                str_operation=lambda x: np.array(
-                    np.transpose([v.split() for v in x.strip().split('\n')])[3:6],
-                    dtype=float,
-                ).T,
+                str_operation=lambda x: (
+                    np.array(
+                        np.transpose([v.split() for v in x.strip().split('\n')])[3:6],
+                        dtype=float,
+                    ).T
+                ),
             ),
             # TODO test stress cannot find example
             Quantity(

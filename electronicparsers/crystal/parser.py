@@ -447,7 +447,9 @@ class CrystalParser:
                                                     Quantity(
                                                         'shell_type',
                                                         rf'((?:S|P|SP|D|F|G))\s*{br}',
-                                                        str_operation=lambda x: x.strip(),
+                                                        str_operation=lambda x: (
+                                                            x.strip()
+                                                        ),
                                                         repeats=False,
                                                     ),
                                                     Quantity(

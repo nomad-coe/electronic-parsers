@@ -146,10 +146,11 @@ species_and_coordinates_parser = TextParser(
 
 species_definition_parser = TextParser(
     quantities=[
-        Quantity('species',
-                 rf'(\w+)\s+([-\w\.]+)\s+(\w+)',
-                 repeats=True,
-                 str_operation=lambda s: dict(zip(("label", "basis", "pseudo"), s.split()))
+        Quantity(
+            'species',
+            rf'(\w+)\s+([-\w\.]+)\s+(\w+)',
+            repeats=True,
+            str_operation=lambda s: dict(zip(('label', 'basis', 'pseudo'), s.split())),
         )
     ]
 )
@@ -493,7 +494,9 @@ class OpenmxParser:
             definitions['basis'] = remove_extension(definitions['basis'])
             definitions['pseudo'] = remove_extension(definitions['pseudo'])
         except IndexError:
-            self.logger.error(f'Species definition must contain label, basis and pseudopotential: {definitions}')
+            self.logger.error(
+                f'Species definition must contain label, basis and pseudopotential: {definitions}'
+            )
             return None, None, None, None
 
         species = atomic_numbers[extract_species(definitions['pseudo']).group(1)]
@@ -510,7 +513,7 @@ class OpenmxParser:
             ]
         except KeyError:
             self.logger.error(
-                f"Unknown exchange-correlation functional: {definitions['pseudo']}"
+                f'Unknown exchange-correlation functional: {definitions["pseudo"]}'
             )
 
         # evaluate core_hole
@@ -560,7 +563,6 @@ class OpenmxParser:
                     self.logger.warning('Spin-state not yet recognized')
             else:
                 core_hole.dscf_state = 'initial'  # this will be a hook in $\Delta$-SCF
-
 
         return pseudopotential, definitions['label'], species, core_hole
 

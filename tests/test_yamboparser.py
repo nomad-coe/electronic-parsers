@@ -217,11 +217,10 @@ def test_4(parser):
     assert calc[2].eigenvalues[0].value_qp[0][5][1].magnitude == approx(-5.68772705e-19)
     assert calc[2].eigenvalues[0].value_ks[0][-1][3].magnitude == approx(2.36641489e-18)
 
+
 def test_5(parser):
     archive = EntryArchive()
-    parser.parse(
-        'tests/data/yambo/CH4_db_minimal/r_setup', archive, None
-    )
+    parser.parse('tests/data/yambo/CH4_db_minimal/r_setup', archive, None)
     run = archive.run[-1]
     system = run.system
     assert run.x_yambo_input.x_yambo_file == './SAVE//ns.db1'

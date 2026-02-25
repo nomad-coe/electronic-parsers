@@ -333,7 +333,7 @@ class ContentParser:
             pps_out[-1]['flag'] = _to_dict(
                 pp['flag'], transform=lambda x: bool_mapping[x]
             )
-            pps_out[-1]['number'] = _to_dict(pp['number'], transform=lambda x: float(x))
+            pps_out[-1]['number'] = _to_dict(pp['number'], transform=float)
         return pps_out
 
     def _get_tier(self, raw_data: Union[str, None], type='native') -> Union[str, None]:
