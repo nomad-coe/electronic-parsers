@@ -488,8 +488,6 @@ class MainfileParser(TextParser):
 class NetCDFParser(FileParser):
     def __init__(self):
         super().__init__()
-
-    def init_parameters(self):
         self._keys = []
 
     @property
