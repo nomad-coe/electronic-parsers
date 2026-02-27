@@ -18,9 +18,17 @@
 
 import pytest
 import numpy as np
+import sys
 
 from nomad.datamodel import EntryArchive
 from electronicparsers.yambo import YamboParser
+
+from packaging.version import Version
+
+try:
+    import netCDF4
+except Exception:
+    netCDF4 = None
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -32,6 +40,13 @@ def parser():
     return YamboParser()
 
 
+INCOMPATIBLE_NETCDF = (
+    Version(netCDF4.__version__) if netCDF4 else Version('0.0.0')
+) > Version('1.7') and sys.version_info >= (3, 14)
+REASON_INCOMPATIBLE_NETCDF = 'Numpy issue for netCDF4 > 1.7'
+
+
+@pytest.mark.skipif(INCOMPATIBLE_NETCDF, reason=REASON_INCOMPATIBLE_NETCDF)
 def test_0(parser):
     archive = EntryArchive()
     parser.parse('tests/data/yambo/hBN/r_setup', archive, None)
@@ -59,6 +74,7 @@ def test_0(parser):
     assert eigenvalues.energies[0][6][7].magnitude == approx(2.76666665e-20)
 
 
+@pytest.mark.skipif(INCOMPATIBLE_NETCDF, reason=REASON_INCOMPATIBLE_NETCDF)
 def test_1(parser):
     archive = EntryArchive()
     parser.parse(
@@ -134,6 +150,7 @@ def test_1(parser):
     assert calc[2].eigenvalues[0].value_ks[0][0][0].magnitude == approx(-6.59862623e-20)
 
 
+@pytest.mark.skipif(INCOMPATIBLE_NETCDF, reason=REASON_INCOMPATIBLE_NETCDF)
 def test_2(parser):
     archive = EntryArchive()
     parser.parse('tests/data/yambo/Aluminum/r-01_Lifetimes_em1d_life', archive, None)
@@ -163,6 +180,7 @@ def test_2(parser):
     assert eigenvalues.energies[0][16][9].magnitude == approx(4.20775484e-18)
 
 
+@pytest.mark.skipif(INCOMPATIBLE_NETCDF, reason=REASON_INCOMPATIBLE_NETCDF)
 def test_3(parser):
     archive = EntryArchive()
     parser.parse(
@@ -199,6 +217,7 @@ def test_3(parser):
     assert calc[2].eigenvalues[0].value_ks[0][0][1].magnitude == approx(0.0)
 
 
+@pytest.mark.skipif(INCOMPATIBLE_NETCDF, reason=REASON_INCOMPATIBLE_NETCDF)
 def test_4(parser):
     archive = EntryArchive()
     parser.parse(
@@ -217,11 +236,11 @@ def test_4(parser):
     assert calc[2].eigenvalues[0].value_qp[0][5][1].magnitude == approx(-5.68772705e-19)
     assert calc[2].eigenvalues[0].value_ks[0][-1][3].magnitude == approx(2.36641489e-18)
 
+
+@pytest.mark.skipif(INCOMPATIBLE_NETCDF, reason=REASON_INCOMPATIBLE_NETCDF)
 def test_5(parser):
     archive = EntryArchive()
-    parser.parse(
-        'tests/data/yambo/CH4_db_minimal/r_setup', archive, None
-    )
+    parser.parse('tests/data/yambo/CH4_db_minimal/r_setup', archive, None)
     run = archive.run[-1]
     system = run.system
     assert run.x_yambo_input.x_yambo_file == './SAVE//ns.db1'

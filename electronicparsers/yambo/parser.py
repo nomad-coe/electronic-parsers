@@ -20,7 +20,12 @@ import os
 import numpy as np
 import logging
 from datetime import datetime
-from netCDF4 import Dataset  # pylint: disable=no-name-in-module
+
+try:
+    # netCDF4 fails in 3.12 with numpy > 2
+    from netCDF4 import Dataset  # pylint: disable=no-name-in-module
+except Exception:
+    Dataset = None # type: ignore
 from ase.data import chemical_symbols
 
 from nomad.parsing.file_parser import TextParser, Quantity, FileParser
@@ -488,8 +493,6 @@ class MainfileParser(TextParser):
 class NetCDFParser(FileParser):
     def __init__(self):
         super().__init__()
-
-    def init_parameters(self):
         self._keys = []
 
     @property

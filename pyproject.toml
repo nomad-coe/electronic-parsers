@@ -7,6 +7,7 @@ name = 'nomad-parser-plugins-electronic'
 dynamic = ["version"]
 description = 'Collection of NOMAD parsers for electronic structure codes.'
 readme = "README.md"
+requires-python = ">=3.10"
 authors = [{ name = "The NOMAD Authors" }]
 license = { file = "LICENSE" }
 dependencies = [
@@ -17,10 +18,11 @@ dependencies = [
     "nomad-schema-plugin-run>=1.0.1",
     "nomad-parser-plugins-simulation>=1.0.2",
     # issue with reading nc file in 1.7.3: https://github.com/Unidata/netcdf4-python/issues/1438
+    # issue with pytest in 1.7.1: https://github.com/Unidata/netcdf4-python/issues/1343
     "netcdf4<=1.7.2",
     "pyyaml>=6.0",
     "pydantic>=1.10.8",
-    "numpy",
+    "numpy>=1.22.4,<2.4.0",
 ]
 
 [project.urls]
@@ -68,6 +70,10 @@ lint.fixable = ["ALL"]
 # Same as Black.
 line-length = 88
 indent-width = 4
+
+[tool.uv]
+index-url = "https://gitlab.mpcdf.mpg.de/api/v4/projects/2187/packages/pypi/simple"
+build-constraint-dependencies = ["wheel<0.46"]
 
 [tool.ruff.format]
 # use single quotes for strings.

@@ -1184,13 +1184,13 @@ class ABACUSOutParser(TextParser):
             Quantity(
                 'program_version',
                 r'Version:\s*(.*)\n',
-                str_operation=lambda x: ''.join(x),
+                str_operation=''.join,
             ),
             Quantity('nproc', r'Processor Number is\s*(\d+)\n', dtype=int),
             Quantity(
                 'start_date_time',
                 r'Start Time is\s*(.*)\n',
-                str_operation=lambda x: ''.join(x),
+                str_operation=''.join,
             ),
             Quantity(
                 'input_filename',
@@ -1269,14 +1269,16 @@ class ABACUSOutParser(TextParser):
             Quantity(
                 'finish_date_time',
                 r'Finish\s*Time\s*:\s*(.*)\n',
-                str_operation=lambda x: ''.join(x),
+                str_operation=''.join,
             ),
             Quantity(
                 'total_time',
                 rf'Total\s*Time\s*:\s*(\d+)\s*h\s*(\d+)\s*mins\s*(\d+)\s*secs',
-                str_operation=lambda x: int(x.strip().split()[0]) * 3600
-                + int(x.strip().split()[1]) * 60
-                + int(x.strip().split()[2]),
+                str_operation=lambda x: (
+                    int(x.strip().split()[0]) * 3600
+                    + int(x.strip().split()[1]) * 60
+                    + int(x.strip().split()[2])
+                ),
                 unit='seconds',
             ),
         ]

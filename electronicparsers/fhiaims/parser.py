@@ -438,14 +438,16 @@ class FHIAimsOutParser(TextParser):
             Quantity(
                 'fermi_level',  # older version
                 rf'{re_n} *\| Chemical potential \(Fermi level\) in (\w+)\s*:([\d\.\-\+Ee ]+)',
-                str_operation=lambda x: float(x.split()[1])
-                * units_mapping.get(x.split()[0]),
+                str_operation=lambda x: (
+                    float(x.split()[1]) * units_mapping.get(x.split()[0])
+                ),
             ),
             Quantity(
                 'fermi_level',  # newer version
                 rf'{re_n} *\| Chemical potential \(Fermi level\)\:\s*([\-\d\.]+)\s*(\w+)',
-                str_operation=lambda x: float(x.split()[0])
-                * units_mapping.get(x.split()[1], 1),
+                str_operation=lambda x: (
+                    float(x.split()[0]) * units_mapping.get(x.split()[1], 1)
+                ),
             ),
             Quantity(
                 'time_calculation',

@@ -650,7 +650,7 @@ class GaussianOutParser(TextParser):
             Quantity(
                 'calc_type',
                 r'\s-+\n\sGaussian ([\w\s]+)\n',
-                convert=lambda x: ' '.join(x),
+                convert=' '.join,
             ),
             Quantity(
                 'run',

@@ -387,10 +387,9 @@ class OutParser(TextParser):
                         Quantity(
                             'energy_reference_fermi',
                             r'F E R M I \- ENERGY.+?\=\s*([\d\.\-\+Ee ]+)',
-                            str_operation=lambda x: [
-                                float(v) for v in x.strip().split()
-                            ]
-                            * ureg.rydberg,
+                            str_operation=lambda x: (
+                                [float(v) for v in x.strip().split()] * ureg.rydberg
+                            ),
                             convert=False,
                         )
                     ]

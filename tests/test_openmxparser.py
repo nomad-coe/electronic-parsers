@@ -169,7 +169,10 @@ def test_AlN(parser):
     assert method.atom_parameters[1].pseudopotential.name == 'Al_PBE19'
     assert method.atom_parameters[1].pseudopotential.norm_conserving
     assert method.atom_parameters[1].pseudopotential.type == 'US MBK'
-    assert method.atom_parameters[1].pseudopotential.xc_functional_name == ['GGA_C_PBE','GGA_X_PBE']
+    assert method.atom_parameters[1].pseudopotential.xc_functional_name == [
+        'GGA_C_PBE',
+        'GGA_X_PBE',
+    ]
 
     workflow = archive.workflow2
     assert workflow.method.method == 'steepest_descent'
@@ -421,7 +424,10 @@ def test_TiC(parser):
     assert method.atom_parameters[0].atom_number == 6
     assert method.atom_parameters[0].label == 'C'
     assert method.atom_parameters[0].pseudopotential.name == 'C_PBE19_1s'
-    assert method.atom_parameters[0].pseudopotential.xc_functional_name == ['GGA_C_PBE','GGA_X_PBE']
+    assert method.atom_parameters[0].pseudopotential.xc_functional_name == [
+        'GGA_C_PBE',
+        'GGA_X_PBE',
+    ]
     assert method.atom_parameters[0].core_hole.dscf_state == 'initial'
     assert method.atom_parameters[1].atom_number == 22
     assert method.atom_parameters[1].label == 'Ti'
