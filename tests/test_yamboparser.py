@@ -24,7 +24,11 @@ from nomad.datamodel import EntryArchive
 from electronicparsers.yambo import YamboParser
 
 from packaging.version import Version
-import netCDF4
+
+try:
+    import netCDF4
+except Exception:
+    netCDF4 = None
 
 
 def approx(value, abs=0, rel=1e-6):
@@ -36,9 +40,9 @@ def parser():
     return YamboParser()
 
 
-INCOMPATIBLE_NETCDF = Version(netCDF4.__version__) < Version(
-    '1.7'
-) and sys.version_info < (3, 14)
+INCOMPATIBLE_NETCDF = (
+    Version(netCDF4.__version__) if netCDF4 else Version('0.0.0')
+) < Version('1.7') and sys.version_info < (3, 14)
 REASON_INCOMPATIBLE_NETCDF = 'Numpy issue for netCDF4 < 1.7'
 
 
