@@ -3349,7 +3349,10 @@ class QuantumEspressoParser:
                 'sum_G_PW',
             ]
             for i in range(len(names)):
-                setattr(sec_method, 'x_qe_sticks_%s' % names[i], g_vector_sticks[i])
+                try:
+                    setattr(sec_method, 'x_qe_sticks_%s' % names[i], g_vector_sticks[i])
+                except Exception:
+                    pass
 
         xc_section_method, xc_functionals = run.get_xc_functional()
         for key, val in xc_section_method.items():
