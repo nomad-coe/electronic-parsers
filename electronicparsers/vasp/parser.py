@@ -2320,6 +2320,7 @@ class VASPParser:
             time_initial = (
                 sec_run.calculation[-1].time_physical
                 if sec_run.calculation
+                and sec_run.calculation[-1].time_physical is not None
                 else 0 * ureg.s
             )
             sec_scc = parse_energy(n, None)
@@ -2350,21 +2351,26 @@ class VASPParser:
                     time_val = time
 
                 if time_val is not None:
-                    sec_scc.time_calculation = float(time_val)
-                    sec_scc.time_physical = time_initial + sec_scc.time_calculation
+                    time_calc_quantity = time_val * ureg.s
+                    sec_scc.time_calculation = time_calc_quantity
+                    sec_scc.time_physical = time_initial + time_calc_quantity
 
             time_scf = self.parser.get_time_scf(n)
             for n_scf in range(self.parser.get_n_scf(n)):
                 time_initial = (
                     sec_scc.scf_iteration[-1].time_physical
-                    if n_scf > 0
+                    if n_scf > 0 and sec_scc.scf_iteration[-1].time_physical is not None
                     else time_initial
+                    if time_initial is not None
+                    else 0 * ureg.s
                 )
                 sec_scf = parse_energy(n, n_scf)
                 if time_scf[n_scf] is not None:
-                    sec_scf.time_calculation = time_scf[n_scf][-1]
-                if sec_scf.time_calculation:
-                    sec_scf.time_physical = time_initial + sec_scf.time_calculation
+                    time_val = time_scf[n_scf][-1]
+                    if time_val is not None:
+                        time_calc_quantity = time_val * ureg.s
+                        sec_scf.time_calculation = time_calc_quantity
+                        sec_scf.time_physical = time_initial + time_calc_quantity
             if not sec_scc.time_calculation:
                 times = [scf.time_calculation for scf in sec_scc.scf_iteration]
                 if None not in times:
