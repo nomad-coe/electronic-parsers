@@ -2951,35 +2951,55 @@ class XS(WorkflowXS):
     def normalize(self, archive, logger):
         from electronicparsers.exciting.parser import ExcitingParser
         from nomad.search import search
-        from nomad.app.v1.models import MetadataRequired
+        from nomad.app.v1.models import MetadataRequired, MetadataPagination
         from simulationworkflowschema.photon_polarization import PhotonPolarization
+        from nomad.files import UploadFiles
 
         upload_id = archive.metadata.upload_id
-        entries = search(
-            owner='visible',
-            user_id=archive.metadata.main_author.user_id,
-            query={'upload_id': upload_id},
-            required=MetadataRequired(include=['entry_id', 'mainfile_key']),
-        ).data
-        xs_archives = []
-        photon_archives = {}
+        upload_files = UploadFiles.get(upload_id)
+
         if self.dft_workflow_ref is None:
             return
 
-        dft_archive = self.dft_workflow_ref.m_root()
-        for entry in entries:
-            entry_archive = archive.m_context.load_archive(
-                entry['entry_id'], upload_id, None
-            )
-            if isinstance(entry_archive.workflow2, PhotonPolarization):
-                xs_archives.append(entry_archive)
+        xs_archives = []
+        upload_entries = []
+
+        def query_entries(page):
+            page += 1
+            entries = search(
+                owner='all',
+                user_id=archive.metadata.main_author.user_id,
+                query={'upload_id': upload_id},
+                required=MetadataRequired(include=['entry_id', 'mainfile_key']),
+                pagination=MetadataPagination(page_size=100, page=page),
+            ).data
+
+            if not entries:
+                return
+
+            for entry in entries:
+                entry_archive = archive.m_context.load_archive(
+                    entry['entry_id'], upload_id, None
+                )
+                print('XS entry', entry_archive.workflow2, entry_archive.workflow2.name)
+                if isinstance(entry_archive.workflow2, PhotonPolarization):
+                    xs_archives.append(entry_archive)
+
+            upload_entries.extend(entries)
+
+            query_entries(page)
+
+        query_entries(0)
+
+        dft_archive = self.dft_workflow_ref.m_resolved().m_root()
+        photon_archives = {}
         basedir = (
             os.path.dirname(xs_archives[0].metadata.mainfile) if xs_archives else ''
         )
-        for entry in entries:
-            entry_archive = archive.m_context.load_archive(
-                entry['entry_id'], upload_id, None
-            )
+        for entry in upload_entries:
+            entry_id = entry['entry_id']
+            entry_archive = archive.m_context.load_archive(entry_id, upload_id, None)
+            entry_archive.m_context = archive.m_context
             mainfile_key = entry_archive.metadata.mainfile_key
             if not mainfile_key:
                 continue
@@ -2990,10 +3010,16 @@ class XS(WorkflowXS):
                     entry_archive.run[0].calculation[0].system_ref = dft_archive.run[
                         0
                     ].system[-1]
+                    entry_archive.run[0].m_append(
+                        'system', dft_archive.run[0].system[-1].m_resolved()
+                    )
                 if dft_archive.run[0].method:
                     entry_archive.run[0].calculation[0].method_ref = dft_archive.run[
                         0
                     ].method[-1]
+                upload_files.write_archive(
+                    entry_id, entry_archive.m_to_dict(with_def_id=True)
+                )
             photon_archives[mainfile_key] = entry_archive
 
         parser = ExcitingParser()

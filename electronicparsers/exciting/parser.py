@@ -3312,6 +3312,10 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             # do not parse screening files
             return False
 
+        if re.match(r'INFO_QMT.*OUT', basename):
+            # do not parse QMT files
+            return False
+
         dirname = os.path.dirname(filepath)
         if os.path.isfile(os.path.join(dirname, f'GW_{basename}')) and gs_file:
             return ['GW', 'GW_workflow']
