@@ -2329,8 +2329,8 @@ class ExcitingParser(BeyondDFTWorkflowsParser):
             sec_scc.spectra.append(sec_spectra)
             sec_spectra.n_energies = n_epsilon
             sec_spectra.excitation_energies = data[0] * ureg.hartree
-            sec_spectra.intensities = data[2]
-            sec_spectra.intensities_units = 'F/m'
+            sec_spectra.intensities = data[2]  # Imaginary part of dielectric function
+            sec_spectra.intensities_units = 'dimensionless'
 
         def parse_sigma(data, sec_scc):
             n_components = len(data)
