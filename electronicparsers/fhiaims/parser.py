@@ -2544,6 +2544,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else self.logger
 
+        # TODO temporary fix for large files
+        if os.path.getsize(filepath) > 50 * 1024**2:  # 50 MB
+            self.logger.warning('Skip processing large file')
+            return
+
         self.init_parser()
 
         sec_run = Run()
