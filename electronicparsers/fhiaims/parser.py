@@ -1068,6 +1068,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.logger = get_logger(__name__)
         self._calculation_type = 'dft'
         self._child_archives = {}
+        self._parse_dos = False
 
         self._xc_map = {
             'Perdew-Wang parametrisation of Ceperley-Alder LDA': [
@@ -1569,9 +1570,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
 
             n_spin = self.out_parser.get_number_of_spin_channels()
             # parse total first, we expect only one file
-            total_dos_files, _ = section.get(
-                'total_dos_files', [['KS_DOS_total_raw.dat'], []]
-            )
+            total_dos_files, _ = section.get('total_dos_files', [[], []])
+
+            if not total_dos_files and self._parse_dos:
+                total_dos_files = ['KS_DOS_total_raw.dat']
+
             for dos_file in total_dos_files:
                 data = read_dos(dos_file)
                 if data is None or np.size(data) == 0:
@@ -1956,19 +1959,26 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
             # skip frames for large trajectories
             if (n % self.frame_rate) > 0:
                 continue
+            self._parse_dos = n == 0
             parse_section(section)
 
         for n, section in enumerate(self.out_parser.get('geometry_optimization', [])):
             # skip frames for large trajectories
             if (n % self.frame_rate) > 0:
                 continue
+            self._parse_dos = False
             parse_section(section)
+            # free up memory
+            # self.out_parser._results['geometry_optimization'][n] = {}
 
         for n, section in enumerate(self.out_parser.get('molecular_dynamics', [])):
             # skip frames for large trajectories
             if (n % self.frame_rate) > 0:
                 continue
+            self._parse_dos = False
             parse_section(section)
+            # free up memory
+            # self.out_parser._results['molecular_dynamics'][n] = {}
 
         if not sec_run.calculation:
             return
@@ -2221,7 +2231,9 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
                     if len(val) > 2:
                         sec_method.x_fhi_aims_controlIn_occupation_order = int(val[2])
                 except Exception as e:
-                    logger.warning(f'Failed to parse smearing info from val={val}: {e}')
+                    self.logger.warning(
+                        f'Failed to parse smearing info from val={val}: {e}'
+                    )
             elif key == 'relativistic':
                 if isinstance(val, str):
                     val = [val]
@@ -2485,6 +2497,7 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.dos_parser.logger = self.logger
         self.bandstructure_parser.logger = self.logger
         self._frame_rate = None
+        self._parse_dos = False
 
     def reuse_parser(self, parser):
         self.out_parser.quantities = parser.out_parser.quantities
@@ -2530,6 +2543,11 @@ class FHIAimsParser(BeyondDFTWorkflowsParser):
         self.archive = archive
         self.maindir = os.path.dirname(self.filepath)
         self.logger = logger if logger is not None else self.logger
+
+        # TODO temporary fix for large files
+        if os.path.getsize(filepath) > 50 * 1024**2:  # 50 MB
+            self.logger.warning('Skip processing large file')
+            return
 
         self.init_parser()
 
