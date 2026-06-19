@@ -30,7 +30,7 @@ electronicparsers/{parser_name}/FEATURES.yml
 - The model name should be retained in the file to track which AI assisted with the documentation
 - Do NOT annotate every line with the model name, only include it in the metadata section
 - Update the timestamp each time the file is modified
-- Place string type values in duoble quotation marks
+- Place string type values in double quotation marks
 
 Example metadata section:
 ```yaml
