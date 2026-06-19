@@ -153,7 +153,7 @@ special_features:
 - "Advanced SCF convergence techniques (DIIS, Pulay mixing)"
 notes:
 - "FHI-aims uses all-electron basis sets by default (no frozen core)"
-- Basis set quality controlled by tier system: "light < tight < really_tight'"
+- "Basis set quality controlled by tier system: light < tight < really_tight'"
 - "NAO basis functions optimized for different chemical environments"
 - "Excellent for molecular systems and surfaces"
 - "Band structure output in separate BAND*.out files with output band syntax"
