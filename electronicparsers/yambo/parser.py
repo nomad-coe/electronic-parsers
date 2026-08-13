@@ -25,7 +25,7 @@ try:
     # netCDF4 fails in 3.12 with numpy > 2
     from netCDF4 import Dataset  # pylint: disable=no-name-in-module
 except Exception:
-    Dataset = None # type: ignore
+    Dataset = None  # type: ignore
 from ase.data import chemical_symbols
 
 from nomad.parsing.file_parser import TextParser, Quantity, FileParser
