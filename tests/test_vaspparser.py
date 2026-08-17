@@ -23,7 +23,7 @@ import os
 from nomad.units import ureg
 from nomad.datamodel import EntryArchive
 from electronicparsers.vasp import VASPParser
-from electronicparsers.vasp.parser import _split_band_path
+from electronicparsers.vasp.parser import _split_band_path, _band_path_signals
 from tests.dos_integrator import integrate_dos
 
 
@@ -366,6 +366,73 @@ def test_split_band_path(
         for sel, start_label, end_label in segments
     ]
     assert summary == expected
+
+
+@pytest.mark.parametrize(
+    'kpoints_info, n_kpoints, boundaries, zero_weight, has_zero_weight_path',
+    [
+        pytest.param(
+            {'weights': [0.5, 0.5]}, 2, None, [False, False], False, id='weighted-mesh'
+        ),
+        pytest.param(
+            {'weights': [0.5, 0.5, 0.0, 0.0]},
+            4,
+            None,
+            [False, False, True, True],
+            True,
+            id='zero-weight-tail',
+        ),
+        pytest.param(
+            {'weights': [0.0, 0.0]},
+            2,
+            None,
+            [True, True],
+            False,
+            id='all-zero-weight-not-a-path',
+        ),
+        pytest.param(
+            {'labels': [('X', 34), ('Γ', 6), ('Z', 242), ('M', 67)]},
+            243,
+            [('Γ', 6), ('X', 34), ('M', 67), ('Z', 242)],
+            None,
+            False,
+            id='labels-sorted-by-index',
+        ),
+        pytest.param(
+            {'weights': [0.5, 0.5, 0.5]},
+            2,
+            None,
+            None,
+            False,
+            id='weight-length-mismatch-ignored',
+        ),
+        pytest.param(
+            {'weights': ['a', 'b']}, 2, None, None, False, id='malformed-weights-safe'
+        ),
+        pytest.param(
+            {'labels': [('Γ', 0), ('X',)]},
+            2,
+            None,
+            None,
+            False,
+            id='malformed-labels-safe',
+        ),
+    ],
+)
+def test_band_path_signals(
+    kpoints_info, n_kpoints, boundaries, zero_weight, has_zero_weight_path
+):
+    """The signal derivation returns sorted label endpoints and the zero-weight
+    mask, and degrades to (None, None, False) on a malformed record instead of
+    raising."""
+    got_boundaries, got_zero_weight, got_has = _band_path_signals(
+        kpoints_info, n_kpoints
+    )
+    assert got_boundaries == boundaries
+    assert (
+        got_zero_weight.tolist() if got_zero_weight is not None else None
+    ) == zero_weight
+    assert got_has == has_zero_weight_path
 
 
 def test_band_silicon(silicon_band):

@@ -181,6 +181,34 @@ def _split_band_path(
     return segments
 
 
+def _band_path_signals(kpoints_info, n_kpoints):
+    """Derive the band-path segmentation signals from a k-point record. Returns
+    ``(boundaries, zero_weight, has_zero_weight_path)`` and degrades to
+    ``(None, None, False)`` — i.e. "no band path" — rather than raising on a
+    malformed record.
+
+    ``boundaries`` are the ``(label, index)`` endpoints sorted by k-point index (the
+    label extraction groups repeated labels, so document order is unreliable).
+    ``zero_weight`` marks the zero-weight tail; ``has_zero_weight_path`` is True only
+    for a genuine mix of weighted and zero-weight points (hybrid/HSE).
+    """
+    try:
+        band_labels = kpoints_info.get('labels', None)
+        weights = kpoints_info.get('weights', None)
+        boundaries = (
+            sorted(band_labels, key=lambda pair: pair[1]) if band_labels else None
+        )
+        zero_weight = None
+        if weights is not None and len(weights) == n_kpoints:
+            zero_weight = np.isclose(np.asarray(weights, dtype=float), 0.0)
+        has_zero_weight_path = (
+            zero_weight is not None and zero_weight.any() and not zero_weight.all()
+        )
+    except Exception:
+        return None, None, False
+    return boundaries, zero_weight, has_zero_weight_path
+
+
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
@@ -2304,33 +2332,13 @@ class VASPParser:
             # explicit k-point list: a weighted SCF mesh followed by a zero-weight
             # band path. Such runs carry no <generation> block, so sampling_method is
             # unset, yet the zero-weight tail (optionally labelled by <kpoints_labels>)
-            # fully defines the band path. Only derive these signals when they are
-            # needed (never for a Line-path run) and degrade to flat eigenvalues
-            # rather than fail if the k-point record is malformed.
-            boundaries = None
-            zero_weight = None
-            has_zero_weight_path = False
+            # fully defines the band path. Derive these signals only when needed
+            # (never for a Line-path run); the helper is fail-safe on malformed input.
+            boundaries, zero_weight, has_zero_weight_path = None, None, False
             if sampling_method != 'Line-path':
-                try:
-                    band_labels = self.parser.kpoints_info.get('labels', None)
-                    weights = self.parser.kpoints_info.get('weights', None)
-                    # The label extraction groups repeated labels (e.g. Γ, Z occur
-                    # twice), so sort by k-point index — monotonic along the path —
-                    # to restore the correct endpoint order.
-                    boundaries = (
-                        sorted(band_labels, key=lambda pair: pair[1])
-                        if band_labels
-                        else None
-                    )
-                    if weights is not None and len(weights) == len(kpoints):
-                        zero_weight = np.isclose(np.asarray(weights, dtype=float), 0.0)
-                    has_zero_weight_path = (
-                        zero_weight is not None
-                        and zero_weight.any()
-                        and not zero_weight.all()
-                    )
-                except Exception:
-                    boundaries, zero_weight, has_zero_weight_path = None, None, False
+                boundaries, zero_weight, has_zero_weight_path = _band_path_signals(
+                    self.parser.kpoints_info, len(kpoints)
+                )
 
             if sampling_method == 'Line-path':
                 sec_k_band = BandStructure()
