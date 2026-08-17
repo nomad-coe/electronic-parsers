@@ -142,11 +142,10 @@ def _split_band_path(
        with adjacent segments sharing their boundary k-point. A pair of labels that
        are adjacent in the list (no interior samples between them) is a branch break
        and yields no segment, so no line is drawn across the discontinuity.
-    2. No labels: break where the step between consecutive k-points exceeds
-       ``threshold`` (a discontinuity); otherwise a single segment. When
-       ``reciprocal_cell`` (rows = reciprocal lattice vectors, Å⁻¹) is given the step
-       is a physical Cartesian k-distance in Å⁻¹; otherwise it is measured in the raw
-       coordinates of ``kpoints``.
+    2. No labels: break where the physical Cartesian k-distance between consecutive
+       k-points exceeds ``threshold`` (Å⁻¹); otherwise a single segment. This needs
+       ``reciprocal_cell`` (rows = reciprocal lattice vectors, Å⁻¹); without it the
+       distance is not physical, so the path is kept as a single continuous segment.
     """
     kpoints = np.asarray(kpoints)
     if boundaries and len(boundaries) >= 2:
@@ -164,12 +163,14 @@ def _split_band_path(
         return segments
 
     path_indices = np.asarray(path_indices)
-    if len(path_indices) < 2:
+    # Distance-based splitting needs a reciprocal cell to measure a physical
+    # k-distance (Å⁻¹); without it, keep the whole path as one continuous segment
+    # rather than thresholding raw fractional coordinates in the wrong unit.
+    if len(path_indices) < 2 or reciprocal_cell is None:
         return [(path_indices, '', '')]
-    diffs = np.diff(kpoints[path_indices], axis=0)
-    if reciprocal_cell is not None:
-        diffs = diffs @ np.asarray(reciprocal_cell)
-    steps = np.linalg.norm(diffs, axis=1)
+    steps = np.linalg.norm(
+        np.diff(kpoints[path_indices], axis=0) @ np.asarray(reciprocal_cell), axis=1
+    )
     breaks = np.where(steps > threshold)[0]
 
     segments = []
@@ -195,9 +196,12 @@ def _band_path_signals(kpoints_info, n_kpoints):
     try:
         band_labels = kpoints_info.get('labels', None)
         weights = kpoints_info.get('weights', None)
-        boundaries = (
-            sorted(band_labels, key=lambda pair: pair[1]) if band_labels else None
-        )
+        # Drop labels whose index is out of range: they would not raise here, but
+        # would later raise IndexError when slicing the eigenvalues by that index.
+        boundaries = None
+        if band_labels:
+            valid = [pair for pair in band_labels if 0 <= pair[1] < n_kpoints]
+            boundaries = sorted(valid, key=lambda pair: pair[1]) or None
         zero_weight = None
         if weights is not None and len(weights) == n_kpoints:
             zero_weight = np.isclose(np.asarray(weights, dtype=float), 0.0)
@@ -1537,8 +1541,13 @@ class RunContentParser(ContentParser):
                 for name, indices in labels.items():
                     indices = indices if isinstance(indices, list) else [indices]
                     for index in indices:
-                        label_pairs.append((name, int(index) - 1))
-                self._kpoints_info['labels'] = label_pairs
+                        # Skip a malformed index rather than fail the whole parse.
+                        try:
+                            label_pairs.append((name, int(index) - 1))
+                        except (TypeError, ValueError):
+                            continue
+                if label_pairs:
+                    self._kpoints_info['labels'] = label_pairs
             tetrahedrons = self._get_key_values(
                 '/modeling[0]/kpoints[0]/varray[@name="tetrahedronlist"]/v', array=True
             )

@@ -295,7 +295,7 @@ _GAP = np.array(
             _CONTINUOUS,
             np.arange(6),
             None,
-            None,
+            np.eye(3),
             0.3,
             [('', '', 0, 5)],
             id='continuous-no-labels',
@@ -304,16 +304,25 @@ _GAP = np.array(
             _SPLIT,
             np.arange(12),
             None,
-            None,
+            np.eye(3),
             0.3,
             [('', '', 0, 5), ('', '', 6, 11)],
             id='split-distance-jump',
         ),
         pytest.param(
+            _SPLIT,
+            np.arange(12),
+            None,
+            None,
+            0.3,
+            [('', '', 0, 11)],
+            id='no-cell-keeps-continuous',
+        ),
+        pytest.param(
             _LOOP,
             np.arange(11),
             None,
-            None,
+            np.eye(3),
             0.3,
             [('', '', 0, 10)],
             id='revisit-does-not-split',
@@ -337,7 +346,13 @@ _GAP = np.array(
             id='labels-continuous',
         ),
         pytest.param(
-            _GAP, np.arange(6), None, None, 0.15, [('', '', 0, 5)], id='gap-below-raw'
+            _GAP,
+            np.arange(6),
+            None,
+            np.eye(3),
+            0.15,
+            [('', '', 0, 5)],
+            id='gap-below-threshold',
         ),
         pytest.param(
             _GAP,
@@ -354,10 +369,10 @@ def test_split_band_path(
     kpoints, path_indices, boundaries, reciprocal_cell, threshold, expected
 ):
     """Segments come from labels when present (a list-adjacent label pair is a
-    branch break, not a bridge), otherwise from k-point spacing (a step above the
-    threshold is a discontinuity). Revisiting a k-point at a non-adjacent position
-    must not split the path, and the threshold applies to the Cartesian k-distance
-    once a reciprocal cell is supplied."""
+    branch break, not a bridge), otherwise from Cartesian k-point spacing (a step
+    above the threshold is a discontinuity). Without a reciprocal cell the distance
+    is not physical, so the path stays a single continuous segment. Revisiting a
+    k-point at a non-adjacent position must not split the path."""
     segments = _split_band_path(
         kpoints, path_indices, boundaries, reciprocal_cell, threshold
     )
@@ -416,6 +431,14 @@ def test_split_band_path(
             None,
             False,
             id='malformed-labels-safe',
+        ),
+        pytest.param(
+            {'labels': [('X', 10), ('Γ', 0), ('BAD', 999), ('NEG', -1)]},
+            243,
+            [('Γ', 0), ('X', 10)],
+            None,
+            False,
+            id='out-of-range-labels-dropped',
         ),
     ],
 )
