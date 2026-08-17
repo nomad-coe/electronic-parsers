@@ -2300,24 +2300,37 @@ class VASPParser:
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
             sampling_method = self.parser.kpoints_info.get('sampling_method', None)
-            band_labels = self.parser.kpoints_info.get('labels', None)
-            weights = self.parser.kpoints_info.get('weights', None)
-            # Order the high-symmetry endpoints along the path. VASP writes them in
-            # document order, but sorting by k-point index is robust and monotonic.
-            boundaries = (
-                sorted(band_labels, key=lambda pair: pair[1]) if band_labels else None
-            )
-            zero_weight = None
-            if weights is not None and len(weights) == len(kpoints):
-                zero_weight = np.isclose(np.asarray(weights, dtype=float), 0.0)
             # A zero-weight band path (hybrid/HSE) is a self-consistent run with an
             # explicit k-point list: a weighted SCF mesh followed by a zero-weight
             # band path. Such runs carry no <generation> block, so sampling_method is
             # unset, yet the zero-weight tail (optionally labelled by <kpoints_labels>)
-            # fully defines the band path.
-            has_zero_weight_path = (
-                zero_weight is not None and zero_weight.any() and not zero_weight.all()
-            )
+            # fully defines the band path. Only derive these signals when they are
+            # needed (never for a Line-path run) and degrade to flat eigenvalues
+            # rather than fail if the k-point record is malformed.
+            boundaries = None
+            zero_weight = None
+            has_zero_weight_path = False
+            if sampling_method != 'Line-path':
+                try:
+                    band_labels = self.parser.kpoints_info.get('labels', None)
+                    weights = self.parser.kpoints_info.get('weights', None)
+                    # The label extraction groups repeated labels (e.g. Γ, Z occur
+                    # twice), so sort by k-point index — monotonic along the path —
+                    # to restore the correct endpoint order.
+                    boundaries = (
+                        sorted(band_labels, key=lambda pair: pair[1])
+                        if band_labels
+                        else None
+                    )
+                    if weights is not None and len(weights) == len(kpoints):
+                        zero_weight = np.isclose(np.asarray(weights, dtype=float), 0.0)
+                    has_zero_weight_path = (
+                        zero_weight is not None
+                        and zero_weight.any()
+                        and not zero_weight.all()
+                    )
+                except Exception:
+                    boundaries, zero_weight, has_zero_weight_path = None, None, False
 
             if sampling_method == 'Line-path':
                 sec_k_band = BandStructure()
