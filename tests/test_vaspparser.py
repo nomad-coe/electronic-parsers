@@ -281,28 +281,49 @@ _LOOP = np.vstack(
     ]
 )
 _DUMMY = np.zeros((32, 3))  # coordinates are unused on the labelled path
+# One larger interior gap (0.10 to 0.20), otherwise 0.05 steps: below threshold in
+# raw coordinates, above it once scaled by a reciprocal cell.
+_GAP = np.array(
+    [[0, 0, 0], [0.05, 0, 0], [0.10, 0, 0], [0.20, 0, 0], [0.25, 0, 0], [0.30, 0, 0]]
+)
 
 
 @pytest.mark.parametrize(
-    'kpoints, path_indices, boundaries, expected',
+    'kpoints, path_indices, boundaries, reciprocal_cell, threshold, expected',
     [
         pytest.param(
-            _CONTINUOUS, np.arange(6), None, [('', '', 0, 5)], id='continuous-no-labels'
+            _CONTINUOUS,
+            np.arange(6),
+            None,
+            None,
+            0.3,
+            [('', '', 0, 5)],
+            id='continuous-no-labels',
         ),
         pytest.param(
             _SPLIT,
             np.arange(12),
             None,
+            None,
+            0.3,
             [('', '', 0, 5), ('', '', 6, 11)],
             id='split-distance-jump',
         ),
         pytest.param(
-            _LOOP, np.arange(11), None, [('', '', 0, 10)], id='revisit-does-not-split'
+            _LOOP,
+            np.arange(11),
+            None,
+            None,
+            0.3,
+            [('', '', 0, 10)],
+            id='revisit-does-not-split',
         ),
         pytest.param(
             _DUMMY,
             None,
             [('Γ', 0), ('X', 10), ('M', 20), ('R', 21), ('A', 31)],
+            None,
+            0.3,
             [('Γ', 'X', 0, 10), ('X', 'M', 10, 20), ('R', 'A', 21, 31)],
             id='labels-with-branch-break',
         ),
@@ -310,17 +331,36 @@ _DUMMY = np.zeros((32, 3))  # coordinates are unused on the labelled path
             _DUMMY,
             None,
             [('Γ', 0), ('X', 10), ('M', 20)],
+            None,
+            0.3,
             [('Γ', 'X', 0, 10), ('X', 'M', 10, 20)],
             id='labels-continuous',
         ),
+        pytest.param(
+            _GAP, np.arange(6), None, None, 0.15, [('', '', 0, 5)], id='gap-below-raw'
+        ),
+        pytest.param(
+            _GAP,
+            np.arange(6),
+            None,
+            2 * np.eye(3),
+            0.15,
+            [('', '', 0, 2), ('', '', 3, 5)],
+            id='gap-split-after-reciprocal-scaling',
+        ),
     ],
 )
-def test_split_band_path(kpoints, path_indices, boundaries, expected):
+def test_split_band_path(
+    kpoints, path_indices, boundaries, reciprocal_cell, threshold, expected
+):
     """Segments come from labels when present (a list-adjacent label pair is a
-    branch break, not a bridge), otherwise from k-point spacing (a large step is a
-    discontinuity). Revisiting a k-point at a non-adjacent position must not split
-    the path."""
-    segments = _split_band_path(kpoints, path_indices, boundaries)
+    branch break, not a bridge), otherwise from k-point spacing (a step above the
+    threshold is a discontinuity). Revisiting a k-point at a non-adjacent position
+    must not split the path, and the threshold applies to the Cartesian k-distance
+    once a reciprocal cell is supplied."""
+    segments = _split_band_path(
+        kpoints, path_indices, boundaries, reciprocal_cell, threshold
+    )
     summary = [
         (start_label, end_label, int(sel[0]), int(sel[-1]))
         for sel, start_label, end_label in segments

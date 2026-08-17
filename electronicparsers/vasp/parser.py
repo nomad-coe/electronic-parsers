@@ -105,13 +105,13 @@ def _clean_kpoint_label(label):
 # Fallback for the static distance threshold below when the plugin entry point
 # cannot be resolved (e.g. standalone parsing). Keep in sync with the default on
 # `VASPEntryPoint.band_path_discontinuity_threshold`.
-DEFAULT_BAND_PATH_DISCONTINUITY_THRESHOLD = 0.25
+DEFAULT_BAND_PATH_DISCONTINUITY_THRESHOLD = 0.1
 
 
 def _band_path_discontinuity_threshold():
-    """Static distance threshold (fractional reciprocal coordinates) marking a
-    band-path discontinuity, taken from the `parsers/vasp` plugin entry point so it
-    is configurable, with a module-level fallback when config is unavailable."""
+    """Static Cartesian k-distance threshold (Å⁻¹) marking a band-path discontinuity,
+    taken from the `parsers/vasp` plugin entry point so it is configurable, with a
+    module-level fallback when config is unavailable."""
     try:
         from nomad.config import config
 
@@ -126,6 +126,7 @@ def _split_band_path(
     kpoints,
     path_indices,
     boundaries,
+    reciprocal_cell=None,
     threshold=DEFAULT_BAND_PATH_DISCONTINUITY_THRESHOLD,
 ):
     """Partition a zero-weight band path into drawn segments.
@@ -141,9 +142,11 @@ def _split_band_path(
        with adjacent segments sharing their boundary k-point. A pair of labels that
        are adjacent in the list (no interior samples between them) is a branch break
        and yields no segment, so no line is drawn across the discontinuity.
-    2. No labels: break where the step ``|k[i+1] - k[i]|`` (fractional coordinates)
-       exceeds the static ``threshold`` (a discontinuity); otherwise a single
-       segment.
+    2. No labels: break where the step between consecutive k-points exceeds
+       ``threshold`` (a discontinuity); otherwise a single segment. When
+       ``reciprocal_cell`` (rows = reciprocal lattice vectors, Å⁻¹) is given the step
+       is a physical Cartesian k-distance in Å⁻¹; otherwise it is measured in the raw
+       coordinates of ``kpoints``.
     """
     kpoints = np.asarray(kpoints)
     if boundaries and len(boundaries) >= 2:
@@ -163,7 +166,10 @@ def _split_band_path(
     path_indices = np.asarray(path_indices)
     if len(path_indices) < 2:
         return [(path_indices, '', '')]
-    steps = np.linalg.norm(np.diff(kpoints[path_indices], axis=0), axis=1)
+    diffs = np.diff(kpoints[path_indices], axis=0)
+    if reciprocal_cell is not None:
+        diffs = diffs @ np.asarray(reciprocal_cell)
+    steps = np.linalg.norm(diffs, axis=1)
     breaks = np.where(steps > threshold)[0]
 
     segments = []
@@ -2358,10 +2364,21 @@ class VASPParser:
                     if zero_weight is not None
                     else np.array([], dtype=int)
                 )
+                # Reciprocal lattice (rows = b-vectors, Å⁻¹, 2π convention) so the
+                # label-free discontinuity threshold is a physical k-distance.
+                reciprocal_cell = None
+                try:
+                    lattice = sec_scc.system_ref.atoms.lattice_vectors
+                    reciprocal_cell = (
+                        2 * np.pi * np.linalg.inv(lattice.to('angstrom').magnitude).T
+                    )
+                except Exception:
+                    reciprocal_cell = None
                 segments = _split_band_path(
                     kpoints,
                     path_indices,
                     boundaries,
+                    reciprocal_cell=reciprocal_cell,
                     threshold=_band_path_discontinuity_threshold(),
                 )
                 if not boundaries and len(segments) > 1:

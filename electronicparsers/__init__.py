@@ -52,12 +52,12 @@ class EntryPoint(ParserEntryPoint):
 
 class VASPEntryPoint(EntryPoint):
     band_path_discontinuity_threshold: float = Field(
-        0.25,
+        0.1,
         description="""
-        Distance between consecutive band-path k-points (in fractional reciprocal
-        coordinates) above which a step is treated as a discontinuity (branch break)
-        when the k-points carry no high-symmetry labels. Only affects zero-weight
-        (e.g. hybrid/HSE) band structures without a `<kpoints_labels>` block.
+        Cartesian k-space distance, in inverse angstrom (Å⁻¹, 2π convention), between
+        consecutive band-path k-points above which a step is treated as a discontinuity
+        (branch break). Only affects zero-weight (e.g. hybrid/HSE) band structures
+        without a `<kpoints_labels>` block; labelled paths use the labels instead.
     """,
     )
 
