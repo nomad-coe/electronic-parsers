@@ -102,12 +102,32 @@ def _clean_kpoint_label(label):
     return label.lstrip('\\')
 
 
-# A step between consecutive band-path k-points larger than this factor times the
-# median step is treated as a discontinuity (branch break) when no labels are given.
-DISCONTINUITY_FACTOR = 3.0
+# Fallback for the static distance threshold below when the plugin entry point
+# cannot be resolved (e.g. standalone parsing). Keep in sync with the default on
+# `VASPEntryPoint.band_path_discontinuity_threshold`.
+DEFAULT_BAND_PATH_DISCONTINUITY_THRESHOLD = 0.25
 
 
-def _split_band_path(kpoints, path_indices, boundaries, factor=DISCONTINUITY_FACTOR):
+def _band_path_discontinuity_threshold():
+    """Static distance threshold (fractional reciprocal coordinates) marking a
+    band-path discontinuity, taken from the `parsers/vasp` plugin entry point so it
+    is configurable, with a module-level fallback when config is unavailable."""
+    try:
+        from nomad.config import config
+
+        return config.get_plugin_entry_point(
+            'parsers/vasp'
+        ).band_path_discontinuity_threshold
+    except Exception:
+        return DEFAULT_BAND_PATH_DISCONTINUITY_THRESHOLD
+
+
+def _split_band_path(
+    kpoints,
+    path_indices,
+    boundaries,
+    threshold=DEFAULT_BAND_PATH_DISCONTINUITY_THRESHOLD,
+):
     """Partition a zero-weight band path into drawn segments.
 
     Returns a list of ``(index_array, start_label, end_label)`` tuples whose index
@@ -121,10 +141,9 @@ def _split_band_path(kpoints, path_indices, boundaries, factor=DISCONTINUITY_FAC
        with adjacent segments sharing their boundary k-point. A pair of labels that
        are adjacent in the list (no interior samples between them) is a branch break
        and yields no segment, so no line is drawn across the discontinuity.
-    2. No labels: break where the step ``|k[i+1] - k[i]|`` exceeds ``factor`` times
-       the median positive step (a discontinuity); otherwise a single segment.
-       Distances use fractional coordinates and assume reasonably dense,
-       per-segment-uniform sampling.
+    2. No labels: break where the step ``|k[i+1] - k[i]|`` (fractional coordinates)
+       exceeds the static ``threshold`` (a discontinuity); otherwise a single
+       segment.
     """
     kpoints = np.asarray(kpoints)
     if boundaries and len(boundaries) >= 2:
@@ -145,11 +164,7 @@ def _split_band_path(kpoints, path_indices, boundaries, factor=DISCONTINUITY_FAC
     if len(path_indices) < 2:
         return [(path_indices, '', '')]
     steps = np.linalg.norm(np.diff(kpoints[path_indices], axis=0), axis=1)
-    positive = steps[steps > 0]
-    if len(positive):
-        breaks = np.where(steps > factor * np.median(positive))[0]
-    else:
-        breaks = np.array([], dtype=int)
+    breaks = np.where(steps > threshold)[0]
 
     segments = []
     seg_start = 0
@@ -2343,7 +2358,12 @@ class VASPParser:
                     if zero_weight is not None
                     else np.array([], dtype=int)
                 )
-                segments = _split_band_path(kpoints, path_indices, boundaries)
+                segments = _split_band_path(
+                    kpoints,
+                    path_indices,
+                    boundaries,
+                    threshold=_band_path_discontinuity_threshold(),
+                )
                 if not boundaries and len(segments) > 1:
                     self.parser.logger.info(
                         'Inferred band-path discontinuities from k-point spacing.',
