@@ -209,6 +209,33 @@ def _band_path_signals(kpoints_info, n_kpoints):
     return boundaries, zero_weight, has_zero_weight_path
 
 
+def _new_band_structure(sec_scc, valence_max, conduction_min):
+    """Create a `BandStructure` on the calculation with one `band_gap` record per
+    spin channel from the valence-band-maximum / conduction-band-minimum references.
+    Shared by the line-mode and zero-weight band-path branches."""
+    sec_k_band = BandStructure()
+    sec_scc.band_structure_electronic.append(sec_k_band)
+    for n in range(len(valence_max)):
+        sec_band_gap = BandGapDeprecated()
+        sec_k_band.band_gap.append(sec_band_gap)
+        sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
+        sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
+    return sec_k_band
+
+
+def _append_band_segment(sec_k_band, kpoints, energies, occupations, labels=None):
+    """Append one `BandEnergies` segment (energies/occupations shaped
+    ``(n_spin, n_kpoints, n_bands)``); set high-symmetry endpoint labels if given."""
+    sec_k_band_segment = BandEnergies()
+    sec_k_band.segment.append(sec_k_band_segment)
+    sec_k_band_segment.kpoints = kpoints
+    sec_k_band_segment.energies = energies
+    sec_k_band_segment.occupations = occupations
+    if labels is not None:
+        sec_k_band_segment.endpoints_labels = labels
+    return sec_k_band_segment
+
+
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
@@ -2341,13 +2368,7 @@ class VASPParser:
                 )
 
             if sampling_method == 'Line-path':
-                sec_k_band = BandStructure()
-                sec_scc.band_structure_electronic.append(sec_k_band)
-                for n in range(len(eigs)):
-                    sec_band_gap = BandGapDeprecated()
-                    sec_k_band.band_gap.append(sec_band_gap)
-                    sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
-                    sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
+                sec_k_band = _new_band_structure(sec_scc, valence_max, conduction_min)
                 divisions = self.parser.kpoints_info.get('grid', None)
                 if divisions is None:
                     return
@@ -2365,19 +2386,9 @@ class VASPParser:
                 eigs = np.transpose(eigs, axes=(1, 0, 2, 3)) * ureg.eV
                 occs = np.transpose(occs, axes=(1, 0, 2, 3))
                 for n in range(n_segments):
-                    sec_k_band_segment = BandEnergies()
-                    sec_k_band.segment.append(sec_k_band_segment)
-                    sec_k_band_segment.kpoints = kpoints[n]
-                    sec_k_band_segment.energies = eigs[n]
-                    sec_k_band_segment.occupations = occs[n]
+                    _append_band_segment(sec_k_band, kpoints[n], eigs[n], occs[n])
             elif has_zero_weight_path or (boundaries and len(boundaries) >= 2):
-                sec_k_band = BandStructure()
-                sec_scc.band_structure_electronic.append(sec_k_band)
-                for n in range(len(eigs)):
-                    sec_band_gap = BandGapDeprecated()
-                    sec_k_band.band_gap.append(sec_band_gap)
-                    sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
-                    sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
+                sec_k_band = _new_band_structure(sec_scc, valence_max, conduction_min)
                 kpoints = np.asarray(kpoints)
                 eigs = eigs * ureg.eV
                 path_indices = (
@@ -2410,15 +2421,16 @@ class VASPParser:
                 for sel, start_label, end_label in segments:
                     if len(sel) < 2:
                         continue
-                    sec_k_band_segment = BandEnergies()
-                    sec_k_band.segment.append(sec_k_band_segment)
-                    sec_k_band_segment.kpoints = kpoints[sel]
-                    sec_k_band_segment.energies = eigs[:, sel, :]
-                    sec_k_band_segment.occupations = occs[:, sel, :]
-                    sec_k_band_segment.endpoints_labels = [
-                        _clean_kpoint_label(start_label),
-                        _clean_kpoint_label(end_label),
-                    ]
+                    _append_band_segment(
+                        sec_k_band,
+                        kpoints[sel],
+                        eigs[:, sel, :],
+                        occs[:, sel, :],
+                        labels=[
+                            _clean_kpoint_label(start_label),
+                            _clean_kpoint_label(end_label),
+                        ],
+                    )
             else:
                 eigs = eigs * ureg.eV
                 sec_eigenvalues = BandEnergies()
