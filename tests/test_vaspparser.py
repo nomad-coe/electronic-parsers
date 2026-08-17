@@ -212,6 +212,59 @@ def test_vasprunxml_bands(parser):
     assert sec_k_band.segment[5].occupations[0][127][5] == approx(0.0)
 
 
+@pytest.fixture(scope='module')
+def hybrid_bands(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/vasp/Cu3PS4_hybrid_bands/vasprun.xml', archive, None)
+    return archive
+
+
+def test_vasprunxml_hybrid_bands(hybrid_bands):
+    """A self-consistent hybrid (HSE) band structure is written by VASP as an
+    explicit k-point list (no <generation> block): a weighted SCF mesh followed
+    by a zero-weight band path. The parser must promote the zero-weight tail into
+    a band structure rather than a flat eigenvalues table.
+    """
+    scc = hybrid_bands.run[0].calculation[0]
+
+    # The zero-weight tail becomes a band structure, not flat eigenvalues.
+    assert len(scc.band_structure_electronic) == 1
+    assert len(scc.eigenvalues) == 0
+
+    sec_k_band = scc.band_structure_electronic[0]
+    assert len(sec_k_band.segment) == 7
+    # 80 bands, single spin channel; the six weighted SCF k-points are excluded.
+    assert sec_k_band.segment[0].energies.shape == (1, 29, 80)
+    assert sec_k_band.segment[0].energies[0][0][0].to(ureg.eV).magnitude == approx(
+        -12.9416
+    )
+    # Energy references are taken from all k-points (SCF mesh included).
+    assert scc.energy.highest_occupied.to(ureg.eV).magnitude == approx(4.7844)
+    assert scc.energy.lowest_unoccupied.to(ureg.eV).magnitude == approx(6.3613)
+
+
+@pytest.mark.parametrize(
+    'index, labels, n_kpoints',
+    [
+        pytest.param(0, ['Γ', 'X'], 29, id='Gamma-X'),
+        pytest.param(1, ['X', 'M'], 34, id='X-M'),
+        pytest.param(2, ['M', 'Γ'], 44, id='M-Gamma'),
+        pytest.param(3, ['Γ', 'Z'], 29, id='Gamma-Z'),
+        pytest.param(4, ['Z', 'R'], 29, id='Z-R'),
+        pytest.param(5, ['R', 'A'], 34, id='R-A'),
+        pytest.param(6, ['A', 'Z'], 44, id='A-Z'),
+    ],
+)
+def test_vasprunxml_hybrid_band_segments(hybrid_bands, index, labels, n_kpoints):
+    """Each segment is delimited by the <kpoints_labels> high-symmetry points,
+    with the shared boundary k-point present in both adjacent segments."""
+    segment = (
+        hybrid_bands.run[0].calculation[0].band_structure_electronic[0].segment[index]
+    )
+    assert segment.endpoints_labels == labels
+    assert len(segment.kpoints) == n_kpoints
+
+
 def test_band_silicon(silicon_band):
     """Tests that the band structure of silicon is parsed correctly."""
     scc = silicon_band.run[-1].calculation[0]

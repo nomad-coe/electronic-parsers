@@ -92,6 +92,16 @@ from .metainfo import vasp  # pylint: disable=unused-import
 re_n = r'[\n\r]'
 
 
+def _clean_kpoint_label(label):
+    """Normalize a VASP high-symmetry k-point label to a display form, e.g.
+    ``\\Gamma`` -> ``Γ``. Unknown labels only have a leading backslash stripped.
+    """
+    label = (label or '').strip()
+    if label.lstrip('\\').lower() in ('gamma', 'g'):
+        return 'Γ'
+    return label.lstrip('\\')
+
+
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
@@ -1381,6 +1391,20 @@ class RunContentParser(ContentParser):
             )
             if weights:
                 self._kpoints_info['weights'] = weights['v']
+            # High-symmetry point labels annotating the band path. Present for
+            # explicit k-point lists (e.g. hybrid/HSE band structures) that carry
+            # no <generation> block. Stored as (label, 0-based index) pairs; the
+            # VASP indices are 1-based positions into the full k-point list.
+            labels = self._get_key_values(
+                '/modeling[0]/kpoints[0]/kpoints_labels[0]/i', repeats=True
+            )
+            if labels:
+                label_pairs = []
+                for name, indices in labels.items():
+                    indices = indices if isinstance(indices, list) else [indices]
+                    for index in indices:
+                        label_pairs.append((name, int(index) - 1))
+                self._kpoints_info['labels'] = label_pairs
             tetrahedrons = self._get_key_values(
                 '/modeling[0]/kpoints[0]/varray[@name="tetrahedronlist"]/v', array=True
             )
@@ -2196,7 +2220,27 @@ class VASPParser:
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get('sampling_method', None) == 'Line-path':
+            sampling_method = self.parser.kpoints_info.get('sampling_method', None)
+            band_labels = self.parser.kpoints_info.get('labels', None)
+            weights = self.parser.kpoints_info.get('weights', None)
+            # Order the high-symmetry endpoints along the path. VASP writes them in
+            # document order, but sorting by k-point index is robust and monotonic.
+            boundaries = (
+                sorted(band_labels, key=lambda pair: pair[1]) if band_labels else None
+            )
+            zero_weight = None
+            if weights is not None and len(weights) == len(kpoints):
+                zero_weight = np.isclose(np.asarray(weights, dtype=float), 0.0)
+            # A zero-weight band path (hybrid/HSE) is a self-consistent run with an
+            # explicit k-point list: a weighted SCF mesh followed by a zero-weight
+            # band path. Such runs carry no <generation> block, so sampling_method is
+            # unset, yet the zero-weight tail (optionally labelled by <kpoints_labels>)
+            # fully defines the band path.
+            has_zero_weight_path = (
+                zero_weight is not None and zero_weight.any() and not zero_weight.all()
+            )
+
+            if sampling_method == 'Line-path':
                 sec_k_band = BandStructure()
                 sec_scc.band_structure_electronic.append(sec_k_band)
                 for n in range(len(eigs)):
@@ -2226,6 +2270,45 @@ class VASPParser:
                     sec_k_band_segment.kpoints = kpoints[n]
                     sec_k_band_segment.energies = eigs[n]
                     sec_k_band_segment.occupations = occs[n]
+            elif has_zero_weight_path or (boundaries and len(boundaries) >= 2):
+                sec_k_band = BandStructure()
+                sec_scc.band_structure_electronic.append(sec_k_band)
+                for n in range(len(eigs)):
+                    sec_band_gap = BandGapDeprecated()
+                    sec_k_band.band_gap.append(sec_band_gap)
+                    sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
+                    sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
+                kpoints = np.asarray(kpoints)
+                eigs = eigs * ureg.eV
+                # Prefer high-symmetry labels to split the path into segments;
+                # adjacent segments share their boundary k-point. Without labels,
+                # emit the whole zero-weight tail as a single continuous segment.
+                if boundaries and len(boundaries) >= 2:
+                    segments = [
+                        (
+                            boundaries[n][1],
+                            boundaries[n + 1][1],
+                            boundaries[n][0],
+                            boundaries[n + 1][0],
+                        )
+                        for n in range(len(boundaries) - 1)
+                    ]
+                else:
+                    path_indices = np.where(zero_weight)[0]
+                    segments = [(int(path_indices[0]), int(path_indices[-1]), '', '')]
+                for start, end, start_label, end_label in segments:
+                    if end <= start:
+                        continue
+                    segment_slice = slice(start, end + 1)
+                    sec_k_band_segment = BandEnergies()
+                    sec_k_band.segment.append(sec_k_band_segment)
+                    sec_k_band_segment.kpoints = kpoints[segment_slice]
+                    sec_k_band_segment.energies = eigs[:, segment_slice, :]
+                    sec_k_band_segment.occupations = occs[:, segment_slice, :]
+                    sec_k_band_segment.endpoints_labels = [
+                        _clean_kpoint_label(start_label),
+                        _clean_kpoint_label(end_label),
+                    ]
             else:
                 eigs = eigs * ureg.eV
                 sec_eigenvalues = BandEnergies()
