@@ -102,6 +102,64 @@ def _clean_kpoint_label(label):
     return label.lstrip('\\')
 
 
+# A step between consecutive band-path k-points larger than this factor times the
+# median step is treated as a discontinuity (branch break) when no labels are given.
+DISCONTINUITY_FACTOR = 3.0
+
+
+def _split_band_path(kpoints, path_indices, boundaries, factor=DISCONTINUITY_FACTOR):
+    """Partition a zero-weight band path into drawn segments.
+
+    Returns a list of ``(index_array, start_label, end_label)`` tuples whose index
+    arrays address the full k-point list. A band path may be split into disconnected
+    branches (e.g. ``Γ X M Γ | R A``); a branch break must yield separate segments
+    with no bridging segment across the gap.
+
+    Segmentation priority:
+
+    1. High-symmetry labels (authoritative): one segment per consecutive label pair,
+       with adjacent segments sharing their boundary k-point. A pair of labels that
+       are adjacent in the list (no interior samples between them) is a branch break
+       and yields no segment, so no line is drawn across the discontinuity.
+    2. No labels: break where the step ``|k[i+1] - k[i]|`` exceeds ``factor`` times
+       the median positive step (a discontinuity); otherwise a single segment.
+       Distances use fractional coordinates and assume reasonably dense,
+       per-segment-uniform sampling.
+    """
+    kpoints = np.asarray(kpoints)
+    if boundaries and len(boundaries) >= 2:
+        segments = []
+        for n in range(len(boundaries) - 1):
+            start_index, start_label = boundaries[n][1], boundaries[n][0]
+            end_index, end_label = boundaries[n + 1][1], boundaries[n + 1][0]
+            # Two labelled points adjacent in the list mark a branch break, not a
+            # segment: skip them so no line bridges the discontinuity.
+            if end_index - start_index < 2:
+                continue
+            segments.append(
+                (np.arange(start_index, end_index + 1), start_label, end_label)
+            )
+        return segments
+
+    path_indices = np.asarray(path_indices)
+    if len(path_indices) < 2:
+        return [(path_indices, '', '')]
+    steps = np.linalg.norm(np.diff(kpoints[path_indices], axis=0), axis=1)
+    positive = steps[steps > 0]
+    if len(positive):
+        breaks = np.where(steps > factor * np.median(positive))[0]
+    else:
+        breaks = np.array([], dtype=int)
+
+    segments = []
+    seg_start = 0
+    for b in breaks:
+        segments.append((path_indices[seg_start : b + 1], '', ''))
+        seg_start = b + 1
+    segments.append((path_indices[seg_start:], '', ''))
+    return segments
+
+
 def get_key_values(val_in):
     val = [v for v in val_in.split('\n') if '=' in v]
     data = {}
@@ -2280,31 +2338,25 @@ class VASPParser:
                     sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
                 kpoints = np.asarray(kpoints)
                 eigs = eigs * ureg.eV
-                # Prefer high-symmetry labels to split the path into segments;
-                # adjacent segments share their boundary k-point. Without labels,
-                # emit the whole zero-weight tail as a single continuous segment.
-                if boundaries and len(boundaries) >= 2:
-                    segments = [
-                        (
-                            boundaries[n][1],
-                            boundaries[n + 1][1],
-                            boundaries[n][0],
-                            boundaries[n + 1][0],
-                        )
-                        for n in range(len(boundaries) - 1)
-                    ]
-                else:
-                    path_indices = np.where(zero_weight)[0]
-                    segments = [(int(path_indices[0]), int(path_indices[-1]), '', '')]
-                for start, end, start_label, end_label in segments:
-                    if end <= start:
+                path_indices = (
+                    np.where(zero_weight)[0]
+                    if zero_weight is not None
+                    else np.array([], dtype=int)
+                )
+                segments = _split_band_path(kpoints, path_indices, boundaries)
+                if not boundaries and len(segments) > 1:
+                    self.parser.logger.info(
+                        'Inferred band-path discontinuities from k-point spacing.',
+                        data=dict(n_segments=len(segments)),
+                    )
+                for sel, start_label, end_label in segments:
+                    if len(sel) < 2:
                         continue
-                    segment_slice = slice(start, end + 1)
                     sec_k_band_segment = BandEnergies()
                     sec_k_band.segment.append(sec_k_band_segment)
-                    sec_k_band_segment.kpoints = kpoints[segment_slice]
-                    sec_k_band_segment.energies = eigs[:, segment_slice, :]
-                    sec_k_band_segment.occupations = occs[:, segment_slice, :]
+                    sec_k_band_segment.kpoints = kpoints[sel]
+                    sec_k_band_segment.energies = eigs[:, sel, :]
+                    sec_k_band_segment.occupations = occs[:, sel, :]
                     sec_k_band_segment.endpoints_labels = [
                         _clean_kpoint_label(start_label),
                         _clean_kpoint_label(end_label),

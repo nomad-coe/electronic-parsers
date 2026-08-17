@@ -23,6 +23,7 @@ import os
 from nomad.units import ureg
 from nomad.datamodel import EntryArchive
 from electronicparsers.vasp import VASPParser
+from electronicparsers.vasp.parser import _split_band_path
 from tests.dos_integrator import integrate_dos
 
 
@@ -263,6 +264,68 @@ def test_vasprunxml_hybrid_band_segments(hybrid_bands, index, labels, n_kpoints)
     )
     assert segment.endpoints_labels == labels
     assert len(segment.kpoints) == n_kpoints
+
+
+# --- unit tests for the zero-weight band-path segmentation helper ---
+_CONTINUOUS = np.linspace([0, 0, 0], [0.5, 0, 0], 6)
+_SPLIT = np.vstack(
+    [
+        np.linspace([0, 0, 0], [0.5, 0, 0], 6),  # branch 1
+        np.linspace([0, 0.5, 0], [0.5, 0.5, 0], 6),  # branch 2, jump before it
+    ]
+)
+_LOOP = np.vstack(
+    [
+        np.linspace([0, 0, 0], [0.5, 0, 0], 6),  # out
+        np.linspace([0.4, 0, 0], [0, 0, 0], 5),  # back, revisits (0,0,0) at the end
+    ]
+)
+_DUMMY = np.zeros((32, 3))  # coordinates are unused on the labelled path
+
+
+@pytest.mark.parametrize(
+    'kpoints, path_indices, boundaries, expected',
+    [
+        pytest.param(
+            _CONTINUOUS, np.arange(6), None, [('', '', 0, 5)], id='continuous-no-labels'
+        ),
+        pytest.param(
+            _SPLIT,
+            np.arange(12),
+            None,
+            [('', '', 0, 5), ('', '', 6, 11)],
+            id='split-distance-jump',
+        ),
+        pytest.param(
+            _LOOP, np.arange(11), None, [('', '', 0, 10)], id='revisit-does-not-split'
+        ),
+        pytest.param(
+            _DUMMY,
+            None,
+            [('Γ', 0), ('X', 10), ('M', 20), ('R', 21), ('A', 31)],
+            [('Γ', 'X', 0, 10), ('X', 'M', 10, 20), ('R', 'A', 21, 31)],
+            id='labels-with-branch-break',
+        ),
+        pytest.param(
+            _DUMMY,
+            None,
+            [('Γ', 0), ('X', 10), ('M', 20)],
+            [('Γ', 'X', 0, 10), ('X', 'M', 10, 20)],
+            id='labels-continuous',
+        ),
+    ],
+)
+def test_split_band_path(kpoints, path_indices, boundaries, expected):
+    """Segments come from labels when present (a list-adjacent label pair is a
+    branch break, not a bridge), otherwise from k-point spacing (a large step is a
+    discontinuity). Revisiting a k-point at a non-adjacent position must not split
+    the path."""
+    segments = _split_band_path(kpoints, path_indices, boundaries)
+    summary = [
+        (start_label, end_label, int(sel[0]), int(sel[-1]))
+        for sel, start_label, end_label in segments
+    ]
+    assert summary == expected
 
 
 def test_band_silicon(silicon_band):
