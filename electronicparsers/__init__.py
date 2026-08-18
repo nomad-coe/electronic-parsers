@@ -50,6 +50,18 @@ class EntryPoint(ParserEntryPoint):
         return MatchingParserInterface(**self.dict())
 
 
+class VASPEntryPoint(EntryPoint):
+    band_path_discontinuity_threshold: float = Field(
+        0.1,
+        description="""
+        Cartesian k-space distance, in inverse angstrom (Å⁻¹, 2π convention), between
+        consecutive band-path k-points above which a step is treated as a discontinuity
+        (branch break). Only affects zero-weight (e.g. hybrid/HSE) band structures
+        without a `<kpoints_labels>` block; labelled paths use the labels instead.
+    """,
+    )
+
+
 abacus_parser_entry_point = EntryPoint(
     name='parsers/abacus',
     aliases=['parsers/abacus'],
@@ -1026,7 +1038,7 @@ turbomole_parser_entry_point = EntryPoint(
     },
 )
 
-vasp_parser_entry_point = EntryPoint(
+vasp_parser_entry_point = VASPEntryPoint(
     name='parsers/vasp',
     aliases=['parsers/vasp'],
     description='NOMAD parser for VASP.',

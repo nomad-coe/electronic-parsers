@@ -19,10 +19,18 @@
 import pytest
 import numpy as np
 import os
+from types import SimpleNamespace
 
 from nomad.units import ureg
+from nomad.config import config
 from nomad.datamodel import EntryArchive
+from electronicparsers import vasp_parser_entry_point
 from electronicparsers.vasp import VASPParser
+from electronicparsers.vasp.parser import (
+    _split_band_path,
+    _band_path_signals,
+    _band_path_discontinuity_threshold,
+)
 from tests.dos_integrator import integrate_dos
 
 
@@ -210,6 +218,282 @@ def test_vasprunxml_bands(parser):
     assert np.shape(sec_k_band.segment[0].energies[0][127].magnitude) == (37,)
     assert sec_k_band.segment[1].energies[0][1][1].magnitude == approx(-6.27128785e-18)
     assert sec_k_band.segment[5].occupations[0][127][5] == approx(0.0)
+
+
+@pytest.fixture(scope='module')
+def hybrid_bands(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/vasp/Cu3PS4_hybrid_bands/vasprun.xml', archive, None)
+    return archive
+
+
+def test_vasprunxml_hybrid_bands(hybrid_bands):
+    """A self-consistent hybrid (HSE) band structure is written by VASP as an
+    explicit k-point list (no <generation> block): a weighted SCF mesh followed
+    by a zero-weight band path. The parser must promote the zero-weight tail into
+    a band structure rather than a flat eigenvalues table.
+    """
+    scc = hybrid_bands.run[0].calculation[0]
+
+    # The zero-weight tail becomes a band structure, not flat eigenvalues.
+    assert len(scc.band_structure_electronic) == 1
+    assert len(scc.eigenvalues) == 0
+
+    sec_k_band = scc.band_structure_electronic[0]
+    assert len(sec_k_band.segment) == 7
+    # 80 bands, single spin channel; the six weighted SCF k-points are excluded.
+    assert sec_k_band.segment[0].energies.shape == (1, 29, 80)
+    assert sec_k_band.segment[0].energies[0][0][0].to(ureg.eV).magnitude == approx(
+        -12.9416
+    )
+    # Energy references are taken from all k-points (SCF mesh included).
+    assert scc.energy.highest_occupied.to(ureg.eV).magnitude == approx(4.7844)
+    assert scc.energy.lowest_unoccupied.to(ureg.eV).magnitude == approx(6.3613)
+
+
+@pytest.mark.parametrize(
+    'index, labels, n_kpoints',
+    [
+        pytest.param(0, ['Γ', 'X'], 29, id='Gamma-X'),
+        pytest.param(1, ['X', 'M'], 34, id='X-M'),
+        pytest.param(2, ['M', 'Γ'], 44, id='M-Gamma'),
+        pytest.param(3, ['Γ', 'Z'], 29, id='Gamma-Z'),
+        pytest.param(4, ['Z', 'R'], 29, id='Z-R'),
+        pytest.param(5, ['R', 'A'], 34, id='R-A'),
+        pytest.param(6, ['A', 'Z'], 44, id='A-Z'),
+    ],
+)
+def test_vasprunxml_hybrid_band_segments(hybrid_bands, index, labels, n_kpoints):
+    """Each segment is delimited by the <kpoints_labels> high-symmetry points,
+    with the shared boundary k-point present in both adjacent segments."""
+    segment = (
+        hybrid_bands.run[0].calculation[0].band_structure_electronic[0].segment[index]
+    )
+    assert segment.endpoints_labels == labels
+    assert len(segment.kpoints) == n_kpoints
+
+
+# --- unit tests for the zero-weight band-path segmentation helper ---
+_CONTINUOUS = np.linspace([0, 0, 0], [0.5, 0, 0], 6)
+_SPLIT = np.vstack(
+    [
+        np.linspace([0, 0, 0], [0.5, 0, 0], 6),  # branch 1
+        np.linspace([0, 0.5, 0], [0.5, 0.5, 0], 6),  # branch 2, jump before it
+    ]
+)
+_LOOP = np.vstack(
+    [
+        np.linspace([0, 0, 0], [0.5, 0, 0], 6),  # out
+        np.linspace([0.4, 0, 0], [0, 0, 0], 5),  # back, revisits (0,0,0) at the end
+    ]
+)
+_DUMMY = np.zeros((32, 3))  # coordinates are unused on the labelled path
+# One larger interior gap (0.10 to 0.20), otherwise 0.05 steps: below threshold in
+# raw coordinates, above it once scaled by a reciprocal cell.
+_GAP = np.array(
+    [[0, 0, 0], [0.05, 0, 0], [0.10, 0, 0], [0.20, 0, 0], [0.25, 0, 0], [0.30, 0, 0]]
+)
+
+
+@pytest.mark.parametrize(
+    'kpoints, path_indices, boundaries, reciprocal_cell, threshold, expected',
+    [
+        pytest.param(
+            _CONTINUOUS,
+            np.arange(6),
+            None,
+            np.eye(3),
+            0.3,
+            [('', '', 0, 5)],
+            id='continuous-no-labels',
+        ),
+        pytest.param(
+            _SPLIT,
+            np.arange(12),
+            None,
+            np.eye(3),
+            0.3,
+            [('', '', 0, 5), ('', '', 6, 11)],
+            id='split-distance-jump',
+        ),
+        pytest.param(
+            _SPLIT,
+            np.arange(12),
+            None,
+            None,
+            0.3,
+            [('', '', 0, 11)],
+            id='no-cell-keeps-continuous',
+        ),
+        pytest.param(
+            _LOOP,
+            np.arange(11),
+            None,
+            np.eye(3),
+            0.3,
+            [('', '', 0, 10)],
+            id='revisit-does-not-split',
+        ),
+        pytest.param(
+            _DUMMY,
+            None,
+            [('Γ', 0), ('X', 10), ('M', 20), ('R', 21), ('A', 31)],
+            None,
+            0.3,
+            [('Γ', 'X', 0, 10), ('X', 'M', 10, 20), ('R', 'A', 21, 31)],
+            id='labels-with-branch-break',
+        ),
+        pytest.param(
+            _DUMMY,
+            None,
+            [('Γ', 0), ('X', 10), ('M', 20)],
+            None,
+            0.3,
+            [('Γ', 'X', 0, 10), ('X', 'M', 10, 20)],
+            id='labels-continuous',
+        ),
+        pytest.param(
+            _GAP,
+            np.arange(6),
+            None,
+            np.eye(3),
+            0.15,
+            [('', '', 0, 5)],
+            id='gap-below-threshold',
+        ),
+        pytest.param(
+            _GAP,
+            np.arange(6),
+            None,
+            2 * np.eye(3),
+            0.15,
+            [('', '', 0, 2), ('', '', 3, 5)],
+            id='gap-split-after-reciprocal-scaling',
+        ),
+    ],
+)
+def test_split_band_path(
+    kpoints, path_indices, boundaries, reciprocal_cell, threshold, expected
+):
+    """Segments come from labels when present (a list-adjacent label pair is a
+    branch break, not a bridge), otherwise from Cartesian k-point spacing (a step
+    above the threshold is a discontinuity). Without a reciprocal cell the distance
+    is not physical, so the path stays a single continuous segment. Revisiting a
+    k-point at a non-adjacent position must not split the path."""
+    segments = _split_band_path(
+        kpoints, path_indices, boundaries, reciprocal_cell, threshold
+    )
+    summary = [
+        (start_label, end_label, int(sel[0]), int(sel[-1]))
+        for sel, start_label, end_label in segments
+    ]
+    assert summary == expected
+
+
+@pytest.mark.parametrize(
+    'kpoints_info, n_kpoints, boundaries, zero_weight, has_zero_weight_path',
+    [
+        pytest.param(
+            {'weights': [0.5, 0.5]}, 2, None, [False, False], False, id='weighted-mesh'
+        ),
+        pytest.param(
+            {'weights': [0.5, 0.5, 0.0, 0.0]},
+            4,
+            None,
+            [False, False, True, True],
+            True,
+            id='zero-weight-tail',
+        ),
+        pytest.param(
+            {'weights': [0.0, 0.0]},
+            2,
+            None,
+            [True, True],
+            False,
+            id='all-zero-weight-not-a-path',
+        ),
+        pytest.param(
+            {'labels': [('X', 34), ('Γ', 6), ('Z', 242), ('M', 67)]},
+            243,
+            [('Γ', 6), ('X', 34), ('M', 67), ('Z', 242)],
+            None,
+            False,
+            id='labels-sorted-by-index',
+        ),
+        pytest.param(
+            {'weights': [0.5, 0.5, 0.5]},
+            2,
+            None,
+            None,
+            False,
+            id='weight-length-mismatch-ignored',
+        ),
+        pytest.param(
+            {'weights': ['a', 'b']}, 2, None, None, False, id='malformed-weights-safe'
+        ),
+        pytest.param(
+            {'labels': [('Γ', 0), ('X',)]},
+            2,
+            None,
+            None,
+            False,
+            id='malformed-labels-safe',
+        ),
+        pytest.param(
+            {'labels': [('X', 10), ('Γ', 0), ('BAD', 999), ('NEG', -1)]},
+            243,
+            [('Γ', 0), ('X', 10)],
+            None,
+            False,
+            id='out-of-range-labels-dropped',
+        ),
+    ],
+)
+def test_band_path_signals(
+    kpoints_info, n_kpoints, boundaries, zero_weight, has_zero_weight_path
+):
+    """The signal derivation returns sorted label endpoints and the zero-weight
+    mask, and degrades to (None, None, False) on a malformed record instead of
+    raising."""
+    got_boundaries, got_zero_weight, got_has = _band_path_signals(
+        kpoints_info, n_kpoints
+    )
+    assert got_boundaries == boundaries
+    assert (
+        got_zero_weight.tolist() if got_zero_weight is not None else None
+    ) == zero_weight
+    assert got_has == has_zero_weight_path
+
+
+@pytest.mark.parametrize(
+    'entry_point, expected',
+    [
+        pytest.param(
+            None,
+            vasp_parser_entry_point.band_path_discontinuity_threshold,
+            id='unregistered-falls-back-to-field-default',
+        ),
+        pytest.param(
+            SimpleNamespace(band_path_discontinuity_threshold=0.42),
+            0.42,
+            id='registered-uses-configured-value',
+        ),
+    ],
+)
+def test_band_path_discontinuity_threshold(monkeypatch, entry_point, expected):
+    """The threshold comes from the `parsers/vasp` entry point (honouring any
+    nomad.yaml override), and falls back to the entry-point Field default when the
+    entry point is not registered, as when the parser runs directly (e.g. in tests)."""
+
+    def fake_get_plugin_entry_point(self, entry_point_id):
+        if entry_point is None:
+            raise KeyError(entry_point_id)
+        return entry_point
+
+    monkeypatch.setattr(
+        type(config), 'get_plugin_entry_point', fake_get_plugin_entry_point
+    )
+    assert _band_path_discontinuity_threshold() == expected
 
 
 def test_band_silicon(silicon_band):

@@ -37,6 +37,7 @@ import ase
 import re
 from xml.sax import ContentHandler, make_parser  # type: ignore
 
+from nomad.config import config
 from nomad.utils import get_logger
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser
@@ -86,10 +87,126 @@ from simulationworkflowschema import (
     GeometryOptimizationMethod,
     MolecularDynamics,
 )
+from .. import vasp_parser_entry_point
 from .metainfo import vasp  # pylint: disable=unused-import
 
 
 re_n = r'[\n\r]'
+
+
+def _clean_kpoint_label(label):
+    """Normalize a VASP high-symmetry k-point label to a display form, e.g.
+    ``\\Gamma`` -> ``Γ``. Unknown labels only have a leading backslash stripped.
+    """
+    label = (label or '').strip()
+    if label.lstrip('\\').lower() in ('gamma', 'g'):
+        return 'Γ'
+    return label.lstrip('\\')
+
+
+def _band_path_discontinuity_threshold():
+    """Cartesian k-distance threshold (Å⁻¹) marking a band-path discontinuity, read
+    from the `parsers/vasp` plugin entry point so it is configurable. Falls back to the
+    entry-point Field default when the entry point is not registered, which happens when
+    the parser is invoked directly (e.g. in tests) rather than through NOMAD's plugin
+    loading."""
+    try:
+        return config.get_plugin_entry_point(
+            'parsers/vasp'
+        ).band_path_discontinuity_threshold
+    except Exception:
+        return vasp_parser_entry_point.band_path_discontinuity_threshold
+
+
+def _split_band_path(
+    kpoints,
+    path_indices,
+    boundaries,
+    reciprocal_cell,
+    threshold,
+):
+    """Partition a zero-weight band path into drawn segments.
+
+    Returns a list of ``(index_array, start_label, end_label)`` tuples whose index
+    arrays address the full k-point list. A band path may be split into disconnected
+    branches (e.g. ``Γ X M Γ | R A``); a branch break must yield separate segments
+    with no bridging segment across the gap.
+
+    Segmentation priority:
+
+    1. High-symmetry labels (authoritative): one segment per consecutive label pair,
+       with adjacent segments sharing their boundary k-point. A pair of labels that
+       are adjacent in the list (no interior samples between them) is a branch break
+       and yields no segment, so no line is drawn across the discontinuity.
+    2. No labels: break where the physical Cartesian k-distance between consecutive
+       k-points exceeds ``threshold`` (Å⁻¹); otherwise a single segment. This needs
+       ``reciprocal_cell`` (rows = reciprocal lattice vectors, Å⁻¹); without it the
+       distance is not physical, so the path is kept as a single continuous segment.
+    """
+    kpoints = np.asarray(kpoints)
+    if boundaries and len(boundaries) >= 2:
+        segments = []
+        for n in range(len(boundaries) - 1):
+            start_index, start_label = boundaries[n][1], boundaries[n][0]
+            end_index, end_label = boundaries[n + 1][1], boundaries[n + 1][0]
+            # Two labelled points adjacent in the list mark a branch break, not a
+            # segment: skip them so no line bridges the discontinuity.
+            if end_index - start_index < 2:
+                continue
+            segments.append(
+                (np.arange(start_index, end_index + 1), start_label, end_label)
+            )
+        return segments
+
+    path_indices = np.asarray(path_indices)
+    # Distance-based splitting needs a reciprocal cell to measure a physical
+    # k-distance (Å⁻¹); without it, keep the whole path as one continuous segment
+    # rather than thresholding raw fractional coordinates in the wrong unit.
+    if len(path_indices) < 2 or reciprocal_cell is None:
+        return [(path_indices, '', '')]
+    steps = np.linalg.norm(
+        np.diff(kpoints[path_indices], axis=0) @ np.asarray(reciprocal_cell), axis=1
+    )
+    breaks = np.where(steps > threshold)[0]
+
+    segments = []
+    seg_start = 0
+    for b in breaks:
+        segments.append((path_indices[seg_start : b + 1], '', ''))
+        seg_start = b + 1
+    segments.append((path_indices[seg_start:], '', ''))
+    return segments
+
+
+def _band_path_signals(kpoints_info, n_kpoints):
+    """Derive the band-path segmentation signals from a k-point record. Returns
+    ``(boundaries, zero_weight, has_zero_weight_path)`` and degrades to
+    ``(None, None, False)`` — i.e. "no band path" — rather than raising on a
+    malformed record.
+
+    ``boundaries`` are the ``(label, index)`` endpoints sorted by k-point index (the
+    label extraction groups repeated labels, so document order is unreliable).
+    ``zero_weight`` marks the zero-weight tail; ``has_zero_weight_path`` is True only
+    for a genuine mix of weighted and zero-weight points (hybrid/HSE).
+    """
+    try:
+        band_labels = kpoints_info.get('labels', None)
+        weights = kpoints_info.get('weights', None)
+        # Drop labels whose index is out of range: they would not raise here, but
+        # would later raise IndexError when slicing the eigenvalues by that index.
+        boundaries = None
+        if band_labels:
+            valid = [pair for pair in band_labels if 0 <= pair[1] < n_kpoints]
+            boundaries = sorted(valid, key=lambda pair: pair[1]) or None
+        zero_weight = None
+        if weights is not None and len(weights) == n_kpoints:
+            zero_weight = np.isclose(np.asarray(weights, dtype=float), 0.0)
+        has_zero_weight_path = (
+            zero_weight is not None and zero_weight.any() and not zero_weight.all()
+        )
+    except Exception:
+        return None, None, False
+    return boundaries, zero_weight, has_zero_weight_path
 
 
 def get_key_values(val_in):
@@ -1381,6 +1498,25 @@ class RunContentParser(ContentParser):
             )
             if weights:
                 self._kpoints_info['weights'] = weights['v']
+            # High-symmetry point labels annotating the band path. Present for
+            # explicit k-point lists (e.g. hybrid/HSE band structures) that carry
+            # no <generation> block. Stored as (label, 0-based index) pairs; the
+            # VASP indices are 1-based positions into the full k-point list.
+            labels = self._get_key_values(
+                '/modeling[0]/kpoints[0]/kpoints_labels[0]/i', repeats=True
+            )
+            if labels:
+                label_pairs = []
+                for name, indices in labels.items():
+                    indices = indices if isinstance(indices, list) else [indices]
+                    for index in indices:
+                        # Skip a malformed index rather than fail the whole parse.
+                        try:
+                            label_pairs.append((name, int(index) - 1))
+                        except (TypeError, ValueError):
+                            continue
+                if label_pairs:
+                    self._kpoints_info['labels'] = label_pairs
             tetrahedrons = self._get_key_values(
                 '/modeling[0]/kpoints[0]/varray[@name="tetrahedronlist"]/v', array=True
             )
@@ -2048,6 +2184,34 @@ class VASPParser:
                     )
         self.archive.workflow2 = workflow
 
+    @staticmethod
+    def _new_band_structure(sec_scc, valence_max, conduction_min):
+        """Create a `BandStructure` on the calculation with one `band_gap` record per
+        spin channel from the valence-band-maximum / conduction-band-minimum
+        references. Shared by the line-mode and zero-weight band-path branches."""
+        sec_k_band = BandStructure()
+        sec_scc.band_structure_electronic.append(sec_k_band)
+        for n in range(len(valence_max)):
+            sec_band_gap = BandGapDeprecated()
+            sec_k_band.band_gap.append(sec_band_gap)
+            sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
+            sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
+        return sec_k_band
+
+    @staticmethod
+    def _append_band_segment(sec_k_band, kpoints, energies, occupations, labels=None):
+        """Append one `BandEnergies` segment (energies/occupations shaped
+        ``(n_spin, n_kpoints, n_bands)``); set high-symmetry endpoint labels if
+        given."""
+        sec_k_band_segment = BandEnergies()
+        sec_k_band.segment.append(sec_k_band_segment)
+        sec_k_band_segment.kpoints = kpoints
+        sec_k_band_segment.energies = energies
+        sec_k_band_segment.occupations = occupations
+        if labels is not None:
+            sec_k_band_segment.endpoints_labels = labels
+        return sec_k_band_segment
+
     def parse_configurations(self):
         sec_run = self.archive.run[-1]
 
@@ -2196,14 +2360,23 @@ class VASPParser:
             sec_scc.energy.highest_occupied = max(valence_max) * ureg.eV
             sec_scc.energy.lowest_unoccupied = min(conduction_min) * ureg.eV
 
-            if self.parser.kpoints_info.get('sampling_method', None) == 'Line-path':
-                sec_k_band = BandStructure()
-                sec_scc.band_structure_electronic.append(sec_k_band)
-                for n in range(len(eigs)):
-                    sec_band_gap = BandGapDeprecated()
-                    sec_k_band.band_gap.append(sec_band_gap)
-                    sec_band_gap.energy_highest_occupied = valence_max[n] * ureg.eV
-                    sec_band_gap.energy_lowest_unoccupied = conduction_min[n] * ureg.eV
+            sampling_method = self.parser.kpoints_info.get('sampling_method', None)
+            # A zero-weight band path (hybrid/HSE) is a self-consistent run with an
+            # explicit k-point list: a weighted SCF mesh followed by a zero-weight
+            # band path. Such runs carry no <generation> block, so sampling_method is
+            # unset, yet the zero-weight tail (optionally labelled by <kpoints_labels>)
+            # fully defines the band path. Derive these signals only when needed
+            # (never for a Line-path run); the helper is fail-safe on malformed input.
+            boundaries, zero_weight, has_zero_weight_path = None, None, False
+            if sampling_method != 'Line-path':
+                boundaries, zero_weight, has_zero_weight_path = _band_path_signals(
+                    self.parser.kpoints_info, len(kpoints)
+                )
+
+            if sampling_method == 'Line-path':
+                sec_k_band = self._new_band_structure(
+                    sec_scc, valence_max, conduction_min
+                )
                 divisions = self.parser.kpoints_info.get('grid', None)
                 if divisions is None:
                     return
@@ -2221,11 +2394,53 @@ class VASPParser:
                 eigs = np.transpose(eigs, axes=(1, 0, 2, 3)) * ureg.eV
                 occs = np.transpose(occs, axes=(1, 0, 2, 3))
                 for n in range(n_segments):
-                    sec_k_band_segment = BandEnergies()
-                    sec_k_band.segment.append(sec_k_band_segment)
-                    sec_k_band_segment.kpoints = kpoints[n]
-                    sec_k_band_segment.energies = eigs[n]
-                    sec_k_band_segment.occupations = occs[n]
+                    self._append_band_segment(sec_k_band, kpoints[n], eigs[n], occs[n])
+            elif has_zero_weight_path or (boundaries and len(boundaries) >= 2):
+                sec_k_band = self._new_band_structure(
+                    sec_scc, valence_max, conduction_min
+                )
+                kpoints = np.asarray(kpoints)
+                eigs = eigs * ureg.eV
+                path_indices = (
+                    np.where(zero_weight)[0]
+                    if zero_weight is not None
+                    else np.array([], dtype=int)
+                )
+                # Reciprocal lattice (rows = b-vectors, Å⁻¹, 2π convention) so the
+                # label-free discontinuity threshold is a physical k-distance.
+                reciprocal_cell = None
+                try:
+                    lattice = sec_scc.system_ref.atoms.lattice_vectors
+                    reciprocal_cell = (
+                        2 * np.pi * np.linalg.inv(lattice.to('angstrom').magnitude).T
+                    )
+                except Exception:
+                    reciprocal_cell = None
+                segments = _split_band_path(
+                    kpoints,
+                    path_indices,
+                    boundaries,
+                    reciprocal_cell=reciprocal_cell,
+                    threshold=_band_path_discontinuity_threshold(),
+                )
+                if not boundaries and len(segments) > 1:
+                    self.parser.logger.info(
+                        'Inferred band-path discontinuities from k-point spacing.',
+                        data=dict(n_segments=len(segments)),
+                    )
+                for sel, start_label, end_label in segments:
+                    if len(sel) < 2:
+                        continue
+                    self._append_band_segment(
+                        sec_k_band,
+                        kpoints[sel],
+                        eigs[:, sel, :],
+                        occs[:, sel, :],
+                        labels=[
+                            _clean_kpoint_label(start_label),
+                            _clean_kpoint_label(end_label),
+                        ],
+                    )
             else:
                 eigs = eigs * ureg.eV
                 sec_eigenvalues = BandEnergies()
