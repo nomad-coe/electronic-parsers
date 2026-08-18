@@ -19,11 +19,18 @@
 import pytest
 import numpy as np
 import os
+from types import SimpleNamespace
 
 from nomad.units import ureg
+from nomad.config import config
 from nomad.datamodel import EntryArchive
+from electronicparsers import vasp_parser_entry_point
 from electronicparsers.vasp import VASPParser
-from electronicparsers.vasp.parser import _split_band_path, _band_path_signals
+from electronicparsers.vasp.parser import (
+    _split_band_path,
+    _band_path_signals,
+    _band_path_discontinuity_threshold,
+)
 from tests.dos_integrator import integrate_dos
 
 
@@ -456,6 +463,37 @@ def test_band_path_signals(
         got_zero_weight.tolist() if got_zero_weight is not None else None
     ) == zero_weight
     assert got_has == has_zero_weight_path
+
+
+@pytest.mark.parametrize(
+    'entry_point, expected',
+    [
+        pytest.param(
+            None,
+            vasp_parser_entry_point.band_path_discontinuity_threshold,
+            id='unregistered-falls-back-to-field-default',
+        ),
+        pytest.param(
+            SimpleNamespace(band_path_discontinuity_threshold=0.42),
+            0.42,
+            id='registered-uses-configured-value',
+        ),
+    ],
+)
+def test_band_path_discontinuity_threshold(monkeypatch, entry_point, expected):
+    """The threshold comes from the `parsers/vasp` entry point (honouring any
+    nomad.yaml override), and falls back to the entry-point Field default when the
+    entry point is not registered, as when the parser runs directly (e.g. in tests)."""
+
+    def fake_get_plugin_entry_point(self, entry_point_id):
+        if entry_point is None:
+            raise KeyError(entry_point_id)
+        return entry_point
+
+    monkeypatch.setattr(
+        type(config), 'get_plugin_entry_point', fake_get_plugin_entry_point
+    )
+    assert _band_path_discontinuity_threshold() == expected
 
 
 def test_band_silicon(silicon_band):
