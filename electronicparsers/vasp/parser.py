@@ -37,6 +37,7 @@ import ase
 import re
 from xml.sax import ContentHandler, make_parser  # type: ignore
 
+from nomad.config import config
 from nomad.utils import get_logger
 from nomad.units import ureg
 from nomad.parsing.file_parser import FileParser
@@ -86,6 +87,7 @@ from simulationworkflowschema import (
     GeometryOptimizationMethod,
     MolecularDynamics,
 )
+from .. import vasp_parser_entry_point
 from .metainfo import vasp  # pylint: disable=unused-import
 
 
@@ -102,32 +104,26 @@ def _clean_kpoint_label(label):
     return label.lstrip('\\')
 
 
-# Fallback for the static distance threshold below when the plugin entry point
-# cannot be resolved (e.g. standalone parsing). Keep in sync with the default on
-# `VASPEntryPoint.band_path_discontinuity_threshold`.
-DEFAULT_BAND_PATH_DISCONTINUITY_THRESHOLD = 0.1
-
-
 def _band_path_discontinuity_threshold():
-    """Static Cartesian k-distance threshold (Å⁻¹) marking a band-path discontinuity,
-    taken from the `parsers/vasp` plugin entry point so it is configurable, with a
-    module-level fallback when config is unavailable."""
+    """Cartesian k-distance threshold (Å⁻¹) marking a band-path discontinuity, read
+    from the `parsers/vasp` plugin entry point so it is configurable. Falls back to the
+    entry-point Field default when the entry point is not registered, which happens when
+    the parser is invoked directly (e.g. in tests) rather than through NOMAD's plugin
+    loading."""
     try:
-        from nomad.config import config
-
         return config.get_plugin_entry_point(
             'parsers/vasp'
         ).band_path_discontinuity_threshold
     except Exception:
-        return DEFAULT_BAND_PATH_DISCONTINUITY_THRESHOLD
+        return vasp_parser_entry_point.band_path_discontinuity_threshold
 
 
 def _split_band_path(
     kpoints,
     path_indices,
     boundaries,
-    reciprocal_cell=None,
-    threshold=DEFAULT_BAND_PATH_DISCONTINUITY_THRESHOLD,
+    reciprocal_cell,
+    threshold,
 ):
     """Partition a zero-weight band path into drawn segments.
 
