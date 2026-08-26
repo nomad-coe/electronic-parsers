@@ -25,7 +25,7 @@ import re
 from datetime import datetime
 
 from nomad.units import ureg
-from nomad.parsing.file_parser import TextParser, Quantity, DataTextParser
+from nomad_file_parser import TextParser, Quantity, DataTextParser
 from nomad.metainfo import MSection
 from nomad.utils import get_logger
 
@@ -345,13 +345,13 @@ class FHIAimsOutParser(TextParser):
             ),
             Quantity(
                 'positions',
-                rf'({re_float})\s+({re_float})\s+({re_float}) *{re_n}',
+                rf'atom +({re_float})\s+({re_float})\s+({re_float})',
                 dtype=np.dtype(np.float64),
                 repeats=True,
             ),
             Quantity(
                 'positions',
-                rf'atom +({re_float})\s+({re_float})\s+({re_float})',
+                rf'({re_float})\s+({re_float})\s+({re_float}) *{re_n}',
                 dtype=np.dtype(np.float64),
                 repeats=True,
             ),
@@ -570,7 +570,7 @@ class FHIAimsOutParser(TextParser):
             ),
             Quantity(
                 'structure',
-                rf'Atomic structure(.|\n)*\| *Atom *x \[A\] *y \[A\] *z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
+                rf'Atomic structure[\s\S]*?\| *Atom *x \[A\] *y \[A\] *z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
                 repeats=False,
                 convert=False,
                 sub_parser=TextParser(quantities=structure_quantities),
@@ -1002,7 +1002,7 @@ class FHIAimsOutParser(TextParser):
             ),
             Quantity(
                 'structure',
-                rf'Atomic structure(.|\n)*\| *Atom *x \[A\] *y \[A\] *z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
+                rf'Atomic structure[\s\S]*?\| *Atom *x \[A\] *y \[A\] *z \[A\]([\s\S]+?Species[\s\S]+?(?:{re_n} *{re_n}| 1\: ))',
                 repeats=False,
                 convert=False,
                 sub_parser=TextParser(quantities=structure_quantities),
