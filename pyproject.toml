@@ -17,6 +17,7 @@ dependencies = [
     "nomad-schema-plugin-simulation-workflow>=1.0.1",
     "nomad-schema-plugin-run>=1.0.1",
     "nomad-parser-plugins-simulation>=1.0.2",
+    "nomad-file-parser@git+https://github.com/FAIRmat-NFDI/nomad-file-parser.git@develop",
     # issue with reading nc file in 1.7.3: https://github.com/Unidata/netcdf4-python/issues/1438
     # issue with pytest in 1.7.1: https://github.com/Unidata/netcdf4-python/issues/1343
     "netcdf4<=1.7.2",
