@@ -4,44 +4,54 @@
 
 This document provides guidance for GitHub Copilot when working with NOMAD electronic structure parsers. Each parser extracts computational results from simulation output files and maps them to NOMAD's unified runschema.
 
-**IMPORTANT**: Before merging any parser changes (especially new features), ensure the parser's `FEATURES.yml` file is updated to reflect new capabilities and that these changes are reviewed. The exact `FEATURES.yml` requirements to be enforced are stated below.
+**IMPORTANT**: Before merging any parser changes (especially new features), ensure the parser's `MAPPING_REPORT.md` file is updated to reflect the current mapping coverage, and that these changes are reviewed. The exact `MAPPING_REPORT.md` requirements to be enforced are stated below.
 
-## Parser Feature Documentation
+## Parser Mapping Report
 
-Each parser has a `FEATURES.yml` file in its directory that documents its capabilities using standardized runschema terminology. These files serve as a reference for:
-- Understanding what data each parser extracts
-- Identifying which runschema sections are populated
-- Recognizing special features and capabilities
-- Maintaining consistency across parser implementations
+Each parser has a `MAPPING_REPORT.md` file in its directory that documents, per output file,
+exactly which of the parser's declarative file-parser quantities are mapped into the normalized
+runschema. This mirrors the programmatic report produced for the new-schema simulation parsers
+(`FAIRmat-NFDI/nomad-parser-plugins-simulation`, `nomad-sim-parser mapping-report`); here the
+legacy imperative parsers carry no declarative archive-mapper annotation, so the report is
+produced by reading the parser code rather than auto-generated. The files serve as a reference for:
+- Which file-parser quantities each parser exposes
+- Which of them are actually written to the runschema archive (coverage), and where
+- Where the gaps are (unmapped quantities), to prioritise future work
 
 ### File Location
 
-Parser feature files are located at:
+Parser mapping reports are located at:
 ```
-electronicparsers/{parser_name}/FEATURES.yml
+electronicparsers/{parser_name}/MAPPING_REPORT.md
 ```
+
+A combined, repo-wide report at `docs/reference/parser_mapping_report.md` is the concatenation of
+all per-parser fragments. It is maintained by hand (no build tooling): whenever you add or edit a
+fragment, regenerate the combined file by concatenating the fragments in alphabetical order of
+parser directory, e.g.
+
+```bash
+{ echo "# Electronic parser mapping report"; echo;
+  for f in $(ls electronicparsers/*/MAPPING_REPORT.md | sort); do
+    tail -n +2 "$f"; echo;   # drop each fragment's generated-by comment line
+  done; } > docs/reference/parser_mapping_report.md
+```
+
+Treat the combined file as generated output: never hand-edit it — edit the fragment and rebuild it.
 
 ### Editing Guidelines
 
-**IMPORTANT**: When editing FEATURES.yml files:
-- Always add a `metadata` section at the top with:
-  - `last_updated`: Current timestamp (YYYY-MM-DD format)
-  - `updated_by`: The model (i.e. YOU) that made the edits (e.g., "GitHub Copilot", "Claude Sonnet 4.5", "GPT-4", etc.)
-- The model name should be retained in the file to track which AI assisted with the documentation
-- Do NOT annotate every line with the model name, only include it in the metadata section
-- Update the timestamp each time the file is modified
-- Place string type values in duoble quotation marks
-
-Example metadata section:
-```yaml
-metadata:
-  last_updated: "2025-12-05"
-  updated_by: "Claude Sonnet 4.5"
-
-parser:
-  name: "VASP"
-  ...
-```
+**IMPORTANT**: When editing `MAPPING_REPORT.md` files:
+- Record model attribution in a single HTML comment at the top of the file:
+  ```markdown
+  <!-- generated-by: Claude Sonnet 4.5 | last_updated: 2026-09-09 -->
+  ```
+  Use YYYY-MM-DD for the date and the exact model name that made the edits (e.g.,
+  "GitHub Copilot", "Claude Sonnet 4.5", "GPT-4"). Retain it so the assisting model is tracked.
+  Do NOT annotate every row with the model name.
+- Update the timestamp each time the file is modified.
+- Every quantity name and every mapped target you write MUST be verifiable against the parser
+  source (see the anti-hallucination rule below); do not invent entries.
 
 ## NOMAD Runschema Terminology
 
@@ -265,144 +275,94 @@ Bethe-Salpeter equation for excitations.
 #### DMFT
 Dynamical mean-field theory.
 
-## YAML Schema for FEATURES.yml
+## Markdown Mapping-Report Format
 
-### Supported File Formats
+A `MAPPING_REPORT.md` contains **one section per declarative file-parser class**. Its shape is
+identical to the auto-generated report of the new-schema simulation parsers, so the two can be
+read side by side.
 
-**IMPORTANT**: The `supported_file_formats` section lists ALL possible file formats the simulation code MAY produce, not necessarily all formats that are currently supported by the parser.
+### Template
 
-Each format MUST include:
-- `name`: The file format name
-- `supported`: true/false (whether the parser can handle this format)
-- `source`: filepath:class.method pointing to the implementation (filepath from project root, specify the lowest level: method if possible)
-- `notes`: Optional brief explanation (e.g., "Fully supported", "Format exists but not parsed")
+```markdown
+<!-- generated-by: Claude Sonnet 4.5 | last_updated: 2026-09-09 -->
+## <Code> / <FILE>
 
-**Why source is required:**
-1. **Traceability**: Easy verification of documented capabilities
-2. **Catching hallucinations**: Prevents documenting non-existent features
+**Summary:** {mapped} mapped, {unmapped} unmapped quantities ({coverage:.2f}% coverage).
 
-### Runschema Capabilities
-
-**IMPORTANT**: Every claimed capability MUST include a source reference pointing to the implementation: filepath:class.method (from project root, lowest level possible).
-
-Each capability entry includes:
-- `capability`: The runschema section/property name
-- `source`: filepath:class.method pointing to the implementation
-
-**Why source is required:**
-1. **Traceability**: Easy verification of documented capabilities
-2. **Catching hallucinations**: Prevents documenting non-existent features
-
-### YAML Template
-
-```yaml
-metadata:
-  last_updated: "YYYY-MM-DD"
-  updated_by: "Model Name (e.g., Claude Sonnet 4.5)"
-
-parser:
-  name: "Parser Name"
-  description: "Brief description"
-  homepage: "https://..."
-  mainfile_patterns:
-    - "pattern1"
-    - "pattern2"
-  supported_file_formats:
-    - name: "vasprun.xml"
-      supported: true
-      notes: "Fully supported"
-      source: "electronicparsers/vasp/parser.py:VASPParser.init_parser"
-    - name: "OUTCAR"
-      supported: true
-      notes: "Fully supported"
-      source: "electronicparsers/vasp/parser.py:VASPParser.init_parser"
-
-runschema_capabilities:
-  run:
-    - capability: program  # name, version
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse"
-    - capability: time_run  # timing information
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse"
-
-  method:
-    - capability: electronic.method  # DFT, HF, GW, etc.
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
-    - capability: dft.xc_functional  # XC functional for DFT codes
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
-    - capability: basis_set  # type, cutoff
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_method"
-    - capability: k_mesh  # k-point sampling
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_kpoints"
-    - capability: gw  # GW approximation
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_gw"
-    # Add other method components as applicable with sources
-
-  system:
-    - capability: atoms  # positions, species, lattice_vectors, periodic
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
-
-  calculation:
-    # Energy components (list what the parser extracts)
-    - capability: energy.total
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
-    - capability: energy.free
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
-
-    # Electronic structure
-    - capability: eigenvalues
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
-    - capability: dos_electronic
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_configurations"
-
-  workflow:
-    - capability: single_point
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_workflow"
-    - capability: geometry_optimization
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_workflow"
-    - capability: molecular_dynamics
-      source: "electronicparsers/vasp/parser.py:VASPParser.parse_workflow"
-    # Add other workflow types as applicable with sources
-
-special_features:
-  # List parser-specific advanced capabilities
-  - "Feature description 1"
-  - "Feature description 2"
-
-notes:
-  # Optional: Additional implementation notes
-  - "Note 1"
-  - "Note 2"
+| File-parser quantity | Status | Archive mapper source |
+| --- | --- | --- |
+| `quantity_name` | Mapped | `runschema.target.path` |
+| `x_code_specific_quantity` | Unmapped | — |
 ```
 
-## Guidelines for Maintaining Feature Files
+- **Heading** (`## <Code> / <FILE>`): the code name and the output file the class parses, e.g.
+  `## Exciting / INFO.OUT`, `## VASP / vasprun.xml`. One heading per file-parser class; a parser
+  that reads several files (e.g. exciting `INFO.OUT`, `EIGVAL.OUT`, band-structure XML) gets one
+  section each, all in the same `MAPPING_REPORT.md`.
+- **Summary line**: exact wording
+  `**Summary:** {mapped} mapped, {unmapped} unmapped quantities ({coverage:.2f}% coverage).`,
+  where `coverage = mapped / total * 100` with two decimals.
+- **Left column (`File-parser quantity`)**: the `name=` of each `Quantity(...)` defined in the
+  file-parser class, in declaration order. Use **dotted paths** for nested / sub-parser quantities
+  (e.g. `dataset.results.eigenvalues`). Wrap every name in backticks.
+- **Status**: `Mapped` if `parse()` (or a `parse_*` helper) writes the quantity into the
+  normalized runschema, otherwise `Unmapped`. Code-specific `x_<code>_*` quantities that only land
+  in the code-specific metainfo extension (never the normalized runschema) count as `Unmapped`.
+- **Archive mapper source**: for a `Mapped` row, the runschema attribute path it feeds (e.g.
+  `energy.total`, `atoms.positions`, `dos_electronic`) or the helper that consumes it; for an
+  `Unmapped` row, an em dash `—`. Join multiple targets with `<br>`. Wrap paths in backticks.
 
-### When Adding New Parsers
+### Skipped parsers
 
-1. Create `FEATURES.yml` in the parser directory
-2. Add metadata section with current date and your model name
-3. Analyze the parser implementation to identify:
-   - Which runschema sections are populated
-   - What properties are extracted
-   - Special capabilities or unique features
-4. Use the YAML schema above as a template
-5. Focus on runschema terminology, not code-specific names
+If a parser writes to the archive purely through custom imperative code and exposes **no**
+declarative `Quantity` list to report on, do not fabricate a coverage number. Emit a single
+section instead:
 
-### When Updating Existing Parsers
+```markdown
+## <Code>
 
-1. Update the `metadata` section with current date and your model name
-2. Add new runschema sections to `runschema_capabilities`
-3. Document new special features
-4. Keep descriptions concise and standardized
+**Coverage:** Not available — this parser uses custom archive-writing logic and exposes no
+reportable file-parser quantities.
+```
+
+### Anti-hallucination rule (replaces the old `source:` field)
+
+There is no validator; correctness is a review responsibility, so self-check every entry against
+the parser source before committing:
+1. **Every** left-column quantity name MUST correspond to a real `Quantity(...)` in the parser's
+   file-parser class. Confirm with a grep, e.g.
+   `grep -nE "Quantity\(" electronicparsers/<code>/*.py`.
+2. **Every** `Mapped` target MUST be a real runschema attribute path (cross-check against
+   `packages/nomad-schema-plugin-run/runschema/`).
+3. Do not omit quantities to inflate coverage: list every declared quantity, mapped or not —
+   **including quantities whose `name` is built dynamically** (in a loop or from a dict/mapping,
+   e.g. abinit's energy components, exciting's `x_exciting_*_convergence`). Resolve the runtime
+   names and list each as its own row; do not skip them just because the name is not a string
+   literal.
+
+## Guidelines for Maintaining Mapping Reports
+
+### Generation recipe (adding or regenerating a report)
+
+1. Locate the declarative file-parser classes in the parser:
+   `grep -nE "class .*\((TextParser|XMLParser)\)" electronicparsers/<code>/parser.py`.
+2. For each class, enumerate every `Quantity(...)` including nested `sub_parser` / repeating
+   quantities, and any quantities appended dynamically (loops, dict-driven names) → the left
+   column, using dotted paths for nesting.
+3. Read `parse()` / `parse_*` to decide, per quantity, whether it is written to the normalized
+   runschema and to which target path → Status + Archive mapper source.
+4. Compute `coverage = mapped / total * 100`; write the summary line and table.
+5. Emit one `##` section per file-parser class; refresh the top-of-file `generated-by` comment.
 
 ### Best Practices
 
-- Always update metadata when editing
-- Use runschema terminology consistently across all feature files
-- List only capabilities that are actually implemented
-- Group related capabilities logically
-- Include parser-specific features in `special_features`
-- Keep descriptions focused on "what" not "how"
-- Reference official schema documentation for ambiguous cases
+- Update the `generated-by` comment (model + date) on every edit.
+- List every declared quantity — mapped and unmapped — never a curated subset.
+- Prefer normalized runschema attribute paths in the source column; only fall back to a helper
+  name when no single attribute path applies.
+- Keep quantity names and target paths copy-exact against the source.
+- Rebuild `docs/reference/parser_mapping_report.md` by concatenating the fragments (see the
+  snippet under *File Location*) after editing any fragment.
 
 ## Schema Documentation References
 
@@ -457,10 +417,10 @@ elif self.is_molecular_dynamics():
 
 ## Usage with GitHub Copilot
 
-When working on parser code, Copilot can reference these feature files to:
+When working on parser code, Copilot can reference these mapping reports to:
 - Suggest appropriate runschema sections for extracted data
 - Recommend common patterns for similar properties
-- Identify missing capabilities that should be implemented
+- Identify unmapped quantities that should be wired into the runschema
 - Ensure consistency with other parsers
 
 To help Copilot understand your intent:
