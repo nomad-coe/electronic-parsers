@@ -1,0 +1,49 @@
+
+#======================================================================
+# CRYSTAL DATA
+#----------------------------------------------------------------------
+data_VESTA_phase_1
+
+_chemical_name_common                  'Mn2 Al4 Fe10 C3'
+_cell_length_a                         3.785078
+_cell_length_b                         3.785078
+_cell_length_c                         14.547035
+_cell_angle_alpha                      90.000000
+_cell_angle_beta                       90.000000
+_cell_angle_gamma                      90.000000
+_cell_volume                           208.412642
+_space_group_name_H-M_alt              'P 1'
+_space_group_IT_number                 1
+
+loop_
+_space_group_symop_operation_xyz
+   'x, y, z'
+
+loop_
+   _atom_site_label
+   _atom_site_occupancy
+   _atom_site_fract_x
+   _atom_site_fract_y
+   _atom_site_fract_z
+   _atom_site_adp_type
+   _atom_site_U_iso_or_equiv
+   _atom_site_type_symbol
+   Mn1        1.0     0.500000     0.000000     0.500000    Uiso  ? Mn
+   Mn2        1.0     0.000000     0.500000     0.500000    Uiso  ? Mn
+   Al1        1.0     1.000000     0.000000     0.878787    Uiso  ? Al
+   Al2        1.0     0.000000     0.000000     0.121213    Uiso  ? Al
+   Al3        1.0     0.000000     0.000000     0.369009    Uiso  ? Al
+   Al4        1.0     0.000000     0.000000     0.630991    Uiso  ? Al
+   Fe1        1.0     0.500000     0.500000     0.891883    Uiso  ? Fe
+   Fe2        1.0     0.500000     0.500000     0.108117    Uiso  ? Fe
+   Fe3        1.0     0.500000     0.500000     0.369614    Uiso  ? Fe
+   Fe4        1.0     0.500000     0.500000     0.630386    Uiso  ? Fe
+   Fe5        1.0     0.500000     0.000000     1.000000    Uiso  ? Fe
+   Fe6        1.0     0.500000     0.000000     0.243745    Uiso  ? Fe
+   Fe7        1.0     0.500000     0.000000     0.756255    Uiso  ? Fe
+   Fe8        1.0     1.000000     0.500000     1.000000    Uiso  ? Fe
+   Fe9        1.0     0.000000     0.500000     0.243745    Uiso  ? Fe
+   Fe10       1.0     1.000000     0.500000     0.756255    Uiso  ? Fe
+   C1         1.0     0.500000     0.500000     0.239360    Uiso  ? C
+   C2         1.0     0.500000     0.500000     0.500000    Uiso  ? C
+   C3         1.0     0.500000     0.500000     0.760640    Uiso  ? C
