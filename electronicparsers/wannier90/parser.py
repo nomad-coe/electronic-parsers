@@ -19,6 +19,8 @@
 import os
 import logging
 import numpy as np
+from numpy.linalg import eigvals
+import re
 
 from nomad.units import ureg
 
@@ -143,17 +145,30 @@ class WOutParser(TextParser):
                 repeats=True,
             ),
         ]
-
-
+        
 class WInParser(TextParser):
     def __init__(self):
         super().__init__(None)
 
     def init_quantities(self):
         def str_proj_to_list(val_in):
-            # To avoid inconsistent regex that can contain or not spaces
-            val_n = [x for x in val_in.split('\n') if x]
-            return [v.strip('[]').replace(' ', '').split(':') for v in val_n]
+            val_n = [x for x in val_in.split('\n') if x.strip()]
+            projections = []
+            seen = set()
+            for v in val_n:
+                parts_comment = v.split('!')
+                line_part = parts_comment[0].strip()
+                comment_part = parts_comment[1].strip() if len(parts_comment) > 1 else ''
+
+                atom_symbol = comment_part.split()[-1] if comment_part else None
+                parts_line = line_part.split(':')
+                orbitals = parts_line[1] if len(parts_line) > 1 else ''
+
+                pair = (atom_symbol, orbitals)
+                if pair not in seen:
+                    seen.add(pair)
+                    projections.append([atom_symbol, orbitals])
+            return projections
 
         self._quantities = [
             Quantity(
@@ -167,7 +182,7 @@ class WInParser(TextParser):
             ),
         ]
 
-
+        
 class HrParser(TextParser):
     def __init__(self):
         super().__init__(None)
@@ -398,20 +413,62 @@ class Wannier90Parser:
                 sec_atom_parameters.n_orbitals = len(orbitals)
                 angular_momentum = []
                 for orb in orbitals:
-                    if orb.startswith('l='):  # using angular momentum numbers
-                        lmom = int(orb.split(',mr')[0].replace('l=', '').split(',')[0])
-                        mrmom = int(orb.split(',mr')[-1].replace('=', '').split(',')[0])
-                        if (
-                            orb_ang_mom := self._angular_momentum_orbital_map.get(
-                                (lmom, mrmom)
-                            )
-                        ):  # shouldn't a missing numerical code rather generate a warning?
-                            angular_momentum.append(orb_ang_mom)
-                    else:  # ang mom label directly specified
+                    if orb.startswith('l='):
+                        try:
+                            # Try to parse l and mr as before
+                            lmom = int(orb.split(',mr')[0].replace('l=', '').split(',')[0])
+                            mrmom = int(orb.split(',mr')[-1].replace('=', '').split(',')[0])
+
+                            # Try to map (l, mr)
+                            orb_ang_mom = self._angular_momentum_orbital_map.get((lmom, mrmom))
+                            if orb_ang_mom:
+                                angular_momentum.append(orb_ang_mom)
+                            else:
+                                # If no mapping found, fallback to pure l
+                                # You can define a fallback map for pure l only below
+                                fallback_map = {0: 's', 1: 'p', 2: 'd', 3: 'f'}
+                                fallback_label = fallback_map.get(lmom, f'l={lmom}')
+                                angular_momentum.append(fallback_label)
+                        except Exception:
+                            # If parsing mr fails (likely missing mr), fallback to pure l
+                            try:
+                                lmom = int(orb.replace('l=', ''))
+                                fallback_map = {0: 's', 1: 'p', 2: 'd', 3: 'f'}
+                                fallback_label = fallback_map.get(lmom, f'l={lmom}')
+                                angular_momentum.append(fallback_label)
+                            except Exception:
+                                self.logger.warning(f'Could not parse orbital label: {orb}')
+                    else:
+                        # Direct orbital label (e.g. 'px', 's')
                         angular_momentum.append(orb)
+
                 sec_atom_parameters.orbitals = np.array(angular_momentum)
             except Exception:
                 self.logger.warning('Projected orbital labels not found from win.')
+
+    def get_or_set_fermi_energy(self, default=0.0 * ureg.eV):
+        try:
+            sec_scc = self.archive.run[-1].calculation[-1]
+        except Exception as e:
+            self.logger.error(f'Error accessing calculation section: {e}')
+            return default
+
+        if sec_scc.energy is None:
+            sec_scc.energy = Energy()
+
+        try:
+            energy_fermi_value = self.win_parser.get('energy_fermi')
+            if energy_fermi_value is None:
+                raise ValueError('Fermi energy not found in wannier90.win file')
+            energy_fermi = energy_fermi_value * ureg.eV
+        except Exception as e:
+            self.logger.warning(f'{e}. Setting Fermi energy to default: {default.magnitude} eV.')
+            energy_fermi = default
+
+        sec_scc.energy.fermi = energy_fermi
+        sec_scc.energy.highest_occupied = energy_fermi
+        return energy_fermi
+
 
     def parse_hoppings(self):
         hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
@@ -444,20 +501,92 @@ class Wannier90Parser:
                 self.logger.warning(
                     'Could not parse the hopping matrix values. Please, revise your output files.'
                 )
-        try:
-            sec_scc_energy = Energy()
-            sec_scc.energy = sec_scc_energy
-            # Setting Fermi level to the first orbital onsite energy
-            n_wigner_seitz_points_half = int(
-                0.5 * sec_hopping_matrix.n_wigner_seitz_points
-            )
-            energy_fermi = (
-                sec_hopping_matrix.value[n_wigner_seitz_points_half][0][5] * ureg.eV
-            )
-            sec_scc_energy.fermi = energy_fermi
-            sec_scc_energy.highest_occupied = energy_fermi
-        except Exception:
+    
+    def parse_tb_bands(self):
+        hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
+        if not hr_files:
             return
+        if len(hr_files) > 1:
+            self.logger.warning('Multiple hopping data files found.')
+        # Parsing only first *_band.dat file
+        self.band_dat_parser.mainfile = hr_files[0]
+        
+        wband_files = get_files('*band.dat', self.filepath, self.mainfile)
+        if wband_files:
+            return
+
+        hoppings = self.hr_parser.get('hoppings')
+        if isinstance(hoppings, (list, np.ndarray)) and len(hoppings) >= 7:
+            real_e = hoppings[5::7] 
+            imag_e = hoppings[6::7]
+
+        num_wann, n_w_s_p, *degen_factors = self.hr_parser.get('degeneracy_factors')
+        degen_factors = np.array(degen_factors)
+        n_kpoints, band_segments_points, kpoints = self.get_k_points()
+        kpoints_ = np.vstack(kpoints)
+
+        hamiltonian_mn_real = np.zeros((n_w_s_p, num_wann, num_wann), dtype=complex)
+        real_vec = np.zeros((n_w_s_p, 3), dtype=int)
+        rows = len(hoppings) // 7
+        hoppings_reshaped = hoppings[:rows * 7].reshape((rows, 7))
+        real_vec = hoppings_reshaped[::num_wann*num_wann, :3]
+
+        # Reshape the 1D arrays into 3D arrays
+        real_e_3d = real_e.reshape(n_w_s_p, num_wann, num_wann)
+        imag_e_3d = imag_e.reshape(n_w_s_p, num_wann, num_wann)
+
+        # Create complex array and divide by degen_factors using broadcasting
+        hamiltonian_mn_real = (real_e_3d + 1j * imag_e_3d) / degen_factors[:, np.newaxis, np.newaxis]           
+
+        def hamiltonian_tb_vectorized(k):
+            phase_factors = np.exp(2.0 * np.pi * 1j * np.dot(real_vec, k))
+            return np.sum(hamiltonian_mn_real * phase_factors[:, np.newaxis, np.newaxis], axis=0)
+
+        def compute_bands(k):
+            return np.sort(eigvals(hamiltonian_tb_vectorized(k)).real)
+
+        compute_bands_vec = np.vectorize(compute_bands, signature='(n)->(m)')
+        bands = compute_bands_vec(kpoints_)      
+
+        sec_scc = self.archive.run[-1].calculation[-1]
+
+        energy_fermi = self.get_or_set_fermi_energy(default=0.0 * ureg.eV)
+        energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
+
+        sec_k_band = BandStructure()
+        sec_scc.band_structure_electronic.append(sec_k_band)
+        sec_k_band.energy_fermi = energy_fermi
+
+        try:
+            sec_k_band.reciprocal_cell = (
+                self.archive.run[-1].system[0].atoms.lattice_vectors_reciprocal
+            )
+        except Exception:
+            self.logger.warning(
+                'Reciprocal cell in band_structure_electronic not set up.'
+            )
+
+        n_segments = len(band_segments_points)
+        n_bands = num_wann
+        n_spin = 1
+        bkp_init = 0
+
+        for n in range(n_segments):
+            sec_k_band_segment = BandEnergies()
+            sec_k_band.segment.append(sec_k_band_segment)
+            sec_k_band_segment.n_kpoints = band_segments_points[n]
+            sec_k_band_segment.kpoints = kpoints[n]
+
+            bkp_last = bkp_init + band_segments_points[n]
+            energies = np.reshape(
+                bands[bkp_init:bkp_last, :], (n_spin, band_segments_points[n], n_bands)
+            )
+
+            occs = np.where(energies < energy_fermi_eV, 2.0, 0.0).reshape(n_spin, band_segments_points[n], n_bands)
+            
+            bkp_init = bkp_last
+            sec_k_band_segment.energies = energies * ureg.eV
+            sec_k_band_segment.occupations = occs
 
     def get_k_points(self):
         if self.wout_parser.get('reciprocal_lattice_vectors') is None:
@@ -493,6 +622,12 @@ class Wannier90Parser:
                 / delta_k
             )
             band_segments_points.append(n_k_segments_points)
+            # Check if the end point is same as the start point of the next segment
+            if ns < n_k_segments - 1:
+                if not np.allclose(
+                    k_symm_points_cart[2 * ns + 1], k_symm_points_cart[2 * ns + 2], atol=1e-8
+                ):
+                    band_segments_points[ns] += 1
 
         kpoints = []
         for n in range(len(band_segments_points)):
@@ -504,6 +639,12 @@ class Wannier90Parser:
                 for i in range(band_segments_points[n])
             ]
             kpoints.append(kpoints_segment)
+            # Check if the end point is same as the start point of the next segment
+            if n < len(band_segments_points) - 1:
+                if not np.allclose(
+                    k_symm_points[2 * n + 1], k_symm_points[2 * n + 2], atol=1e-8
+                ):
+                    kpoints[-1].append(k_symm_points[2 * n + 1])
 
         # TODO check having to add manually last point (?)
         band_segments_points[-1] = band_segments_points[-1] + 1
@@ -513,15 +654,8 @@ class Wannier90Parser:
         return (n_kpoints, band_segments_points, kpoints)
 
     def parse_bandstructure(self):
-        sec_scc = self.archive.run[-1].calculation[-1]
 
-        try:
-            energy_fermi = sec_scc.energy.fermi
-        except Exception:
-            self.logger.warning(
-                'Error setting the Fermi level: not found from hoppings. Setting it to 0 eV'
-            )
-            energy_fermi = 0.0 * ureg.eV
+        energy_fermi = self.get_or_set_fermi_energy(default=0.0 * ureg.eV)
         energy_fermi_eV = energy_fermi.to('electron_volt').magnitude
 
         band_files = get_files('*band.dat', self.filepath, self.mainfile)
@@ -531,7 +665,7 @@ class Wannier90Parser:
             self.logger.warning('Multiple bandstructure data files found.')
         # Parsing only first *_band.dat file
         self.band_dat_parser.mainfile = band_files[0]
-
+        sec_scc = self.archive.run[-1].calculation[-1]
         sec_k_band = BandStructure()
         sec_scc.band_structure_electronic.append(sec_k_band)
         sec_k_band.energy_fermi = energy_fermi
@@ -590,13 +724,7 @@ class Wannier90Parser:
     def parse_dos(self):
         sec_scc = self.archive.run[-1].calculation[-1]
 
-        try:
-            energy_fermi = sec_scc.energy.fermi
-        except Exception:
-            self.logger.warning(
-                'Error setting the Fermi level: not found from hoppings. Setting it to 0 eV'
-            )
-            energy_fermi = 0.0 * ureg.eV
+        energy_fermi = self.get_or_set_fermi_energy(default=0.0 * ureg.eV)
 
         dos_files = get_files('*dos.dat', self.filepath, self.mainfile)
         if not dos_files:
@@ -626,11 +754,18 @@ class Wannier90Parser:
         sec_scc.method_ref = sec_run.method[-1]
         sec_scc.system_ref = sec_run.system[-1]
 
+        # Define bandstructure files
+        hr_files = get_files('*hr.dat', self.filepath, self.mainfile)
+        wband_files = get_files('*band.dat', self.filepath, self.mainfile)
+
         # Wannier90 hoppings section
         self.parse_hoppings()
 
         # Wannier band structure
-        self.parse_bandstructure()
+        if wband_files:
+            self.parse_bandstructure()
+        elif hr_files:
+            self.parse_tb_bands()
 
         # Wannier DOS
         self.parse_dos()
