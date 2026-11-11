@@ -81,6 +81,8 @@ from runschema.calculation import (
     Dos,
     Density,
 )
+from simulationworkflowschema import simulationworkflow_schema_entry_point
+simulationworkflow_schema_entry_point.load()  # ensure the schema is loaded before importing its classes
 from simulationworkflowschema import (
     SinglePoint,
     GeometryOptimization,
@@ -1039,7 +1041,7 @@ class OutcarContentParser(ContentParser):
             'eigenvalues'
         )
 
-        if eigenvalues is None:
+        if eigenvalues is None or not n_kpts:
             return
         n_eigs = len(eigenvalues) // (self.ispin * n_kpts)
         try:
