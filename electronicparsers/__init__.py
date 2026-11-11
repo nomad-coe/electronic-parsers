@@ -927,6 +927,32 @@ quantumespresso_parser_entry_point = EntryPoint(
     },
 )
 
+rspt_parser_entry_point = EntryPoint(
+    name='parsers/rspt',
+    aliases=['parsers/rspt'],
+    description='NOMAD parser for RSPt.',
+    python_package='electronicparsers.rspt',
+    mainfile_contents_re=r'MPI RSPT',
+    mainfile_name_re=r'.*out_last',
+    parser_class_name='electronicparsers.rspt.RSPtParser',
+    code_name='RSPT',
+    code_homepage='https://www.uu.se/en/department/physics-and-astronomy/research/materials-theory/code-development',
+    code_category='Atomistic code',
+    metadata={
+        'codeCategory': 'Atomistic code',
+        'codeLabel': 'RSPT',
+        'codeLabelStyle': 'All in capitals',
+        'codeName': 'rspt',
+        'codeUrl': 'https://www.uu.se/en/department/physics-and-astronomy/research/materials-theory/code-development',
+        'parserDirName': 'dependencies/electronic/electronicparsers/rspt/',
+        'parserGitUrl': 'https://github.com/nomad-coe/electronic-parsers.git',
+        'parserSpecific': '',
+        'preamble': '',
+        'status': 'production',
+        'tableOfFiles': '',
+    },
+)
+
 siesta_parser_entry_point = EntryPoint(
     name='parsers/siesta',
     aliases=['parsers/siesta'],
