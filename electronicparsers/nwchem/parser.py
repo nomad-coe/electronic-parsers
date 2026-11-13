@@ -582,7 +582,8 @@ class NWChemParser:
         sec_method.electronic = sec_electronic
 
         dft = source.get('dft', [{}])[-1]
-        if dft:
+        # plane-wave sources carry no `dft` module but are DFT; only an SCF module is not
+        if dft or source.get('scf') is None:
             sec_electronic.method = 'DFT'
             sec_dft = DFT()
             sec_method.dft = sec_dft
@@ -604,7 +605,6 @@ class NWChemParser:
                     sec_xc_functional.contributions.append(functional)
 
         scf = dft or source.get('scf', [{}])[-1]
-        print('SSSS', scf)
         general_info = scf.get('general_info', {})
         sec_scf = Scf()
         sec_method.scf = sec_scf
