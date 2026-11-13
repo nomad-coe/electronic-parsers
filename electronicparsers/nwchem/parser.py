@@ -209,6 +209,33 @@ class OutParser(TextParser):
                 r'Maximum no\. of iterations\s*\:\s*(\d+)',
                 dtype=np.int32,
             ),
+            Quantity(
+                'iterations',
+                r'iter\s+energy\s+gnorm\s+gmax\s+time\s+[\- ]+\n([\s\S]+?)\n *\n',
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            'iteration',
+                            rf'\d+\s+({re_float})\s+\S+\s+\S+\s+({re_float})',
+                            dtype=np.dtype(np.float64),
+                            repeats=True,
+                        )
+                    ]
+                ),
+            ),
+            Quantity(
+                'energy',
+                rf'([\w \-\.]+ energy\s*=\s*{re_float})',
+                str_operation=str_to_energy,
+                repeats=True,
+                convert=False,
+            ),
+            Quantity(
+                'time_calculation',
+                rf'Time for solution\s*=\s*({re_float})s',
+                dtype=np.float64,
+                unit=ureg.s,
+            ),
         ]
 
         dft_gradient_quantities = [
@@ -260,7 +287,7 @@ class OutParser(TextParser):
         calculation_quantities = geometry_quantities + [
             Quantity(
                 'scf',
-                r'(SCF Module[\s\S]+?)(?:NWChem|\Z)',
+                r'(SCF Module[\s\S]+?)(?:\n *NWChem |\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=scf_quantities),
             ),
@@ -391,6 +418,9 @@ class NWChemParser:
             'Convergence on energy requested': 'scf_threshold_energy_change',
             'Total DFT energy': 'energy_total',
             'One electron energy': 'x_nwchem_energy_one_electron',
+            # the SCF module prints `One-electron energy` for RHF/ROHF, `One electron` for UHF
+            'One-electron energy': 'x_nwchem_energy_one_electron',
+            'Total SCF energy': 'energy_total',
             'Coulomb energy': 'energy_coulomb',
             'Exchange energy': 'energy_exchange',
             'Exchange-Corr. energy': 'energy_XC',
@@ -485,11 +515,13 @@ class NWChemParser:
         # we only read the results from the last dft and gradients module
         dft = source.get('dft', [{}])[-1]
         dft_gradient = source.get('dft_gradient', [{}])[-1]
+        # SCF-only runs have an SCF module in place of the DFT module
+        module = dft or source.get('scf', [{}])[-1]
 
         # energies
         sec_energy = Energy()
         sec_scc.energy = sec_energy
-        for key, val in source.get('energy', dft.get('energy', [])):
+        for key, val in source.get('energy', module.get('energy', [])):
             key = self._metainfo_map.get(key)
             if key is not None:
                 if key.startswith('x_nwchem_energy_'):
@@ -571,9 +603,22 @@ class NWChemParser:
                     sec_scf.time_physical = iteration[2] * ureg.s
                     sec_scf.time_calculation = sec_scf.time_physical - scf_initial_time
 
-        if not sec_scc.time_calculation and dft.get('time_calculation') is not None:
-            sec_scc.time_calculation = dft.time_calculation
-            sec_scc.time_physical = initial_time + dft.time_calculation
+        # the SCF module prints the total energy and time per iteration, no energy change
+        for energy, time in module.get('iterations', {}).get('iteration', []):
+            scf_initial_time = (
+                sec_scc.scf_iteration[-1].time_physical
+                if sec_scc.scf_iteration
+                else initial_time
+            )
+            sec_scf = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf)
+            sec_scf.energy = Energy(total=EnergyEntry(value=energy * ureg.hartree))
+            sec_scf.time_physical = time * ureg.s
+            sec_scf.time_calculation = sec_scf.time_physical - scf_initial_time
+
+        if not sec_scc.time_calculation and module.get('time_calculation') is not None:
+            sec_scc.time_calculation = module.time_calculation
+            sec_scc.time_physical = initial_time + module.time_calculation
 
         return sec_scc
 
