@@ -186,7 +186,8 @@ class OutParser(TextParser):
             ),
         ]
 
-        scf_quantities = geometry_quantities + [
+        # NWChem names its Hartree-Fock module `SCF`
+        hf_quantities = geometry_quantities + [
             Quantity(
                 'settings',
                 r'\-+\s*([\s\S]+?)\n *Summary of',
@@ -286,10 +287,10 @@ class OutParser(TextParser):
 
         calculation_quantities = geometry_quantities + [
             Quantity(
-                'scf',
+                'hf',
                 r'(SCF Module[\s\S]+?)(?:\n *NWChem |\Z)',
                 repeats=True,
-                sub_parser=TextParser(quantities=scf_quantities),
+                sub_parser=TextParser(quantities=hf_quantities),
             ),
             Quantity(
                 'dft',
@@ -418,7 +419,7 @@ class NWChemParser:
             'Convergence on energy requested': 'scf_threshold_energy_change',
             'Total DFT energy': 'energy_total',
             'One electron energy': 'x_nwchem_energy_one_electron',
-            # the SCF module prints `One-electron energy` for RHF/ROHF, `One electron` for UHF
+            # the HF module prints `One-electron energy` for RHF/ROHF, `One electron` for UHF
             'One-electron energy': 'x_nwchem_energy_one_electron',
             'Total SCF energy': 'energy_total',
             'Coulomb energy': 'energy_coulomb',
@@ -515,8 +516,8 @@ class NWChemParser:
         # we only read the results from the last dft and gradients module
         dft = source.get('dft', [{}])[-1]
         dft_gradient = source.get('dft_gradient', [{}])[-1]
-        # SCF-only runs have an SCF module in place of the DFT module
-        module = dft or source.get('scf', [{}])[-1]
+        # Hartree-Fock runs have an HF module in place of the DFT module
+        module = dft or source.get('hf', [{}])[-1]
 
         # energies
         sec_energy = Energy()
@@ -603,7 +604,7 @@ class NWChemParser:
                     sec_scf.time_physical = iteration[2] * ureg.s
                     sec_scf.time_calculation = sec_scf.time_physical - scf_initial_time
 
-        # the SCF module prints the total energy and time per iteration, no energy change
+        # the HF module prints the total energy and time per iteration, no energy change
         for energy, time in module.get('iterations', {}).get('iteration', []):
             scf_initial_time = (
                 sec_scc.scf_iteration[-1].time_physical
@@ -649,22 +650,27 @@ class NWChemParser:
         sec_method.electronic = sec_electronic
 
         dft = source.get('dft', [{}])[-1]
-        scf = source.get('scf', [{}])[-1]
+        hf = source.get('hf', [{}])[-1]
         sec_scf = Scf()
         sec_method.scf = sec_scf
-        # plane-wave sources carry no `dft` module but are DFT; only an SCF module is not
-        if scf and not dft:
-            settings = dict(scf.get('settings', {}).get('info', []))
+        # plane-wave sources carry no `dft` module but are DFT; only an HF module is not
+        if hf and not dft:
+            sec_electronic.method = 'HF'
+            settings = dict(hf.get('settings', {}).get('info', []))
             wavefunction = settings.get('wavefunction')
             if wavefunction is not None:
-                sec_electronic.method = wavefunction
+                sec_method.x_nwchem_electron_spin_restriction = {
+                    'RHF': 'restricted',
+                    'UHF': 'unrestricted',
+                    'ROHF': 'restricted open-shell',
+                }.get(wavefunction, wavefunction)
                 n_spin_channels = {'RHF': 1, 'UHF': 2}.get(wavefunction)
                 if n_spin_channels is not None:
                     sec_electronic.n_spin_channels = n_spin_channels
             charge = settings.get('charge')
             if charge is not None:
                 sec_electronic.charge = float(charge)
-            n_max_iteration = scf.get('n_max_iteration')
+            n_max_iteration = hf.get('n_max_iteration')
             if n_max_iteration is not None:
                 sec_scf.n_max_iteration = n_max_iteration
         else:
