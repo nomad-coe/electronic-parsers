@@ -113,7 +113,7 @@ class OutParser(TextParser):
             ),
         ]
 
-        scf_quantities = geometry_quantities + [
+        dft_quantities = geometry_quantities + [
             Quantity(
                 'general_info',
                 r'General Information\s+\-+([\s\S]+?)\n *\n',
@@ -123,6 +123,20 @@ class OutParser(TextParser):
                             'info',
                             r' +([\w\. ]+\s*\:\s*[\w\.\- ]+)',
                             str_operation=lambda x: [v.strip() for v in x.split(':')],
+                            repeats=True,
+                        )
+                    ]
+                ),
+            ),
+            Quantity(
+                'xc_info',
+                r'XC Information\s+\-+([\s\S]+?)\n *\n',
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            'functional',
+                            r'(.+(?:Functional|Exchange|POtential).+)',
+                            str_operation=str_to_functional,
                             repeats=True,
                         )
                     ]
@@ -172,20 +186,28 @@ class OutParser(TextParser):
             ),
         ]
 
-        dft_quantities = scf_quantities + [
+        scf_quantities = geometry_quantities + [
             Quantity(
-                'xc_info',
-                r'XC Information\s+\-+([\s\S]+?)\n *\n',
+                'settings',
+                r'\-+\s*([\s\S]+?)\n *Summary of',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            'functional',
-                            r'(.+(?:Functional|Exchange|POtential).+)',
-                            str_operation=str_to_functional,
+                            'info',
+                            r'(\w[^\n=]*?= *\S[^\n]*)',
+                            str_operation=lambda x: [
+                                v.strip() for v in x.split('=', 1)
+                            ],
+                            convert=False,
                             repeats=True,
                         )
                     ]
                 ),
+            ),
+            Quantity(
+                'n_max_iteration',
+                r'Maximum no\. of iterations\s*\:\s*(\d+)',
+                dtype=np.int32,
             ),
         ]
 
@@ -582,8 +604,25 @@ class NWChemParser:
         sec_method.electronic = sec_electronic
 
         dft = source.get('dft', [{}])[-1]
+        scf = source.get('scf', [{}])[-1]
+        sec_scf = Scf()
+        sec_method.scf = sec_scf
         # plane-wave sources carry no `dft` module but are DFT; only an SCF module is not
-        if dft or source.get('scf') is None:
+        if scf and not dft:
+            settings = dict(scf.get('settings', {}).get('info', []))
+            wavefunction = settings.get('wavefunction')
+            if wavefunction is not None:
+                sec_electronic.method = wavefunction
+                n_spin_channels = {'RHF': 1, 'UHF': 2}.get(wavefunction)
+                if n_spin_channels is not None:
+                    sec_electronic.n_spin_channels = n_spin_channels
+            charge = settings.get('charge')
+            if charge is not None:
+                sec_electronic.charge = float(charge)
+            n_max_iteration = scf.get('n_max_iteration')
+            if n_max_iteration is not None:
+                sec_scf.n_max_iteration = n_max_iteration
+        else:
             sec_electronic.method = 'DFT'
             sec_dft = DFT()
             sec_method.dft = sec_dft
@@ -604,21 +643,18 @@ class NWChemParser:
                 else:
                     sec_xc_functional.contributions.append(functional)
 
-        scf = dft or source.get('scf', [{}])[-1]
-        general_info = scf.get('general_info', {})
-        sec_scf = Scf()
-        sec_method.scf = sec_scf
-        for key, val in general_info.get('info', []):
-            key = self._metainfo_map.get(key)
-            if key is None:
-                continue
-            if key == 'scf_threshold_energy_change':
-                val = fix_dfloat(val) * ureg.hartree
-                sec_scf.threshold_energy_change = val
-            elif key == 'scf_max_iteration' and isinstance(val, int):
-                sec_scf.n_max_iteration = val
-            else:
-                setattr(sec_method, key, val)
+            general_info = dft.get('general_info', {})
+            for key, val in general_info.get('info', []):
+                key = self._metainfo_map.get(key)
+                if key is None:
+                    continue
+                if key == 'scf_threshold_energy_change':
+                    val = fix_dfloat(val) * ureg.hartree
+                    sec_scf.threshold_energy_change = val
+                elif key == 'scf_max_iteration' and isinstance(val, int):
+                    sec_scf.n_max_iteration = val
+                else:
+                    setattr(sec_method, key, val)
 
         parameters = source.get('parameters', [])
         for parameter in parameters:
