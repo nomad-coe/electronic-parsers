@@ -113,7 +113,7 @@ class OutParser(TextParser):
             ),
         ]
 
-        dft_quantities = geometry_quantities + [
+        scf_quantities = geometry_quantities + [
             Quantity(
                 'general_info',
                 r'General Information\s+\-+([\s\S]+?)\n *\n',
@@ -123,20 +123,6 @@ class OutParser(TextParser):
                             'info',
                             r' +([\w\. ]+\s*\:\s*[\w\.\- ]+)',
                             str_operation=lambda x: [v.strip() for v in x.split(':')],
-                            repeats=True,
-                        )
-                    ]
-                ),
-            ),
-            Quantity(
-                'xc_info',
-                r'XC Information\s+\-+([\s\S]+?)\n *\n',
-                sub_parser=TextParser(
-                    quantities=[
-                        Quantity(
-                            'functional',
-                            r'(.+(?:Functional|Exchange|POtential).+)',
-                            str_operation=str_to_functional,
                             repeats=True,
                         )
                     ]
@@ -183,6 +169,23 @@ class OutParser(TextParser):
                 rf'Total iterative time = +({re_float})s',
                 dtype=np.float64,
                 unit=ureg.s,
+            ),
+        ]
+
+        dft_quantities = scf_quantities + [
+            Quantity(
+                'xc_info',
+                r'XC Information\s+\-+([\s\S]+?)\n *\n',
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            'functional',
+                            r'(.+(?:Functional|Exchange|POtential).+)',
+                            str_operation=str_to_functional,
+                            repeats=True,
+                        )
+                    ]
+                ),
             ),
         ]
 
@@ -234,6 +237,12 @@ class OutParser(TextParser):
 
         calculation_quantities = geometry_quantities + [
             Quantity(
+                'scf',
+                r'(SCF Module[\s\S]+?)(?:NWChem|\Z)',
+                repeats=True,
+                sub_parser=TextParser(quantities=scf_quantities),
+            ),
+            Quantity(
                 'dft',
                 r'(DFT Module[\s\S]+?)(?:NWChem|\Z)',
                 repeats=True,
@@ -282,7 +291,7 @@ class OutParser(TextParser):
             ),
             Quantity(
                 'single_point',
-                r'(DFT Module\s+\-+[\s\S]+?)(?:GA Statistics for process|NWChem Input Module|\Z)',
+                r'((?:DFT|NWChem SCF) Module\s+\-+[\s\S]+?)(?:GA Statistics for process|NWChem Input Module|\Z)',
                 sub_parser=TextParser(quantities=calculation_quantities),
             ),
             Quantity(
@@ -569,15 +578,34 @@ class NWChemParser:
                         names.append([name, None])
             return names
 
-        sec_dft = DFT()
-        sec_method.dft = sec_dft
         sec_electronic = Electronic()
         sec_method.electronic = sec_electronic
-        sec_electronic.method = 'DFT'
 
         dft = source.get('dft', [{}])[-1]
+        if dft:
+            sec_electronic.method = 'DFT'
+            sec_dft = DFT()
+            sec_method.dft = sec_dft
 
-        general_info = dft.get('general_info', {})
+            xc_functionals = dft.get('xc_info', {}).get('functional', [])
+            sec_xc_functional = XCFunctional()
+            sec_dft.xc_functional = sec_xc_functional
+            for name, weight in resolve_functional_combination(xc_functionals):
+                functional = Functional(name=name)
+                if weight is not None:
+                    functional.weight = weight
+                if '_X_' in name or name.endswith('_X'):
+                    sec_xc_functional.exchange.append(functional)
+                elif '_C_' in name or name.endswith('_C'):
+                    sec_xc_functional.correlation.append(functional)
+                elif 'HYB' in name:
+                    sec_xc_functional.hybrid.append(functional)
+                else:
+                    sec_xc_functional.contributions.append(functional)
+
+        scf = dft or source.get('scf', [{}])[-1]
+        print('SSSS', scf)
+        general_info = scf.get('general_info', {})
         sec_scf = Scf()
         sec_method.scf = sec_scf
         for key, val in general_info.get('info', []):
@@ -591,22 +619,6 @@ class NWChemParser:
                 sec_scf.n_max_iteration = val
             else:
                 setattr(sec_method, key, val)
-
-        xc_functionals = dft.get('xc_info', {}).get('functional', [])
-        sec_xc_functional = XCFunctional()
-        sec_dft.xc_functional = sec_xc_functional
-        for name, weight in resolve_functional_combination(xc_functionals):
-            functional = Functional(name=name)
-            if weight is not None:
-                functional.weight = weight
-            if '_X_' in name or name.endswith('_X'):
-                sec_xc_functional.exchange.append(functional)
-            elif '_C_' in name or name.endswith('_C'):
-                sec_xc_functional.correlation.append(functional)
-            elif 'HYB' in name:
-                sec_xc_functional.hybrid.append(functional)
-            else:
-                sec_xc_functional.contributions.append(functional)
 
         parameters = source.get('parameters', [])
         for parameter in parameters:
