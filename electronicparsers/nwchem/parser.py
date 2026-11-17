@@ -196,8 +196,9 @@ class OutParser(TextParser):
                         Quantity(
                             'info',
                             r'(\w[^\n=]*?= *\S[^\n]*)',
+                            # collapse padding such as `beta  electrons`
                             str_operation=lambda x: [
-                                v.strip() for v in x.split('=', 1)
+                                ' '.join(v.split()) for v in x.split('=', 1)
                             ],
                             convert=False,
                             repeats=True,
@@ -659,14 +660,32 @@ class NWChemParser:
             settings = dict(hf.get('settings', {}).get('info', []))
             wavefunction = settings.get('wavefunction')
             if wavefunction is not None:
-                sec_method.x_nwchem_electron_spin_restriction = {
+                # ROHF is restricted; its open shells show in `spin_target`
+                spin_restriction = {
                     'RHF': 'restricted',
+                    'ROHF': 'restricted',
                     'UHF': 'unrestricted',
-                    'ROHF': 'restricted open-shell',
-                }.get(wavefunction, wavefunction)
+                }.get(wavefunction)
+                if spin_restriction is None:
+                    self.logger.warning(
+                        'Unknown NWChem SCF wavefunction %s', wavefunction
+                    )
+                else:
+                    sec_method.x_nwchem_electron_spin_restriction = spin_restriction
+                # ROHF shares the orbitals but not the occupations: no clean count
                 n_spin_channels = {'RHF': 1, 'UHF': 2}.get(wavefunction)
                 if n_spin_channels is not None:
                     sec_electronic.n_spin_channels = n_spin_channels
+            # RHF/ROHF print `open shells`, UHF the alpha and beta electron counts;
+            # open shells are high-spin, so S = n_open / 2 and M = 2S + 1 = n_open + 1
+            if 'open shells' in settings:
+                sec_electronic.spin_target = int(settings['open shells']) + 1
+            elif 'alpha electrons' in settings and 'beta electrons' in settings:
+                sec_electronic.spin_target = (
+                    int(settings['alpha electrons'])
+                    - int(settings['beta electrons'])
+                    + 1
+                )
             charge = settings.get('charge')
             if charge is not None:
                 sec_electronic.charge = float(charge)
