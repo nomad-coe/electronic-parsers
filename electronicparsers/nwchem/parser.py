@@ -310,9 +310,11 @@ class OutParser(TextParser):
         ]
 
         calculation_quantities = geometry_quantities + [
+            # complements `single_point`: that one cuts out the whole task, this one
+            # only its SCF module, up to the next module header (e.g. gradients, MP2)
             Quantity(
                 'hf',
-                r'(SCF Module[\s\S]+?)(?:\n *NWChem |\Z)',
+                r'(SCF Module[\s\S]+?)(?:\n *NWChem [^\n]*Module|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=hf_quantities),
             ),
@@ -363,6 +365,8 @@ class OutParser(TextParser):
                 r'(Input Module[\s\S]+? {30}NWChem)',
                 sub_parser=TextParser(quantities=geometry_quantities),
             ),
+            # the whole task, from its energy module to the end of the task; the `hf`
+            # and `dft` calculation quantities then cut out the energy module itself
             Quantity(
                 'single_point',
                 r'((?:DFT|NWChem SCF) Module\s+\-+[\s\S]+?)(?:GA Statistics for process|NWChem Input Module|\Z)',
@@ -693,26 +697,24 @@ class NWChemParser:
         hf = source.get('hf', [{}])[-1]
         sec_scf = Scf()
         sec_method.scf = sec_scf
-        # plane-wave sources carry no `dft` module but are DFT; only an HF module is not
-        if hf and not dft:
-            sec_electronic.method = 'HF'
-            settings = dict(hf.get('settings', {}).get('info', []))
-            wavefunction = settings.get('wavefunction')
-            if wavefunction is not None:
-                # ROHF is restricted; its open shells show in `spin_target`
-                spin_restriction = {
-                    'RHF': 'restricted',
-                    'ROHF': 'restricted',
-                    'UHF': 'unrestricted',
-                }.get(wavefunction)
-                if spin_restriction is None:
-                    self.logger.warning(
-                        'Unknown NWChem SCF wavefunction %s', wavefunction
-                    )
-                else:
-                    sec_method.x_nwchem_electron_spin_restriction = spin_restriction
-                # ROHF shares the orbitals but not the occupations: no clean count
-                n_spin_channels = {'RHF': 1, 'UHF': 2}.get(wavefunction)
+        settings = dict(hf.get('settings', {}).get('info', []))
+        # the HF (SCF) module's `wavefunction` names its HF reference; without one,
+        # the source is DFT, including plane-wave sources that carry no `dft` module
+        wavefunction = settings.get('wavefunction')
+        if wavefunction is not None:
+            # spin restriction and number of spin channels per HF reference; ROHF
+            # shares the orbitals but not the occupations, so it has no clean count
+            reference = {
+                'RHF': ('restricted', 1),
+                'ROHF': ('restricted', None),
+                'UHF': ('unrestricted', 2),
+            }.get(wavefunction)
+            if reference is None:
+                self.logger.warning('Unknown NWChem SCF wavefunction %s', wavefunction)
+            else:
+                sec_electronic.method = 'HF'
+                spin_restriction, n_spin_channels = reference
+                sec_method.x_nwchem_electron_spin_restriction = spin_restriction
                 if n_spin_channels is not None:
                     sec_electronic.n_spin_channels = n_spin_channels
             # RHF/ROHF print `open shells`, UHF the alpha and beta electron counts;
