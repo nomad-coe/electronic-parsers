@@ -311,10 +311,11 @@ class OutParser(TextParser):
 
         calculation_quantities = geometry_quantities + [
             # complements `single_point`: that one cuts out the whole task, this one
-            # only its SCF module, up to the next module header (e.g. gradients, MP2)
+            # only its SCF module, up to the next module header (e.g. gradients, MP2);
+            # the lookahead leaves that header to a directly following SCF module
             Quantity(
                 'hf',
-                r'(SCF Module[\s\S]+?)(?:\n *NWChem [^\n]*Module|\Z)',
+                r'(SCF Module[\s\S]+?)(?=\n *NWChem [^\n]*Module|\Z)',
                 repeats=True,
                 sub_parser=TextParser(quantities=hf_quantities),
             ),

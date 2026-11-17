@@ -261,3 +261,25 @@ def test_hf_charge(parser, tmp_path, edits, charge, spin_target):
     sec_electronic = archive.run[0].method[-1].electronic
     assert sec_electronic.charge.to('elementary_charge').magnitude == approx(charge)
     assert sec_electronic.spin_target == spin_target
+
+
+def test_hf_consecutive_modules(parser, tmp_path):
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    # repeat the SCF module with another total energy, directly before the MP2 module
+    start = text.rindex('\n', 0, text.index('NWChem SCF Module')) + 1
+    end = text.rindex('\n', 0, text.index('NWChem MP2 Semi-direct')) + 1
+    module = text[start:end]
+    assert module.count('Total SCF energy =    -37.691569172750') == 1
+    second = module.replace(
+        'Total SCF energy =    -37.691569172750',
+        'Total SCF energy =    -37.700000000000',
+    )
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text[:end] + second + text[end:])
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_scc = archive.run[0].calculation[-1]
+    assert sec_scc.energy.total.value.to('hartree').magnitude == approx(-37.7)
