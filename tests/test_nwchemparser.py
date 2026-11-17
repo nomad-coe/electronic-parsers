@@ -283,3 +283,23 @@ def test_hf_consecutive_modules(parser, tmp_path):
 
     sec_scc = archive.run[0].calculation[-1]
     assert sec_scc.energy.total.value.to('hartree').magnitude == approx(-37.7)
+
+
+def test_unsupported_module(parser, tmp_path, caplog):
+    # a task module the parser does not know, e.g. TCE: only the input geometry is kept
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    assert text.count('NWChem SCF Module') == 1
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text.replace('NWChem SCF Module', 'NWChem TCE Module'))
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_run = archive.run[0]
+    assert len(sec_run.system) == 1
+    assert sec_run.system[0].atoms.labels == ['C']
+    assert sec_run.system[0].atoms.positions.magnitude.tolist() == [[0.0, 0.0, 0.0]]
+    assert len(sec_run.method) == 0
+    assert len(sec_run.calculation) == 0
+    assert 'No supported NWChem task module found' in caplog.text

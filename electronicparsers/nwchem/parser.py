@@ -827,6 +827,13 @@ class NWChemParser:
         elif self.out_parser.get('single_point') is not None:
             parse_calculation(self.out_parser.get('single_point'))
 
+        # no supported task module: keep at least the geometry of the input echo
+        elif self.out_parser.get('input', {}).get('labels_positions') is not None:
+            self.logger.warning(
+                'No supported NWChem task module found, parsing only the input geometry'
+            )
+            self.parse_system({})
+
     def parse_workflow(self):
         workflow = None
         parameters = []
