@@ -523,10 +523,7 @@ class NWChemParser:
         self.out_parser.mainfile = self.filepath
         self.out_parser.logger = self.logger
 
-    def parse_system(self, source):
-        sec_system = System()
-        self.archive.run[0].system.append(sec_system)
-
+    def parse_system(self, source) -> System | None:
         labels, positions = source.get('labels_positions', [[], []])
         if len(positions) == 0:
             dft = source.get('dft', [{}])[-1]
@@ -546,11 +543,14 @@ class NWChemParser:
         if len(positions) == 0:
             labels, positions = self._geometry
 
+        # without any geometry no system is archived: an empty one fails the normalizers
         if len(positions) == 0:
             self.logger.warning('No geometry found for an NWChem calculation')
-            return sec_system
+            return None
         self._geometry = labels, positions
 
+        sec_system = System()
+        self.archive.run[0].system.append(sec_system)
         sec_atoms = Atoms()
         sec_system.atoms = sec_atoms
         sec_atoms.labels = labels
@@ -863,7 +863,8 @@ class NWChemParser:
             sec_system = self.parse_system(source)
             sec_scc = self.parse_scc(source)
             sec_scc.method_ref = sec_method
-            sec_scc.system_ref = sec_system
+            if sec_system is not None:
+                sec_scc.system_ref = sec_system
 
         # every task is archived in order, each from its own block; `parse_system` and
         # `parse_method` read the current task from `_task` and `_task_kind`

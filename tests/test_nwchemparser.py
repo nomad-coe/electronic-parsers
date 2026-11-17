@@ -413,6 +413,28 @@ def test_task_without_geometry(parser, tmp_path):
     assert sec_run.calculation[1].system_ref == sec_run.system[1]
 
 
+def test_no_geometry(parser, tmp_path, caplog):
+    # an output without any geometry table: the calculation is archived without a system
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    start = text.index('  No.       Tag          Charge')
+    end = text.index('\n\n', start) + 1
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text[:start] + text[end:])
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_run = archive.run[0]
+    assert len(sec_run.system) == 0
+    assert len(sec_run.calculation) == 1
+    assert sec_run.calculation[0].system_ref is None
+    assert sec_run.calculation[0].energy.total.value.to('hartree').magnitude == approx(
+        -37.691569172750
+    )
+    assert 'No geometry found for an NWChem calculation' in caplog.text
+
+
 @pytest.mark.parametrize(
     'mainfile, energies, n_scf_iterations',
     [
