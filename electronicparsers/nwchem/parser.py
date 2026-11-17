@@ -190,7 +190,9 @@ class OutParser(TextParser):
         hf_quantities = geometry_quantities + [
             Quantity(
                 'settings',
-                r'\-+\s*([\s\S]+?)\n *Summary of',
+                # contiguous `key = value` lines, which always start with `ao basis`;
+                # the basis summary that may follow depends on the print level
+                r'\n( +ao basis +=[^\n]*(?:\n +\w[^\n=]*= *\S[^\n]*)+)',
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
