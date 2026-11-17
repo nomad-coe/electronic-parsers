@@ -283,3 +283,187 @@ def test_hf_consecutive_modules(parser, tmp_path):
 
     sec_scc = archive.run[0].calculation[-1]
     assert sec_scc.energy.total.value.to('hartree').magnitude == approx(-37.7)
+
+
+def test_unsupported_module(parser, tmp_path, caplog):
+    # a task module the parser does not know, e.g. TCE: only the input geometry is kept
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    assert text.count('NWChem SCF Module') == 1
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text.replace('NWChem SCF Module', 'NWChem TCE Module'))
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_run = archive.run[0]
+    assert len(sec_run.system) == 1
+    assert sec_run.system[0].atoms.labels == ['C']
+    assert sec_run.system[0].atoms.positions.magnitude.tolist() == [[0.0, 0.0, 0.0]]
+    assert len(sec_run.method) == 0
+    assert len(sec_run.calculation) == 0
+    assert 'No supported NWChem task module' in caplog.text
+    assert "['TCE', 'MP2 Semi-direct Energy/Gradient']" in caplog.text
+
+
+# the SCF task of the UHF output, from its input echo to its timings
+ORIGIN = (
+    '    1 C                    6.0000     0.00000000     0.00000000     0.00000000'
+)
+SHIFTED = (
+    '    1 C                    6.0000     0.00000000     0.00000000     1.00000000'
+)
+SCF_ENERGY = 'Total SCF energy =    -37.691569172750'
+
+
+@pytest.mark.parametrize(
+    'first_task_edits, positions, n_methods, energies, workflow, warning',
+    [
+        (
+            [('NWChem SCF Module', 'NWChem TCE Module'), (ORIGIN, SHIFTED)],
+            [[[0.0, 0.0, 1.0]], [[0.0, 0.0, 0.0]]],
+            1,
+            [-37.691569172750],
+            'SinglePoint',
+            'No supported NWChem task module',
+        ),
+        (
+            [(SCF_ENERGY, 'Total SCF energy =    -37.700000000000'), (ORIGIN, SHIFTED)],
+            [[[0.0, 0.0, 1.0]], [[0.0, 0.0, 0.0]]],
+            2,
+            [-37.7, -37.691569172750],
+            None,
+            'chains 2 tasks',
+        ),
+    ],
+    ids=['unsupported-then-scf', 'scf-then-scf'],
+)
+def test_tasks(
+    parser,
+    tmp_path,
+    caplog,
+    first_task_edits,
+    positions,
+    n_methods,
+    energies,
+    workflow,
+    warning,
+):
+    # two tasks: an edited copy of the SCF task, then the original; each task is
+    # archived from its own block, the atom of the first one moved to z = 1 A
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    start = text.rindex('\n', 0, text.index('NWChem Input Module')) + 1
+    end = text.index('\n', text.index('Task  times')) + 1
+    first_task = text[start:end]
+    for old, new in first_task_edits:
+        # the geometry table comes before the XYZ block that repeats the atom
+        assert old in first_task
+        first_task = first_task.replace(old, new, 1)
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text[:start] + first_task + text[start:])
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_run = archive.run[0]
+    assert [
+        system.atoms.positions.to('angstrom').magnitude.tolist()
+        for system in sec_run.system
+    ] == positions
+    assert len(sec_run.method) == n_methods
+    assert [
+        calc.energy.total.value.to('hartree').magnitude for calc in sec_run.calculation
+    ] == approx(energies)
+    assert sec_run.calculation[-1].system_ref == sec_run.system[-1]
+    if workflow is None:
+        assert archive.workflow2 is None
+    else:
+        assert archive.workflow2.m_def.name == workflow
+    assert warning in caplog.text
+
+
+def test_task_without_geometry(parser, tmp_path):
+    # a second task whose input defines no geometry: NWChem echoes none, and the SCF
+    # module prints none either, so the task runs on the last geometry of the run
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    banner = (
+        '                                NWChem Input Module\n'
+        '                                -------------------\n'
+    )
+    assert banner in text
+    scf_start = text.rindex('\n', 0, text.index('NWChem SCF Module')) + 1
+    task_end = text.index('\n', text.index('Task  times')) + 1
+    second_task = '\n' + banner + '\n\n' + text[scf_start:task_end]
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text[:task_end] + second_task + text[task_end:])
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_run = archive.run[0]
+    assert [
+        system.atoms.positions.to('angstrom').magnitude.tolist()
+        for system in sec_run.system
+    ] == [[[0.0, 0.0, 0.0]], [[0.0, 0.0, 0.0]]]
+    assert [
+        calc.energy.total.value.to('hartree').magnitude for calc in sec_run.calculation
+    ] == approx([-37.691569172750, -37.691569172750])
+    assert sec_run.calculation[1].system_ref == sec_run.system[1]
+
+
+def test_no_geometry(parser, tmp_path, caplog):
+    # an output without any geometry table: the calculation is archived without a system
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    start = text.index('  No.       Tag          Charge')
+    end = text.index('\n\n', start) + 1
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text[:start] + text[end:])
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_run = archive.run[0]
+    assert len(sec_run.system) == 0
+    assert len(sec_run.calculation) == 1
+    assert sec_run.calculation[0].system_ref is None
+    assert sec_run.calculation[0].energy.total.value.to('hartree').magnitude == approx(
+        -37.691569172750
+    )
+    assert 'No geometry found for an NWChem calculation' in caplog.text
+
+
+@pytest.mark.parametrize(
+    'mainfile, energies, n_scf_iterations',
+    [
+        ('tests/data/nwchem/single_point.out', [-76.43622273], [6]),
+        (
+            'tests/data/nwchem/geometry_optimization.out',
+            [-76.42941861, -76.43609119, -76.43622176, -76.43622273],
+            [5, 5, 4, 0],
+        ),
+    ],
+    ids=['single-point', 'geometry-optimization'],
+)
+def test_title_with_nwchem(parser, tmp_path, mainfile, energies, n_scf_iterations):
+    # the job title is printed below every module header; `NWChem` in it must not end
+    # the module block
+    with open(mainfile) as f:
+        text = f.read()
+    title = 'WATER 6-311G* meta-GGA XC geometry'
+    assert title in text
+    titled = tmp_path / 'output.out'
+    titled.write_text(text.replace(title, 'NWChem benchmark water'))
+
+    archive = EntryArchive()
+    parser.parse(str(titled), archive, None)
+
+    sec_run = archive.run[0]
+    assert [
+        calc.energy.total.value.to('hartree').magnitude for calc in sec_run.calculation
+    ] == approx(energies)
+    assert [len(calc.scf_iteration) for calc in sec_run.calculation] == n_scf_iterations
+    assert all(calc.forces is not None for calc in sec_run.calculation)
+    assert sec_run.method[-1].scf.n_max_iteration == 50
