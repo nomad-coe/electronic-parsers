@@ -237,11 +237,23 @@ class OutParser(TextParser):
                 ),
             ),
             Quantity(
-                'energy',
-                rf'([\w \-\.]+ energy\s*=\s*{re_float})',
-                str_operation=str_to_energy,
-                repeats=True,
-                convert=False,
+                'energy_total',
+                rf'Total SCF energy\s*=\s*({re_float})',
+                dtype=np.float64,
+                unit=ureg.hartree,
+            ),
+            # RHF/ROHF print `One-electron energy`, UHF `One electron energy`
+            Quantity(
+                'energy_one_electron',
+                rf'One[\- ]electron energy\s*=\s*({re_float})',
+                dtype=np.float64,
+                unit=ureg.hartree,
+            ),
+            Quantity(
+                'energy_nuclear_repulsion',
+                rf'Nuclear repulsion energy\s*=\s*({re_float})',
+                dtype=np.float64,
+                unit=ureg.hartree,
             ),
             Quantity(
                 'time_calculation',
@@ -431,9 +443,6 @@ class NWChemParser:
             'Convergence on energy requested': 'scf_threshold_energy_change',
             'Total DFT energy': 'energy_total',
             'One electron energy': 'x_nwchem_energy_one_electron',
-            # the HF module prints `One-electron energy` for RHF/ROHF, `One electron` for UHF
-            'One-electron energy': 'x_nwchem_energy_one_electron',
-            'Total SCF energy': 'energy_total',
             'Coulomb energy': 'energy_coulomb',
             'Exchange energy': 'energy_exchange',
             'Exchange-Corr. energy': 'energy_XC',
@@ -544,6 +553,22 @@ class NWChemParser:
                         getattr(Energy, key.replace('energy_', '').lower()),
                         EnergyEntry(value=val),
                     )
+
+        # the HF module carries its energies as separate quantities with units
+        if not dft:
+            energy_total = module.get('energy_total')
+            if energy_total is not None:
+                sec_energy.total = EnergyEntry(value=energy_total)
+            energy_nuclear_repulsion = module.get('energy_nuclear_repulsion')
+            if energy_nuclear_repulsion is not None:
+                sec_energy.nuclear_repulsion = EnergyEntry(
+                    value=energy_nuclear_repulsion
+                )
+            energy_one_electron = module.get('energy_one_electron')
+            if energy_one_electron is not None:
+                sec_scc.x_nwchem_energy_one_electron = energy_one_electron.to(
+                    'J'
+                ).magnitude
 
         # for geometry optimization, energy can also be parsed from gradient module
         energy = dft_gradient.get('energy')
