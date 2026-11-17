@@ -339,3 +339,37 @@ def test_task_selection(parser, tmp_path):
         -37.691569172750
     )
     assert archive.workflow2.m_def.name == 'SinglePoint'
+
+
+@pytest.mark.parametrize(
+    'mainfile, energies, n_scf_iterations',
+    [
+        ('tests/data/nwchem/single_point.out', [-76.43622273], [6]),
+        (
+            'tests/data/nwchem/geometry_optimization.out',
+            [-76.42941861, -76.43609119, -76.43622176, -76.43622273],
+            [5, 5, 4, 0],
+        ),
+    ],
+    ids=['single-point', 'geometry-optimization'],
+)
+def test_title_with_nwchem(parser, tmp_path, mainfile, energies, n_scf_iterations):
+    # the job title is printed below every module header; `NWChem` in it must not end
+    # the module block
+    with open(mainfile) as f:
+        text = f.read()
+    title = 'WATER 6-311G* meta-GGA XC geometry'
+    assert title in text
+    titled = tmp_path / 'output.out'
+    titled.write_text(text.replace(title, 'NWChem benchmark water'))
+
+    archive = EntryArchive()
+    parser.parse(str(titled), archive, None)
+
+    sec_run = archive.run[0]
+    assert [
+        calc.energy.total.value.to('hartree').magnitude for calc in sec_run.calculation
+    ] == approx(energies)
+    assert [len(calc.scf_iteration) for calc in sec_run.calculation] == n_scf_iterations
+    assert all(calc.forces is not None for calc in sec_run.calculation)
+    assert sec_run.method[-1].scf.n_max_iteration == 50

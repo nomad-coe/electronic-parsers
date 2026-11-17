@@ -66,6 +66,9 @@ class OutParser(TextParser):
 
     def init_quantities(self):
         re_float = r'[-+]?\d+\.\d*(?:[EeDd][-+]\d+)?'
+        # a module block ends before the next module header, an `NWChem ... Module` line
+        # with a dashed underline; the word `NWChem` alone also occurs in titles and paths
+        re_module_end = r'(?=\n *NWChem [^\n]*Module *\n *-+ *\n|\Z)'
 
         def str_to_functional(val_in):
             val = [v.strip() for v in val_in.strip().rsplit('  ', 1)]
@@ -310,24 +313,24 @@ class OutParser(TextParser):
         ]
 
         calculation_quantities = geometry_quantities + [
-            # complements `single_point`: that one cuts out the whole task, this one
-            # only its SCF module, up to the next module header (e.g. gradients, MP2);
-            # the lookahead leaves that header to a directly following SCF module
+            # complements `single_point`: that one cuts out the whole task, these only
+            # its modules, each up to the next module header (e.g. gradients, MP2); the
+            # lookahead leaves that header to a directly following module
             Quantity(
                 'hf',
-                r'(SCF Module[\s\S]+?)(?=\n *NWChem [^\n]*Module|\Z)',
+                rf'(SCF Module[\s\S]+?){re_module_end}',
                 repeats=True,
                 sub_parser=TextParser(quantities=hf_quantities),
             ),
             Quantity(
                 'dft',
-                r'(DFT Module[\s\S]+?)(?:NWChem|\Z)',
+                rf'(DFT Module[\s\S]+?){re_module_end}',
                 repeats=True,
                 sub_parser=TextParser(quantities=dft_quantities),
             ),
             Quantity(
                 'dft_gradient',
-                r'(DFT Gradient Module[\s\S]+?)(?:NWChem|\Z)',
+                rf'(DFT Gradient Module[\s\S]+?){re_module_end}',
                 repeats=True,
                 sub_parser=TextParser(quantities=dft_gradient_quantities),
             ),
@@ -392,7 +395,7 @@ class OutParser(TextParser):
                         ),
                         Quantity(
                             'iteration',
-                            r'(DFT Module[\s\S]+?(?:NWChem|\Z))',
+                            rf'(DFT Module[\s\S]+?){re_module_end}',
                             repeats=True,
                             sub_parser=TextParser(quantities=calculation_quantities),
                         ),
