@@ -216,14 +216,23 @@ class OutParser(TextParser):
             Quantity(
                 'iterations',
                 r'iter\s+energy\s+gnorm\s+gmax\s+time\s+[\- ]+\n([\s\S]+?)\n *\n',
+                # one row per iteration: iter, energy, gnorm, gmax, cumulative time
                 sub_parser=TextParser(
                     quantities=[
                         Quantity(
-                            'iteration',
-                            rf'\d+\s+({re_float})\s+\S+\s+\S+\s+({re_float})',
-                            dtype=np.dtype(np.float64),
+                            'energy',
+                            rf'\d+ +({re_float}) +\S+ +\S+ +{re_float}',
+                            dtype=np.float64,
+                            unit=ureg.hartree,
                             repeats=True,
-                        )
+                        ),
+                        Quantity(
+                            'time',
+                            rf'\d+ +{re_float} +\S+ +\S+ +({re_float})',
+                            dtype=np.float64,
+                            unit=ureg.s,
+                            repeats=True,
+                        ),
                     ]
                 ),
             ),
@@ -608,7 +617,10 @@ class NWChemParser:
                     sec_scf.time_calculation = sec_scf.time_physical - scf_initial_time
 
         # the HF module prints the total energy and time per iteration, no energy change
-        for energy, time in module.get('iterations', {}).get('iteration', []):
+        iterations = module.get('iterations', {})
+        for energy, time in zip(
+            iterations.get('energy', []), iterations.get('time', [])
+        ):
             scf_initial_time = (
                 sec_scc.scf_iteration[-1].time_physical
                 if sec_scc.scf_iteration
@@ -616,8 +628,8 @@ class NWChemParser:
             )
             sec_scf = ScfIteration()
             sec_scc.scf_iteration.append(sec_scf)
-            sec_scf.energy = Energy(total=EnergyEntry(value=energy * ureg.hartree))
-            sec_scf.time_physical = time * ureg.s
+            sec_scf.energy = Energy(total=EnergyEntry(value=energy))
+            sec_scf.time_physical = time
             sec_scf.time_calculation = sec_scf.time_physical - scf_initial_time
 
         if not sec_scc.time_calculation and module.get('time_calculation') is not None:
