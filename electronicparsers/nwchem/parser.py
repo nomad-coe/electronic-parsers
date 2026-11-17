@@ -454,6 +454,8 @@ class NWChemParser:
         self._tasks: list[tuple[str, dict]] = []
         self._task_kind: str | None = None
         self._task: dict = {}
+        # the last geometry archived, as `(labels, positions)`
+        self._geometry: tuple = ([], [])
 
         self._metainfo_map = {
             'hostname': 'run_host_name',
@@ -537,6 +539,17 @@ class NWChemParser:
 
         if len(positions) == 0:
             labels, positions = self._task.get('labels_positions', [[], []])
+
+        # a task echoes its geometry only when its input defines one, and a module such
+        # as SCF prints none; the task then runs on the last geometry of the run, e.g.
+        # the optimized one
+        if len(positions) == 0:
+            labels, positions = self._geometry
+
+        if len(positions) == 0:
+            self.logger.warning('No geometry found for an NWChem calculation')
+            return sec_system
+        self._geometry = labels, positions
 
         sec_atoms = Atoms()
         sec_system.atoms = sec_atoms
@@ -870,11 +883,16 @@ class NWChemParser:
             # no supported module: the task block itself still holds the input geometry
             elif self._task_kind == 'geometry':
                 modules = [m for m in task.get('module', []) if m != 'Input']
-                self.logger.warning(
-                    'No supported NWChem task module among %s, parsing only the input '
-                    'geometry',
-                    modules,
-                )
+                if modules:
+                    self.logger.warning(
+                        'No supported NWChem task module among %s, parsing only the '
+                        'input geometry',
+                        modules,
+                    )
+                else:
+                    self.logger.warning(
+                        'No NWChem task module found, parsing only the input geometry'
+                    )
                 self.parse_system(task)
 
     def parse_workflow(self):
@@ -970,6 +988,8 @@ class NWChemParser:
             key = self._metainfo_map.get(key, key.replace(' ', '_'))
             setattr(sec_info, 'x_nwchem_%s' % key, val)
 
+        # per-run state; the parser instance may be reused for several files
+        self._task_kind, self._task, self._geometry = None, {}, ([], [])
         self._tasks = [
             (kind, task)
             for task in self.out_parser.get('task', [])

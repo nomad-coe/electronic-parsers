@@ -383,6 +383,36 @@ def test_tasks(
     assert warning in caplog.text
 
 
+def test_task_without_geometry(parser, tmp_path):
+    # a second task whose input defines no geometry: NWChem echoes none, and the SCF
+    # module prints none either, so the task runs on the last geometry of the run
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    banner = (
+        '                                NWChem Input Module\n'
+        '                                -------------------\n'
+    )
+    assert banner in text
+    scf_start = text.rindex('\n', 0, text.index('NWChem SCF Module')) + 1
+    task_end = text.index('\n', text.index('Task  times')) + 1
+    second_task = '\n' + banner + '\n\n' + text[scf_start:task_end]
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text[:task_end] + second_task + text[task_end:])
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_run = archive.run[0]
+    assert [
+        system.atoms.positions.to('angstrom').magnitude.tolist()
+        for system in sec_run.system
+    ] == [[[0.0, 0.0, 0.0]], [[0.0, 0.0, 0.0]]]
+    assert [
+        calc.energy.total.value.to('hartree').magnitude for calc in sec_run.calculation
+    ] == approx([-37.691569172750, -37.691569172750])
+    assert sec_run.calculation[1].system_ref == sec_run.system[1]
+
+
 @pytest.mark.parametrize(
     'mainfile, energies, n_scf_iterations',
     [
