@@ -302,4 +302,40 @@ def test_unsupported_module(parser, tmp_path, caplog):
     assert sec_run.system[0].atoms.positions.magnitude.tolist() == [[0.0, 0.0, 0.0]]
     assert len(sec_run.method) == 0
     assert len(sec_run.calculation) == 0
-    assert 'No supported NWChem task module found' in caplog.text
+    assert 'No supported NWChem task module' in caplog.text
+    assert "['TCE', 'MP2 Semi-direct Energy/Gradient']" in caplog.text
+
+
+def test_task_selection(parser, tmp_path):
+    # two tasks: an unsupported module with the atom moved to z = 1 A, then the SCF task;
+    # the archive describes the SCF task, with the geometry of its own input echo
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    start = text.rindex('\n', 0, text.index('NWChem Input Module')) + 1
+    end = text.index('\n', text.index('Task  times')) + 1
+    task = text[start:end]
+    # the input echo prints the atom in its geometry table and in an XYZ block; the
+    # parser reads the table, so move it there
+    origin = (
+        '    1 C                    6.0000     0.00000000     0.00000000     0.00000000'
+    )
+    unsupported = task.replace('NWChem SCF Module', 'NWChem TCE Module').replace(
+        origin,
+        '    1 C                    6.0000     0.00000000     0.00000000     1.00000000',
+        1,
+    )
+    assert unsupported != task.replace('NWChem SCF Module', 'NWChem TCE Module')
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text[:start] + unsupported + text[start:])
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_run = archive.run[0]
+    assert len(sec_run.system) == 1
+    assert sec_run.system[0].atoms.positions.magnitude.tolist() == [[0.0, 0.0, 0.0]]
+    assert sec_run.method[-1].electronic.method == 'HF'
+    assert sec_run.calculation[-1].energy.total.value.to('hartree').magnitude == approx(
+        -37.691569172750
+    )
+    assert archive.workflow2.m_def.name == 'SinglePoint'

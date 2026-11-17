@@ -339,6 +339,74 @@ class OutParser(TextParser):
             ),
         ]
 
+        # the first geometry of a task is its input echo; the blocks below each start at
+        # the module that defines the task kind and run to the end of the task
+        task_quantities = geometry_quantities + [
+            Quantity(
+                'module',
+                r'NWChem ([^\n]+?) Module',
+                repeats=True,
+                flatten=False,
+                convert=False,
+            ),
+            # the `hf` and `dft` calculation quantities cut the energy module out of it
+            Quantity(
+                'single_point',
+                r'((?:DFT|NWChem SCF) Module\s+\-+[\s\S]+)',
+                sub_parser=TextParser(quantities=calculation_quantities),
+            ),
+            Quantity(
+                'geometry_optimization',
+                r'(Geometry Optimization[\s\S]+)',
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            'parameters',
+                            r'(maximum gradient threshold\s*\(gmax\)[\s\S]+?)\n *\n',
+                            str_operation=lambda x: [
+                                [vi.strip() for vi in v.split('=')]
+                                for v in x.split('\n')
+                            ],
+                        ),
+                        Quantity(
+                            'iteration',
+                            r'p\s+\d+\s*\-+\s*(Geometry[\s\S]+?(?:\-+\n +Ste|\Z))',
+                            repeats=True,
+                            sub_parser=TextParser(quantities=calculation_quantities),
+                        ),
+                    ]
+                ),
+            ),
+            Quantity(
+                'molecular_dynamics',
+                r'(QMD Module[\s\S]+)',
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            'parameters',
+                            r'QMD Run Parameters\s*\-+\s*([\s\S]+?)\n *\n',
+                            str_operation=lambda x: [
+                                [vi.strip() for vi in v.split(':')]
+                                for v in x.split('\n')
+                            ],
+                        ),
+                        Quantity(
+                            'iteration',
+                            r'(DFT Module[\s\S]+?(?:NWChem|\Z))',
+                            repeats=True,
+                            sub_parser=TextParser(quantities=calculation_quantities),
+                        ),
+                    ]
+                ),
+            ),
+            Quantity(
+                'pw',
+                r'(PSPW Calculation[\s\S]+?)(?:\*\s*NWPW|\Z)',
+                repeats=True,
+                sub_parser=TextParser(quantities=pw_quantities),
+            ),
+        ]
+
         self._quantities = [
             Quantity(
                 'version',
@@ -361,67 +429,14 @@ class OutParser(TextParser):
                     ]
                 ),
             ),
+            # one block per task: each task starts with the echo of its input, whatever
+            # module it runs, and ends with its timings; this keeps the input geometry
+            # even for tasks whose module is not supported
             Quantity(
-                'input',
-                r'(Input Module[\s\S]+? {30}NWChem)',
-                sub_parser=TextParser(quantities=geometry_quantities),
-            ),
-            # the whole task, from its energy module to the end of the task; the `hf`
-            # and `dft` calculation quantities then cut out the energy module itself
-            Quantity(
-                'single_point',
-                r'((?:DFT|NWChem SCF) Module\s+\-+[\s\S]+?)(?:GA Statistics for process|NWChem Input Module|\Z)',
-                sub_parser=TextParser(quantities=calculation_quantities),
-            ),
-            Quantity(
-                'geometry_optimization',
-                r'(Geometry Optimization[\s\S]+?)(?:GA Statistics for process|NWChem Input Module|\Z)',
-                sub_parser=TextParser(
-                    quantities=[
-                        Quantity(
-                            'parameters',
-                            r'(maximum gradient threshold\s*\(gmax\)[\s\S]+?)\n *\n',
-                            str_operation=lambda x: [
-                                [vi.strip() for vi in v.split('=')]
-                                for v in x.split('\n')
-                            ],
-                        ),
-                        Quantity(
-                            'iteration',
-                            r'p\s+\d+\s*\-+\s*(Geometry[\s\S]+?(?:\-+\n +Ste|\Z))',
-                            repeats=True,
-                            sub_parser=TextParser(quantities=calculation_quantities),
-                        ),
-                    ]
-                ),
-            ),
-            Quantity(
-                'molecular_dynamics',
-                r'(QMD Module[\s\S]+?)(?:GA Statistics for process|NWChem Input Module|\Z)',
-                sub_parser=TextParser(
-                    quantities=[
-                        Quantity(
-                            'parameters',
-                            r'QMD Run Parameters\s*\-+\s*([\s\S]+?)\n *\n',
-                            str_operation=lambda x: [
-                                [vi.strip() for vi in v.split(':')]
-                                for v in x.split('\n')
-                            ],
-                        ),
-                        Quantity(
-                            'iteration',
-                            r'(DFT Module[\s\S]+?(?:NWChem|\Z))',
-                            repeats=True,
-                            sub_parser=TextParser(quantities=calculation_quantities),
-                        ),
-                    ]
-                ),
-            ),
-            Quantity(
-                'pw',
-                r'(PSPW Calculation[\s\S]+?)(?:\*\s*NWPW|GA Statistics for process|\Z)',
+                'task',
+                r'(NWChem Input Module[\s\S]+?)(?=Task +times +cpu|\n *NWChem Input Module|\Z)',
                 repeats=True,
-                sub_parser=TextParser(quantities=pw_quantities),
+                sub_parser=TextParser(quantities=task_quantities),
             ),
             # TODO implement frequency analysis
             # TODO add timings
@@ -431,6 +446,9 @@ class OutParser(TextParser):
 class NWChemParser:
     def __init__(self):
         self.out_parser = OutParser()
+        # the task the archive describes, see `select_task`
+        self._task_kind: str | None = None
+        self._task: dict = {}
 
         self._metainfo_map = {
             'hostname': 'run_host_name',
@@ -513,9 +531,7 @@ class NWChemParser:
                 labels, positions = labels_positions[:2]
 
         if len(positions) == 0:
-            labels, positions = self.out_parser.get('input', {}).get(
-                'labels_positions', [[], []]
-            )
+            labels, positions = self._task.get('labels_positions', [[], []])
 
         sec_atoms = Atoms()
         sec_system.atoms = sec_atoms
@@ -779,9 +795,7 @@ class NWChemParser:
             sec_electronic.charge = total_charge
 
         sec_basis = BasisSet()
-        sec_basis.type = (
-            'plane waves' if self.out_parser.get('pw') is not None else 'gaussians'
-        )
+        sec_basis.type = 'plane waves' if self._task_kind == 'pw' else 'gaussians'
         sec_basis.scope = (
             ['valence'] if sec_basis.type == 'gaussians' else []
         )  # TODO: add distinction for ECP
@@ -800,6 +814,33 @@ class NWChemParser:
 
         return sec_method
 
+    def select_task(self) -> tuple[str | None, dict]:
+        """
+        Select the task that the archive describes.
+
+        Of all tasks in the output, the first one of the highest-ranked kind is taken:
+        geometry optimization, molecular dynamics, plane waves, single point. A task with
+        none of these but with an input geometry is selected as `'geometry'`.
+
+        Returns:
+            The task kind and its parsed block. `(None, {})` if no task has a supported
+            kind or an input geometry.
+        """
+        tasks = self.out_parser.get('task', [])
+        for kind in (
+            'geometry_optimization',
+            'molecular_dynamics',
+            'pw',
+            'single_point',
+        ):
+            for task in tasks:
+                if task.get(kind) is not None:
+                    return kind, task
+        for task in tasks:
+            if task.get('labels_positions') is not None:
+                return 'geometry', task
+        return None, {}
+
     def parse_configurations(self):
         def parse_calculation(source):
             sec_method = self.parse_method(source)
@@ -808,54 +849,47 @@ class NWChemParser:
             sec_scc.method_ref = sec_method
             sec_scc.system_ref = sec_system
 
-        if self.out_parser.get('geometry_optimization') is not None:
-            for iteration in self.out_parser.get('geometry_optimization').get(
-                'iteration', []
-            ):
+        task = self._task
+        if self._task_kind in ('geometry_optimization', 'molecular_dynamics'):
+            for iteration in task.get(self._task_kind).get('iteration', []):
                 parse_calculation(iteration)
 
-        elif self.out_parser.get('molecular_dynamics') is not None:
-            for iteration in self.out_parser.get('molecular_dynamics').get(
-                'iteration', []
-            ):
-                parse_calculation(iteration)
-
-        elif self.out_parser.get('pw') is not None:
-            for calculation in self.out_parser.get('pw'):
+        elif self._task_kind == 'pw':
+            for calculation in task.get('pw'):
                 parse_calculation(calculation)
 
-        elif self.out_parser.get('single_point') is not None:
-            parse_calculation(self.out_parser.get('single_point'))
+        elif self._task_kind == 'single_point':
+            parse_calculation(task.get('single_point'))
 
-        # no supported task module: keep at least the geometry of the input echo
-        elif self.out_parser.get('input', {}).get('labels_positions') is not None:
+        # no supported module: the task block itself still holds the input geometry
+        elif self._task_kind == 'geometry':
+            modules = [m for m in task.get('module', []) if m != 'Input']
             self.logger.warning(
-                'No supported NWChem task module found, parsing only the input geometry'
+                'No supported NWChem task module among %s, parsing only the input '
+                'geometry',
+                modules,
             )
-            self.parse_system({})
+            self.parse_system(task)
 
     def parse_workflow(self):
         workflow = None
         parameters = []
-        if self.out_parser.get('geometry_optimization') is not None:
-            parameters = self.out_parser.get('geometry_optimization').get(
-                'parameters', []
-            )
+        task = self._task
+        if self._task_kind == 'geometry_optimization':
+            parameters = task.get('geometry_optimization').get('parameters', [])
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
 
-        elif self.out_parser.get('molecular_dynamics') is not None:
-            parameters = self.out_parser.get('molecular_dynamics').get('parameters', [])
+        elif self._task_kind == 'molecular_dynamics':
+            parameters = task.get('molecular_dynamics').get('parameters', [])
             workflow = MolecularDynamics()
 
-        elif self.out_parser.get('pw') is not None:
+        elif self._task_kind == 'pw':
             # pw is not fully implemented as I do not have example files
             workflow = (
-                GeometryOptimization()
-                if len(self.out_parser.get('pw')) > 1
-                else SinglePoint()
+                GeometryOptimization() if len(task.get('pw')) > 1 else SinglePoint()
             )
 
-        elif self.out_parser.get('single_point') is not None:
+        elif self._task_kind == 'single_point':
             workflow = SinglePoint()
 
         for parameter in parameters:
@@ -918,6 +952,8 @@ class NWChemParser:
                 continue
             key = self._metainfo_map.get(key, key.replace(' ', '_'))
             setattr(sec_info, 'x_nwchem_%s' % key, val)
+
+        self._task_kind, self._task = self.select_task()
 
         self.parse_configurations()
 
