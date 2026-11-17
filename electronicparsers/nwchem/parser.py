@@ -186,6 +186,83 @@ class OutParser(TextParser):
             ),
         ]
 
+        # NWChem names its Hartree-Fock module `SCF`
+        hf_quantities = geometry_quantities + [
+            Quantity(
+                'settings',
+                # contiguous `key = value` lines, which always start with `ao basis`;
+                # the basis summary that may follow depends on the print level
+                r'\n( +ao basis +=[^\n]*(?:\n +\w[^\n=]*= *\S[^\n]*)+)',
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            'info',
+                            r'(\w[^\n=]*?= *\S[^\n]*)',
+                            # collapse padding such as `beta  electrons`
+                            str_operation=lambda x: [
+                                ' '.join(v.split()) for v in x.split('=', 1)
+                            ],
+                            convert=False,
+                            repeats=True,
+                        )
+                    ]
+                ),
+            ),
+            Quantity(
+                'n_max_iteration',
+                r'Maximum no\. of iterations\s*\:\s*(\d+)',
+                dtype=np.int32,
+            ),
+            Quantity(
+                'iterations',
+                r'iter\s+energy\s+gnorm\s+gmax\s+time\s+[\- ]+\n([\s\S]+?)\n *\n',
+                # one row per iteration: iter, energy, gnorm, gmax, cumulative time
+                sub_parser=TextParser(
+                    quantities=[
+                        Quantity(
+                            'energy',
+                            rf'\d+ +({re_float}) +\S+ +\S+ +{re_float}',
+                            dtype=np.float64,
+                            unit=ureg.hartree,
+                            repeats=True,
+                        ),
+                        Quantity(
+                            'time',
+                            rf'\d+ +{re_float} +\S+ +\S+ +({re_float})',
+                            dtype=np.float64,
+                            unit=ureg.s,
+                            repeats=True,
+                        ),
+                    ]
+                ),
+            ),
+            Quantity(
+                'energy_total',
+                rf'Total SCF energy\s*=\s*({re_float})',
+                dtype=np.float64,
+                unit=ureg.hartree,
+            ),
+            # RHF/ROHF print `One-electron energy`, UHF `One electron energy`
+            Quantity(
+                'energy_one_electron',
+                rf'One[\- ]electron energy\s*=\s*({re_float})',
+                dtype=np.float64,
+                unit=ureg.hartree,
+            ),
+            Quantity(
+                'energy_nuclear_repulsion',
+                rf'Nuclear repulsion energy\s*=\s*({re_float})',
+                dtype=np.float64,
+                unit=ureg.hartree,
+            ),
+            Quantity(
+                'time_calculation',
+                rf'Time for solution\s*=\s*({re_float})s',
+                dtype=np.float64,
+                unit=ureg.s,
+            ),
+        ]
+
         dft_gradient_quantities = [
             Quantity(
                 'labels_positions_forces',
@@ -233,6 +310,15 @@ class OutParser(TextParser):
         ]
 
         calculation_quantities = geometry_quantities + [
+            # complements `single_point`: that one cuts out the whole task, this one
+            # only its SCF module, up to the next module header (e.g. gradients, MP2);
+            # the lookahead leaves that header to a directly following SCF module
+            Quantity(
+                'hf',
+                r'(SCF Module[\s\S]+?)(?=\n *NWChem [^\n]*Module|\Z)',
+                repeats=True,
+                sub_parser=TextParser(quantities=hf_quantities),
+            ),
             Quantity(
                 'dft',
                 r'(DFT Module[\s\S]+?)(?:NWChem|\Z)',
@@ -280,9 +366,11 @@ class OutParser(TextParser):
                 r'(Input Module[\s\S]+? {30}NWChem)',
                 sub_parser=TextParser(quantities=geometry_quantities),
             ),
+            # the whole task, from its energy module to the end of the task; the `hf`
+            # and `dft` calculation quantities then cut out the energy module itself
             Quantity(
                 'single_point',
-                r'(DFT Module\s+\-+[\s\S]+?)(?:GA Statistics for process|NWChem Input Module|\Z)',
+                r'((?:DFT|NWChem SCF) Module\s+\-+[\s\S]+?)(?:GA Statistics for process|NWChem Input Module|\Z)',
                 sub_parser=TextParser(quantities=calculation_quantities),
             ),
             Quantity(
@@ -454,11 +542,13 @@ class NWChemParser:
         # we only read the results from the last dft and gradients module
         dft = source.get('dft', [{}])[-1]
         dft_gradient = source.get('dft_gradient', [{}])[-1]
+        # Hartree-Fock runs have an HF module in place of the DFT module
+        module = dft or source.get('hf', [{}])[-1]
 
         # energies
         sec_energy = Energy()
         sec_scc.energy = sec_energy
-        for key, val in source.get('energy', dft.get('energy', [])):
+        for key, val in source.get('energy', module.get('energy', [])):
             key = self._metainfo_map.get(key)
             if key is not None:
                 if key.startswith('x_nwchem_energy_'):
@@ -468,6 +558,22 @@ class NWChemParser:
                         getattr(Energy, key.replace('energy_', '').lower()),
                         EnergyEntry(value=val),
                     )
+
+        # the HF module carries its energies as separate quantities with units
+        if not dft:
+            energy_total = module.get('energy_total')
+            if energy_total is not None:
+                sec_energy.total = EnergyEntry(value=energy_total)
+            energy_nuclear_repulsion = module.get('energy_nuclear_repulsion')
+            if energy_nuclear_repulsion is not None:
+                sec_energy.nuclear_repulsion = EnergyEntry(
+                    value=energy_nuclear_repulsion
+                )
+            energy_one_electron = module.get('energy_one_electron')
+            if energy_one_electron is not None:
+                sec_scc.x_nwchem_energy_one_electron = energy_one_electron.to(
+                    'J'
+                ).magnitude
 
         # for geometry optimization, energy can also be parsed from gradient module
         energy = dft_gradient.get('energy')
@@ -540,9 +646,25 @@ class NWChemParser:
                     sec_scf.time_physical = iteration[2] * ureg.s
                     sec_scf.time_calculation = sec_scf.time_physical - scf_initial_time
 
-        if not sec_scc.time_calculation and dft.get('time_calculation') is not None:
-            sec_scc.time_calculation = dft.time_calculation
-            sec_scc.time_physical = initial_time + dft.time_calculation
+        # the HF module prints the total energy and time per iteration, no energy change
+        iterations = module.get('iterations', {})
+        for energy, time in zip(
+            iterations.get('energy', []), iterations.get('time', [])
+        ):
+            scf_initial_time = (
+                sec_scc.scf_iteration[-1].time_physical
+                if sec_scc.scf_iteration
+                else initial_time
+            )
+            sec_scf = ScfIteration()
+            sec_scc.scf_iteration.append(sec_scf)
+            sec_scf.energy = Energy(total=EnergyEntry(value=energy))
+            sec_scf.time_physical = time
+            sec_scf.time_calculation = sec_scf.time_physical - scf_initial_time
+
+        if not sec_scc.time_calculation and module.get('time_calculation') is not None:
+            sec_scc.time_calculation = module.time_calculation
+            sec_scc.time_physical = initial_time + module.time_calculation
 
         return sec_scc
 
@@ -569,44 +691,82 @@ class NWChemParser:
                         names.append([name, None])
             return names
 
-        sec_dft = DFT()
-        sec_method.dft = sec_dft
         sec_electronic = Electronic()
         sec_method.electronic = sec_electronic
-        sec_electronic.method = 'DFT'
 
         dft = source.get('dft', [{}])[-1]
-
-        general_info = dft.get('general_info', {})
+        hf = source.get('hf', [{}])[-1]
         sec_scf = Scf()
         sec_method.scf = sec_scf
-        for key, val in general_info.get('info', []):
-            key = self._metainfo_map.get(key)
-            if key is None:
-                continue
-            if key == 'scf_threshold_energy_change':
-                val = fix_dfloat(val) * ureg.hartree
-                sec_scf.threshold_energy_change = val
-            elif key == 'scf_max_iteration' and isinstance(val, int):
-                sec_scf.n_max_iteration = val
+        settings = dict(hf.get('settings', {}).get('info', []))
+        # the HF (SCF) module's `wavefunction` names its HF reference; without one,
+        # the source is DFT, including plane-wave sources that carry no `dft` module
+        wavefunction = settings.get('wavefunction')
+        if wavefunction is not None:
+            # spin restriction and number of spin channels per HF reference; ROHF
+            # shares the orbitals but not the occupations, so it has no clean count
+            reference = {
+                'RHF': ('restricted', 1),
+                'ROHF': ('restricted', None),
+                'UHF': ('unrestricted', 2),
+            }.get(wavefunction)
+            if reference is None:
+                self.logger.warning('Unknown NWChem SCF wavefunction %s', wavefunction)
             else:
-                setattr(sec_method, key, val)
+                sec_electronic.method = 'HF'
+                spin_restriction, n_spin_channels = reference
+                sec_method.x_nwchem_electron_spin_restriction = spin_restriction
+                if n_spin_channels is not None:
+                    sec_electronic.n_spin_channels = n_spin_channels
+            # RHF/ROHF print `open shells`, UHF the alpha and beta electron counts;
+            # open shells are high-spin, so S = n_open / 2 and M = 2S + 1 = n_open + 1
+            if 'open shells' in settings:
+                sec_electronic.spin_target = int(settings['open shells']) + 1
+            elif 'alpha electrons' in settings and 'beta electrons' in settings:
+                sec_electronic.spin_target = (
+                    int(settings['alpha electrons'])
+                    - int(settings['beta electrons'])
+                    + 1
+                )
+            charge = settings.get('charge')
+            if charge is not None:
+                sec_electronic.charge = float(charge) * ureg.elementary_charge
+            n_max_iteration = hf.get('n_max_iteration')
+            if n_max_iteration is not None:
+                sec_scf.n_max_iteration = n_max_iteration
+        else:
+            sec_electronic.method = 'DFT'
+            sec_dft = DFT()
+            sec_method.dft = sec_dft
 
-        xc_functionals = dft.get('xc_info', {}).get('functional', [])
-        sec_xc_functional = XCFunctional()
-        sec_dft.xc_functional = sec_xc_functional
-        for name, weight in resolve_functional_combination(xc_functionals):
-            functional = Functional(name=name)
-            if weight is not None:
-                functional.weight = weight
-            if '_X_' in name or name.endswith('_X'):
-                sec_xc_functional.exchange.append(functional)
-            elif '_C_' in name or name.endswith('_C'):
-                sec_xc_functional.correlation.append(functional)
-            elif 'HYB' in name:
-                sec_xc_functional.hybrid.append(functional)
-            else:
-                sec_xc_functional.contributions.append(functional)
+            xc_functionals = dft.get('xc_info', {}).get('functional', [])
+            sec_xc_functional = XCFunctional()
+            sec_dft.xc_functional = sec_xc_functional
+            for name, weight in resolve_functional_combination(xc_functionals):
+                functional = Functional(name=name)
+                if weight is not None:
+                    functional.weight = weight
+                if '_X_' in name or name.endswith('_X'):
+                    sec_xc_functional.exchange.append(functional)
+                elif '_C_' in name or name.endswith('_C'):
+                    sec_xc_functional.correlation.append(functional)
+                elif 'HYB' in name:
+                    sec_xc_functional.hybrid.append(functional)
+                else:
+                    sec_xc_functional.contributions.append(functional)
+
+            general_info = dft.get('general_info', {})
+            for key, val in general_info.get('info', []):
+                key = self._metainfo_map.get(key)
+                if key is None:
+                    continue
+                if key == 'scf_threshold_energy_change':
+                    val = fix_dfloat(val) * ureg.hartree
+                    sec_scf.threshold_energy_change = val
+                elif key == 'scf_max_iteration' and isinstance(val, int):
+                    sec_scf.n_max_iteration = val
+                else:
+                    setattr(sec_method, key, val)
 
         parameters = source.get('parameters', [])
         for parameter in parameters:

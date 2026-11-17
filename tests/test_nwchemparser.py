@@ -116,3 +116,170 @@ def test_pw(parser):
     sec_scfs = sec_sccs[0].scf_iteration
     assert len(sec_scfs) == 5
     assert sec_scfs[3].energy.total.value.magnitude == approx(-8.86651108e-17)
+
+
+# settings block of the UHF carbon output, and its variants for the other HF references
+UHF_ELECTRONS = '  alpha electrons =     4\n  beta  electrons =     2\n'
+BASIS_SUMMARY = (
+    '  symmetry adapt  = F\n\n\n'
+    ' Summary of "ao basis" -> "ao basis" (spherical)\n'
+    ' ------------------------------------------------------------------------------\n'
+    '       Tag                 Description            Shells   Functions and Types\n'
+    ' ---------------- ------------------------------  ------  ---------------------\n'
+    ' C                          cc-pVTZ                 10       30   4s3p2d1f\n'
+)
+
+
+@pytest.mark.parametrize(
+    'edits, method, spin_restriction, spin_target, n_spin_channels',
+    [
+        ([], 'HF', 'unrestricted', 3, 2),
+        (
+            [
+                (
+                    UHF_ELECTRONS,
+                    '  closed shells   =     2\n  open shells     =     2\n',
+                ),
+                ('wavefunction    = UHF', 'wavefunction    = ROHF'),
+            ],
+            'HF',
+            'restricted',
+            3,
+            None,
+        ),
+        (
+            [
+                (
+                    UHF_ELECTRONS,
+                    '  closed shells   =     3\n  open shells     =     0\n',
+                ),
+                ('wavefunction    = UHF', 'wavefunction    = RHF'),
+            ],
+            'HF',
+            'restricted',
+            1,
+            1,
+        ),
+        (
+            [('wavefunction    = UHF', 'wavefunction    = MCSCF')],
+            None,
+            None,
+            3,
+            None,
+        ),
+        (
+            [(BASIS_SUMMARY, '  symmetry adapt  = F\n\n')],
+            'HF',
+            'unrestricted',
+            3,
+            2,
+        ),
+    ],
+    ids=[
+        'uhf',
+        'rohf-triplet',
+        'rhf-singlet',
+        'unknown-wavefunction',
+        'no-basis-summary',
+    ],
+)
+def test_hf_method(
+    parser, tmp_path, edits, method, spin_restriction, spin_target, n_spin_channels
+):
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    for old, new in edits:
+        assert text.count(old) == 1
+        text = text.replace(old, new)
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text)
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_method = archive.run[0].method[-1]
+    assert sec_method.electronic.method == method
+    assert sec_method.x_nwchem_electron_spin_restriction == spin_restriction
+    assert sec_method.electronic.spin_target == spin_target
+    assert sec_method.electronic.n_spin_channels == n_spin_channels
+    assert sec_method.dft is None
+
+
+def test_hf_calculation(parser):
+    archive = EntryArchive()
+    parser.parse('tests/data/nwchem/scf_uhf/output.out', archive, None)
+
+    sec_run = archive.run[0]
+    assert sec_run.system[0].atoms.labels == ['C']
+    assert sec_run.method[-1].scf.n_max_iteration == 30
+    assert sec_run.method[-1].electronic.charge.magnitude == approx(0.0)
+
+    sec_scc = sec_run.calculation[-1]
+    assert sec_scc.energy.total.value.to('hartree').magnitude == approx(
+        -37.691569172750
+    )
+    assert sec_scc.energy.nuclear_repulsion.value.to('hartree').magnitude == approx(0.0)
+    assert sec_scc.time_calculation.magnitude == approx(0.1)
+    sec_scfs = sec_scc.scf_iteration
+    assert len(sec_scfs) == 5
+    assert sec_scfs[0].energy.total.value.to('hartree').magnitude == approx(
+        -37.6520514049
+    )
+    assert sec_scfs[-1].time_physical.magnitude == approx(0.2)
+
+
+@pytest.mark.parametrize(
+    'edits, charge, spin_target',
+    [
+        ([], 0.0, 3),
+        (
+            [
+                (
+                    UHF_ELECTRONS,
+                    '  alpha electrons =     3\n  beta  electrons =     2\n',
+                ),
+                ('  charge          =   0.00', '  charge          =   1.00'),
+            ],
+            1.0,
+            2,
+        ),
+    ],
+    ids=['neutral', 'cation'],
+)
+def test_hf_charge(parser, tmp_path, edits, charge, spin_target):
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    for old, new in edits:
+        assert text.count(old) == 1
+        text = text.replace(old, new)
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text)
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_electronic = archive.run[0].method[-1].electronic
+    assert sec_electronic.charge.to('elementary_charge').magnitude == approx(charge)
+    assert sec_electronic.spin_target == spin_target
+
+
+def test_hf_consecutive_modules(parser, tmp_path):
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    # repeat the SCF module with another total energy, directly before the MP2 module
+    start = text.rindex('\n', 0, text.index('NWChem SCF Module')) + 1
+    end = text.rindex('\n', 0, text.index('NWChem MP2 Semi-direct')) + 1
+    module = text[start:end]
+    assert module.count('Total SCF energy =    -37.691569172750') == 1
+    second = module.replace(
+        'Total SCF energy =    -37.691569172750',
+        'Total SCF energy =    -37.700000000000',
+    )
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text[:end] + second + text[end:])
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_scc = archive.run[0].calculation[-1]
+    assert sec_scc.energy.total.value.to('hartree').magnitude == approx(-37.7)
