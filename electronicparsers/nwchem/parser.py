@@ -729,7 +729,7 @@ class NWChemParser:
                 )
             charge = settings.get('charge')
             if charge is not None:
-                sec_electronic.charge = float(charge)
+                sec_electronic.charge = float(charge) * ureg.elementary_charge
             n_max_iteration = hf.get('n_max_iteration')
             if n_max_iteration is not None:
                 sec_scf.n_max_iteration = n_max_iteration

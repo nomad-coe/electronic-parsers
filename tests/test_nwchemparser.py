@@ -212,7 +212,7 @@ def test_hf_calculation(parser):
     sec_run = archive.run[0]
     assert sec_run.system[0].atoms.labels == ['C']
     assert sec_run.method[-1].scf.n_max_iteration == 30
-    assert sec_run.method[-1].electronic.charge == approx(0.0)
+    assert sec_run.method[-1].electronic.charge.magnitude == approx(0.0)
 
     sec_scc = sec_run.calculation[-1]
     assert sec_scc.energy.total.value.to('hartree').magnitude == approx(
@@ -226,3 +226,38 @@ def test_hf_calculation(parser):
         -37.6520514049
     )
     assert sec_scfs[-1].time_physical.magnitude == approx(0.2)
+
+
+@pytest.mark.parametrize(
+    'edits, charge, spin_target',
+    [
+        ([], 0.0, 3),
+        (
+            [
+                (
+                    UHF_ELECTRONS,
+                    '  alpha electrons =     3\n  beta  electrons =     2\n',
+                ),
+                ('  charge          =   0.00', '  charge          =   1.00'),
+            ],
+            1.0,
+            2,
+        ),
+    ],
+    ids=['neutral', 'cation'],
+)
+def test_hf_charge(parser, tmp_path, edits, charge, spin_target):
+    with open('tests/data/nwchem/scf_uhf/output.out') as f:
+        text = f.read()
+    for old, new in edits:
+        assert text.count(old) == 1
+        text = text.replace(old, new)
+    mainfile = tmp_path / 'output.out'
+    mainfile.write_text(text)
+
+    archive = EntryArchive()
+    parser.parse(str(mainfile), archive, None)
+
+    sec_electronic = archive.run[0].method[-1].electronic
+    assert sec_electronic.charge.to('elementary_charge').magnitude == approx(charge)
+    assert sec_electronic.spin_target == spin_target
