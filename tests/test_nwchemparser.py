@@ -306,39 +306,81 @@ def test_unsupported_module(parser, tmp_path, caplog):
     assert "['TCE', 'MP2 Semi-direct Energy/Gradient']" in caplog.text
 
 
-def test_task_selection(parser, tmp_path):
-    # two tasks: an unsupported module with the atom moved to z = 1 A, then the SCF task;
-    # the archive describes the SCF task, with the geometry of its own input echo
+# the SCF task of the UHF output, from its input echo to its timings
+ORIGIN = (
+    '    1 C                    6.0000     0.00000000     0.00000000     0.00000000'
+)
+SHIFTED = (
+    '    1 C                    6.0000     0.00000000     0.00000000     1.00000000'
+)
+SCF_ENERGY = 'Total SCF energy =    -37.691569172750'
+
+
+@pytest.mark.parametrize(
+    'first_task_edits, positions, n_methods, energies, workflow, warning',
+    [
+        (
+            [('NWChem SCF Module', 'NWChem TCE Module'), (ORIGIN, SHIFTED)],
+            [[[0.0, 0.0, 1.0]], [[0.0, 0.0, 0.0]]],
+            1,
+            [-37.691569172750],
+            'SinglePoint',
+            'No supported NWChem task module',
+        ),
+        (
+            [(SCF_ENERGY, 'Total SCF energy =    -37.700000000000'), (ORIGIN, SHIFTED)],
+            [[[0.0, 0.0, 1.0]], [[0.0, 0.0, 0.0]]],
+            2,
+            [-37.7, -37.691569172750],
+            None,
+            'chains 2 tasks',
+        ),
+    ],
+    ids=['unsupported-then-scf', 'scf-then-scf'],
+)
+def test_tasks(
+    parser,
+    tmp_path,
+    caplog,
+    first_task_edits,
+    positions,
+    n_methods,
+    energies,
+    workflow,
+    warning,
+):
+    # two tasks: an edited copy of the SCF task, then the original; each task is
+    # archived from its own block, the atom of the first one moved to z = 1 A
     with open('tests/data/nwchem/scf_uhf/output.out') as f:
         text = f.read()
     start = text.rindex('\n', 0, text.index('NWChem Input Module')) + 1
     end = text.index('\n', text.index('Task  times')) + 1
-    task = text[start:end]
-    # the input echo prints the atom in its geometry table and in an XYZ block; the
-    # parser reads the table, so move it there
-    origin = (
-        '    1 C                    6.0000     0.00000000     0.00000000     0.00000000'
-    )
-    unsupported = task.replace('NWChem SCF Module', 'NWChem TCE Module').replace(
-        origin,
-        '    1 C                    6.0000     0.00000000     0.00000000     1.00000000',
-        1,
-    )
-    assert unsupported != task.replace('NWChem SCF Module', 'NWChem TCE Module')
+    first_task = text[start:end]
+    for old, new in first_task_edits:
+        # the geometry table comes before the XYZ block that repeats the atom
+        assert old in first_task
+        first_task = first_task.replace(old, new, 1)
     mainfile = tmp_path / 'output.out'
-    mainfile.write_text(text[:start] + unsupported + text[start:])
+    mainfile.write_text(text[:start] + first_task + text[start:])
 
     archive = EntryArchive()
     parser.parse(str(mainfile), archive, None)
 
     sec_run = archive.run[0]
-    assert len(sec_run.system) == 1
-    assert sec_run.system[0].atoms.positions.magnitude.tolist() == [[0.0, 0.0, 0.0]]
-    assert sec_run.method[-1].electronic.method == 'HF'
-    assert sec_run.calculation[-1].energy.total.value.to('hartree').magnitude == approx(
-        -37.691569172750
-    )
-    assert archive.workflow2.m_def.name == 'SinglePoint'
+    assert [
+        system.atoms.positions.to('angstrom').magnitude.tolist()
+        for system in sec_run.system
+    ] == positions
+    assert len(sec_run.method) == n_methods
+    assert [
+        calc.energy.total.value.to('hartree').magnitude for calc in sec_run.calculation
+    ] == approx(energies)
+    assert sec_run.calculation[-1].system_ref == sec_run.system[-1]
+    if workflow is None:
+        assert archive.workflow2 is None
+    else:
+        assert archive.workflow2.m_def.name == workflow
+    assert warning in caplog.text
 
 
 @pytest.mark.parametrize(

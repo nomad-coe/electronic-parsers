@@ -449,7 +449,9 @@ class OutParser(TextParser):
 class NWChemParser:
     def __init__(self):
         self.out_parser = OutParser()
-        # the task the archive describes, see `select_task`
+        # the tasks of the output with their kinds (see `task_kind`), and the one being
+        # archived
+        self._tasks: list[tuple[str, dict]] = []
         self._task_kind: str | None = None
         self._task: dict = {}
 
@@ -817,32 +819,30 @@ class NWChemParser:
 
         return sec_method
 
-    def select_task(self) -> tuple[str | None, dict]:
+    @staticmethod
+    def task_kind(task: dict) -> str | None:
         """
-        Select the task that the archive describes.
+        Classify a parsed task block by the module it runs.
 
-        Of all tasks in the output, the first one of the highest-ranked kind is taken:
-        geometry optimization, molecular dynamics, plane waves, single point. A task with
-        none of these but with an input geometry is selected as `'geometry'`.
+        A task that holds several kinds counts as the highest-ranked one: geometry
+        optimization, molecular dynamics, plane waves, single point.
 
         Returns:
-            The task kind and its parsed block. `(None, {})` if no task has a supported
-            kind or an input geometry.
+            The task kind; `'geometry'` for a task without a supported module but with an
+            input geometry; `None` for a task with neither, such as the input echo that
+            closes every output.
         """
-        tasks = self.out_parser.get('task', [])
         for kind in (
             'geometry_optimization',
             'molecular_dynamics',
             'pw',
             'single_point',
         ):
-            for task in tasks:
-                if task.get(kind) is not None:
-                    return kind, task
-        for task in tasks:
-            if task.get('labels_positions') is not None:
-                return 'geometry', task
-        return None, {}
+            if task.get(kind) is not None:
+                return kind
+        if task.get('labels_positions') is not None:
+            return 'geometry'
+        return None
 
     def parse_configurations(self):
         def parse_calculation(source):
@@ -852,47 +852,61 @@ class NWChemParser:
             sec_scc.method_ref = sec_method
             sec_scc.system_ref = sec_system
 
-        task = self._task
-        if self._task_kind in ('geometry_optimization', 'molecular_dynamics'):
-            for iteration in task.get(self._task_kind).get('iteration', []):
-                parse_calculation(iteration)
+        # every task is archived in order, each from its own block; `parse_system` and
+        # `parse_method` read the current task from `_task` and `_task_kind`
+        for task_kind, task in self._tasks:
+            self._task_kind, self._task = task_kind, task
+            if self._task_kind in ('geometry_optimization', 'molecular_dynamics'):
+                for iteration in task.get(self._task_kind).get('iteration', []):
+                    parse_calculation(iteration)
 
-        elif self._task_kind == 'pw':
-            for calculation in task.get('pw'):
-                parse_calculation(calculation)
+            elif self._task_kind == 'pw':
+                for calculation in task.get('pw'):
+                    parse_calculation(calculation)
 
-        elif self._task_kind == 'single_point':
-            parse_calculation(task.get('single_point'))
+            elif self._task_kind == 'single_point':
+                parse_calculation(task.get('single_point'))
 
-        # no supported module: the task block itself still holds the input geometry
-        elif self._task_kind == 'geometry':
-            modules = [m for m in task.get('module', []) if m != 'Input']
-            self.logger.warning(
-                'No supported NWChem task module among %s, parsing only the input '
-                'geometry',
-                modules,
-            )
-            self.parse_system(task)
+            # no supported module: the task block itself still holds the input geometry
+            elif self._task_kind == 'geometry':
+                modules = [m for m in task.get('module', []) if m != 'Input']
+                self.logger.warning(
+                    'No supported NWChem task module among %s, parsing only the input '
+                    'geometry',
+                    modules,
+                )
+                self.parse_system(task)
 
     def parse_workflow(self):
         workflow = None
         parameters = []
-        task = self._task
-        if self._task_kind == 'geometry_optimization':
+        # TODO chain the workflows of several tasks (e.g. optimization, then frequencies);
+        # this is planned for the new NWChem parser. The legacy workflows normalize over
+        # all calculations of the run, so with several such tasks none is set
+        tasks = [(kind, task) for kind, task in self._tasks if kind != 'geometry']
+        if len(tasks) > 1:
+            self.logger.warning(
+                'NWChem output chains %s tasks with calculations, their workflow is not '
+                'mapped yet',
+                len(tasks),
+            )
+            return
+        task_kind, task = tasks[0] if tasks else (None, {})
+        if task_kind == 'geometry_optimization':
             parameters = task.get('geometry_optimization').get('parameters', [])
             workflow = GeometryOptimization(method=GeometryOptimizationMethod())
 
-        elif self._task_kind == 'molecular_dynamics':
+        elif task_kind == 'molecular_dynamics':
             parameters = task.get('molecular_dynamics').get('parameters', [])
             workflow = MolecularDynamics()
 
-        elif self._task_kind == 'pw':
+        elif task_kind == 'pw':
             # pw is not fully implemented as I do not have example files
             workflow = (
                 GeometryOptimization() if len(task.get('pw')) > 1 else SinglePoint()
             )
 
-        elif self._task_kind == 'single_point':
+        elif task_kind == 'single_point':
             workflow = SinglePoint()
 
         for parameter in parameters:
@@ -956,7 +970,11 @@ class NWChemParser:
             key = self._metainfo_map.get(key, key.replace(' ', '_'))
             setattr(sec_info, 'x_nwchem_%s' % key, val)
 
-        self._task_kind, self._task = self.select_task()
+        self._tasks = [
+            (kind, task)
+            for task in self.out_parser.get('task', [])
+            if (kind := self.task_kind(task)) is not None
+        ]
 
         self.parse_configurations()
 
